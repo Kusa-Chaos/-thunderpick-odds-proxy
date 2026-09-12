@@ -317,22 +317,42 @@ module.exports = async function handler(req, res) {
     let rateLimited = false;
     let previousIds = null;
 
-    for (let currentPage = 1; currentPage <= maxPages; currentPage++) {
-      const result = await fetchPulsePage({
-        apiKey,
-        sport,
-        mode,
-        eventId: null,
-        page: currentPage,
-        limit
-      });
+for (let currentPage = 1; currentPage <= maxPages; currentPage++) {
 
-      if (result.status === 429) {
-        rateLimited = true;
-        terminalReason =
-          `429 rate limit reached before page ${currentPage}`;
-        break;
-      }
+  // Pace PulseScore requests so page 2+ does not immediately hit 429.
+  if (currentPage > 1) {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
+
+  let result = await fetchPulsePage({
+    apiKey,
+    sport,
+    mode,
+    eventId: null,
+    page: currentPage,
+    limit
+  });
+  // If PulseScore rate-limits us, wait and retry this same page.
+  if (result.status === 429) {
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    result = await fetchPulsePage({
+      apiKey,
+      sport,
+      mode,
+      eventId: null,
+      page: currentPage,
+      limit
+    });
+  }
+
+  // If the retry is still rate-limited, stop cleanly.
+  if (result.status === 429) {
+    rateLimited = true;
+    terminalReason =
+      `429 rate limit still active before page ${currentPage} after retry`;
+    break;
+  }
 
       if (!result.ok) {
         terminalReason =
