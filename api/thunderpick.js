@@ -22,6 +22,10 @@ function clamp(value, min, max, fallback) {
   return Math.max(min, Math.min(max, Math.floor(n)));
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function isVirtualEsport(event) {
   const text = [
     event?.moreInfo?.esport,
@@ -49,9 +53,9 @@ function isVirtualEsport(event) {
 function getEventId(event, index, page) {
   return String(
     event?.eventId ??
-    event?.id ??
-    event?._id ??
-    `${page}-${index}-${event?.home || ''}-${event?.away || ''}-${event?.startTime || ''}`
+      event?.id ??
+      event?._id ??
+      `${page}-${index}-${event?.home || ''}-${event?.away || ''}-${event?.startTime || ''}`
   );
 }
 
@@ -99,44 +103,11 @@ function compactEvent(event) {
   };
 }
 
-function toText(payload) {
-  const lines = [];
-
-  lines.push('THUNDERPICK SCAN FEED');
-  lines.push(`source=${payload.source}`);
-  lines.push(`proxyFetchedAt=${payload.proxyFetchedAt}`);
-  lines.push(`sport=${payload.sport}`);
-  lines.push(`mode=${payload.mode}`);
-  lines.push(`pagesFetched=${payload.pagesFetched}`);
-  lines.push(`rawEvents=${payload.rawEventCount}`);
-  lines.push(`virtualExcluded=${payload.virtualExcluded}`);
-  lines.push(`uniqueReturned=${payload.returnedEventCount}`);
-  lines.push(`terminalReason=${payload.terminalReason}`);
-  lines.push(`rateLimited=${payload.rateLimited}`);
-  lines.push('');
-
-  payload.events.forEach((event, index) => {
-    lines.push(`EVENT ${index + 1}`);
-    lines.push(`eventId=${event.eventId ?? ''}`);
-    lines.push(`startTime=${event.startTime ?? ''}`);
-    lines.push(`status=${event.status ?? ''}`);
-    lines.push(`live=${event.live ?? ''}`);
-    lines.push(`league=${event.league ?? ''}`);
-    lines.push(`home=${event.home ?? ''}`);
-    lines.push(`away=${event.away ?? ''}`);
-
-    if (event.moreInfo) {
-      lines.push(`moreInfo=${JSON.stringify(event.moreInfo)}`);
-    }
-
-    if (event.markets) {
-      lines.push(`markets=${JSON.stringify(event.markets)}`);
-    }
-
-    lines.push('');
-  });
-
-  return lines.join('\n');
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 async function fetchPulsePage({
@@ -243,11 +214,18 @@ module.exports = async function handler(req, res) {
   const textMode =
     String(req.query.format || '').toLowerCase() === 'text';
 
+  const startPage = clamp(
+    req.query.startPage,
+    1,
+    1000,
+    1
+  );
+
   const maxPages = clamp(
     req.query.maxPages,
     1,
-    40,
-    20
+    5,
+    4
   );
 
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -290,7 +268,11 @@ module.exports = async function handler(req, res) {
       ) {
         data.events = data.events.filter((event) => {
           const virtual = isVirtualEsport(event);
-          if (virtual) virtualExcluded += 1;
+
+          if (virtual) {
+            virtualExcluded += 1;
+          }
+
           return !virtual;
         });
       }
@@ -307,52 +289,58 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Scanner aggregation mode
+    // Batched scanner mode
     const uniqueEvents = new Map();
 
     let totalRaw = 0;
     let virtualExcluded = 0;
     let pagesFetched = 0;
-    let terminalReason = 'maxPages reached';
+    let terminalReason = 'batch limit reached';
     let rateLimited = false;
     let previousIds = null;
 
-for (let currentPage = 1; currentPage <= maxPages; currentPage++) {
+    const endPage = startPage + maxPages - 1;
 
-  // Pace PulseScore requests so page 2+ does not immediately hit 429.
-  if (currentPage > 1) {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-  }
+    for (
+      let currentPage = startPage;
+      currentPage <= endPage;
+      currentPage++
+    ) {
+      // Pace PulseScore after the first request in each batch
+      if (currentPage > startPage) {
+        await sleep(2000);
+      }
 
-  let result = await fetchPulsePage({
-    apiKey,
-    sport,
-    mode,
-    eventId: null,
-    page: currentPage,
-    limit
-  });
-  // If PulseScore rate-limits us, wait and retry this same page.
-  if (result.status === 429) {
-    await new Promise(resolve => setTimeout(resolve, 5000));
+      let result = await fetchPulsePage({
+        apiKey,
+        sport,
+        mode,
+        eventId: null,
+        page: currentPage,
+        limit
+      });
 
-    result = await fetchPulsePage({
-      apiKey,
-      sport,
-      mode,
-      eventId: null,
-      page: currentPage,
-      limit
-    });
-  }
+      // One controlled retry after 429
+      if (result.status === 429) {
+        await sleep(5000);
 
-  // If the retry is still rate-limited, stop cleanly.
-  if (result.status === 429) {
-    rateLimited = true;
-    terminalReason =
-      `429 rate limit still active before page ${currentPage} after retry`;
-    break;
-  }
+        result = await fetchPulsePage({
+          apiKey,
+          sport,
+          mode,
+          eventId: null,
+          page: currentPage,
+          limit
+        });
+      }
+
+      // Stop cleanly if still rate limited
+      if (result.status === 429) {
+        rateLimited = true;
+        terminalReason =
+          `429 rate limit still active before page ${currentPage} after retry`;
+        break;
+      }
 
       if (!result.ok) {
         terminalReason =
@@ -430,7 +418,9 @@ for (let currentPage = 1; currentPage <= maxPages; currentPage++) {
       proxyFetchedAt: new Date().toISOString(),
       sport,
       mode,
+      startPage,
       pagesFetched,
+      nextPage: startPage + pagesFetched,
       rawEventCount: totalRaw,
       virtualExcluded,
       returnedEventCount: events.length,
@@ -439,32 +429,75 @@ for (let currentPage = 1; currentPage <= maxPages; currentPage++) {
       events
     };
 
-if (textMode) {
-  res.setHeader(
-    'Content-Type',
-    'text/html; charset=utf-8'
-  );
+    if (textMode) {
+      const summaryHtml = `
+        <section>
+          <h1>THUNDERPICK SCAN FEED</h1>
+          <p>source=${escapeHtml(payload.source)}</p>
+          <p>proxyFetchedAt=${escapeHtml(payload.proxyFetchedAt)}</p>
+          <p>sport=${escapeHtml(payload.sport)}</p>
+          <p>mode=${escapeHtml(payload.mode)}</p>
+          <p>startPage=${escapeHtml(payload.startPage)}</p>
+          <p>pagesFetched=${escapeHtml(payload.pagesFetched)}</p>
+          <p>nextPage=${escapeHtml(payload.nextPage)}</p>
+          <p>rawEvents=${escapeHtml(payload.rawEventCount)}</p>
+          <p>virtualExcluded=${escapeHtml(payload.virtualExcluded)}</p>
+          <p>uniqueReturned=${escapeHtml(payload.returnedEventCount)}</p>
+          <p>terminalReason=${escapeHtml(payload.terminalReason)}</p>
+          <p>rateLimited=${escapeHtml(payload.rateLimited)}</p>
+        </section>
+      `;
 
-  const body = toText(payload)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+      const eventHtml = payload.events
+        .map((event, index) => {
+          const moreInfo = event.moreInfo
+            ? JSON.stringify(event.moreInfo)
+            : '';
 
-  return res.status(200).send(
-    `<!doctype html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>Thunderpick Scan Feed</title>
-      </head>
-      <body>
-        <main>
-          <pre>${body}</pre>
-        </main>
-      </body>
-    </html>`
-  );
-}
+          const markets = event.markets
+            ? JSON.stringify(event.markets)
+            : '';
+
+          return `
+            <section>
+              <h2>EVENT ${index + 1}</h2>
+              <p>eventId=${escapeHtml(event.eventId)}</p>
+              <p>startTime=${escapeHtml(event.startTime)}</p>
+              <p>status=${escapeHtml(event.status)}</p>
+              <p>live=${escapeHtml(event.live)}</p>
+              <p>league=${escapeHtml(event.league)}</p>
+              <p>home=${escapeHtml(event.home)}</p>
+              <p>away=${escapeHtml(event.away)}</p>
+              <p>moreInfo=${escapeHtml(moreInfo)}</p>
+              <p>markets=${escapeHtml(markets)}</p>
+            </section>
+          `;
+        })
+        .join('');
+
+      res.setHeader(
+        'Content-Type',
+        'text/html; charset=utf-8'
+      );
+
+      return res.status(200).send(`
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Thunderpick Scan Feed</title>
+          </head>
+          <body>
+            <main>
+              <article>
+                ${summaryHtml}
+                ${eventHtml}
+              </article>
+            </main>
+          </body>
+        </html>
+      `);
+    }
 
     return res
       .status(200)
