@@ -419,16 +419,32 @@ module.exports = async function handler(req, res) {
       events
     };
 
-    if (textMode) {
-      res.setHeader(
-        'Content-Type',
-        'text/plain; charset=utf-8'
-      );
+if (textMode) {
+  res.setHeader(
+    'Content-Type',
+    'text/html; charset=utf-8'
+  );
 
-      return res
-        .status(200)
-        .send(toText(payload));
-    }
+  const body = toText(payload)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  return res.status(200).send(
+    `<!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Thunderpick Scan Feed</title>
+      </head>
+      <body>
+        <main>
+          <pre>${body}</pre>
+        </main>
+      </body>
+    </html>`
+  );
+}
 
     return res
       .status(200)
