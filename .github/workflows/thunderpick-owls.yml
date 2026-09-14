@@ -1,0 +1,71 @@
+name: Thunderpick Owls Snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '9 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/owls-thunderpick.mjs'
+      - '.github/workflows/thunderpick-owls.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-owls-snapshot
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Check configuration
+        id: config
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.OWLS_API_KEY }}" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "OWLS_API_KEY is not configured yet; skipping snapshot."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Node
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fetch Thunderpick sport snapshots
+        if: steps.config.outputs.configured == 'true'
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+        run: node scripts/owls-thunderpick.mjs
+
+      - name: Upload snapshot artifact
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: thunderpick-owls-latest
+          path: data/owls-latest.json
+          retention-days: 3
+          overwrite: true
+
+      - name: Commit latest snapshot
+        if: steps.config.outputs.configured == 'true'
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/owls-latest.json
+          if git diff --cached --quiet; then
+            echo 'No data changes to commit.'
+          else
+            git commit -m 'Update Thunderpick Owls snapshot [skip ci]'
+            git push
+          fi
