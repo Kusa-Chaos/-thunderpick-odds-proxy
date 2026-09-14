@@ -2,152 +2,83 @@ import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-// Hourly cloud collector: avoids Firecrawl credits and runs independently of local devices.
 const START_URLS = [
-  { group: 'esports', name: 'master', url: 'https://thunderpick.io/esports' },
-  { group: 'sports', name: 'master', url: 'https://thunderpick.io/sports' }
+  { group: 'esports', url: 'https://thunderpick.io/esports' },
+  { group: 'sports', url: 'https://thunderpick.io/sports' }
+];
+const PROBES = [
+  'https://thunderpick.io/sports/american-football/us/nfl/389/carolina-panthers-vs-chicago-bears/2138772',
+  'https://thunderpick.io/esports/cs2-betting/thunderpick-world-championship-2026-global-qualifier/10521/hotu-vs-bbl-esports/2648238',
+  'https://thunderpick.io/esports/cs2-betting/fissure-playground-3/10205/legacy-vs-g2/2646779'
 ];
 
-const SYNTHETIC = /(e-?soccer|e-?basketball|madden|efootball|virtual|simulation|simulated|random match|creator)/i;
-const REAL_ESPORT = /(cs2|counter-strike|league of legends|\blol\b|dota|valorant|rainbow six|rocket league|call of duty|overwatch|pubg|apex|mobile legends|mlbb|wild rift|arena of valor|starcraft|warcraft)/i;
-
-function looksLikeEventUrl(href) {
+function isEventUrl(href) {
   try {
     const u = new URL(href);
     return u.hostname === 'thunderpick.io' && /\/\d+\/[^/]+\/\d+\/?$/.test(u.pathname);
   } catch { return false; }
 }
 
-async function expandMaster(page) {
-  for (let r = 0; r < 10; r++) {
-    const buttons = page.getByText('Show more', { exact: true });
-    const n = await buttons.count().catch(() => 0);
-    let clicks = 0;
-    for (let i = 0; i < Math.min(n, 20); i++) {
-      const b = buttons.nth(i);
-      if (await b.isVisible().catch(() => false)) {
-        await b.click({ timeout: 1200 }).catch(() => {});
-        clicks++;
-        await page.waitForTimeout(120);
-      }
-    }
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(clicks ? 550 : 250);
-  }
-}
-
-async function readPage(page, url, { expand = false } = {}) {
+async function read(page, url) {
   const started = Date.now();
   try {
-    const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(expand ? 2200 : 1100);
+    const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+    await page.waitForTimeout(1500);
     const finalUrl = page.url();
-    const firstText = await page.locator('body').innerText().catch(() => '');
-    const blocked = /betting-not-allowed|not available in your country|betting.*not allowed/i.test(finalUrl + '\n' + firstText);
-    if (!blocked && expand) await expandMaster(page);
-    const data = await page.evaluate(() => {
-      const links = [...document.querySelectorAll('a[href]')].map(a => {
-        let node = a;
-        let context = (a.innerText || '').trim();
-        for (let i = 0; i < 5 && node?.parentElement; i++) {
-          node = node.parentElement;
-          const t = (node.innerText || '').trim();
-          if (t.length >= 20 && t.length <= 1500) context = t;
-          if (t.length > 1500) break;
-        }
-        return { href: a.href, text: (a.innerText || '').trim(), context };
-      });
-      return { title: document.title, body: document.body?.innerText || '', links };
-    });
+    const data = await page.evaluate(() => ({
+      title: document.title,
+      body: document.body?.innerText || '',
+      links: [...document.querySelectorAll('a[href]')].map(a => a.href)
+    }));
+    const blocked = /betting-not-allowed|not available in your country|betting.*not allowed/i.test(finalUrl + '\n' + data.body);
     return {
-      ok: !blocked,
-      blocked,
-      status: resp?.status() ?? null,
       url,
       finalUrl,
+      status: response?.status() ?? null,
+      ok: !blocked,
+      blocked,
       title: data.title,
-      fetchedAt: new Date().toISOString(),
       durationMs: Date.now() - started,
-      body: data.body.slice(0, 50000),
-      links: data.links
+      body: data.body.slice(0, 40000),
+      eventLinks: [...new Set(data.links.filter(isEventUrl))].slice(0, 100)
     };
   } catch (e) {
-    return { ok: false, blocked: false, url, fetchedAt: new Date().toISOString(), durationMs: Date.now()-started, error: String(e?.message || e), body: '', links: [] };
+    return { url, ok:false, blocked:false, durationMs:Date.now()-started, error:String(e?.message || e), body:'', eventLinks:[] };
   }
 }
 
-const browser = await chromium.launch({ headless: true, args: ['--no-sandbox','--disable-dev-shm-usage'] });
-const context = await browser.newContext({
-  locale: 'en-US',
-  timezoneId: 'America/New_York',
-  viewport: { width: 1440, height: 1400 },
-  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36'
-});
+const browser = await chromium.launch({ headless:true, args:['--no-sandbox','--disable-dev-shm-usage'] });
+const context = await browser.newContext({ locale:'en-US', timezoneId:'America/New_York', viewport:{width:1440,height:1200} });
 const page = await context.newPage();
+const network = [];
+page.on('response', async response => {
+  const ct = (response.headers()['content-type'] || '').toLowerCase();
+  if (!ct.includes('json')) return;
+  const url = response.url();
+  if (!/thunderpick|odds|event|market|sport/i.test(url)) return;
+  try {
+    const text = await response.text();
+    network.push({ url, status:response.status(), contentType:ct, preview:text.slice(0,12000) });
+  } catch {}
+});
 
 const masters = [];
-const eventMap = new Map();
+for (const target of START_URLS) masters.push({ group:target.group, ...(await read(page, target.url)) });
 
-for (const target of START_URLS) {
-  console.log(`MASTER ${target.group}: ${target.url}`);
-  const result = await readPage(page, target.url, { expand: true });
-  masters.push({ ...target, ...result });
-  for (const l of result.links || []) {
-    if (!looksLikeEventUrl(l.href)) continue;
-    const ctx = (l.context || '').replace(/\s+/g,' ').trim();
-    const synthetic = SYNTHETIC.test(ctx + ' ' + l.href);
-    if (!eventMap.has(l.href)) eventMap.set(l.href, { url: l.href, context: ctx, synthetic, discoveredFrom: [target.group] });
-    else eventMap.get(l.href).discoveredFrom.push(target.group);
-  }
-}
-
-let events = [...eventMap.values()].filter(e => !e.synthetic);
-events.sort((a,b) => {
-  const ae = a.url.includes('/esports/');
-  const be = b.url.includes('/esports/');
-  if (ae !== be) return ae ? -1 : 1;
-  const ar = REAL_ESPORT.test(a.context + ' ' + a.url);
-  const br = REAL_ESPORT.test(b.context + ' ' + b.url);
-  if (ar !== br) return ar ? -1 : 1;
-  return a.url.localeCompare(b.url);
-});
-
-const MAX_EVENTS = Number(process.env.MAX_EVENTS || 220);
-events = events.slice(0, MAX_EVENTS);
-const details = [];
-
-for (let i = 0; i < events.length; i++) {
-  const e = events[i];
-  console.log(`EVENT ${i+1}/${events.length}: ${e.url}`);
-  const result = await readPage(page, e.url, { expand: false });
-  details.push({ ...e, ...result, links: undefined });
-  await page.waitForTimeout(150);
-}
+const discovered = [...new Set(masters.flatMap(m => m.eventLinks || []))];
+const probeUrls = [...new Set([...discovered.slice(0,3), ...PROBES])].slice(0,6);
+const probes = [];
+for (const url of probeUrls) probes.push(await read(page, url));
 
 await browser.close();
-
 const output = {
-  generatedAt: new Date().toISOString(),
-  source: 'Thunderpick rendered by Playwright on GitHub Actions',
-  masterSummary: masters.map(m => ({ group:m.group, ok:m.ok, blocked:m.blocked, status:m.status, finalUrl:m.finalUrl, title:m.title, fetchedAt:m.fetchedAt, durationMs:m.durationMs, bodyPreview:m.body?.slice(0,12000) })),
-  discoveredEventCount: eventMap.size,
-  scannedEventCount: details.length,
-  eventDetails: details.map(d => ({
-    url:d.url,
-    discoveredFrom:d.discoveredFrom,
-    context:d.context,
-    ok:d.ok,
-    blocked:d.blocked,
-    status:d.status,
-    finalUrl:d.finalUrl,
-    title:d.title,
-    fetchedAt:d.fetchedAt,
-    durationMs:d.durationMs,
-    body:d.body?.slice(0,30000),
-    error:d.error || null
-  }))
+  generatedAt:new Date().toISOString(),
+  source:'Thunderpick rendered by Playwright on GitHub Actions',
+  masters,
+  discoveredEventLinks:discovered,
+  probes,
+  networkResponses:network.slice(-100)
 };
-
 await fs.mkdir(path.join(process.cwd(),'data'), { recursive:true });
 await fs.writeFile(path.join(process.cwd(),'data','latest.json'), JSON.stringify(output,null,2));
-console.log(`DONE discovered=${output.discoveredEventCount} scanned=${output.scannedEventCount}`);
+console.log(JSON.stringify({ masters:masters.map(m=>({group:m.group,ok:m.ok,blocked:m.blocked,status:m.status,finalUrl:m.finalUrl,events:m.eventLinks?.length,error:m.error})), probes:probes.map(p=>({url:p.url,ok:p.ok,blocked:p.blocked,status:p.status,finalUrl:p.finalUrl,error:p.error})), network:network.length }, null, 2));
