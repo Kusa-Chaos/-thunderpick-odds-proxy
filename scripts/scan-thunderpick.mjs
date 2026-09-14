@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+// Hourly cloud collector: avoids Firecrawl credits and runs independently of local devices.
 const START_URLS = [
   { group: 'esports', name: 'master', url: 'https://thunderpick.io/esports' },
   { group: 'sports', name: 'master', url: 'https://thunderpick.io/sports' }
@@ -101,7 +102,6 @@ for (const target of START_URLS) {
 }
 
 let events = [...eventMap.values()].filter(e => !e.synthetic);
-// Genuine esports first, then other esports, then sports. Keep the run bounded.
 events.sort((a,b) => {
   const ae = a.url.includes('/esports/');
   const be = b.url.includes('/esports/');
