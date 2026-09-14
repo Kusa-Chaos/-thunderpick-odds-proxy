@@ -1,0 +1,64 @@
+name: Thunderpick Board Collector
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/thunderpick-scan.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-board-collector
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      MAX_EVENTS: '80'
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Collect Thunderpick board
+        run: npm run scan:thunderpick
+
+      - name: Upload snapshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: thunderpick-latest
+          path: data/latest.json
+          retention-days: 3
+          overwrite: true
+
+      - name: Commit latest snapshot
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/latest.json
+          if git diff --cached --quiet; then
+            echo 'No data changes to commit.'
+          else
+            git commit -m 'Update Thunderpick board snapshot [skip ci]'
+            git push
+          fi
