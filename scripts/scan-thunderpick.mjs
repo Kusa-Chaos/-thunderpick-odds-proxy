@@ -18,7 +18,7 @@ function looksLikeEventUrl(href) {
   } catch { return false; }
 }
 
-async function expand(page) {
+async function expandMaster(page) {
   for (let r = 0; r < 10; r++) {
     const buttons = page.getByText('Show more', { exact: true });
     const n = await buttons.count().catch(() => 0);
@@ -28,23 +28,23 @@ async function expand(page) {
       if (await b.isVisible().catch(() => false)) {
         await b.click({ timeout: 1200 }).catch(() => {});
         clicks++;
-        await page.waitForTimeout(150);
+        await page.waitForTimeout(120);
       }
     }
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(clicks ? 700 : 350);
+    await page.waitForTimeout(clicks ? 550 : 250);
   }
 }
 
-async function readPage(page, url) {
+async function readPage(page, url, { expand = false } = {}) {
   const started = Date.now();
   try {
     const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForTimeout(2500);
+    await page.waitForTimeout(expand ? 2200 : 1100);
     const finalUrl = page.url();
     const firstText = await page.locator('body').innerText().catch(() => '');
     const blocked = /betting-not-allowed|not available in your country|betting.*not allowed/i.test(finalUrl + '\n' + firstText);
-    if (!blocked) await expand(page);
+    if (!blocked && expand) await expandMaster(page);
     const data = await page.evaluate(() => {
       const links = [...document.querySelectorAll('a[href]')].map(a => {
         let node = a;
@@ -90,7 +90,7 @@ const eventMap = new Map();
 
 for (const target of START_URLS) {
   console.log(`MASTER ${target.group}: ${target.url}`);
-  const result = await readPage(page, target.url);
+  const result = await readPage(page, target.url, { expand: true });
   masters.push({ ...target, ...result });
   for (const l of result.links || []) {
     if (!looksLikeEventUrl(l.href)) continue;
@@ -119,9 +119,9 @@ const details = [];
 for (let i = 0; i < events.length; i++) {
   const e = events[i];
   console.log(`EVENT ${i+1}/${events.length}: ${e.url}`);
-  const result = await readPage(page, e.url);
+  const result = await readPage(page, e.url, { expand: false });
   details.push({ ...e, ...result, links: undefined });
-  await page.waitForTimeout(250);
+  await page.waitForTimeout(150);
 }
 
 await browser.close();
