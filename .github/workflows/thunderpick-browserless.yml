@@ -1,0 +1,75 @@
+name: Thunderpick Residential Collector
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '6 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/browserless-thunderpick.mjs'
+      - '.github/workflows/thunderpick-browserless.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-residential-collector
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      BROWSERLESS_TOKEN: ${{ secrets.BROWSERLESS_TOKEN }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Check configuration
+        id: config
+        shell: bash
+        run: |
+          if [ -n "$BROWSERLESS_TOKEN" ]; then
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'configured=false' >> "$GITHUB_OUTPUT"
+            echo 'BROWSERLESS_TOKEN is not configured yet; collector will remain idle.'
+          fi
+
+      - name: Set up Node
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        if: steps.config.outputs.configured == 'true'
+        run: npm install
+
+      - name: Collect Thunderpick through residential browser
+        if: steps.config.outputs.configured == 'true'
+        run: node scripts/browserless-thunderpick.mjs
+
+      - name: Upload snapshot
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: thunderpick-browserless-latest
+          path: data/browserless-latest.json
+          retention-days: 3
+          overwrite: true
+
+      - name: Commit latest snapshot
+        if: steps.config.outputs.configured == 'true'
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/browserless-latest.json
+          if git diff --cached --quiet; then
+            echo 'No snapshot changes.'
+          else
+            git commit -m 'Update residential Thunderpick snapshot [skip ci]'
+            git push
+          fi
