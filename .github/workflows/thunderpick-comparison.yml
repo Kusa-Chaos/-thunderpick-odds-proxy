@@ -35,9 +35,15 @@ jobs:
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Commit comparison and screen
         run: |
+          cp data/owls-comparison-latest.json /tmp/owls-comparison-latest.json
+          cp data/screen-latest.json /tmp/screen-latest.json
+          git fetch origin main
+          git reset --hard origin/main
+          cp /tmp/owls-comparison-latest.json data/owls-comparison-latest.json
+          cp /tmp/screen-latest.json data/screen-latest.json
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add data/owls-comparison-latest.json data/screen-latest.json
-          git commit -m 'Update Thunderpick comparison screen [skip ci]' || exit 0
-          git pull --rebase origin main
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update Thunderpick comparison screen [skip ci]'
+          git push origin HEAD:main
