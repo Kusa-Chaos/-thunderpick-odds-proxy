@@ -1,135 +1,160 @@
 {
-  "generatedAt": "2026-09-16T22:06:12.984Z",
+  "generatedAt": "2026-09-16T23:27:06.095Z",
   "source": "Owls Insight Thunderpick Source API v2",
-  "format": "compact-v3-full-market-depth",
-  "snapshotBytes": 15108948,
+  "format": "compact-v4-health-validated",
+  "snapshotBytes": 15218045,
   "requestCountThisRun": 9,
   "requestedSports": [
-    "american-football",
-    "baseball",
-    "basketball",
     "cs2",
     "dota2",
     "lol",
+    "valorant",
+    "american-football",
+    "baseball",
+    "basketball",
     "soccer",
-    "tennis",
-    "valorant"
+    "tennis"
   ],
   "successfulSports": [
-    "american-football",
-    "baseball",
-    "basketball",
     "cs2",
     "dota2",
     "lol",
-    "soccer",
-    "tennis",
-    "valorant"
+    "valorant",
+    "american-football",
+    "baseball",
+    "basketball",
+    "tennis"
   ],
   "failedSports": [],
+  "coverageAnomalies": [
+    {
+      "sport": "soccer",
+      "status": 200,
+      "reason": "HTTP success but zero events; coverage cannot be considered complete"
+    }
+  ],
+  "coverageComplete": false,
   "changedSports": [
-    "american-football",
-    "baseball",
-    "basketball",
     "cs2",
     "dota2",
     "lol",
+    "valorant",
+    "american-football",
+    "baseball",
+    "basketball",
     "soccer",
-    "tennis",
-    "valorant"
+    "tennis"
   ],
-  "totalEvents": 607,
-  "totalRetainedMarkets": 25896,
+  "totalEvents": 605,
+  "totalRetainedMarkets": 26140,
   "sports": {
-    "american-football": {
-      "ok": true,
-      "status": 200,
-      "fetchedAt": "2026-09-16T22:05:37.728Z",
-      "etag": "\"84b057ff7ad75640a373f10b3c4ce6c678dd0a58b9a724e6d30814930a29b669\"",
-      "eventCount": 113,
-      "retainedMarketCount": 3532,
-      "hash": "c5c3376b033b1d3f24e7fb0b7826d6c10475afffebf8b327c85f2a9256386986",
-      "changedSincePrevious": true
-    },
-    "baseball": {
-      "ok": true,
-      "status": 200,
-      "fetchedAt": "2026-09-16T22:05:41.400Z",
-      "etag": "\"11a8fbcf51c983515240452678817f397de5542924e8f8217bac5f46594ccbc1\"",
-      "eventCount": 22,
-      "retainedMarketCount": 647,
-      "hash": "2d175b3604c9474d65f97a6298516f02e89d6df60a6fd3a038a20484a8e0654d",
-      "changedSincePrevious": true
-    },
-    "basketball": {
-      "ok": true,
-      "status": 200,
-      "fetchedAt": "2026-09-16T22:05:46.290Z",
-      "etag": "\"dedc49e57c8107d319e7cbcd36f477cf233276a4c48e99101aee011659fc3f1d\"",
-      "eventCount": 112,
-      "retainedMarketCount": 6557,
-      "hash": "e7e5530855d525a7f4fb895e4fb1864b7dbbc364e51659f9e19d5d2d24efe2ed",
-      "changedSincePrevious": true
-    },
     "cs2": {
       "ok": true,
+      "httpOk": true,
       "status": 200,
-      "fetchedAt": "2026-09-16T22:05:50.461Z",
-      "etag": "\"050af2946b636ac961df26f3ee8734d0b43a36dee927b6dfeb730b844fedf8c9\"",
-      "eventCount": 97,
-      "retainedMarketCount": 8896,
-      "hash": "28725b4bb5bdf793a3197d089dd5aa2083d1f2161b8421f13f6de1991054a621",
-      "changedSincePrevious": true
+      "fetchedAt": "2026-09-16T23:26:32.228Z",
+      "etag": "\"188d36fd4a33389d9b429697a04cbc3a628a2cc2d5617a9f6124ac775fe7dd6a\"",
+      "eventCount": 94,
+      "retainedMarketCount": 8550,
+      "hash": "f02ab43a6285f87701a6074335eaf842c74e1517719200cb07a4fb2a2ead9471",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
     },
     "dota2": {
       "ok": true,
+      "httpOk": true,
       "status": 200,
-      "fetchedAt": "2026-09-16T22:05:54.103Z",
-      "etag": "\"12fd90515b6a69199c507b5fa521cc90ede26c6cb76ffed2f0affec74355cb52\"",
+      "fetchedAt": "2026-09-16T23:26:36.114Z",
+      "etag": "\"3fcbef962356d813599c758427a83e778449197b99260d4696fbfa77e42b138c\"",
       "eventCount": 11,
-      "retainedMarketCount": 528,
-      "hash": "e5e02bc08ab3ab02bf54be3aeb76cee31bb51bd78d2a8c003bb6d0015672735c",
-      "changedSincePrevious": true
+      "retainedMarketCount": 518,
+      "hash": "3813ef95902183ece56b2f573117cf69e9e210caea2b2c4067a3d93feef97f78",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
     },
     "lol": {
       "ok": true,
+      "httpOk": true,
       "status": 200,
-      "fetchedAt": "2026-09-16T22:05:57.753Z",
-      "etag": "\"565c3bef5bbceefa122efd85b03d766fdb334f6d44e9a4bbab6ae2cfe6a818ec\"",
+      "fetchedAt": "2026-09-16T23:26:39.737Z",
+      "etag": "\"e087d180d5193a5bd48faf33918f9e8f8b070c7b63f66848f86375c52eabca29\"",
       "eventCount": 12,
-      "retainedMarketCount": 665,
-      "hash": "fa5f3bf3b38e0b154d0ee082499c7fd693032d53b7aadede71c5f5b05988c41a",
-      "changedSincePrevious": true
-    },
-    "soccer": {
-      "ok": true,
-      "status": 200,
-      "fetchedAt": "2026-09-16T22:06:01.378Z",
-      "etag": null,
-      "eventCount": 0,
-      "retainedMarketCount": 0,
-      "hash": "0b42c506bb75bea1dc67509150761f39dea01dee2bdadab1c663c1af466fc11f",
-      "changedSincePrevious": true
-    },
-    "tennis": {
-      "ok": true,
-      "status": 200,
-      "fetchedAt": "2026-09-16T22:06:05.674Z",
-      "etag": "\"503387185ed65fe2b0991e4761c39abac9fcb66ce758f95e989d0a4a62912db9\"",
-      "eventCount": 226,
-      "retainedMarketCount": 3231,
-      "hash": "9132353847b3457d850f3f99664d30b28081da67a2a222ba1de3eb760cfacbbf",
-      "changedSincePrevious": true
+      "retainedMarketCount": 685,
+      "hash": "775f65464b8e55fd2aba59526aa38de1c89207b7eeff2d6991cab929c8d4b0bb",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
     },
     "valorant": {
       "ok": true,
+      "httpOk": true,
       "status": 200,
-      "fetchedAt": "2026-09-16T22:06:09.467Z",
-      "etag": "\"1e9ed5911d874ce01bfabed7457a11b2f0bd0c5c2394b121be5e84e85a2affc5\"",
-      "eventCount": 14,
-      "retainedMarketCount": 1840,
-      "hash": "db7fb18f04b7aca87672474f5b0313a8cb4c5cf5d91f184b8d531a49319f609a",
-      "changedSincePrevious": true
+      "fetchedAt": "2026-09-16T23:26:43.521Z",
+      "etag": "\"1c03cf04e07e7480e0a0805c319ec56a144ba33864de2d905c6c04a8843f7fb5\"",
+      "eventCount": 13,
+      "retainedMarketCount": 1836,
+      "hash": "a46ea3978a2cfcb562ed609263a9f80551a49ecd089db2b8caaec6c9ad58f983",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
+    },
+    "american-football": {
+      "ok": true,
+      "httpOk": true,
+      "status": 200,
+      "fetchedAt": "2026-09-16T23:26:47.226Z",
+      "etag": "\"dbdaa988baed2644c7e4c08c2f5ba59d5ed64d0a586c8e7ab73171185a6e5ef7\"",
+      "eventCount": 113,
+      "retainedMarketCount": 3543,
+      "hash": "43e6fa314c0180d5c6d5f9a0126d3884c6c1fd7929fc8e1582ff3aeb38e80609",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
+    },
+    "baseball": {
+      "ok": true,
+      "httpOk": true,
+      "status": 200,
+      "fetchedAt": "2026-09-16T23:26:50.811Z",
+      "etag": "\"984f1e98cc57de24cdc310c78908bfe42e6f52dc6d5dce558cc48c551c57b693\"",
+      "eventCount": 24,
+      "retainedMarketCount": 1119,
+      "hash": "c2d6479cbc338e2de39c1a6d70c8e2ede54c5a1f3c807c2b2cd89f8b0df8869b",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
+    },
+    "basketball": {
+      "ok": true,
+      "httpOk": true,
+      "status": 200,
+      "fetchedAt": "2026-09-16T23:26:55.308Z",
+      "etag": "\"05a39161909952d6bf5f86365d542985c68ae38f345dc81714c6b42356fb5545\"",
+      "eventCount": 112,
+      "retainedMarketCount": 6646,
+      "hash": "1c9c2f7a9381804f47f523739bd307660124d5fe80dd86b936ee3a6fae54935c",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
+    },
+    "soccer": {
+      "ok": false,
+      "httpOk": true,
+      "status": 200,
+      "fetchedAt": "2026-09-16T23:26:58.877Z",
+      "etag": null,
+      "eventCount": 0,
+      "retainedMarketCount": 0,
+      "hash": "52911bc23ccfd7d22a593ab65e2df6ab60cf532eb698b9aad51b8f7df0587cc3",
+      "changedSincePrevious": true,
+      "coverageStatus": "anomaly"
+    },
+    "tennis": {
+      "ok": true,
+      "httpOk": true,
+      "status": 200,
+      "fetchedAt": "2026-09-16T23:27:02.580Z",
+      "etag": "\"d40c71933e2f4948fa389923025ca08eb060904371cefd1283b97628ee8772ed\"",
+      "eventCount": 226,
+      "retainedMarketCount": 3243,
+      "hash": "d84decdcb294ba1d014c347629adc962646182f50250e13c45d097f5cbaee766",
+      "changedSincePrevious": true,
+      "coverageStatus": "ok"
     }
   }
 }
