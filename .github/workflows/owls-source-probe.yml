@@ -1,0 +1,33 @@
+name: Owls Source Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/owls-source-probe.mjs'
+      - '.github/workflows/owls-source-probe.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe independent esports sources
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+        run: node scripts/owls-source-probe.mjs
+      - name: Commit probe output
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/owls-source-probe.json
+          git commit -m 'Update Owls source probe [skip ci]' || exit 0
+          git push
