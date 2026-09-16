@@ -2,6 +2,8 @@ import fs from 'node:fs/promises';
 
 const tp=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
 const cmp=JSON.parse(await fs.readFile('data/owls-comparison-latest.json','utf8'));
+let meta=null;
+try{meta=JSON.parse(await fs.readFile('data/owls-meta.json','utf8'));}catch{}
 const SPORTS=['cs2','dota2','lol','valorant'];
 const now=Date.now(), horizon=now+15*24*3600e3;
 
@@ -41,7 +43,9 @@ function tpLine(e){
 }
 
 const all=[]; let eligible=0, matched=0;
+const eligibleBySport={}, matchedBySport={};
 for(const sport of SPORTS){
+ eligibleBySport[sport]=0; matchedBySport[sport]=0;
  const idx=new Map();
  for(const row of outsideEvents(sport)){
   const e=row.event; if(e.status&&e.status!=='scheduled') continue;
@@ -49,7 +53,7 @@ for(const sport of SPORTS){
  }
  for(const e of tpEvents(sport)){
   const t=Date.parse(e.startTime); if(!Number.isFinite(t)||t<now||t>horizon||e.isLive) continue;
-  const line=tpLine(e); if(!line) continue; eligible++;
+  const line=tpLine(e); if(!line) continue; eligible++; eligibleBySport[sport]++;
   const rows=idx.get(pairKey(e.teams?.home?.name||line.home.name,e.teams?.away?.name||line.away.name))||[];
   const fair=[]; const outside=[];
   for(const row of rows){
@@ -61,13 +65,23 @@ for(const sport of SPORTS){
    fair.push({book:row.book,home:ih/z,away:ia/z});
    outside.push({book:row.book,home:Number(oh.price),away:Number(oa.price)});
   }
-  if(!fair.length) continue; matched++;
+  if(!fair.length) continue; matched++; matchedBySport[sport]++;
   const ph=fair.reduce((s,x)=>s+x.home,0)/fair.length, pa=fair.reduce((s,x)=>s+x.away,0)/fair.length;
   const homeEv=line.home.odds*ph-1, awayEv=line.away.odds*pa-1;
   all.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,thunderpick:{home:line.home,away:line.away},sourceDepth:fair.length,outside,fair:{homeProbability:ph,awayProbability:pa,homeOdds:1/ph,awayOdds:1/pa},ev:{home:homeEv,away:awayEv},plausible:Math.max(homeEv,awayEv)>=-0.01});
  }
 }
 all.sort((a,b)=>Math.max(b.ev.home,b.ev.away)-Math.max(a.ev.home,a.ev.away));
-const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,eligibleThunderpickEvents:eligible,matchedEvents:matched,unmatchedEvents:eligible-matched,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,50)};
+const snapshotHealth={
+ manifestPresent:Boolean(meta),
+ generatedAt:meta?.generatedAt||tp.generatedAt||null,
+ snapshotBytes:meta?.snapshotBytes??null,
+ successfulSports:meta?.successfulSports||tp.successfulSports||[],
+ failedSports:meta?.failedSports||tp.failedSports||[],
+ totalEvents:meta?.totalEvents??null,
+ sportEventCounts:Object.fromEntries(Object.entries(meta?.sports||{}).map(([sport,row])=>[sport,row?.eventCount??null])),
+ healthy:Boolean((meta?.generatedAt||tp.generatedAt)&&!(meta?.failedSports||tp.failedSports||[]).length)
+};
+const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligible,matchedEvents:matched,unmatchedEvents:eligible-matched,eligibleBySport,matchedBySport,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,50)};
 await fs.writeFile('data/screen-latest.json',JSON.stringify(output,null,2));
-console.log(`Eligible TP=${eligible}, matched=${matched}, candidates=${output.candidates.length}`);
+console.log(`Eligible TP=${eligible}, matched=${matched}, candidates=${output.candidates.length}, snapshotHealthy=${snapshotHealth.healthy}`);
