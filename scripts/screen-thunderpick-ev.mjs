@@ -50,8 +50,8 @@ function classifyMarket(m={}){
  if(/round/.test(text)&&/total/.test(text))return 'round_totals';
  if(!/round/.test(text)&&/(handicap|spread)/.test(text))return 'spreads';
  if(!/round/.test(text)&&/total/.test(text))return 'totals';
- if(/map/.test(text)&&(/winner/.test(text)||/map\s*\d+/.test(text)))return 'map_winner';
- if(/winner|moneyline/.test(text)&&!(/map|round/.test(text)))return 'h2h';
+ if(/map/.test(text)&&/\bwinner\b/.test(text))return 'map_winner';
+ if(/\b(winner|moneyline)\b/.test(text)&&!(/map|round/.test(text)))return 'h2h';
  return null;
 }
 function makeSelections(m,key,e){
@@ -136,7 +136,7 @@ for(const sport of SPORTS){
  }
 }
 all.sort((x,y)=>Math.max(y.ev.a,y.ev.b)-Math.max(x.ev.a,x.ev.b));
-const arbScreens=all.filter(x=>x.arbScreen?.trueArb||x.arbScreen?.nearArb).sort((a,b)=>a.arbScreen.arbSum-b.arbScreen.arbSum);
+const arbScreens=all.filter(x=>x.identityVerified&&(x.arbScreen?.trueArb||x.arbScreen?.nearArb)).sort((a,b)=>a.arbScreen.arbSum-b.arbScreen.arbSum);
 const snapshotHealth={manifestPresent:Boolean(meta),generatedAt:meta?.generatedAt||tp.generatedAt||null,snapshotBytes:meta?.snapshotBytes??null,successfulSports:meta?.successfulSports||tp.successfulSports||[],failedSports:meta?.failedSports||tp.failedSports||[],totalEvents:meta?.totalEvents??null,totalRetainedMarkets:meta?.totalRetainedMarkets??null,sportEventCounts:Object.fromEntries(Object.entries(meta?.sports||{}).map(([sport,row])=>[sport,row?.eventCount??null])),healthy:Boolean((meta?.generatedAt||tp.generatedAt)&&!(meta?.failedSports||tp.failedSports||[]).length)};
 const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligibleEvents,matchedEvents:matchedEventIds.size,unmatchedEvents:eligibleEvents-matchedEventIds.size,eligibleMarkets,matchedMarkets,unmatchedMarkets:eligibleMarkets-matchedMarkets,eligibleBySport,matchedBySport,marketTypeCounts,arbitrageMarketsTested:matchedMarkets,arbScreenCount:arbScreens.length,arbScreens,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,100)};
 await fs.writeFile('data/screen-latest.json',JSON.stringify(output,null,2));
