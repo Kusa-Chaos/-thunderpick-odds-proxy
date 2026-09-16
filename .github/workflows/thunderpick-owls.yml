@@ -60,6 +60,10 @@ jobs:
       - name: Commit latest snapshot
         if: steps.config.outputs.configured == 'true'
         run: |
+          cp data/owls-latest.json /tmp/owls-latest.json
+          git fetch origin main
+          git reset --hard origin/main
+          cp /tmp/owls-latest.json data/owls-latest.json
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add data/owls-latest.json
@@ -67,7 +71,7 @@ jobs:
             echo 'No data changes to commit.'
           else
             git commit -m 'Update Thunderpick Owls snapshot [skip ci]'
-            git push
+            git push origin HEAD:main
           fi
 
 # Manual trigger after OWLS_API_KEY configuration
