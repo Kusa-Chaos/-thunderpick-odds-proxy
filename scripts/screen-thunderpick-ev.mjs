@@ -41,6 +41,22 @@ function tpLine(e){
  if(w){const home=w.selections.find(s=>s.type==='home')||w.selections[0], away=w.selections.find(s=>s.type==='away')||w.selections[1];return {home:{name:home.name,odds:Number(home.odds)},away:{name:away.name,odds:Number(away.odds)}};}
  return null;
 }
+function arbDetector(line,outside){
+ const combos=[];
+ for(const q of outside){
+  if(q.away>1&&line.home.odds>1){
+   const sum=1/line.home.odds+1/q.away;
+   combos.push({thunderpickSide:'home',thunderpickName:line.home.name,thunderpickOdds:line.home.odds,outsideSide:'away',outsideName:line.away.name,outsideOdds:q.away,outsideBook:q.book,arbSum:sum,grossRoi:1/sum-1});
+  }
+  if(q.home>1&&line.away.odds>1){
+   const sum=1/line.away.odds+1/q.home;
+   combos.push({thunderpickSide:'away',thunderpickName:line.away.name,thunderpickOdds:line.away.odds,outsideSide:'home',outsideName:line.home.name,outsideOdds:q.home,outsideBook:q.book,arbSum:sum,grossRoi:1/sum-1});
+  }
+ }
+ combos.sort((a,b)=>a.arbSum-b.arbSum);
+ const best=combos[0]||null;
+ return best?{...best,trueArb:best.arbSum<1,nearArb:best.arbSum>=1&&best.arbSum<=1.005}:null;
+}
 
 const all=[]; let eligible=0, matched=0;
 const eligibleBySport={}, matchedBySport={};
@@ -68,10 +84,12 @@ for(const sport of SPORTS){
   if(!fair.length) continue; matched++; matchedBySport[sport]++;
   const ph=fair.reduce((s,x)=>s+x.home,0)/fair.length, pa=fair.reduce((s,x)=>s+x.away,0)/fair.length;
   const homeEv=line.home.odds*ph-1, awayEv=line.away.odds*pa-1;
-  all.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,thunderpick:{home:line.home,away:line.away},sourceDepth:fair.length,outside,fair:{homeProbability:ph,awayProbability:pa,homeOdds:1/ph,awayOdds:1/pa},ev:{home:homeEv,away:awayEv},plausible:Math.max(homeEv,awayEv)>=-0.01});
+  const arbScreen=arbDetector(line,outside);
+  all.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,thunderpick:{home:line.home,away:line.away},sourceDepth:fair.length,outside,fair:{homeProbability:ph,awayProbability:pa,homeOdds:1/ph,awayOdds:1/pa},ev:{home:homeEv,away:awayEv},arbScreen,plausible:Math.max(homeEv,awayEv)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)});
  }
 }
 all.sort((a,b)=>Math.max(b.ev.home,b.ev.away)-Math.max(a.ev.home,a.ev.away));
+const arbScreens=all.filter(x=>x.arbScreen?.trueArb||x.arbScreen?.nearArb).sort((a,b)=>a.arbScreen.arbSum-b.arbScreen.arbSum);
 const snapshotHealth={
  manifestPresent:Boolean(meta),
  generatedAt:meta?.generatedAt||tp.generatedAt||null,
@@ -82,6 +100,6 @@ const snapshotHealth={
  sportEventCounts:Object.fromEntries(Object.entries(meta?.sports||{}).map(([sport,row])=>[sport,row?.eventCount??null])),
  healthy:Boolean((meta?.generatedAt||tp.generatedAt)&&!(meta?.failedSports||tp.failedSports||[]).length)
 };
-const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligible,matchedEvents:matched,unmatchedEvents:eligible-matched,eligibleBySport,matchedBySport,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,50)};
+const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligible,matchedEvents:matched,unmatchedEvents:eligible-matched,eligibleBySport,matchedBySport,arbitrageMarketsTested:matched,arbScreenCount:arbScreens.length,arbScreens,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,50)};
 await fs.writeFile('data/screen-latest.json',JSON.stringify(output,null,2));
-console.log(`Eligible TP=${eligible}, matched=${matched}, candidates=${output.candidates.length}, snapshotHealthy=${snapshotHealth.healthy}`);
+console.log(`Eligible TP=${eligible}, matched=${matched}, candidates=${output.candidates.length}, arbScreens=${arbScreens.length}, snapshotHealthy=${snapshotHealth.healthy}`);
