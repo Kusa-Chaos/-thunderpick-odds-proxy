@@ -1,0 +1,26 @@
+name: Owls Soccer Debug Trigger
+on:
+  push:
+    paths:
+      - 'scripts/owls-thunderpick-soccer-debug-trigger.txt'
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Probe Owls Thunderpick soccer
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+        run: node scripts/owls-thunderpick-soccer-debug.mjs
+      - name: Commit diagnostic
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/owls-thunderpick-soccer-debug.json
+          git diff --cached --quiet || git commit -m 'Update Owls Thunderpick soccer diagnostic'
+          git push
