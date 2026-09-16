@@ -2,6 +2,11 @@ name: Thunderpick Residential Collector
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/browserless-thunderpick.mjs'
+      - '.github/workflows/thunderpick-browserless.yml'
 
 permissions:
   contents: write
@@ -15,7 +20,6 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
-
       - name: Check configuration
         id: config
         shell: bash
@@ -24,23 +28,19 @@ jobs:
             echo 'configured=true' >> "$GITHUB_OUTPUT"
           else
             echo 'configured=false' >> "$GITHUB_OUTPUT"
-            echo 'BROWSERLESS_TOKEN is not configured; manual collector will remain idle.'
+            echo 'BROWSERLESS_TOKEN is not configured; collector skipped.'
           fi
-
       - name: Set up Node
         if: steps.config.outputs.configured == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
       - name: Install dependencies
         if: steps.config.outputs.configured == 'true'
         run: npm install
-
       - name: Collect Thunderpick through residential browser
         if: steps.config.outputs.configured == 'true'
         run: node scripts/browserless-thunderpick.mjs
-
       - name: Upload snapshot
         if: steps.config.outputs.configured == 'true'
         uses: actions/upload-artifact@v4
@@ -49,3 +49,19 @@ jobs:
           path: data/browserless-latest.json
           retention-days: 3
           overwrite: true
+      - name: Commit browser snapshot
+        if: steps.config.outputs.configured == 'true'
+        run: |
+          cp data/browserless-latest.json /tmp/browserless-latest.json
+          git fetch origin main
+          git reset --hard origin/main
+          cp /tmp/browserless-latest.json data/browserless-latest.json
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/browserless-latest.json
+          if git diff --cached --quiet; then
+            echo 'No browser snapshot changes.'
+          else
+            git commit -m 'Update Thunderpick browser fallback [skip ci]'
+            git push origin HEAD:main
+          fi
