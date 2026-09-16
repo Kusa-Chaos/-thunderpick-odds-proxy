@@ -2,7 +2,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
-const API_KEY = process.env.OWLS_API_KEY;
+// GitHub secrets can accidentally include copied line breaks or surrounding spaces.
+// Owls expects the API key as one continuous Bearer token, so normalize whitespace.
+const API_KEY = (process.env.OWLS_API_KEY || '').replace(/\s+/g, '');
 if (!API_KEY) {
   console.error('OWLS_API_KEY is not configured.');
   process.exit(2);
