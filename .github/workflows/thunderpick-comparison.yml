@@ -2,10 +2,11 @@ name: Thunderpick Comparison Screen
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '14 * * * *'
   push:
     branches: [main]
     paths:
-      - 'data/owls-latest.json'
       - 'scripts/owls-comparison.mjs'
       - 'scripts/screen-thunderpick-ev.mjs'
       - '.github/workflows/thunderpick-comparison.yml'
