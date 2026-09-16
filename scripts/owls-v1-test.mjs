@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const API_KEY = (process.env.OWLS_API_KEY || '').trim();
+const API_KEY = (process.env.OWLS_API_KEY || '').replace(/\s+/g, '');
 if (!API_KEY) throw new Error('OWLS_API_KEY missing');
 
 const sports = ['cs2','dota2','lol','valorant'];
