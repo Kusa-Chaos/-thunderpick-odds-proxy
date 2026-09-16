@@ -20,8 +20,8 @@ function stripLine(s=''){return String(s).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$
 function pairKey(a,b){return [norm(a),norm(b)].sort().join('|');}
 function tpEvents(sport){return tp?.sports?.[sport]?.data?.data||[];}
 function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data||{};const out=[];for(const [book,events] of Object.entries(data)){if(Array.isArray(events))for(const e of events)out.push({book,event:e});}return out;}
-function n(v){const x=Number(v);return Number.isFinite(x)?x:null;}
-function close(a,b,tol=.001){return a==null||b==null?true:Math.abs(Number(a)-Number(b))<=tol;}
+function n(v){if(v===null||v===undefined||v==='')return null;const x=Number(v);return Number.isFinite(x)?x:null;}
+function close(a,b,tol=.001){if(a==null||b==null)return false;return Math.abs(Number(a)-Number(b))<=tol;}
 function specNumber(spec='',key){const m=String(spec).match(new RegExp(`${key}=([+-]?\\d+(?:\\.\\d+)?)`,'i'));return m?Number(m[1]):null;}
 function parsedNamePoint(name=''){
  let m=String(name).match(/\(([+-]?\d+(?:\.\d+)?)\)\s*$/);if(m)return Number(m[1]);
@@ -31,13 +31,16 @@ function parsedNamePoint(name=''){
 function extractPoint(sel={},market={},key,role){
  const fromName=parsedNamePoint(sel.name);if(fromName!=null)return fromName;
  if(key==='totals'||key==='round_totals'){
-  const threshold=specNumber(market.specifiers,'threshold');if(threshold!=null)return threshold;
+  for(const v of [sel.total,market.baseLine,specNumber(market.specifiers,'threshold'),sel.point,sel.line]){const x=n(v);if(x!=null)return x;}
+  return null;
  }
  if(key==='spreads'||key==='round_handicap'){
-  const handicap=specNumber(market.specifiers,'handicap');
-  if(handicap!=null){if(role==='away'||role==='side2')return -handicap;return handicap;}
+  const direct=n(sel.handicap);if(direct!=null)return direct;
+  const base=n(market.baseLine)??specNumber(market.specifiers,'handicap');
+  if(base!=null)return(role==='away'||role==='side2')?-base:base;
+  for(const v of [sel.point,sel.line]){const x=n(v);if(x!=null)return x;}
+  return null;
  }
- for(const v of [sel.point,sel.handicap,sel.line]){const x=n(v);if(x!=null&&Math.abs(x)>1e-9)return x;}
  return null;
 }
 function scopeFromText(text=''){const map=String(text).match(/\bmap\s*(\d+)\b/i);const round=String(text).match(/\bround\s*(\d+)\b/i);return{map:map?Number(map[1]):null,round:round?Number(round[1]):null};}
@@ -57,26 +60,33 @@ function makeSelections(m,key,e){
   const over=raw.find(s=>/^over\b/i.test(String(s.name||''))||String(s.type||'').toLowerCase()==='over');
   const under=raw.find(s=>/^under\b/i.test(String(s.name||''))||String(s.type||'').toLowerCase()==='under');
   if(!over||!under)return null;
-  return [over,under].map((s,i)=>({name:s.name,role:i===0?'over':'under',odds:n(s.odds),point:extractPoint(s,m,key,i===0?'over':'under')}));
+  const result=[over,under].map((s,i)=>({name:s.name,role:i===0?'over':'under',odds:n(s.odds),point:extractPoint(s,m,key,i===0?'over':'under')}));
+  if(result.some(s=>s.point==null)||!close(result[0].point,result[1].point))return null;
+  return result;
  }
  const homeName=e?.teams?.home?.name||e?.market?.home?.name;const awayName=e?.teams?.away?.name||e?.market?.away?.name;
  const home=raw.find(s=>norm(stripLine(s.name))===norm(homeName)||String(s.type||'').toLowerCase()==='home');
  const away=raw.find(s=>norm(stripLine(s.name))===norm(awayName)||String(s.type||'').toLowerCase()==='away');
- if(home&&away)return [home,away].map((s,i)=>({name:s.name,role:i===0?'home':'away',odds:n(s.odds),point:key==='h2h'||key==='map_winner'?null:extractPoint(s,m,key,i===0?'home':'away')}));
+ if(home&&away){
+  const result=[home,away].map((s,i)=>({name:s.name,role:i===0?'home':'away',odds:n(s.odds),point:key==='h2h'||key==='map_winner'?null:extractPoint(s,m,key,i===0?'home':'away')}));
+  if((key==='spreads'||key==='round_handicap')&&(result.some(s=>s.point==null)||!close(result[0].point,-result[1].point)))return null;
+  return result;
+ }
  if((key==='map_winner'||key==='h2h')&&raw.length===2)return raw.slice(0,2).map((s,i)=>({name:s.name,role:i===0?'side1':'side2',odds:n(s.odds),point:null}));
  return null;
 }
 function tpMarkets(e){
  const out=[];
  if(n(e?.market?.home?.odds)>1&&n(e?.market?.away?.odds)>1)out.push({key:'h2h',label:'Match Winner',scope:{map:null,round:null},selections:[{name:e.market.home.name,role:'home',odds:n(e.market.home.odds),point:null},{name:e.market.away.name,role:'away',odds:n(e.market.away.odds),point:null}]});
- for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);out.push({key,label,scope,selections});}
+ for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections});}
  const seen=new Set();return out.filter(m=>{const k=`${m.key}|${m.scope.map??''}|${m.scope.round??''}|${m.selections.map(s=>`${norm(stripLine(s.name))}:${s.odds}:${s.point}`).join('|')}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
 function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmakers||[]){for(const m of bm.markets||[]){if(m.key===key)found.push({bookmaker:bm.key||bm.title,market:m});}}return found;}
 function outsideScope(m={}){return scopeFromText(`${m.name||''} ${m.title||''} ${m.description||''} ${m.specifiers||''}`);}
 function findOutcome(outcomes,sel,key){
- if(key==='totals'||key==='round_totals')return outcomes.find(o=>String(o.name||'').toLowerCase()===sel.role&&close(n(o.point),sel.point));
- return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name))&&close(n(o.point),sel.point));
+ if(key==='totals'||key==='round_totals'){if(sel.point==null)return null;return outcomes.find(o=>String(o.name||'').toLowerCase()===sel.role&&n(o.point)!=null&&close(n(o.point),sel.point));}
+ if(key==='spreads'||key==='round_handicap'){if(sel.point==null)return null;return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name))&&n(o.point)!=null&&close(n(o.point),sel.point));}
+ return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name)));
 }
 function quoteFor(row,d){
  const found=[];
