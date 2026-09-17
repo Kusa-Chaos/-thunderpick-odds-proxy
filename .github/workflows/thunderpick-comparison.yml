@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/owls-comparison.mjs'
+      - 'scripts/propline-enrich.mjs'
       - 'scripts/screen-thunderpick-ev.mjs'
       - '.github/workflows/thunderpick-comparison.yml'
 
@@ -33,10 +34,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Fetch normalized outside esports boards
+      - name: Fetch normalized outside boards
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
         run: node scripts/owls-comparison.mjs
+      - name: Add PropLine independent-book verification
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: node scripts/propline-enrich.mjs
       - name: Screen Thunderpick against outside boards
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Commit comparison and screen
