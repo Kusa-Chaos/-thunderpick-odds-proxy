@@ -3,7 +3,9 @@ name: Thunderpick Owls Snapshot
 on:
   workflow_dispatch:
   schedule:
-    - cron: '9 * * * *'
+    # Run off the top of the hour to reduce GitHub scheduler congestion.
+    # Changing cron also re-registers/reactivates the scheduled workflow.
+    - cron: '7 * * * *'
   push:
     branches: [main]
     paths:
