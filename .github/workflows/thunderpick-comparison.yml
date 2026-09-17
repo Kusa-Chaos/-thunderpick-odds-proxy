@@ -2,6 +2,9 @@ name: Thunderpick Comparison Screen
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Thunderpick Owls Snapshot"]
+    types: [completed]
   schedule:
     - cron: '14 * * * *'
   push:
@@ -20,10 +23,13 @@ concurrency:
 
 jobs:
   screen:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
