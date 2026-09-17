@@ -3,9 +3,8 @@ name: Thunderpick Owls Snapshot
 on:
   workflow_dispatch:
   schedule:
-    # Run off the top of the hour to reduce GitHub scheduler congestion.
-    # Changing cron also re-registers/reactivates the scheduled workflow.
-    - cron: '7 * * * *'
+    # Hourly refresh. Re-register schedule by changing minute.
+    - cron: '11 * * * *'
   push:
     branches: [main]
     paths:
@@ -26,6 +25,8 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Check configuration
         id: config
@@ -79,5 +80,3 @@ jobs:
             git commit -m 'Update Thunderpick Owls snapshot [skip ci]'
             git push origin HEAD:main
           fi
-
-# Manual trigger after OWLS_API_KEY configuration
