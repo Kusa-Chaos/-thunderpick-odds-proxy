@@ -83,18 +83,26 @@ jobs:
             const pick=side==='a'?a:b;
             const ev=Number(side==='a'?c.ev?.a:c.ev?.b);
             const fair=Number(side==='a'?c.fair?.aOdds:c.fair?.bOdds);
-            const books=[...new Set((c.outside||[]).map(x=>x.book).filter(Boolean))];
-            const outsidePrices=(c.outside||[]).map(q=>({book:q.book,price:Number(side==='a'?q.a:q.b),identityVerified:q.identityVerified!==false})).filter(x=>x.price>1);
-            outsidePrices.sort((x,y)=>y.price-x.price); const best=outsidePrices[0]||null;
+            const rawPrices=(c.outside||[]).map(q=>({book:q.book,price:Number(side==='a'?q.a:q.b),identityVerified:q.identityVerified!==false})).filter(x=>x.price>1&&x.identityVerified);
+            const byBook=new Map(); for(const q of rawPrices){ if(!byBook.has(q.book)) byBook.set(q.book,[]); byBook.get(q.book).push(q.price); }
+            const outsidePrices=[...byBook].map(([book,ps])=>({book,price:ps.sort((a,b)=>a-b)[Math.floor(ps.length/2)],identityVerified:true})).sort((x,y)=>y.price-x.price);
+            const books=outsidePrices.map(x=>x.book), best=outsidePrices[0]||null;
+            const vals=outsidePrices.map(x=>x.price).sort((a,b)=>a-b), med=vals.length?vals[Math.floor(vals.length/2)]:null;
+            const dispersion=(vals.length&&med)?(vals[vals.length-1]-vals[0])/med:99;
+            const label=String(c.marketLabel||c.marketKey||'');
+            const traditional=['american-football','baseball','basketball','soccer','tennis'].includes(c.sport);
+            const scopeUnverified=traditional && /(\b\d+(?:st|nd|rd|th)\b|inning|quarter|half|period|team total)/i.test(label);
             const arb=c.identityVerified?c.arbScreen:null;
             let status='⚪ PASS';
-            if((arb?.trueArb||arb?.nearArb) && Number(arb?.grossRoi)<=0.08) status='🟡 ARB WATCH';
-            else if(ev>=0.02 && Number(c.verifiedIdentityDepth||0)>=10) status='🟢 +EV ACTION';
-            else if(ev>=0.01 && Number(c.verifiedIdentityDepth||0)>=3) status='🟡 +EV WATCH';
-            else if(ev>=0.0025) status='👀 SCREENING';
+            const sane=books.length>=3 && dispersion<=0.25 && !scopeUnverified && ev<=0.15;
+            if(sane && (arb?.trueArb||arb?.nearArb) && Number(arb?.grossRoi)>=-0.002 && Number(arb?.grossRoi)<0.01) status='🟡 ARB WATCH';
+            else if(sane && ev>=0.02 && Number(c.verifiedIdentityDepth||0)>=8) status='🟢 +EV ACTION';
+            else if(sane && ev>=0.01 && Number(c.verifiedIdentityDepth||0)>=5) status='🟡 +EV WATCH';
+            else if((ev>=0.0025 && ev<0.01) || (!sane && ev>=0.0025 && ev<=0.15)) status='👀 SCREENING';
             if(status==='⚪ PASS') continue;
+            const target=(String(pick.name||'').toUpperCase()+(pick.point!=null?' '+String(pick.point):''));
             rows.push({
-              status,sport:c.sport,match:c.name,target:String(pick.name||'').toUpperCase(),market:c.marketLabel||c.marketKey,
+              status,sport:c.sport,match:c.name,target,market:label,scopeUnverified,dispersion,
               thunderpick:Number(pick.odds),bestOutside:best,outsidePrices:outsidePrices.slice(0,8),independentSources:books.length,vigFreeFair:fair,
               verifiedEV:ev,arbGrossROI:Number(arb?.grossRoi),arbTrue:Boolean(arb?.trueArb),arbNear:Boolean(arb?.nearArb),
               verifiedIdentityDepth:Number(c.verifiedIdentityDepth||0),startTime:c.startTime
