@@ -49,6 +49,9 @@ jobs:
           p='scripts/screen-thunderpick-ev.mjs'
           s=open(p).read()
           s=s.replace("const SPORTS=['cs2','dota2','lol','valorant'];", "const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];")
+          # Do not reject legitimate pregame sports rows merely because providers use
+          # 'upcoming'/'pregame'/other status labels instead of literal 'scheduled'.
+          s=s.replace("if(e.status&&e.status!=='scheduled')continue;const k=pairKey(e.home_team,e.away_team);", "if(e.live===true||String(e.status||'').toLowerCase()==='live')continue;const k=pairKey(e.home_team,e.away_team);")
           # Player props must never be compared to generic game totals. Until an outside
           # market carries exact player identity, keep these out of verified EV/arb.
           s=s.replace("for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);", "for(const m of e?.preferredMarkets||[]){if(/\\bplayer\\b/i.test(`${m.nickName||''} ${m.name||''}`))continue;const key=classifyMarket(m);")
@@ -58,7 +61,7 @@ jobs:
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Validate sports coverage
         run: |
-          node -e "const s=require('./data/screen-latest.json'); const required=['american-football','baseball','basketball','tennis']; for(const k of required){if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k)}; console.log('SPORTS COVERAGE OK',s.eligibleBySport,s.matchedBySport);"
+          node -e "const s=require('./data/screen-latest.json'); const required=['american-football','baseball','basketball','tennis']; for(const k of required){if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k)}; console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);"
       - name: Commit comparison and screen
         run: |
           cp data/owls-comparison-latest.json /tmp/owls-comparison-latest.json
