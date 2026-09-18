@@ -32,12 +32,15 @@ const TEAM_ALIASES=new Map([
  ['dallaswings','dallaswings'],['wings','dallaswings'],
  ['newyorkliberty','newyorkliberty'],['liberty','newyorkliberty'],
  ['minnesotalynx','minnesotalynx'],['lynx','minnesotalynx'],
- ['indianafever','indianafever'],['fever','indianafever']
+ ['indianafever','indianafever'],['fever','indianafever'],
+ ['goldenstatevalkyries','goldenstatevalkyries'],['valkyries','goldenstatevalkyries'],
+ ['torontotempo','torontotempo'],['tempo','torontotempo']
 ]);
 function norm(s=''){
  let x=String(s).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/&/g,'and')
   .replace(/\b(team|esports|gaming|club|university|college|women|womens|female)\b/g,'')
   .replace(/\((?:w|women)\)/g,'').replace(/[^a-z0-9]/g,'');
+ x=x.replace(/(?:women|womens|female)$/,'').replace(/w$/,'');
  return TEAM_ALIASES.get(x)||x;
 }
 function pair(a,b){return [norm(a),norm(b)].sort().join('|');}
@@ -51,7 +54,7 @@ function tpIndex(sport){
  }
  return map;
 }
-function sameTeam(a,b){const x=norm(a),y=norm(b);return x===y||(x.length>=4&&y.length>=4&&(x.endsWith(y)||y.endsWith(x)));}
+function sameTeam(a,b){const x=norm(a),y=norm(b);return x===y||(x.length>=5&&y.length>=5&&(x.includes(y)||y.includes(x)));}
 function findTPMatch(index,e){
  const exact=index.get(pair(e.home_team,e.away_team));if(exact)return exact;
  const start=Date.parse(e.commence_time||e.start_time||e.startTime);
@@ -79,7 +82,7 @@ for(const feed of FEEDS){
    matchedEvents++;feedMatched++;
    for(const bm of e.bookmakers||[]){
     const bookKey=`propline:${bm.key||bm.title||'unknown'}`,markets=[];
-    for(const m of bm.markets||[]){if(!['h2h','spreads','totals'].includes(m.key))continue;const outcomes=(m.outcomes||[]).map(o=>({...o,price:dec(o.price)})).filter(o=>o.price>1);if(outcomes.length<2)continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
+    for(const m of bm.markets||[]){if(!['h2h','spreads','totals'].includes(m.key))continue;const outcomes=(m.outcomes||[]).map(o=>{let name=o.name;if(m.key!=='totals'){if(sameTeam(o.name,e.home_team))name=tpMatch.home;else if(sameTeam(o.name,e.away_team))name=tpMatch.away;}return {...o,source_name:o.name,name,price:dec(o.price)};}).filter(o=>o.price>1);if(outcomes.length<2)continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
     if(!markets.length)continue;
     // Canonicalize team display names to Thunderpick after a unique identity match so the downstream exact pair join is stable.
     const normalized={...e,home_team:tpMatch.home,away_team:tpMatch.away,status:e.live?'live':'scheduled',sourceLeague:feed.api,bookmakers:[{...bm,key:bookKey,title:bm.title||bm.key,markets}]};
