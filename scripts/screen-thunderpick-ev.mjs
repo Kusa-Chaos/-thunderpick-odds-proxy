@@ -124,12 +124,14 @@ for(const sport of SPORTS){
   for(const d of markets){
    eligibleMarkets++;marketTypeCounts[d.key]??={eligible:0,matched:0,candidates:0};marketTypeCounts[d.key].eligible++;
    const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));if(!outside.length)continue;
+   const saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
+   if(saneOutside.length<2)continue;
    matchedMarkets++;marketTypeCounts[d.key].matched++;eventMatched=true;
-   const fair=outside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
+   const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
    const pA=base.reduce((s,x)=>s+x.a,0)/base.length,pB=base.reduce((s,x)=>s+x.b,0)/base.length;
-   const evA=d.selections[0].odds*pA-1,evB=d.selections[1].odds*pB-1,arbScreen=arbDetector(d,outside);
-   const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:outside.length,verifiedIdentityDepth:outside.filter(q=>q.identityVerified).length,outside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:outside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
+   const evA=d.selections[0].odds*pA-1,evB=d.selections[1].odds*pB-1,arbScreen=arbDetector(d,saneOutside);
+   const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
    if(row.plausible)marketTypeCounts[d.key].candidates++;all.push(row);
   }
   if(eventMatched){matchedEventIds.add(`${sport}:${e.id}`);matchedBySport[sport]++;}
