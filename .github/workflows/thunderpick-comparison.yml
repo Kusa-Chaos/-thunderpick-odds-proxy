@@ -36,19 +36,24 @@ jobs:
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
         run: node scripts/owls-comparison.mjs
-      - name: Add PropLine independent-book verification
-        env:
-          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
-        run: node scripts/propline-enrich.mjs
-      - name: Normalize sports boards and enable supported sports
+      - name: Normalize OWLS sports aliases before enrichment
         run: |
           node - <<'NODE'
           const fs=require('fs');
           const p='data/owls-comparison-latest.json';
           const x=JSON.parse(fs.readFileSync(p));
-          for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) x.sports[dst]=x.sports[src]||{data:{}};
+          x.sports ||= {};
+          for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) {
+            if(!x.sports[dst]) x.sports[dst]=x.sports[src]||{ok:true,status:200,data:{}};
+          }
           fs.writeFileSync(p,JSON.stringify(x,null,2));
           NODE
+      - name: Add PropLine independent-book verification
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: node scripts/propline-enrich.mjs
+      - name: Enable supported sports in scanner
+        run: |
           python - <<'PY'
           p='scripts/screen-thunderpick-ev.mjs'
           s=open(p).read()
@@ -68,11 +73,12 @@ jobs:
           node - <<'NODE'
           const s=require('./data/screen-latest.json');
           const required=['american-football','baseball','basketball','tennis'];
-          for(const k of required) if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k);
-          const sportsEligible=required.reduce((n,k)=>n+(s.eligibleBySport[k]||0),0);
-          const sportsMatched=required.reduce((n,k)=>n+(s.matchedBySport[k]||0),0);
+          for(const k of required) {
+            if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k);
+            const eligible=s.eligibleBySport[k]||0, matched=s.matchedBySport[k]||0;
+            if(eligible>0 && matched===0) throw new Error(`${k} matcher broken: ${eligible} eligible but 0 matched`);
+          }
           console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);
-          if(sportsEligible>0 && sportsMatched===0) throw new Error(`sports matcher still broken: ${sportsEligible} eligible events but 0 matched`);
           NODE
       - name: Commit comparison and screen
         run: |
