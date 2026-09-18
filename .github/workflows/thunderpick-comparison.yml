@@ -47,16 +47,16 @@ jobs:
           const p='data/owls-comparison-latest.json';
           const x=JSON.parse(fs.readFileSync(p));
           for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) x.sports[dst]=x.sports[src]||{data:{}};
-          for(const k of ['american-football','baseball','basketball','soccer','tennis']){
-            const row=x.sports[k];
-            if(row&&Array.isArray(row.data)) row.data={owls:row.data};
-          }
           fs.writeFileSync(p,JSON.stringify(x,null,2));
           NODE
           python - <<'PY'
           p='scripts/screen-thunderpick-ev.mjs'
           s=open(p).read()
           s=s.replace("const SPORTS=['cs2','dota2','lol','valorant'];", "const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];")
+          old="function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data||{};const out=[];for(const [book,events] of Object.entries(data)){if(Array.isArray(events))for(const e of events)out.push({book,event:e});}return out;}"
+          new="function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data;const out=[];const seen=new Set();function walk(v,bookHint='owls'){if(!v)return;if(Array.isArray(v)){for(const x of v)walk(x,bookHint);return;}if(typeof v!=='object')return;if(v.home_team&&v.away_team&&Array.isArray(v.bookmakers)){const id=String(v.id||v.eventId||`${v.home_team}|${v.away_team}|${v.commence_time||''}`);const books=v.bookmakers.length?v.bookmakers:[{key:bookHint}];for(const bm of books){const key=`${id}|${bm.key||bm.title||bookHint}`;if(seen.has(key))continue;seen.add(key);out.push({book:bm.key||bm.title||bookHint,event:{...v,bookmakers:[bm]}});}return;}for(const [k,x] of Object.entries(v))walk(x,k||bookHint);}walk(data);return out;}"
+          if old not in s: raise SystemExit('outsideEvents signature not found')
+          s=s.replace(old,new)
           s=s.replace("if(e.status&&e.status!=='scheduled')continue;const k=pairKey(e.home_team,e.away_team);", "if(e.live===true||String(e.status||'').toLowerCase()==='live')continue;const k=pairKey(e.home_team,e.away_team);")
           s=s.replace("for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);", "for(const m of e?.preferredMarkets||[]){if(/\\bplayer\\b/i.test(`${m.nickName||''} ${m.name||''}`))continue;const key=classifyMarket(m);")
           open(p,'w').write(s)
@@ -65,7 +65,15 @@ jobs:
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Validate sports coverage
         run: |
-          node -e "const s=require('./data/screen-latest.json'); const required=['american-football','baseball','basketball','tennis']; for(const k of required){if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k)}; console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);"
+          node - <<'NODE'
+          const s=require('./data/screen-latest.json');
+          const required=['american-football','baseball','basketball','tennis'];
+          for(const k of required) if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k);
+          const sportsEligible=required.reduce((n,k)=>n+(s.eligibleBySport[k]||0),0);
+          const sportsMatched=required.reduce((n,k)=>n+(s.matchedBySport[k]||0),0);
+          console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);
+          if(sportsEligible>0 && sportsMatched===0) throw new Error(`sports matcher still broken: ${sportsEligible} eligible events but 0 matched`);
+          NODE
       - name: Commit comparison and screen
         run: |
           git config user.name 'thunderpick-bot'
