@@ -29,8 +29,6 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -42,18 +40,24 @@ jobs:
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: node scripts/propline-enrich.mjs
-      - name: Normalize sports keys and enable all supported Thunderpick sports
+      - name: Normalize sports boards and enable supported sports
         run: |
-          node -e "const fs=require('fs');const p='data/owls-comparison-latest.json';const x=JSON.parse(fs.readFileSync(p));x.sports['american-football']=x.sports.nfl||{data:{}};x.sports.baseball=x.sports.mlb||{data:{}};x.sports.basketball=x.sports.nba||{data:{}};fs.writeFileSync(p,JSON.stringify(x,null,2));"
+          node - <<'NODE'
+          const fs=require('fs');
+          const p='data/owls-comparison-latest.json';
+          const x=JSON.parse(fs.readFileSync(p));
+          for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) x.sports[dst]=x.sports[src]||{data:{}};
+          for(const k of ['american-football','baseball','basketball','soccer','tennis']){
+            const row=x.sports[k];
+            if(row&&Array.isArray(row.data)) row.data={owls:row.data};
+          }
+          fs.writeFileSync(p,JSON.stringify(x,null,2));
+          NODE
           python - <<'PY'
           p='scripts/screen-thunderpick-ev.mjs'
           s=open(p).read()
           s=s.replace("const SPORTS=['cs2','dota2','lol','valorant'];", "const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];")
-          # Do not reject legitimate pregame sports rows merely because providers use
-          # 'upcoming'/'pregame'/other status labels instead of literal 'scheduled'.
           s=s.replace("if(e.status&&e.status!=='scheduled')continue;const k=pairKey(e.home_team,e.away_team);", "if(e.live===true||String(e.status||'').toLowerCase()==='live')continue;const k=pairKey(e.home_team,e.away_team);")
-          # Player props must never be compared to generic game totals. Until an outside
-          # market carries exact player identity, keep these out of verified EV/arb.
           s=s.replace("for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);", "for(const m of e?.preferredMarkets||[]){if(/\\bplayer\\b/i.test(`${m.nickName||''} ${m.name||''}`))continue;const key=classifyMarket(m);")
           open(p,'w').write(s)
           PY
@@ -64,15 +68,9 @@ jobs:
           node -e "const s=require('./data/screen-latest.json'); const required=['american-football','baseball','basketball','tennis']; for(const k of required){if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k)}; console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);"
       - name: Commit comparison and screen
         run: |
-          cp data/owls-comparison-latest.json /tmp/owls-comparison-latest.json
-          cp data/screen-latest.json /tmp/screen-latest.json
-          git fetch origin main
-          git reset --hard origin/main
-          cp /tmp/owls-comparison-latest.json data/owls-comparison-latest.json
-          cp /tmp/screen-latest.json data/screen-latest.json
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add data/owls-comparison-latest.json data/screen-latest.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Thunderpick comparison screen [skip ci]'
-          git push origin HEAD:main
+          git push origin HEAD:${GITHUB_REF_NAME}
