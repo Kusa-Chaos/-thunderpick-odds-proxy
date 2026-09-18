@@ -85,17 +85,17 @@ jobs:
             const fair=Number(side==='a'?c.fair?.aOdds:c.fair?.bOdds);
             const books=[...new Set((c.outside||[]).map(x=>x.book).filter(Boolean))];
             const outsidePrices=(c.outside||[]).map(q=>({book:q.book,price:Number(side==='a'?q.a:q.b),identityVerified:q.identityVerified!==false})).filter(x=>x.price>1);
-            const best=outsidePrices.sort((x,y)=>y.price-x.price)[0]||null;
+            outsidePrices.sort((x,y)=>y.price-x.price); const best=outsidePrices[0]||null;
             const arb=c.identityVerified?c.arbScreen:null;
             let status='⚪ PASS';
-            if(arb?.trueArb||arb?.nearArb) status='🟡 ARB WATCH';
+            if((arb?.trueArb||arb?.nearArb) && Number(arb?.grossRoi)<=0.08) status='🟡 ARB WATCH';
             else if(ev>=0.02 && Number(c.verifiedIdentityDepth||0)>=10) status='🟢 +EV ACTION';
             else if(ev>=0.01 && Number(c.verifiedIdentityDepth||0)>=3) status='🟡 +EV WATCH';
             else if(ev>=0.0025) status='👀 SCREENING';
             if(status==='⚪ PASS') continue;
             rows.push({
               status,sport:c.sport,match:c.name,target:String(pick.name||'').toUpperCase(),market:c.marketLabel||c.marketKey,
-              thunderpick:Number(pick.odds),bestOutside:best,independentSources:books.length,vigFreeFair:fair,
+              thunderpick:Number(pick.odds),bestOutside:best,outsidePrices:outsidePrices.slice(0,8),independentSources:books.length,vigFreeFair:fair,
               verifiedEV:ev,arbGrossROI:Number(arb?.grossRoi),arbTrue:Boolean(arb?.trueArb),arbNear:Boolean(arb?.nearArb),
               verifiedIdentityDepth:Number(c.verifiedIdentityDepth||0),startTime:c.startTime
             });
@@ -113,10 +113,10 @@ jobs:
         run: |
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json
+          git restore scripts/screen-thunderpick-ev.mjs || true
+          git add data/screen-latest.json data/scan-display-latest.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Thunderpick comparison screen [skip ci]'
-          git pull --rebase origin ${GITHUB_REF_NAME}
           git push origin HEAD:${GITHUB_REF_NAME}
       - name: Validate sports coverage
         continue-on-error: true
