@@ -101,31 +101,14 @@ jobs:
             else if((ev>=0.0025 && ev<0.01) || (!sane && ev>=0.0025 && ev<=0.15)) status='👀 SCREENING';
             if(status==='⚪ PASS') continue;
             const target=(String(pick.name||'').toUpperCase()+(pick.point!=null?' '+String(pick.point):''));
-            rows.push({
-              status,sport:c.sport,match:c.name,target,market:label,scopeUnverified,dispersion,
-              thunderpick:Number(pick.odds),bestOutside:best,outsidePrices:outsidePrices.slice(0,8),independentSources:books.length,vigFreeFair:fair,
-              verifiedEV:ev,arbGrossROI:Number(arb?.grossRoi),arbTrue:Boolean(arb?.trueArb),arbNear:Boolean(arb?.nearArb),
-              verifiedIdentityDepth:Number(c.verifiedIdentityDepth||0),startTime:c.startTime
-            });
+            rows.push({status,sport:c.sport,match:c.name,target,market:label,scopeUnverified,dispersion,thunderpick:Number(pick.odds),bestOutside:best,outsidePrices:outsidePrices.slice(0,8),independentSources:books.length,vigFreeFair:fair,verifiedEV:ev,arbGrossROI:Number(arb?.grossRoi),arbTrue:Boolean(arb?.trueArb),arbNear:Boolean(arb?.nearArb),verifiedIdentityDepth:Number(c.verifiedIdentityDepth||0),startTime:c.startTime});
           }
           const rank={'🟢 ARB ACTION':0,'🟢 +EV ACTION':1,'🟡 ARB WATCH':2,'🟡 +EV WATCH':3,'👀 SCREENING':4,'⚪ PASS':5};
           rows.sort((x,y)=>(rank[x.status]-rank[y.status])||((y.arbGrossROI||-9)-(x.arbGrossROI||-9))||(y.verifiedEV-x.verifiedEV));
-          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,
-            coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,
-              eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},
-            rows:rows.slice(0,20)};
+          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},rows:rows.slice(0,20)};
           fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
           console.log('VISIBLE_ROWS',out.rows.length);
           NODE
-      - name: Commit fresh scan output
-        run: |
-          git config user.name 'thunderpick-bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git restore scripts/screen-thunderpick-ev.mjs || true
-          git add data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Update Thunderpick comparison screen [skip ci]'
-          git push origin HEAD:${GITHUB_REF_NAME}
       - name: Validate sports coverage
         continue-on-error: true
         run: |
@@ -146,3 +129,14 @@ jobs:
           }
           console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);
           NODE
+      - name: Commit compact fresh scan outputs
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git restore scripts/screen-thunderpick-ev.mjs || true
+          # owls-comparison-latest.json is intentionally temporary. It can exceed GitHub's 100 MB per-file limit.
+          git restore data/owls-comparison-latest.json || true
+          git add data/screen-latest.json data/scan-display-latest.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update Thunderpick compact comparison screen [skip ci]'
+          git push origin HEAD:${GITHUB_REF_NAME}
