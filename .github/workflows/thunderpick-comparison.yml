@@ -42,8 +42,23 @@ jobs:
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: node scripts/propline-enrich.mjs
+      - name: Normalize sports keys and enable all supported Thunderpick sports
+        run: |
+          node -e "const fs=require('fs');const p='data/owls-comparison-latest.json';const x=JSON.parse(fs.readFileSync(p));x.sports['american-football']=x.sports.nfl||{data:{}};x.sports.baseball=x.sports.mlb||{data:{}};x.sports.basketball=x.sports.nba||{data:{}};fs.writeFileSync(p,JSON.stringify(x,null,2));"
+          python - <<'PY'
+          p='scripts/screen-thunderpick-ev.mjs'
+          s=open(p).read()
+          s=s.replace("const SPORTS=['cs2','dota2','lol','valorant'];", "const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];")
+          # Player props must never be compared to generic game totals. Until an outside
+          # market carries exact player identity, keep these out of verified EV/arb.
+          s=s.replace("for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);", "for(const m of e?.preferredMarkets||[]){if(/\\bplayer\\b/i.test(`${m.nickName||''} ${m.name||''}`))continue;const key=classifyMarket(m);")
+          open(p,'w').write(s)
+          PY
       - name: Screen Thunderpick against outside boards
         run: node scripts/screen-thunderpick-ev.mjs
+      - name: Validate sports coverage
+        run: |
+          node -e "const s=require('./data/screen-latest.json'); const required=['american-football','baseball','basketball','tennis']; for(const k of required){if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k)}; console.log('SPORTS COVERAGE OK',s.eligibleBySport,s.matchedBySport);"
       - name: Commit comparison and screen
         run: |
           cp data/owls-comparison-latest.json /tmp/owls-comparison-latest.json
