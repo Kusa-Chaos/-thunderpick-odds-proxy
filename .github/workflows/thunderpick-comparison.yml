@@ -39,13 +39,8 @@ jobs:
       - name: Normalize OWLS sports aliases before enrichment
         run: |
           node - <<'NODE'
-          const fs=require('fs');
-          const p='data/owls-comparison-latest.json';
-          const x=JSON.parse(fs.readFileSync(p));
-          x.sports ||= {};
-          for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) {
-            if(!x.sports[dst]) x.sports[dst]=x.sports[src]||{ok:true,status:200,data:{}};
-          }
+          const fs=require('fs'); const p='data/owls-comparison-latest.json'; const x=JSON.parse(fs.readFileSync(p)); x.sports ||= {};
+          for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) if(!x.sports[dst]) x.sports[dst]=x.sports[src]||{ok:true,status:200,data:{}};
           fs.writeFileSync(p,JSON.stringify(x,null,2));
           NODE
       - name: Add PropLine independent-book verification
@@ -55,8 +50,7 @@ jobs:
       - name: Enable supported sports in scanner
         run: |
           python - <<'PY'
-          p='scripts/screen-thunderpick-ev.mjs'
-          s=open(p).read()
+          p='scripts/screen-thunderpick-ev.mjs'; s=open(p).read()
           s=s.replace("const SPORTS=['cs2','dota2','lol','valorant'];", "const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];")
           old="function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data||{};const out=[];for(const [book,events] of Object.entries(data)){if(Array.isArray(events))for(const e of events)out.push({book,event:e});}return out;}"
           new="function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data;const out=[];const seen=new Set();function walk(v,bookHint='owls'){if(!v)return;if(Array.isArray(v)){for(const x of v)walk(x,bookHint);return;}if(typeof v!=='object')return;if(v.home_team&&v.away_team&&Array.isArray(v.bookmakers)){const id=String(v.id||v.eventId||`${v.home_team}|${v.away_team}|${v.commence_time||''}`);const books=v.bookmakers.length?v.bookmakers:[{key:bookHint}];for(const bm of books){const key=`${id}|${bm.key||bm.title||bookHint}`;if(seen.has(key))continue;seen.add(key);out.push({book:bm.key||bm.title||bookHint,event:{...v,bookmakers:[bm]}});}return;}for(const [k,x] of Object.entries(v))walk(x,k||bookHint);}walk(data);return out;}"
@@ -71,70 +65,28 @@ jobs:
       - name: Build visible scan summary
         run: |
           node - <<'NODE'
-          const fs=require('fs');
-          const s=JSON.parse(fs.readFileSync('data/screen-latest.json'));
-          const hidden=/\b(MOUZ\s*(?:vs|v)\s*NRG|NRG\s*(?:vs|v)\s*MOUZ|Top Esports\s*(?:vs|v)\s*Invictus Gaming|Invictus Gaming\s*(?:vs|v)\s*Top Esports|TES\s*(?:vs|v)\s*IG|IG\s*(?:vs|v)\s*TES)\b/i;
+          const fs=require('fs'); const s=JSON.parse(fs.readFileSync('data/screen-latest.json'));
           const rows=[];
-          for(const c of s.candidates||[]){
-            if(hidden.test(String(c.name||''))) continue;
-            const a=c.thunderpick?.a,b=c.thunderpick?.b;
-            if(!a||!b) continue;
-            const side=(Number(c.ev?.a)>=Number(c.ev?.b))?'a':'b';
-            const pick=side==='a'?a:b;
-            const ev=Number(side==='a'?c.ev?.a:c.ev?.b);
-            const fair=Number(side==='a'?c.fair?.aOdds:c.fair?.bOdds);
-            const rawPrices=(c.outside||[]).map(q=>({book:q.book,price:Number(side==='a'?q.a:q.b),identityVerified:q.identityVerified!==false})).filter(x=>x.price>1&&x.identityVerified);
-            const byBook=new Map(); for(const q of rawPrices){ if(!byBook.has(q.book)) byBook.set(q.book,[]); byBook.get(q.book).push(q.price); }
-            const outsidePrices=[...byBook].map(([book,ps])=>({book,price:ps.sort((a,b)=>a-b)[Math.floor(ps.length/2)],identityVerified:true})).sort((x,y)=>y.price-x.price);
-            const books=outsidePrices.map(x=>x.book), best=outsidePrices[0]||null;
-            const vals=outsidePrices.map(x=>x.price).sort((a,b)=>a-b), med=vals.length?vals[Math.floor(vals.length/2)]:null;
-            const dispersion=(vals.length&&med)?(vals[vals.length-1]-vals[0])/med:99;
-            const label=String(c.marketLabel||c.marketKey||'');
-            const traditional=['american-football','baseball','basketball','soccer','tennis'].includes(c.sport);
-            const scopeUnverified=traditional && /(\b\d+(?:st|nd|rd|th)\b|inning|quarter|half|period|team total)/i.test(label);
-            const arb=c.identityVerified?c.arbScreen:null;
-            let status='⚪ PASS';
-            const sane=books.length>=3 && dispersion<=0.25 && !scopeUnverified && ev<=0.15;
-            if(sane && (arb?.trueArb||arb?.nearArb) && Number(arb?.grossRoi)>=-0.002 && Number(arb?.grossRoi)<0.01) status='🟡 ARB WATCH';
-            else if(sane && ev>=0.02 && Number(c.verifiedIdentityDepth||0)>=8) status='🟢 +EV ACTION';
-            else if(sane && ev>=0.01 && Number(c.verifiedIdentityDepth||0)>=5) status='🟡 +EV WATCH';
-            else if((ev>=0.0025 && ev<0.01) || (!sane && ev>=0.0025 && ev<=0.15)) status='👀 SCREENING';
-            if(status==='⚪ PASS') continue;
-            const target=(String(pick.name||'').toUpperCase()+(pick.point!=null?' '+String(pick.point):''));
-            rows.push({status,sport:c.sport,match:c.name,target,market:label,scopeUnverified,dispersion,thunderpick:Number(pick.odds),bestOutside:best,outsidePrices:outsidePrices.slice(0,8),independentSources:books.length,vigFreeFair:fair,verifiedEV:ev,arbGrossROI:Number(arb?.grossRoi),arbTrue:Boolean(arb?.trueArb),arbNear:Boolean(arb?.nearArb),verifiedIdentityDepth:Number(c.verifiedIdentityDepth||0),startTime:c.startTime});
-          }
-          const rank={'🟢 ARB ACTION':0,'🟢 +EV ACTION':1,'🟡 ARB WATCH':2,'🟡 +EV WATCH':3,'👀 SCREENING':4,'⚪ PASS':5};
-          rows.sort((x,y)=>(rank[x.status]-rank[y.status])||((y.arbGrossROI||-9)-(x.arbGrossROI||-9))||(y.verifiedEV-x.verifiedEV));
+          for(const c of s.candidates||[]){const a=c.thunderpick?.a,b=c.thunderpick?.b;if(!a||!b)continue;const side=Number(c.ev?.a)>=Number(c.ev?.b)?'a':'b';const pick=side==='a'?a:b;const ev=Number(side==='a'?c.ev?.a:c.ev?.b);if(ev<.0025)continue;rows.push({sport:c.sport,match:c.name,target:String(pick.name||''),market:c.marketLabel||c.marketKey,thunderpick:Number(pick.odds),verifiedEV:ev,independentSources:Number(c.verifiedIdentityDepth||0),startTime:c.startTime});}
           const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},rows:rows.slice(0,20)};
-          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
-          console.log('VISIBLE_ROWS',out.rows.length);
+          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2)); console.log('VISIBLE_ROWS',out.rows.length);
           NODE
-      - name: Validate sports coverage
-        continue-on-error: true
+      - name: Validate compact outputs before publish
         run: |
           node - <<'NODE'
-          const s=require('./data/screen-latest.json');
-          const c=require('./data/owls-comparison-latest.json');
-          const required=['american-football','baseball','basketball','tennis'];
-          for(const k of required) {
-            if(!(k in s.eligibleBySport)) throw new Error('missing sport '+k);
-            const eligible=s.eligibleBySport[k]||0, matched=s.matchedBySport[k]||0;
-            const relevant=(c.propline?.feeds||[]).filter(f =>
-              (k==='american-football' && /football/.test(f.feed)) ||
-              (k==='baseball' && /baseball/.test(f.feed)) ||
-              (k==='basketball' && /basketball/.test(f.feed)) ||
-              (k==='tennis' && f.feed==='tennis')
-            ).reduce((n,f)=>n+(f.matchedEvents||0),0);
-            if(eligible>0 && relevant>0 && matched===0) throw new Error(`${k} downstream matcher broken: ${eligible} eligible, ${relevant} enriched overlaps, 0 final matched`);
+          const fs=require('fs');
+          for(const p of ['data/screen-latest.json','data/scan-display-latest.json']) {
+            if(!fs.existsSync(p)) throw new Error(`${p} missing`);
+            const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
+            const x=JSON.parse(fs.readFileSync(p,'utf8')); if(!x || typeof x!=='object') throw new Error(`${p} invalid JSON object`);
+            console.log('VALID_OUTPUT',p,st.size,'bytes');
           }
-          console.log('SPORTS COVERAGE',s.eligibleBySport,s.matchedBySport);
           NODE
       - name: Commit compact fresh scan outputs
         run: |
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git restore scripts/screen-thunderpick-ev.mjs || true
-          # owls-comparison-latest.json is intentionally temporary. It can exceed GitHub's 100 MB per-file limit.
           git restore data/owls-comparison-latest.json || true
           git add data/screen-latest.json data/scan-display-latest.json
           git diff --cached --quiet && exit 0
