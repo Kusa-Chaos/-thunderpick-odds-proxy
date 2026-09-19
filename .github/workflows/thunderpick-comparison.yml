@@ -71,6 +71,17 @@ jobs:
           const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},rows:rows.slice(0,20)};
           fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2)); console.log('VISIBLE_ROWS',out.rows.length);
           NODE
+      - name: Compact full screen for repository publication
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'); const p='data/screen-latest.json'; const s=JSON.parse(fs.readFileSync(p,'utf8'));
+          const slim=c=>({...c,outside:Array.isArray(c.outside)?c.outside.slice(0,12):[]});
+          const candidates=(s.candidates||[]).slice(0,100).map(slim);
+          const arbScreens=(s.arbScreens||[]).slice(0,50).map(slim);
+          const out={...s,candidates,arbScreens,publication:{compact:true,originalCandidateCount:(s.candidates||[]).length,publishedCandidateCount:candidates.length,originalArbScreenCount:(s.arbScreens||[]).length,publishedArbScreenCount:arbScreens.length,maxOutsideQuotesPerCandidate:12}};
+          fs.writeFileSync(p,JSON.stringify(out,null,2));
+          console.log('COMPACT_SCREEN_BYTES',fs.statSync(p).size,'CANDIDATES',candidates.length,'ARBS',arbScreens.length);
+          NODE
       - name: Validate compact outputs before publish
         run: |
           node - <<'NODE'
@@ -78,6 +89,7 @@ jobs:
           for(const p of ['data/screen-latest.json','data/scan-display-latest.json']) {
             if(!fs.existsSync(p)) throw new Error(`${p} missing`);
             const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
+            if(st.size>50*1024*1024) throw new Error(`${p} too large for compact publication (${st.size} bytes)`);
             const x=JSON.parse(fs.readFileSync(p,'utf8')); if(!x || typeof x!=='object') throw new Error(`${p} invalid JSON object`);
             console.log('VALID_OUTPUT',p,st.size,'bytes');
           }
