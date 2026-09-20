@@ -90,8 +90,8 @@ jobs:
           // Require it to be recent enough for screening, but don't fail this comparison
           // job merely because it is older than the freshly-generated comparison output.
           const limits={
-            'data/owls-latest.json': 90*60*1000,
-            'data/owls-meta.json': 90*60*1000,
+            'data/owls-latest.json': 6*60*60*1000,
+            'data/owls-meta.json': 6*60*60*1000,
             'data/owls-comparison-latest.json': 30*60*1000,
             'data/screen-latest.json': 30*60*1000
           };
