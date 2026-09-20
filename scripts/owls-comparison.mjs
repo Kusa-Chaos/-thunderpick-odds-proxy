@@ -37,9 +37,13 @@ for(const sport of SPORTS){
         const realtime=[];
         for(const league of leagues){
           const rr=await fetch(`${base}/${sport}/realtime?league=${encodeURIComponent(league)}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
-          if(!rr.ok)continue;
-          const rt=await rr.json();
-          realtime.push({league,data:rt?.data??rt});
+          const raw=await rr.text();
+          let rt; try{rt=JSON.parse(raw)}catch{rt={raw}};
+          const payload=rt?.data??rt;
+          const payloadSize=Array.isArray(payload)?payload.length:(payload&&typeof payload==='object'?Object.keys(payload).length:0);
+          console.log('PINNACLE_REALTIME',sport,JSON.stringify(league),'status='+rr.status,'ok='+rr.ok,'items='+payloadSize,'body='+raw.slice(0,240).replace(/\\s+/g,' '));
+          // Persist non-200 responses too: endpoint/schema errors are diagnostic evidence.
+          realtime.push({league,status:rr.status,ok:rr.ok,data:payload});
           await sleep(350);
         }
         sports[sport].pinnacleRealtime=realtime;
