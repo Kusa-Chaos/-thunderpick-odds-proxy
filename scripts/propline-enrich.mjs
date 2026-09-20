@@ -82,6 +82,11 @@ for(const feed of FEEDS){
  }
  if(!r.ok){const text=await r.text();feedStats.push({feed:feed.api,ok:false,status:r.status,error:text.slice(0,200)});continue;}
  const body=await r.json(),events=Array.isArray(body)?body:(Array.isArray(body?.data)?body.data:[]);let feedMatched=0,feedRows=0;
+ if(feed.api==='esports'){
+   const keyCounts={};
+   for(const ev of events) for(const bm of ev.bookmakers||[]) for(const m of bm.markets||[]) keyCounts[m.key]=(keyCounts[m.key]||0)+1;
+   console.log('PROPLINE_ESPORTS_MARKET_KEYS',JSON.stringify(keyCounts));
+ }
  for(const target of feed.targets){
   const index=tpIndex(target);if(!index.size)continue;const bucket=ensureBucket(target);
   for(const e of events){
