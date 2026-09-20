@@ -20,15 +20,24 @@ for(const sport of SPORTS){
     const data=body?.data??null;
     const eventCount=Array.isArray(data)?data.length:(data&&typeof data==='object'?Object.keys(data).length:0);
     sports[sport]={ok:r.ok,status:r.status,fetchedAt:new Date().toISOString(),hash:h,changedSincePrevious:previous?.sports?.[sport]?.hash!==h,eventCount,meta:body?.meta??null,data};
-    // Bench-safe esports derivative source: probe the documented 1xBet sport endpoint.
-    // Preserve raw payload so map/round identity can be extracted without guessing.
+    // Bench-safe esports derivative diagnostics come from the existing /{sport}/odds
+    // response itself (Owls serves 1xBet esports there). No extra API request needed.
     if(r.ok&&ESPORTS.has(sport)){
-      try{
-        const xr=await fetch(`${base}/1xbet/${sport}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
-        const raw=await xr.text(); let xb; try{xb=JSON.parse(raw)}catch{xb={raw}};
-        sports[sport].oneXBetRaw={status:xr.status,ok:xr.ok,data:xb?.data??xb};
-        console.log('1XBET_DERIVATIVE_SOURCE',sport,'status='+xr.status,'ok='+xr.ok,'body='+raw.slice(0,240).replace(/\\s+/g,' '));
-      }catch(e){sports[sport].oneXBetRawError=String(e?.message||e);}
+      const samples=[];
+      const stack=[data];
+      while(stack.length&&samples.length<40){
+        const v=stack.pop();
+        if(Array.isArray(v)){ for(const q of v) stack.push(q); continue; }
+        if(!v||typeof v!=='object') continue;
+        const raw=JSON.stringify(v);
+        if(/map_winner|round_handicap|round_totals/i.test(raw)){
+          samples.push(v);
+          continue;
+        }
+        for(const q of Object.values(v)) if(q&&typeof q==='object') stack.push(q);
+      }
+      sports[sport].oneXBetDerivativeSamples=samples;
+      console.log('1XBET_DERIVATIVE_SAMPLES',sport,'count='+samples.length);
     }
     if(!r.ok) { failures.push({sport,status:r.status,body}); console.error('OWLS_FAIL',sport,r.status,JSON.stringify(body).slice(0,500)); }
   }catch(e){sports[sport]={ok:false,status:null,fetchedAt:new Date().toISOString(),error:String(e?.message||e),eventCount:0,data:null};failures.push({sport,error:String(e?.message||e)});console.error('OWLS_ERROR',sport,String(e?.message||e));}
@@ -40,24 +49,9 @@ await fs.mkdir('data',{recursive:true});
 const derivativeDiagnostic={generatedAt:new Date().toISOString(),sports:{}};
 for(const sport of [...ESPORTS]){
   const z=sports[sport]||{};
-  const rows=[];
-  for(const pack of z.pinnacleRealtime||[]){
-    const stack=[pack?.data];
-    while(stack.length&&rows.length<100){
-      const v=stack.pop();
-      if(Array.isArray(v)){for(const q of v)stack.push(q);continue;}
-      if(!v||typeof v!=='object')continue;
-      const raw=JSON.stringify(v);
-      if(/map|round|period|handicap|total/i.test(raw)){
-        rows.push({league:pack.league,raw:v});
-        continue;
-      }
-      for(const q of Object.values(v)) if(q&&typeof q==='object') stack.push(q);
-    }
-  }
+  const rows=(z.oneXBetDerivativeSamples||[]).slice(0,40);
   derivativeDiagnostic.sports[sport]={
-    realtimeLeagueCount:z.pinnacleRealtimeLeagueCount||0,
-    realtimeError:z.pinnacleRealtimeError||null,
+    source:'owls-v1-odds-1xbet',
     sampleCount:rows.length,
     samples:rows
   };
