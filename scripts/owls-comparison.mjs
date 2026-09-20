@@ -24,7 +24,16 @@ for(const sport of SPORTS){
     // so map/round identity can be recovered without pretending normalized 1xBet markets have scope.
     if(r.ok&&ESPORTS.has(sport)){
       try{
-        const leagues=[...new Set((Array.isArray(data)?data:Object.values(data||{})).flatMap(e=>[e?.league,e?.league_name,e?.sport_title]).filter(Boolean).map(String))].slice(0,8);
+        let leagues=[];
+        // /odds is keyed by sportsbook and does not reliably expose league at this level.
+        // Owls documents /events specifically for discovering event IDs and league labels.
+        try{
+          const er=await fetch(`${base}/${sport}/events`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
+          const eb=await er.json().catch(()=>({}));
+          const eventRows=Array.isArray(eb?.data)?eb.data:(Array.isArray(eb?.events)?eb.events:[]);
+          leagues=[...new Set(eventRows.map(e=>e?.league).map(x=>typeof x==='string'?x:(x?.name||'')).filter(Boolean))].slice(0,8);
+          console.log('PINNACLE_LEAGUE_DISCOVERY',sport,'events='+eventRows.length,'leagues='+leagues.length,leagues.join(' | '));
+        }catch(e){console.warn('PINNACLE_LEAGUE_DISCOVERY_ERROR',sport,String(e?.message||e));}
         const realtime=[];
         for(const league of leagues){
           const rr=await fetch(`${base}/${sport}/realtime?league=${encodeURIComponent(league)}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
