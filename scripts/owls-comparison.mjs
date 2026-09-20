@@ -42,5 +42,33 @@ for(const sport of SPORTS){
   await sleep(3300);
 }
 await fs.mkdir('data',{recursive:true});
+// Persist only a compact diagnostic view of raw Pinnacle realtime esports data.
+// The full comparison board can be too large for repository publication.
+const derivativeDiagnostic={generatedAt:new Date().toISOString(),sports:{}};
+for(const sport of [...ESPORTS]){
+  const z=sports[sport]||{};
+  const rows=[];
+  for(const pack of z.pinnacleRealtime||[]){
+    const stack=[pack?.data];
+    while(stack.length&&rows.length<100){
+      const v=stack.pop();
+      if(Array.isArray(v)){for(const q of v)stack.push(q);continue;}
+      if(!v||typeof v!=='object')continue;
+      const raw=JSON.stringify(v);
+      if(/map|round|period|handicap|total/i.test(raw)){
+        rows.push({league:pack.league,raw:v});
+        continue;
+      }
+      for(const q of Object.values(v)) if(q&&typeof q==='object') stack.push(q);
+    }
+  }
+  derivativeDiagnostic.sports[sport]={
+    realtimeLeagueCount:z.pinnacleRealtimeLeagueCount||0,
+    realtimeError:z.pinnacleRealtimeError||null,
+    sampleCount:rows.length,
+    samples:rows
+  };
+}
+await fs.writeFile('data/pinnacle-esports-derivative-debug.json',JSON.stringify(derivativeDiagnostic,null,2));
 await fs.writeFile('data/owls-comparison-latest.json',JSON.stringify({generatedAt:new Date().toISOString(),source:'Owls v1 normalized esports + sports odds',requestCountThisRun:SPORTS.length,failedSports:failures,sports},null,2));
 if(failures.length) console.warn('OWLS_PARTIAL_FAILURES',JSON.stringify(failures.map(f=>({sport:f.sport,status:f.status,error:f.error}))));
