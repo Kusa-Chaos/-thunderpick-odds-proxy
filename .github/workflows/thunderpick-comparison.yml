@@ -86,6 +86,29 @@ jobs:
           fs.writeFileSync(p,JSON.stringify(out,null,2));
           console.log('COMPACT_SCREEN_BYTES',fs.statSync(p).size,'CANDIDATES',candidates.length,'ARBS',arbScreens.length);
           NODE
+      - name: Compact comparison for repository publication
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'); const p='data/owls-comparison-latest.json';
+          const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          // Keep audit metadata plus a bounded sample of each sport/source. Full
+          // comparison data is consumed by the screener before this step.
+          function compact(v,depth=0){
+            if(depth>7) return '[truncated]';
+            if(Array.isArray(v)) return v.slice(0,60).map(x=>compact(x,depth+1));
+            if(v&&typeof v==='object'){
+              const o={}; for(const [k,val] of Object.entries(v)){
+                if(['raw','html','body','responseText'].includes(k)) continue;
+                o[k]=compact(val,depth+1);
+              } return o;
+            }
+            return v;
+          }
+          const out=compact(x);
+          out.publication={compact:true,purpose:'auditable comparison artifact; full board screened before compaction'};
+          fs.writeFileSync(p,JSON.stringify(out,null,2));
+          console.log('COMPACT_COMPARISON_BYTES',fs.statSync(p).size);
+          NODE
       - name: Freshness gate
         run: |
           node - <<'NODE'
@@ -114,7 +137,7 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          for(const p of ['data/screen-latest.json','data/scan-display-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json']) {
+          for(const p of ['data/owls-comparison-latest.json','data/screen-latest.json','data/scan-display-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json']) {
             if(!fs.existsSync(p)) throw new Error(`${p} missing`);
             const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
             if(st.size>50*1024*1024) throw new Error(`${p} too large for compact publication (${st.size} bytes)`);
