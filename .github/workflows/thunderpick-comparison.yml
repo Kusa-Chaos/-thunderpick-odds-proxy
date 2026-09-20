@@ -101,7 +101,7 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          for(const p of ['data/screen-latest.json','data/scan-display-latest.json']) {
+          for(const p of ['data/screen-latest.json','data/scan-display-latest.json','data/esports-derivative-schema.json']) {
             if(!fs.existsSync(p)) throw new Error(`${p} missing`);
             const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
             if(st.size>50*1024*1024) throw new Error(`${p} too large for compact publication (${st.size} bytes)`);
@@ -115,7 +115,7 @@ jobs:
           git config user.email 'actions@users.noreply.github.com'
           git restore scripts/screen-thunderpick-ev.mjs || true
           git restore data/owls-comparison-latest.json || true
-          git add data/screen-latest.json data/scan-display-latest.json
+          git add data/screen-latest.json data/scan-display-latest.json data/esports-derivative-schema.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Thunderpick compact comparison screen [skip ci]'
           git push origin HEAD:${GITHUB_REF_NAME}
