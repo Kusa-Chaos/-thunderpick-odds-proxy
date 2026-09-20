@@ -127,6 +127,28 @@ function arbDetector(d,outside){
  combos.sort((x,y)=>x.arbSum-y.arbSum);const best=combos[0]||null;return best?{...best,trueArb:best.arbSum<1,nearArb:best.arbSum>=1&&best.arbSum<=1.005}:null;
 }
 
+
+// Diagnostic: capture real outside esports derivative market schemas when exact matcher still returns zero.
+const derivativeSchemaSamples={};
+for(const sport of SPORTS){
+ const samples=[];
+ for(const row of outsideEvents(sport)){
+  for(const bm of row.event?.bookmakers||[]){
+   for(const m of bm.markets||[]){
+    const raw=[m.key,m.name,m.title,m.description,m.specifiers,m.market_name,m.marketName,m.period,m.period_name,m.scope,m.group].filter(v=>v!=null).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ');
+    if(/map|round/i.test(raw)){
+     samples.push({book:row.book||bm.key||bm.title,event:`${row.event?.home_team||''} vs ${row.event?.away_team||''}`,key:m.key||null,name:m.name||null,title:m.title||null,description:m.description||null,specifiers:m.specifiers||null,period:m.period||m.period_name||null,scope:m.scope||null,outcomes:(m.outcomes||[]).slice(0,3)});
+     if(samples.length>=40)break;
+    }
+   }
+   if(samples.length>=40)break;
+  }
+  if(samples.length>=40)break;
+ }
+ derivativeSchemaSamples[sport]=samples;
+}
+await fs.writeFile('data/esports-derivative-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeSchemaSamples},null,2));
+
 const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();
 const eligibleBySport={},matchedBySport={},marketTypeCounts={};
 for(const sport of SPORTS){
