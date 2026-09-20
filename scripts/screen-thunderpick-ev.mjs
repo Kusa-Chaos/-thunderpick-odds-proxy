@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 const tp=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
 const cmp=JSON.parse(await fs.readFile('data/owls-comparison-latest.json','utf8'));
 let meta=null; try{meta=JSON.parse(await fs.readFile('data/owls-meta.json','utf8'));}catch{}
-const SPORTS=['cs2','dota2','lol','valorant'];
+const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];
 const now=Date.now(), horizon=now+15*24*3600e3;
 
 const aliases=new Map([
@@ -19,7 +19,7 @@ function norm(s=''){
 function stripLine(s=''){return String(s).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$/,'').replace(/\s+[+-]\d+(?:\.\d+)?\s*$/,'').trim();}
 function pairKey(a,b){return [norm(a),norm(b)].sort().join('|');}
 function tpEvents(sport){return tp?.sports?.[sport]?.data?.data||[];}
-function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data||{};const out=[];for(const [book,events] of Object.entries(data)){if(Array.isArray(events))for(const e of events)out.push({book,event:e});}return out;}
+function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data;const out=[];const seen=new Set();function walk(v,bookHint='owls'){if(!v)return;if(Array.isArray(v)){for(const x of v)walk(x,bookHint);return;}if(typeof v!=='object')return;if(v.home_team&&v.away_team&&Array.isArray(v.bookmakers)){const id=String(v.id||v.eventId||`${v.home_team}|${v.away_team}|${v.commence_time||''}`);for(const bm of (v.bookmakers.length?v.bookmakers:[{key:bookHint}])){const k=`${id}|${bm.key||bm.title||bookHint}`;if(seen.has(k))continue;seen.add(k);out.push({book:bm.key||bm.title||bookHint,event:{...v,bookmakers:[bm]}});}return;}for(const [k,x] of Object.entries(v))walk(x,k||bookHint);}walk(data);return out;}
 function n(v){if(v===null||v===undefined||v==='')return null;const x=Number(v);return Number.isFinite(x)?x:null;}
 function close(a,b,tol=.001){if(a==null||b==null)return false;return Math.abs(Number(a)-Number(b))<=tol;}
 function specNumber(spec='',key){const m=String(spec).match(new RegExp(`${key}=([+-]?\\d+(?:\\.\\d+)?)`,'i'));return m?Number(m[1]):null;}
@@ -83,7 +83,7 @@ function makeSelections(m,key,e){
 function tpMarkets(e){
  const out=[];
  if(n(e?.market?.home?.odds)>1&&n(e?.market?.away?.odds)>1)out.push({key:'h2h',label:'Match Winner',scope:{map:null,round:null},selections:[{name:e.market.home.name,role:'home',odds:n(e.market.home.odds),point:null},{name:e.market.away.name,role:'away',odds:n(e.market.away.odds),point:null}]});
- for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections});}
+ for(const m of e?.preferredMarkets||[]){if(/\bplayer\b/i.test(`${m.nickName||''} ${m.name||''}`))continue;const key=classifyMarket(m);if(!key)continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections});}
  const seen=new Set();return out.filter(m=>{const k=`${m.key}|${m.scope.map??''}|${m.scope.round??''}|${m.selections.map(s=>`${norm(stripLine(s.name))}:${s.odds}:${s.point}`).join('|')}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
 function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmakers||[]){for(const m of bm.markets||[]){{
@@ -102,6 +102,12 @@ function findOutcome(outcomes,sel,key){
  if(key==='totals'||key==='round_totals'){if(sel.point==null)return null;return outcomes.find(o=>String(o.name||'').toLowerCase()===sel.role&&n(o.point)!=null&&close(n(o.point),sel.point));}
  if(key==='spreads'||key==='round_handicap'){if(sel.point==null)return null;return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name))&&n(o.point)!=null&&close(n(o.point),sel.point));}
  return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name)));
+}
+function exactContractKey(sport,event,d){
+ const teams=pairKey(event?.home_team||event?.teams?.home?.name||'',event?.away_team||event?.teams?.away?.name||'');
+ const map=d.scope?.map??''; const round=d.scope?.round??'';
+ const pts=(d.selections||[]).map(x=>x.point==null?'':Number(x.point)).join('/');
+ return [sport,teams,d.key,'map='+map,'round='+round,'points='+pts,'pregame'].join('|');
 }
 function quoteFor(row,d){
  const found=[];
@@ -161,7 +167,7 @@ const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const match
 const eligibleBySport={},matchedBySport={},marketTypeCounts={};
 for(const sport of SPORTS){
  eligibleBySport[sport]=0;matchedBySport[sport]=0;
- const idx=new Map();for(const row of outsideEvents(sport)){const e=row.event;if(e.status&&e.status!=='scheduled')continue;const k=pairKey(e.home_team,e.away_team);if(!idx.has(k))idx.set(k,[]);idx.get(k).push(row);}
+ const idx=new Map();for(const row of outsideEvents(sport)){const e=row.event;if(e.live===true||String(e.status||'').toLowerCase()==='live')continue;const k=pairKey(e.home_team,e.away_team);if(!idx.has(k))idx.set(k,[]);idx.get(k).push(row);}
  for(const e of tpEvents(sport)){
   const t=Date.parse(e.startTime);if(!Number.isFinite(t)||t<now||t>horizon||e.isLive)continue;
   const markets=tpMarkets(e);if(!markets.length)continue;eligibleEvents++;eligibleBySport[sport]++;
@@ -189,7 +195,7 @@ for(const sport of SPORTS){
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
    const pA=base.reduce((s,x)=>s+x.a,0)/base.length,pB=base.reduce((s,x)=>s+x.b,0)/base.length;
    const evA=d.selections[0].odds*pA-1,evB=d.selections[1].odds*pB-1,arbScreen=arbDetector(d,saneOutside);
-   const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
+   const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,exactContractKey:exactContractKey(sport,e,d),marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
    if(row.plausible)marketTypeCounts[d.key].candidates++;all.push(row);
   }
   if(eventMatched){matchedEventIds.add(`${sport}:${e.id}`);matchedBySport[sport]++;}
