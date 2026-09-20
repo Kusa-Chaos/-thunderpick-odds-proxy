@@ -51,19 +51,6 @@ jobs:
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: node scripts/propline-enrich.mjs
-      - name: Enable supported sports in scanner
-        run: |
-          python - <<'PY'
-          p='scripts/screen-thunderpick-ev.mjs'; s=open(p).read()
-          s=s.replace("const SPORTS=['cs2','dota2','lol','valorant'];", "const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];")
-          old="function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data||{};const out=[];for(const [book,events] of Object.entries(data)){if(Array.isArray(events))for(const e of events)out.push({book,event:e});}return out;}"
-          new="function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data;const out=[];const seen=new Set();function walk(v,bookHint='owls'){if(!v)return;if(Array.isArray(v)){for(const x of v)walk(x,bookHint);return;}if(typeof v!=='object')return;if(v.home_team&&v.away_team&&Array.isArray(v.bookmakers)){const id=String(v.id||v.eventId||`${v.home_team}|${v.away_team}|${v.commence_time||''}`);const books=v.bookmakers.length?v.bookmakers:[{key:bookHint}];for(const bm of books){const key=`${id}|${bm.key||bm.title||bookHint}`;if(seen.has(key))continue;seen.add(key);out.push({book:bm.key||bm.title||bookHint,event:{...v,bookmakers:[bm]}});}return;}for(const [k,x] of Object.entries(v))walk(x,k||bookHint);}walk(data);return out;}"
-          if old not in s: raise SystemExit('outsideEvents signature not found')
-          s=s.replace(old,new)
-          s=s.replace("if(e.status&&e.status!=='scheduled')continue;const k=pairKey(e.home_team,e.away_team);", "if(e.live===true||String(e.status||'').toLowerCase()==='live')continue;const k=pairKey(e.home_team,e.away_team);")
-          s=s.replace("for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);", "for(const m of e?.preferredMarkets||[]){if(/\\bplayer\\b/i.test(`${m.nickName||''} ${m.name||''}`))continue;const key=classifyMarket(m);")
-          open(p,'w').write(s)
-          PY
       - name: Screen Thunderpick against outside boards
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Build visible scan summary
