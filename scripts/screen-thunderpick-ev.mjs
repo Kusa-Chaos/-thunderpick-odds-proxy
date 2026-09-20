@@ -43,7 +43,12 @@ function extractPoint(sel={},market={},key,role){
  }
  return null;
 }
-function scopeFromText(text=''){const map=String(text).match(/\bmap\s*(\d+)\b/i);const round=String(text).match(/\bround\s*(\d+)\b/i);return{map:map?Number(map[1]):null,round:round?Number(round[1]):null};}
+function scopeFromText(text=''){
+ const t=String(text);
+ const map=t.match(/(?:\bmap|mapnr|map_number|mapnumber|game)\s*(?:=|:|#|-)?\s*(\d+)\b/i);
+ const round=t.match(/(?:\bround|roundnr|round_number|roundnumber)\s*(?:=|:|#|-)?\s*(\d+)\b/i);
+ return{map:map?Number(map[1]):null,round:round?Number(round[1]):null};
+}
 function classifyMarket(m={}){
  const text=`${m.nickName||''} ${m.name||''}`.toLowerCase();
  if(/round/.test(text)&&/(handicap|spread)/.test(text))return 'round_handicap';
@@ -81,8 +86,18 @@ function tpMarkets(e){
  for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections});}
  const seen=new Set();return out.filter(m=>{const k=`${m.key}|${m.scope.map??''}|${m.scope.round??''}|${m.selections.map(s=>`${norm(stripLine(s.name))}:${s.odds}:${s.point}`).join('|')}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
-function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmakers||[]){for(const m of bm.markets||[]){if(m.key===key)found.push({bookmaker:bm.key||bm.title,market:m});}}return found;}
-function outsideScope(m={}){return scopeFromText(`${m.name||''} ${m.title||''} ${m.description||''} ${m.specifiers||''}`);}
+function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmakers||[]){for(const m of bm.markets||[]){{
+ const mk=String(m.key||'').toLowerCase().replace(/[- ]/g,'_');
+ const wanted=key==='map_winner'?['map_winner','map_moneyline','map_h2h','map_match_winner']:
+  key==='round_handicap'?['round_handicap','round_spread','rounds_handicap','rounds_spread']:
+  key==='round_totals'?['round_totals','round_total','total_rounds','rounds_total']:
+  [key];
+ if(wanted.includes(mk))found.push({bookmaker:bm.key||bm.title,market:m});
+}}}return found;}
+function outsideScope(m={}){
+ const raw=[m.name,m.title,m.description,m.specifiers,m.key,m.market_name,m.marketName,m.period,m.period_name,m.periodName,m.scope,m.group,m.group_name].filter(v=>v!=null).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ');
+ return scopeFromText(raw);
+}
 function findOutcome(outcomes,sel,key){
  if(key==='totals'||key==='round_totals'){if(sel.point==null)return null;return outcomes.find(o=>String(o.name||'').toLowerCase()===sel.role&&n(o.point)!=null&&close(n(o.point),sel.point));}
  if(key==='spreads'||key==='round_handicap'){if(sel.point==null)return null;return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name))&&n(o.point)!=null&&close(n(o.point),sel.point));}
