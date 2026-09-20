@@ -5,6 +5,7 @@ const API_KEY=(process.env.OWLS_API_KEY||'').replace(/\s+/g,'');
 if(!API_KEY) throw new Error('OWLS_API_KEY missing');
 // Owls v1 canonical sport keys. Esports stay first priority.
 const SPORTS=['cs2','dota2','lol','valorant','nfl','mlb','nba','soccer','tennis'];
+const ESPORTS=new Set(['cs2','dota2','lol','valorant']);
 const base='https://api.owlsinsight.com/api/v1';
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const hash=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
@@ -19,6 +20,23 @@ for(const sport of SPORTS){
     const data=body?.data??null;
     const eventCount=Array.isArray(data)?data.length:(data&&typeof data==='object'?Object.keys(data).length:0);
     sports[sport]={ok:r.ok,status:r.status,fetchedAt:new Date().toISOString(),hash:h,changedSincePrevious:previous?.sports?.[sport]?.hash!==h,eventCount,meta:body?.meta??null,data};
+    // Owls docs expose Pinnacle esports in raw realtime wire format. Keep it separately
+    // so map/round identity can be recovered without pretending normalized 1xBet markets have scope.
+    if(r.ok&&ESPORTS.has(sport)){
+      try{
+        const leagues=[...new Set((Array.isArray(data)?data:Object.values(data||{})).flatMap(e=>[e?.league,e?.league_name,e?.sport_title]).filter(Boolean).map(String))].slice(0,8);
+        const realtime=[];
+        for(const league of leagues){
+          const rr=await fetch(`${base}/${sport}/realtime?league=${encodeURIComponent(league)}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
+          if(!rr.ok)continue;
+          const rt=await rr.json();
+          realtime.push({league,data:rt?.data??rt});
+          await sleep(350);
+        }
+        sports[sport].pinnacleRealtime=realtime;
+        sports[sport].pinnacleRealtimeLeagueCount=realtime.length;
+      }catch(e){sports[sport].pinnacleRealtimeError=String(e?.message||e);}
+    }
     if(!r.ok) { failures.push({sport,status:r.status,body}); console.error('OWLS_FAIL',sport,r.status,JSON.stringify(body).slice(0,500)); }
   }catch(e){sports[sport]={ok:false,status:null,fetchedAt:new Date().toISOString(),error:String(e?.message||e),eventCount:0,data:null};failures.push({sport,error:String(e?.message||e)});console.error('OWLS_ERROR',sport,String(e?.message||e));}
   await sleep(3300);
