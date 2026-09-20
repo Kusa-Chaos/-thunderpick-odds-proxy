@@ -123,8 +123,7 @@ jobs:
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git restore scripts/screen-thunderpick-ev.mjs || true
-          git restore data/owls-comparison-latest.json || true
-          git add data/screen-latest.json data/scan-display-latest.json data/esports-derivative-schema.json data/pinnacle-esports-derivative-debug.json
+          git add data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/esports-derivative-schema.json data/pinnacle-esports-derivative-debug.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Thunderpick compact comparison screen [skip ci]'
           git push origin HEAD:${GITHUB_REF_NAME}
