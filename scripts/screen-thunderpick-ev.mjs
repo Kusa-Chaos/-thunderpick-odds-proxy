@@ -105,9 +105,17 @@ function findOutcome(outcomes,sel,key){
 }
 function quoteFor(row,d){
  const found=[];
+ const eventHome=row.event?.home_team,eventAway=row.event?.away_team;
+ const pairAligned=pairKey(eventHome,eventAway)===pairKey(d.selections[0]?.name,d.selections[1]?.name);
+ if(!pairAligned && !['totals','round_totals'].includes(d.key)) return found;
  for(const c of outsideMarkets(row.event,d.key)){
   const outs=c.market?.outcomes||[];if(outs.length<2)continue;
   const a=findOutcome(outs,d.selections[0],d.key),b=findOutcome(outs,d.selections[1],d.key);if(!a||!b)continue;
+  if(!['totals','round_totals'].includes(d.key)){
+   const aName=norm(stripLine(a.name)),bName=norm(stripLine(b.name));
+   const ta=norm(stripLine(d.selections[0].name)),tb=norm(stripLine(d.selections[1].name));
+   if(aName!==ta||bName!==tb||aName===bName)continue;
+  }
   const pa=n(a.price),pb=n(b.price);if(!(pa>1&&pb>1))continue;
   const os=outsideScope(c.market);let identityVerified=true,identityReason=null;
   if((d.key==='map_winner'||d.key==='round_totals'||d.key==='round_handicap')&&(d.scope.map!=null||d.scope.round!=null)){
@@ -161,7 +169,14 @@ for(const sport of SPORTS){
   for(const d of markets){
    eligibleMarkets++;marketTypeCounts[d.key]??={eligible:0,matched:0,candidates:0};marketTypeCounts[d.key].eligible++;
    const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));if(!outside.length)continue;
-   const saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
+   let saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
+   // Provider orientation guard: when 3+ books disagree on which named team is
+   // favorite, discard the minority orientation before EV/arb calculations.
+   if(!['totals','round_totals'].includes(d.key)&&saneOutside.length>=3){
+    const votes=saneOutside.map(q=>Math.sign(q.b-q.a)).filter(Boolean);
+    const direction=Math.sign(votes.reduce((s,x)=>s+x,0));
+    if(direction) saneOutside=saneOutside.filter(q=>Math.sign(q.b-q.a)===direction);
+   }
    if(saneOutside.length<2)continue;
    matchedMarkets++;marketTypeCounts[d.key].matched++;eventMatched=true;
    const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
