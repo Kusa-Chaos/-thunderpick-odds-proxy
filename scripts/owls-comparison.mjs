@@ -227,18 +227,19 @@ function fanaticsExact(body){
 function stakeExact(body){
  const out=[]; const events=Array.isArray(body?.data)?body.data:Object.values(body?.data||{});
  for(const ev of events){
-  const home=ev?.event?.teams?.home?.name||ev?.teams?.home?.name||ev?.homeName;
-  const away=ev?.event?.teams?.away?.name||ev?.teams?.away?.name||ev?.awayName;
-  if(!home||!away)continue;
-  const markets=[...(ev?.markets||[]),...(ev?.event?.markets||[])];
+  const home=ev?.home?.name||ev?.teams?.home?.name||ev?.homeName||ev?.competitors?.[0]?.name;
+  const away=ev?.away?.name||ev?.teams?.away?.name||ev?.awayName||ev?.competitors?.[1]?.name;
+  const title=ev?.name||ev?.title||ev?.eventName||'';
+  const pair=(home&&away)?[home,away]:teamsFromTitle(title); if(!pair)continue;
+  const markets=Array.isArray(ev?.markets)?ev.markets:[];
   const exact=[];
   for(const m of markets){
-   const text=`${m.name||''} ${m.title||''} ${m.marketName||''}`; const sc=scopedKey(text);
-   if(!sc||sc.map==null||sc.key!=='map_winner')continue;
-   const os=(m.outcomes||[]).map(o=>({name:o.name,price:Number(o.odds)})).filter(o=>o.name&&o.price>1);
-   if(os.length===2)exact.push({key:'map_winner',name:m.name||m.title,title:m.title||m.name,period:`Map ${sc.map}`,scope:{map:sc.map,round:null},outcomes:os});
+   const text=`${m.name||''} ${m.title||''} ${m.marketName||''} ${m.periodName||''}`;
+   const sc=scopedKey(text); if(!sc||sc.key!=='map_winner'||sc.map==null)continue;
+   const os=(m.outcomes||[]).map(o=>({name:String(o.name||o.title||o.label||'').trim(),price:Number(o.odds)})).filter(o=>o.name&&o.price>1&&o.active!==false);
+   if(os.length===2)exact.push({key:'map_winner',name:m.name||m.title||`Map ${sc.map} Winner`,title:m.title||m.name||`Map ${sc.map} Winner`,period:`Map ${sc.map}`,scope:{map:sc.map,round:null},outcomes:os});
   }
-  if(exact.length)out.push({id:`stake:${ev.id||ev?.event?.id||home+'-'+away}`,home_team:home,away_team:away,commence_time:ev?.event?.startTime||ev?.startTime||null,live:Boolean(ev?.event?.isLive||ev?.isLive),bookmakers:[{key:'stake-v2',title:'Stake v2',markets:exact}]});
+  if(exact.length)out.push({id:`stake:${ev.id||title}`,home_team:pair[0],away_team:pair[1],commence_time:ev?.startTime||ev?.start_time||null,live:Boolean(ev?.isLive||ev?.live),bookmakers:[{key:'stake-v2',title:'Stake v2',markets:exact}]});
  }
  return out;
 }
@@ -272,6 +273,7 @@ function kalshiExact(body){
 try{
  const exact=[];
  for(const spec of [{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'},{book:'fanaticsmarkets',sport:'cs2'},{book:'stake',sport:'cs2'}]){
+  if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body)); continue;}
   let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
