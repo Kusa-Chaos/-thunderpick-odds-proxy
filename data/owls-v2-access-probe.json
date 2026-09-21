@@ -1,62 +1,43 @@
 {
-  "generatedAt": "2026-09-21T05:58:37.503Z",
+  "generatedAt": "2026-09-21T06:05:26.422Z",
   "tests": {
     "pinnacle": {
       "leagues": {
-        "status": 200,
-        "ok": true
+        "status": 429,
+        "ok": false
       },
-      "leagueShape": "array",
+      "leagueShape": "object",
       "leaguePreview": [],
-      "leagueKeys": []
+      "leagueKeys": [
+        "error",
+        "limit",
+        "resetAt",
+        "message"
+      ],
+      "league": "error",
+      "board": {
+        "status": 429,
+        "ok": false
+      }
     },
     "kalshi": {
       "leagues": {
-        "status": 200,
-        "ok": true
+        "status": 429,
+        "ok": false
       },
-      "leagueShape": "array",
-      "leaguePreview": [
-        {
-          "leagueKey": "kxcs2map",
-          "leagueName": "KXCS2MAP",
-          "updatedAt": 1789970292849,
-          "marketCount": 324
-        },
-        {
-          "leagueKey": "kxcs2game",
-          "leagueName": "KXCS2GAME",
-          "updatedAt": 1789970292545,
-          "marketCount": 180
-        },
-        {
-          "leagueKey": "kxcs2totalmaps",
-          "leagueName": "KXCS2TOTALMAPS",
-          "updatedAt": 1789970292690,
-          "marketCount": 81
-        },
-        {
-          "leagueKey": "kxcs2",
-          "leagueName": "KXCS2",
-          "updatedAt": 1789970292513,
-          "marketCount": 8
-        }
-      ],
+      "leagueShape": "object",
+      "leaguePreview": [],
       "leagueKeys": [
-        "0",
-        "1",
-        "2",
-        "3"
+        "error",
+        "limit",
+        "resetAt",
+        "message"
       ],
-      "league": "kxcs2map",
+      "league": "error",
       "board": {
-        "status": 200,
-        "ok": true
-      },
-      "hasMap": true,
-      "hasRound": false,
-      "hasTopics": false,
-      "sample": "{\"success\":true,\"sport\":\"cs2\",\"league\":\"kxcs2map\",\"marketCount\":324,\"etag\":\"41fcd55da9085fb11e77850ffee0ef365625ed78\",\"data\":{\"kxcs2map-26sep210400dramassins-1-drama\":{\"can_close_early\":true,\"close_time\":\"2026-09-23T08:00:00Z\",\"created_time\":\"2026-09-19T00:11:46.176718Z\",\"custom_strike\":{\"esports_competitor\":\"abd5cbdd-5333-4cdc-b265-503da0195e3a\"},\"early_close_condition\":\"This market will close and expire after a winner is declared.\",\"event_ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-1\",\"exchange_index\":0,\"expected_expiration_time\":\"2026-09-21T11:00:00Z\",\"expiration_time\":\"2026-09-23T08:00:00Z\",\"expiration_value\":\"\",\"last_price_dollars\":\"0.0000\",\"latest_expiration_time\":\"2026-09-23T08:00:00Z\",\"liquidity_dollars\":\"0.0000\",\"market_type\":\"binary\",\"no_ask_dollars\":\"0.9100\",\"no_bid_dollars\":\"0.1300\",\"no_sub_title\":\"Drama eSports\",\"notional_value_dollars\":\"1.0000\",\"occurrence_datetime\":\"2026-09-21T11:00:00Z\",\"open_interest_fp\":\"0.00\",\"open_time\":\"2026-09-19T00:26:00Z\",\"previous_price_dollars\":\"0.0000\",\"previous_yes_ask_dollars\":\"0.9400\",\"previous_yes_bid_dollars\":\"0.0600\",\"price_level_structure\":\"linear_cent\",\"price_ranges\":[{\"end\":\"1.0000\",\"start\":\"0.0000\",\"step\":\"0.0100\"}],\"result\":\"\",\"rules_primary\":\"If Drama eSports wins map 1 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT, then the market resolves to Yes.\",\"rules_secondary\":\"The following market refers to map 1 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT\\nIf the relevant match or map is postponed and not started within 48 hours of its originally scheduled start time, the market will resolve to the fair market price.\\nIf the relevant match is cancelled before play begins, the market will resolve to the fair market price.\\nIf the relevant map is cancelled before play begins, the market will resolve to the fair market price.\\nIf a match is forfeited before any play occurs, the market will resolve to the fair market price.\\nIf a map is forfeited before any play occurs in the map, the market will resolve to the fair market price.\\nIf a map begins and is subsequently forfeited, the market will resolve according to the official result published by the governing body or tournament organizer.\\n\\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.\",\"settlement_timer_seconds\":119,\"status\":\"active\",\"strike_type\":\"structured\",\"ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-1-DRAMA\",\"title\":\"Drama eSports wins map 1\",\"updated_time\":\"2026-09-19T00:26:00.080738Z\",\"volume_24h_fp\":\"0.00\",\"volume_fp\":\"0.00\",\"yes_ask_dollars\":\"0.8700\",\"yes_ask_size_fp\":\"501.00\",\"yes_bid_dollars\":\"0.0900\",\"yes_bid_size_fp\":\"30.00\",\"yes_sub_title\":\"Drama eSports\"},\"kxcs2map-26sep210400dramassins-1-ssins\":{\"can_close_early\":true,\"close_time\":\"2026-09-23T08:00:00Z\",\"created_time\":\"2026-09-19T00:11:46.176718Z\",\"custom_strike\":{\"esports_competitor\":\"3fae11b4-7c8b-483c-87b0-e0c660585bc9\"},\"early_close_condition\":\"This market will close and expire after a winner is declared.\",\"event_ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-1\",\"exchange_index\":0,\"expected_expiration_time\":\"2026-09-21T11:00:00Z\",\"expiration_time\":\"2026-09-23T08:00:00Z\",\"expiration_value\":\"\",\"last_price_dollars\":\"0.0000\",\"latest_expiration_time\":\"2026-09-23T08:00:00Z\",\"liquidity_dollars\":\"0.0000\",\"market_type\":\"binary\",\"no_ask_dollars\":\"0.9200\",\"no_bid_dollars\":\"0.2700\",\"no_sub_title\":\"Saint Sinners\",\"notional_value_dollars\":\"1.0000\",\"occurrence_datetime\":\"2026-09-21T11:00:00Z\",\"open_interest_fp\":\"0.00\",\"open_time\":\"2026-09-19T00:26:00Z\",\"previous_price_dollars\":\"0.0000\",\"previous_yes_ask_dollars\":\"0.9200\",\"previous_yes_bid_dollars\":\"0.0800\",\"price_level_structure\":\"linear_cent\",\"price_ranges\":[{\"end\":\"1.0000\",\"start\":\"0.0000\",\"step\":\"0.0100\"}],\"result\":\"\",\"rules_primary\":\"If Saint Sinners wins map 1 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT, then the market resolves to Yes.\",\"rules_secondary\":\"The following market refers to map 1 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT\\nIf the relevant match or map is postponed and not started within 48 hours of its originally scheduled start time, the market will resolve to the fair market price.\\nIf the relevant match is cancelled before play begins, the market will resolve to the fair market price.\\nIf the relevant map is cancelled before play begins, the market will resolve to the fair market price.\\nIf a match is forfeited before any play occurs, the market will resolve to the fair market price.\\nIf a map is forfeited before any play occurs in the map, the market will resolve to the fair market price.\\nIf a map begins and is subsequently forfeited, the market will resolve according to the official result published by the governing body or tournament organizer.\\n\\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.\",\"settlement_timer_seconds\":119,\"status\":\"active\",\"strike_type\":\"structured\",\"ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-1-SSINS\",\"title\":\"Saint Sinners wins map 1\",\"updated_time\":\"2026-09-19T00:26:00.080738Z\",\"volume_24h_fp\":\"0.00\",\"volume_fp\":\"0.00\",\"yes_ask_dollars\":\"0.7300\",\"yes_ask_size_fp\":\"75.00\",\"yes_bid_dollars\":\"0.0800\",\"yes_bid_size_fp\":\"1.00\",\"yes_sub_title\":\"Saint Sinners\"},\"kxcs2map-26sep210400dramassins-2-drama\":{\"can_close_early\":true,\"close_time\":\"2026-09-23T08:00:00Z\",\"created_time\":\"2026-09-19T00:11:46.996428Z\",\"custom_strike\":{\"esports_competitor\":\"abd5cbdd-5333-4cdc-b265-503da0195e3a\"},\"early_close_condition\":\"This market will close and expire after a winner is declared.\",\"event_ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-2\",\"exchange_index\":0,\"expected_expiration_time\":\"2026-09-21T11:00:00Z\",\"expiration_time\":\"2026-09-23T08:00:00Z\",\"expiration_value\":\"\",\"last_price_dollars\":\"0.0000\",\"latest_expiration_time\":\"2026-09-23T08:00:00Z\",\"liquidity_dollars\":\"0.0000\",\"market_type\":\"binary\",\"no_ask_dollars\":\"0.9000\",\"no_bid_dollars\":\"0.2600\",\"no_sub_title\":\"Drama eSports\",\"notional_value_dollars\":\"1.0000\",\"occurrence_datetime\":\"2026-09-21T11:00:00Z\",\"open_interest_fp\":\"0.00\",\"open_time\":\"2026-09-19T00:26:00Z\",\"previous_price_dollars\":\"0.0000\",\"previous_yes_ask_dollars\":\"0.8800\",\"previous_yes_bid_dollars\":\"0.0600\",\"price_level_structure\":\"linear_cent\",\"price_ranges\":[{\"end\":\"1.0000\",\"start\":\"0.0000\",\"step\":\"0.0100\"}],\"result\":\"\",\"rules_primary\":\"If Drama eSports wins map 2 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT, then the market resolves to Yes.\",\"rules_secondary\":\"The following market refers to map 2 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT\\nIf the relevant match or map is postponed and not started within 48 hours of its originally scheduled start time, the market will resolve to the fair market price.\\nIf the relevant match is cancelled before play begins, the market will resolve to the fair market price.\\nIf the relevant map is cancelled before play begins, the market will resolve to the fair market price.\\nIf a match is forfeited before any play occurs, the market will resolve to the fair market price.\\nIf a map is forfeited before any play occurs in the map, the market will resolve to the fair market price.\\nIf a map begins and is subsequently forfeited, the market will resolve according to the official result published by the governing body or tournament organizer.\\n\\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.\",\"settlement_timer_seconds\":119,\"status\":\"active\",\"strike_type\":\"structured\",\"ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-2-DRAMA\",\"title\":\"Drama eSports wins map 2\",\"updated_time\":\"2026-09-19T00:26:00.080738Z\",\"volume_24h_fp\":\"0.00\",\"volume_fp\":\"0.00\",\"yes_ask_dollars\":\"0.7400\",\"yes_ask_size_fp\":\"1.00\",\"yes_bid_dollars\":\"0.1000\",\"yes_bid_size_fp\":\"501.00\",\"yes_sub_title\":\"Drama eSports\"},\"kxcs2map-26sep210400dramassins-2-ssins\":{\"can_close_early\":true,\"close_time\":\"2026-09-23T08:00:00Z\",\"created_time\":\"2026-09-19T00:11:46.996428Z\",\"custom_strike\":{\"esports_competitor\":\"3fae11b4-7c8b-483c-87b0-e0c660585bc9\"},\"early_close_condition\":\"This market will close and expire after a winner is declared.\",\"event_ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-2\",\"exchange_index\":0,\"expected_expiration_time\":\"2026-09-21T11:00:00Z\",\"expiration_time\":\"2026-09-23T08:00:00Z\",\"expiration_value\":\"\",\"last_price_dollars\":\"0.0000\",\"latest_expiration_time\":\"2026-09-23T08:00:00Z\",\"liquidity_dollars\":\"0.0000\",\"market_type\":\"binary\",\"no_ask_dollars\":\"0.9200\",\"no_bid_dollars\":\"0.2700\",\"no_sub_title\":\"Saint Sinners\",\"notional_value_dollars\":\"1.0000\",\"occurrence_datetime\":\"2026-09-21T11:00:00Z\",\"open_interest_fp\":\"0.00\",\"open_time\":\"2026-09-19T00:26:00Z\",\"previous_price_dollars\":\"0.0000\",\"previous_yes_ask_dollars\":\"0.9300\",\"previous_yes_bid_dollars\":\"0.0700\",\"price_level_structure\":\"linear_cent\",\"price_ranges\":[{\"end\":\"1.0000\",\"start\":\"0.0000\",\"step\":\"0.0100\"}],\"result\":\"\",\"rules_primary\":\"If Saint Sinners wins map 2 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT, then the market resolves to Yes.\",\"rules_secondary\":\"The following market refers to map 2 in the European Pro League Series 9 2026: Drama eSports vs. Saint Sinners CS2 match originally scheduled for Sep 21, 2026 at 4:00 AM EDT\\nIf the relevant match or map is postponed and not started within 48 hours of its originally scheduled start time, the market will resolve to the fair market price.\\nIf the relevant match is cancelled before play begins, the market will resolve to the fair market price.\\nIf the relevant map is cancelled before play begins, the market will resolve to the fair market price.\\nIf a match is forfeited before any play occurs, the market will resolve to the fair market price.\\nIf a map is forfeited before any play occurs in the map, the market will resolve to the fair market price.\\nIf a map begins and is subsequently forfeited, the market will resolve according to the official result published by the governing body or tournament organizer.\\n\\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.\",\"settlement_timer_seconds\":119,\"status\":\"active\",\"strike_type\":\"structured\",\"ticker\":\"KXCS2MAP-26SEP210400DRAMASSINS-2-SSINS\",\"title\":\"Saint Sinners wins map 2\",\"updated_time\":\"2026-09-19T00:26:00.080738Z\",\"volume_24h_fp\":\"0.00\",\"volume_fp\":\"0.00\",\"yes_ask_dollars\":\"0.7300\",\"yes_ask_size_fp\":\"1.00\",\"yes_bid_dollars\":\"0.0800\",\"yes_bid_size_fp\":\"1.00\",\"yes_sub_title\":\"Saint Sinners\"},\"kxcs2map-26sep210400spartabrute-1-brute\":{\"can_close_early\":true,\"close_time\":\"2026-09-23T08:00:00Z\",\"created_time\":\"2026-09-20T23:01:14.723223Z\",\"custom_strike\":{\"esports_competitor\":\"0beb18d7-c396-446e-933f-a62d17cdb5f1\"},\"early_close_condition\":\"This market will close and expire after a winner is declared.\",\"event_ticker\":\"KXCS2MAP-26SEP210400SPARTABRUTE-1\",\"exchange_index\":0,\"expected_expiration_time\":\"2026-09-21T11:00:00Z\",\"expiration_time\":\"2026-09-23T08:00:00Z\",\"expiration_value\":\"\",\"last_price_dollars\":\"0.0000\",\"latest_expiration_time\":\"2026-09-23T08:00:00Z\",\"liqui"
+        "status": 429,
+        "ok": false
+      }
     },
     "polymarket": {
       "leagues": {
