@@ -129,6 +129,22 @@ try{
  console.log('FANATICS_TARGETED_DIAGNOSTIC',JSON.stringify(d));
 }catch(e){console.warn('FANATICS_TARGETED_DIAGNOSTIC_ERROR',String(e?.stack||e));}
 
+// Targeted 4casters esports probe for exact CS2 Map Winner contracts.
+try{
+ const paths=['/4casters/esports/leagues','/4casters/esports'];
+ const d=[];
+ for(const path of paths){
+  try{
+   const r=await fetch('https://api.owlsinsight.com/api/v2'+path,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+   const txt=await r.text(); let body; try{body=JSON.parse(txt)}catch{body={raw:txt.slice(0,1000)}}
+   const raw=JSON.stringify(body);
+   d.push({path,status:r.status,ok:r.ok,topKeys:Object.keys(body||{}).slice(0,20),hasCS2:/counter.?strike|\bcs2\b/i.test(raw),hasMap:/\bmap\s*[12345]\b/i.test(raw),bytes:raw.length,sample:raw.slice(0,16000)});
+  }catch(e){d.push({path,status:null,ok:false,error:String(e?.stack||e?.message||e)});}
+ }
+ sports.cs2.fourcastersDiagnostic=d;
+ console.log('FOURCASTERS_ESPORTS_DIAGNOSTIC',JSON.stringify(d));
+}catch(e){console.warn('FOURCASTERS_ESPORTS_DIAGNOSTIC_ERROR',String(e?.stack||e));}
+
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
