@@ -168,10 +168,11 @@ try{
  console.log('THIRD_SOURCE_PROBE',JSON.stringify(rows));
 }catch(e){console.warn('THIRD_SOURCE_PROBE_ERROR',String(e?.message||e));}
 
+let stakeCachedBody=null;
 // Stake CS2 raw Map Winner diagnostic: capture exact native market names/outcomes.
 try{
  const r=await fetch('https://api.owlsinsight.com/api/v2/stake/cs2',{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
- const body=await r.json().catch(()=>({}));
+ const body=await r.json().catch(()=>({})); stakeCachedBody=body;
  const hits=[];
  for(const ev of (Array.isArray(body?.data)?body.data:[])){
   for(const m of (Array.isArray(ev?.markets)?ev.markets:[])){
@@ -290,7 +291,7 @@ function kalshiExact(body){
 try{
  const exact=[];
  for(const spec of [{book:'stake',sport:'cs2'},{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'},{book:'fanaticsmarkets',sport:'cs2'}]){
-  if(spec.book==='stake'){const br=await v2get('/stake/cs2'); console.log('STAKE_FETCH',br.ok,br.status,br.body?.count,br.body?.meta?.status,br.error||''); if(br.ok){const parsed=stakeExact(br.body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),br.body?.meta?.status,br.body?.meta?.ageSeconds);} continue;}
+  if(spec.book==='stake'){const body=stakeCachedBody; console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;}
   let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
