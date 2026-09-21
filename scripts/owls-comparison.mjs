@@ -125,20 +125,20 @@ function kalshiExact(body){
 }
 try{
  const exact=[];
- for(const spec of [{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'}]){
+ for(const spec of [{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'}]){
   const lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok)continue;
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
    const league=typeof row==='string'?row:(row?.leagueKey||row?.key||row?.slug||row?.id); if(!league)continue;
    const br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`); if(!br.ok)continue;
-   exact.push(...(spec.book==='polymarket'?polyExact(br.body):kalshiExact(br.body)));
+   if(spec.book==='polymarket') exact.push(...polyExact(br.body)); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body));
    await sleep(300);
   }
  }
  sports.cs2 ||= {ok:true,status:200,data:{}};
  sports.cs2.exactV2=exact;
  sports.cs2.exactV2EventCount=exact.length;
- console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length);
+ console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length,'PINNACLE_LEAGUES',JSON.stringify((await v2get('/pinnacle/esports/leagues')).body?.data||[]).slice(0,1000));
 }catch(e){console.warn('OWLS_V2_EXACT_ERROR',String(e?.message||e));}
 
 await fs.mkdir('data',{recursive:true});
