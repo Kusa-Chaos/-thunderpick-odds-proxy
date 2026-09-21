@@ -61,7 +61,7 @@ jobs:
             let league=null;
             if(Array.isArray(rows)){
               const first=rows[0];
-              league=typeof first==='string'?first:(first?.key||first?.slug||first?.leagueKey||first?.league_key||first?.id||null);
+              league=typeof first==='string'?first:(first?.key||first?.slug||first?.leagueKey||first?.league_key||first?.id||first?.league||first?.tag||first?.value||first?.name||null);
             } else if(rows && typeof rows==='object') {
               const entries=Object.entries(rows).filter(([k])=>!['etag','timestamp','generatedAt','count','status'].includes(k));
               const first=entries[0];
@@ -70,7 +70,7 @@ jobs:
                 league=(v&&typeof v==='object'&&(v.key||v.slug||v.leagueKey||v.league_key||v.id))||k;
               }
             }
-            out.tests[book].leagueShape=Array.isArray(rows)?'array':typeof rows;
+            out.tests[book].leagueShape=Array.isArray(rows)?'array':typeof rows; out.tests[book].leaguePreview=Array.isArray(rows)?rows.slice(0,5):[];
             out.tests[book].leagueKeys=rows&&typeof rows==='object'?Object.keys(rows).slice(0,20):[];
             if(league){
               const board=await get('/'+book+'/'+sport+'?league='+encodeURIComponent(String(league)));
