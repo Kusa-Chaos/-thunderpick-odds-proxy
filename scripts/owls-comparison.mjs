@@ -57,6 +57,36 @@ for(const sport of SPORTS){
   await sleep(3300);
 }
 
+// Probe Pinnacle v1 realtime against league names discoverable from the current
+// Thunderpick CS2 board. This is diagnostic until the wire format proves exact map scope.
+try{
+  const tp=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
+  const leagueNames=new Set();
+  const stack=[tp?.sports?.cs2?.data??tp?.sports?.cs2??tp];
+  while(stack.length){
+    const v=stack.pop();
+    if(Array.isArray(v)){for(const q of v)stack.push(q);continue;}
+    if(!v||typeof v!=='object')continue;
+    for(const [k,val] of Object.entries(v)){
+      if(/league|tournament|competition/i.test(k)&&typeof val==='string'&&val.trim().length>2&&val.length<100)leagueNames.add(val.trim());
+      if(val&&typeof val==='object')stack.push(val);
+    }
+  }
+  const probes=[]; const candidates=[...leagueNames].slice(0,12);
+  for(const league of candidates){
+    try{
+      const r=await fetch(`${base}/cs2/realtime?league=${encodeURIComponent(league)}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
+      const body=await r.json().catch(()=>({}));
+      const data=Array.isArray(body?.data)?body.data:[];
+      probes.push({league,status:r.status,available:body?.meta?.available??null,events:data.length,freshness:body?.meta?.freshness??null,sample:data.slice(0,2)});
+      if(data.length) break;
+    }catch(e){probes.push({league,error:String(e?.message||e),events:0});}
+    await sleep(250);
+  }
+  sports.cs2.pinnacleRealtimeProbe={candidateLeagues:candidates,probes};
+  console.log('PINNACLE_REALTIME_PROBE',JSON.stringify(probes.map(x=>({league:x.league,status:x.status,available:x.available,events:x.events,freshness:x.freshness}))));
+}catch(e){console.warn('PINNACLE_REALTIME_PROBE_ERROR',String(e?.message||e));}
+
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
