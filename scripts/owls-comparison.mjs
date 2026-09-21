@@ -289,8 +289,8 @@ function kalshiExact(body){
 }
 try{
  const exact=[];
- for(const spec of [{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'},{book:'fanaticsmarkets',sport:'cs2'},{book:'stake',sport:'cs2'}]){
-  if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok){const parsed=stakeExact(br.body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),br.body?.meta?.status,br.body?.meta?.ageSeconds);} continue;}
+ for(const spec of [{book:'stake',sport:'cs2'},{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'},{book:'fanaticsmarkets',sport:'cs2'}]){
+  if(spec.book==='stake'){const br=await v2get('/stake/cs2'); console.log('STAKE_FETCH',br.ok,br.status,br.body?.count,br.body?.meta?.status,br.error||''); if(br.ok){const parsed=stakeExact(br.body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),br.body?.meta?.status,br.body?.meta?.ageSeconds);} continue;}
   let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
