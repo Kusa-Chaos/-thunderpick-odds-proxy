@@ -61,7 +61,7 @@ for(const sport of SPORTS){
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
   try{
-    const r=await fetch(v2base+path,{headers:{Authorization:\`Bearer \${API_KEY}\`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+    const r=await fetch(v2base+path,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
     const text=await r.text(); let body; try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}}
     return {ok:r.ok,status:r.status,body};
   }catch(e){return {ok:false,status:null,error:String(e?.message||e)}}
@@ -87,37 +87,37 @@ function polyExact(body){
   const pair=teamsFromTitle(ev?.title||''); if(!pair)continue;
   const markets=[];
   for(const m of ev?.markets||[]){
-   const sc=scopedKey(\`\${m.groupItemTitle||''} \${m.question||''} \${m.description||''}\`); if(!sc||sc.map==null)continue;
+   const sc=scopedKey(`${m.groupItemTitle||''} ${m.question||''} ${m.description||''}`); if(!sc||sc.map==null)continue;
    const names=arr(m.outcomes), prices=arr(m.outcomePrices).map(Number); if(names.length!==2||prices.length!==2)continue;
    const outcomes=names.map((name,i)=>({name,price:decOdds(prices[i])})); if(outcomes.some(x=>!(x.price>1)))continue;
-   markets.push({key:sc.key,name:m.groupItemTitle||m.question,title:m.question,description:m.description,period:\`Map \${sc.map}\`,scope:{map:sc.map,round:sc.round},last_update:m.updatedAt||ev.updatedAt||null,outcomes});
+   markets.push({key:sc.key,name:m.groupItemTitle||m.question,title:m.question,description:m.description,period:`Map ${sc.map}`,scope:{map:sc.map,round:sc.round},last_update:m.updatedAt||ev.updatedAt||null,outcomes});
   }
-  if(markets.length)out.push({id:\`polymarket:\${ev.id||ev.slug}\`,home_team:pair[0],away_team:pair[1],commence_time:ev.eventStartTime||ev.endDate||null,live:false,bookmakers:[{key:'polymarket-v2',title:'Polymarket v2',markets}]});
+  if(markets.length)out.push({id:`polymarket:${ev.id||ev.slug}`,home_team:pair[0],away_team:pair[1],commence_time:ev.eventStartTime||ev.endDate||null,live:false,bookmakers:[{key:'polymarket-v2',title:'Polymarket v2',markets}]});
  }
  return out;
 }
 function kalshiExact(body){
  const groups=new Map();
  for(const m of Object.values(body?.data||{})){
-  const text=\`\${m.title||''} \${m.rules_primary||''}\`; const sc=scopedKey(text); if(!sc||sc.map==null||sc.key!=='map_winner')continue;
+  const text=`${m.title||''} ${m.rules_primary||''}`; const sc=scopedKey(text); if(!sc||sc.map==null||sc.key!=='map_winner')continue;
   const pairMatch=String(m.rules_primary||'').match(/:\s*(.+?)\s+vs\.?\s+(.+?)\s+CS2 match/i); if(!pairMatch)continue;
-  const pair=[pairMatch[1].trim(),pairMatch[2].trim()]; const k=\`\${pair[0]}|\${pair[1]}|map\${sc.map}\`;
+  const pair=[pairMatch[1].trim(),pairMatch[2].trim()]; const k=`${pair[0]}|${pair[1]}|map${sc.map}`;
   if(!groups.has(k))groups.set(k,{pair,map:sc.map,rows:[]});
   const p=Number(m.yes_ask_dollars); const name=m.yes_sub_title||String(m.title||'').replace(/\s+wins map.*$/i,'').trim();
   if(p>0&&p<1)groups.get(k).rows.push({name,price:decOdds(p)});
  }
  const out=[];
- for(const [k,g] of groups){if(g.rows.length!==2)continue;out.push({id:'kalshi:'+k,home_team:g.pair[0],away_team:g.pair[1],live:false,bookmakers:[{key:'kalshi-v2',title:'Kalshi v2',markets:[{key:'map_winner',name:\`Map \${g.map} Winner\`,period:\`Map \${g.map}\`,scope:{map:g.map,round:null},outcomes:g.rows}]}]});}
+ for(const [k,g] of groups){if(g.rows.length!==2)continue;out.push({id:'kalshi:'+k,home_team:g.pair[0],away_team:g.pair[1],live:false,bookmakers:[{key:'kalshi-v2',title:'Kalshi v2',markets:[{key:'map_winner',name:`Map ${g.map} Winner`,period:`Map ${g.map}`,scope:{map:g.map,round:null},outcomes:g.rows}]}]});}
  return out;
 }
 try{
  const exact=[];
  for(const spec of [{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'}]){
-  const lr=await v2get(\`/\${spec.book}/\${spec.sport}/leagues\`); if(!lr.ok)continue;
+  const lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok)continue;
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
    const league=typeof row==='string'?row:(row?.leagueKey||row?.key||row?.slug||row?.id); if(!league)continue;
-   const br=await v2get(\`/\${spec.book}/\${spec.sport}?league=\${encodeURIComponent(String(league))}\`); if(!br.ok)continue;
+   const br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`); if(!br.ok)continue;
    exact.push(...(spec.book==='polymarket'?polyExact(br.body):kalshiExact(br.body)));
    await sleep(300);
   }
