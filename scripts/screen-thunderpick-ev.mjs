@@ -55,7 +55,7 @@ function classifyMarket(m={}){
  if(/round/.test(text)&&/total/.test(text))return 'round_totals';
  if(!/round/.test(text)&&/(handicap|spread)/.test(text))return 'spreads';
  if(!/round/.test(text)&&/total/.test(text))return 'totals';
- if(/map/.test(text)&&/\bwinner\b/.test(text))return 'map_winner';
+ if(/map/.test(text)&&/\bwinner\b/.test(text)&&!/round/.test(text))return 'map_winner';
  if(/\b(winner|moneyline)\b/.test(text)&&!(/map|round/.test(text)))return 'h2h';
  return null;
 }
