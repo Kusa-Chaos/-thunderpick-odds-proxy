@@ -145,6 +145,29 @@ try{
  console.log('FOURCASTERS_ESPORTS_DIAGNOSTIC',JSON.stringify(d));
 }catch(e){console.warn('FOURCASTERS_ESPORTS_DIAGNOSTIC_ERROR',String(e?.stack||e));}
 
+// Probe every documented v2 source/sport pair that could plausibly carry CS2,
+// using the source manifest sport keys rather than guessed cs2 routes.
+try{
+ const candidates=[
+  ['4casters','esports'],['bet365','esports'],['bet105','esports'],['betus','esports'],
+  ['bookmaker','esports'],['bovada','esports'],['draftkings','esports'],['lowvig','esports'],
+  ['mybookie','esports'],['novig','esports'],['thescore','esports'],['versus','esports'],
+  ['stake','cs2'],['fanaticsmarkets','cs2']
+ ];
+ const rows=[];
+ for(const [book,sport] of candidates){
+  try{
+   const r=await fetch(`https://api.owlsinsight.com/api/v2/${book}/${sport}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
+   const txt=await r.text(); let b; try{b=JSON.parse(txt)}catch{b={raw:txt.slice(0,500)}}
+   const raw=JSON.stringify(b);
+   rows.push({book,sport,status:r.status,ok:r.ok,statusText:b?.meta?.status??null,count:b?.count??b?.marketCount??null,hasCS2:/counter.?strike|\bcs2\b/i.test(raw),hasMap:/\bmap\s*[12345]\b/i.test(raw),hasMapWinner:/map.{0,20}winner|winner.{0,20}map/i.test(raw),bytes:raw.length});
+  }catch(e){rows.push({book,sport,status:null,ok:false,error:String(e?.cause?.code||e?.message||e)});}
+  await sleep(200);
+ }
+ sports.cs2.thirdSourceProbe=rows;
+ console.log('THIRD_SOURCE_PROBE',JSON.stringify(rows));
+}catch(e){console.warn('THIRD_SOURCE_PROBE_ERROR',String(e?.message||e));}
+
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
