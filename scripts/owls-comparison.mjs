@@ -126,6 +126,24 @@ function polyExact(body){
  }
  return out;
 }
+function stakeExact(body){
+ const out=[]; const events=Array.isArray(body?.data)?body.data:Object.values(body?.data||{});
+ for(const ev of events){
+  const home=ev?.event?.teams?.home?.name||ev?.teams?.home?.name||ev?.homeName;
+  const away=ev?.event?.teams?.away?.name||ev?.teams?.away?.name||ev?.awayName;
+  if(!home||!away)continue;
+  const markets=[...(ev?.markets||[]),...(ev?.event?.markets||[])];
+  const exact=[];
+  for(const m of markets){
+   const text=`${m.name||''} ${m.title||''} ${m.marketName||''}`; const sc=scopedKey(text);
+   if(!sc||sc.map==null||sc.key!=='map_winner')continue;
+   const os=(m.outcomes||[]).map(o=>({name:o.name,price:Number(o.odds)})).filter(o=>o.name&&o.price>1);
+   if(os.length===2)exact.push({key:'map_winner',name:m.name||m.title,title:m.title||m.name,period:`Map ${sc.map}`,scope:{map:sc.map,round:null},outcomes:os});
+  }
+  if(exact.length)out.push({id:`stake:${ev.id||ev?.event?.id||home+'-'+away}`,home_team:home,away_team:away,commence_time:ev?.event?.startTime||ev?.startTime||null,live:Boolean(ev?.event?.isLive||ev?.isLive),bookmakers:[{key:'stake-v2',title:'Stake v2',markets:exact}]});
+ }
+ return out;
+}
 function kalshiExact(body){
  const groups=new Map();
  for(const m of Object.values(body?.data||{})){
@@ -155,20 +173,20 @@ function kalshiExact(body){
 }
 try{
  const exact=[];
- for(const spec of [{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'}]){
-  const lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok)continue;
+ for(const spec of [{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'},{book:'stake',sport:'cs2'}]){
+  let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
    const league=typeof row==='string'?row:(row?.leagueKey||row?.key||row?.slug||row?.id); if(!league)continue;
-   const br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`); if(!br.ok)continue;
-   if(spec.book==='polymarket') exact.push(...polyExact(br.body)); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body));
+   let br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`); if(!br.ok&&spec.book==='polymarket'){await sleep(1200);br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`);} if(!br.ok)continue;
+   if(spec.book==='polymarket') exact.push(...polyExact(br.body)); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body)); else if(spec.book==='stake') exact.push(...stakeExact(br.body));
    await sleep(300);
   }
  }
  sports.cs2 ||= {ok:true,status:200,data:{}};
  sports.cs2.exactV2=exact;
  sports.cs2.exactV2EventCount=exact.length;
- console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length,'PINNACLE_LEAGUES',JSON.stringify((await v2get('/pinnacle/esports/leagues')).body?.data||[]).slice(0,1000));
+ console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length,'STAKE',exact.filter(x=>String(x.id).startsWith('stake:')).length,'PINNACLE_LEAGUES',JSON.stringify((await v2get('/pinnacle/esports/leagues')).body?.data||[]).slice(0,1000));
 }catch(e){console.warn('OWLS_V2_EXACT_ERROR',String(e?.message||e));}
 
 await fs.mkdir('data',{recursive:true});
