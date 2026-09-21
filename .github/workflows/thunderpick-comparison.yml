@@ -57,10 +57,33 @@ jobs:
             const {book,sport}=spec;
             const leagues=await get('/'+book+'/'+sport+'/leagues');
             out.tests[book]={leagues:{status:leagues.status,ok:leagues.ok}};
-            const rows=leagues.body?.data||leagues.body?.leagues||[];
-            const first=Array.isArray(rows)?rows[0]:Object.entries(rows||{})[0];
-            const league=typeof first==='string'?first:(first?.key||first?.slug||first?.id||(Array.isArray(first)?first[0]:null));
-            if(league){const board=await get('/'+book+'/'+sport+'?league='+encodeURIComponent(league));out.tests[book].league=String(league);out.tests[book].board={status:board.status,ok:board.ok};if(board.ok){const raw=JSON.stringify(board.body);out.tests[book].hasMap=/map/i.test(raw);out.tests[book].hasRound=/round/i.test(raw);out.tests[book].sample=raw.slice(0,3000);}}
+            const rows=leagues.body?.data||leagues.body?.leagues||leagues.body||{};
+            let league=null;
+            if(Array.isArray(rows)){
+              const first=rows[0];
+              league=typeof first==='string'?first:(first?.key||first?.slug||first?.leagueKey||first?.league_key||first?.id||null);
+            } else if(rows && typeof rows==='object') {
+              const entries=Object.entries(rows).filter(([k])=>!['etag','timestamp','generatedAt','count','status'].includes(k));
+              const first=entries[0];
+              if(first){
+                const [k,v]=first;
+                league=(v&&typeof v==='object'&&(v.key||v.slug||v.leagueKey||v.league_key||v.id))||k;
+              }
+            }
+            out.tests[book].leagueShape=Array.isArray(rows)?'array':typeof rows;
+            out.tests[book].leagueKeys=rows&&typeof rows==='object'?Object.keys(rows).slice(0,20):[];
+            if(league){
+              const board=await get('/'+book+'/'+sport+'?league='+encodeURIComponent(String(league)));
+              out.tests[book].league=String(league);
+              out.tests[book].board={status:board.status,ok:board.ok};
+              if(board.ok){
+                const raw=JSON.stringify(board.body);
+                out.tests[book].hasMap=/map/i.test(raw);
+                out.tests[book].hasRound=/round/i.test(raw);
+                out.tests[book].hasTopics=/topics/i.test(raw);
+                out.tests[book].sample=raw.slice(0,12000);
+              }
+            }
           }
           fs.writeFileSync('data/owls-v2-access-probe.json',JSON.stringify(out,null,2));
           console.log('OWLS_V2_PROBE',JSON.stringify(out.tests));
