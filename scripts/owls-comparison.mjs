@@ -57,6 +57,7 @@ for(const sport of SPORTS){
   await sleep(3300);
 }
 
+let stakeCachedBody=null;
 // Stake CS2 raw Map Winner diagnostic: capture exact native market names/outcomes.
 try{
  const r=await fetch('https://api.owlsinsight.com/api/v2/stake/cs2',{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
