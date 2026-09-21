@@ -99,15 +99,28 @@ function polyExact(body){
 function kalshiExact(body){
  const groups=new Map();
  for(const m of Object.values(body?.data||{})){
-  const text=`${m.title||''} ${m.rules_primary||''}`; const sc=scopedKey(text); if(!sc||sc.map==null||sc.key!=='map_winner')continue;
-  const pairMatch=String(m.rules_primary||'').match(/:\s*(.+?)\s+vs\.?\s+(.+?)\s+CS2 match/i); if(!pairMatch)continue;
-  const pair=[pairMatch[1].trim(),pairMatch[2].trim()]; const k=`${pair[0]}|${pair[1]}|map${sc.map}`;
-  if(!groups.has(k))groups.set(k,{pair,map:sc.map,rows:[]});
-  const p=Number(m.yes_ask_dollars); const name=m.yes_sub_title||String(m.title||'').replace(/\s+wins map.*$/i,'').trim();
-  if(p>0&&p<1)groups.get(k).rows.push({name,price:decOdds(p)});
+  const title=String(m.title||''); const rules=String(m.rules_primary||'');
+  const map=Number((title.match(/\bmap\s*(\d+)\b/i)||rules.match(/\bmap\s*(\d+)\b/i)||[])[1]); if(!map)continue;
+  // Kalshi rules are shaped like "... Tournament: Team A vs. Team B CS2 match ...".
+  // Anchor the pair to the final colon before "vs" so tournament names containing
+  // punctuation cannot become part of the team name.
+  const pairMatch=rules.match(/:\s*([^:\n]+?)\s+vs\.?\s+([^:\n]+?)\s+CS2\s+match/i); if(!pairMatch)continue;
+  const pair=[pairMatch[1].trim(),pairMatch[2].trim()];
+  const eventTicker=String(m.event_ticker||'').toUpperCase();
+  const k=eventTicker||`${pair[0]}|${pair[1]}|map${map}`;
+  if(!groups.has(k))groups.set(k,{pair,map,rows:[],eventTicker,occurrence:m.occurrence_datetime||null});
+  const name=String(m.yes_sub_title||title.replace(/\s+wins map.*$/i,'')).trim();
+  const ask=Number(m.yes_ask_dollars), bid=Number(m.yes_bid_dollars);
+  // Use executable YES ask when present. Preserve bid/ask metadata so wide or
+  // illiquid prediction-market quotes remain auditable.
+  if(ask>0&&ask<1)groups.get(k).rows.push({name,price:decOdds(ask),ask,bid:Number.isFinite(bid)?bid:null,ticker:m.ticker||null,updatedAt:m.updated_time||null});
  }
  const out=[];
- for(const [k,g] of groups){if(g.rows.length!==2)continue;out.push({id:'kalshi:'+k,home_team:g.pair[0],away_team:g.pair[1],live:false,bookmakers:[{key:'kalshi-v2',title:'Kalshi v2',markets:[{key:'map_winner',name:`Map ${g.map} Winner`,period:`Map ${g.map}`,scope:{map:g.map,round:null},outcomes:g.rows}]}]});}
+ for(const [k,g] of groups){
+  const byTeam=new Map(); for(const r of g.rows)byTeam.set(r.name.toLowerCase(),r);
+  const rows=[...byTeam.values()]; if(rows.length!==2)continue;
+  out.push({id:'kalshi:'+k,home_team:g.pair[0],away_team:g.pair[1],commence_time:g.occurrence,live:false,bookmakers:[{key:'kalshi-v2',title:'Kalshi v2',markets:[{key:'map_winner',name:`Map ${g.map} Winner`,title:`Map ${g.map} Winner`,period:`Map ${g.map}`,scope:{map:g.map,round:null},last_update:rows.map(x=>x.updatedAt).filter(Boolean).sort().at(-1)||null,outcomes:rows.map(({name,price})=>({name,price}))}]}]});
+ }
  return out;
 }
 try{
@@ -125,7 +138,7 @@ try{
  sports.cs2 ||= {ok:true,status:200,data:{}};
  sports.cs2.exactV2=exact;
  sports.cs2.exactV2EventCount=exact.length;
- console.log('OWLS_V2_EXACT_EVENTS',exact.length);
+ console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length);
 }catch(e){console.warn('OWLS_V2_EXACT_ERROR',String(e?.message||e));}
 
 await fs.mkdir('data',{recursive:true});
