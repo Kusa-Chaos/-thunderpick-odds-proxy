@@ -163,7 +163,7 @@ for(const sport of SPORTS){
 }
 await fs.writeFile('data/esports-derivative-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeSchemaSamples},null,2));
 
-const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();
+const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();const rawExactQuoteMatchesByType={};const limitedExactComparisons=[];
 const eligibleBySport={},matchedBySport={},marketTypeCounts={};
 for(const sport of SPORTS){
  eligibleBySport[sport]=0;matchedBySport[sport]=0;
@@ -174,7 +174,7 @@ for(const sport of SPORTS){
   const rows=idx.get(pairKey(e.teams?.home?.name||e.market?.home?.name,e.teams?.away?.name||e.market?.away?.name))||[];let eventMatched=false;
   for(const d of markets){
    eligibleMarkets++;marketTypeCounts[d.key]??={eligible:0,matched:0,candidates:0};marketTypeCounts[d.key].eligible++;
-   const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));if(!outside.length)continue;
+   const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));if(!outside.length)continue; rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
    let saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
    // Provider orientation guard: when 3+ books disagree on which named team is
    // favorite, discard the minority orientation before EV/arb calculations.
@@ -189,7 +189,7 @@ for(const sport of SPORTS){
    // Require >=3 independent books for ACTION/WATCH math. A two-book screen
    // remains diagnostic only and cannot create a candidate or arbitrage.
    const uniqueBooks=new Set(saneOutside.map(q=>String(q.book||'').toLowerCase()).filter(Boolean));
-   if(saneOutside.length<3||uniqueBooks.size<3)continue;
+   if(saneOutside.length<3||uniqueBooks.size<3){if(['map_winner','round_handicap','round_totals'].includes(d.key)&&saneOutside.length){limitedExactComparisons.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:d.selections,outside:saneOutside,independentSources:uniqueBooks.size,blocker:'fewer than 3 independent exact-scope sources; SCREENING ONLY'});}continue;}
    matchedMarkets++;marketTypeCounts[d.key].matched++;eventMatched=true;
    const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
@@ -204,6 +204,6 @@ for(const sport of SPORTS){
 all.sort((x,y)=>Math.max(y.ev.a,y.ev.b)-Math.max(x.ev.a,x.ev.b));
 const arbScreens=all.filter(x=>x.identityVerified&&(x.arbScreen?.trueArb||x.arbScreen?.nearArb)).sort((a,b)=>a.arbScreen.arbSum-b.arbScreen.arbSum);
 const snapshotHealth={manifestPresent:Boolean(meta),generatedAt:meta?.generatedAt||tp.generatedAt||null,snapshotBytes:meta?.snapshotBytes??null,successfulSports:meta?.successfulSports||tp.successfulSports||[],failedSports:meta?.failedSports||tp.failedSports||[],totalEvents:meta?.totalEvents??null,totalRetainedMarkets:meta?.totalRetainedMarkets??null,sportEventCounts:Object.fromEntries(Object.entries(meta?.sports||{}).map(([sport,row])=>[sport,row?.eventCount??null])),healthy:Boolean((meta?.generatedAt||tp.generatedAt)&&!(meta?.failedSports||tp.failedSports||[]).length)};
-const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligibleEvents,matchedEvents:matchedEventIds.size,unmatchedEvents:eligibleEvents-matchedEventIds.size,eligibleMarkets,matchedMarkets,unmatchedMarkets:eligibleMarkets-matchedMarkets,eligibleBySport,matchedBySport,marketTypeCounts,arbitrageMarketsTested:matchedMarkets,arbScreenCount:arbScreens.length,arbScreens,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,100)};
+const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligibleEvents,matchedEvents:matchedEventIds.size,unmatchedEvents:eligibleEvents-matchedEventIds.size,eligibleMarkets,matchedMarkets,unmatchedMarkets:eligibleMarkets-matchedMarkets,eligibleBySport,matchedBySport,marketTypeCounts,rawExactQuoteMatchesByType,limitedExactComparisons:limitedExactComparisons.slice(0,100),arbitrageMarketsTested:matchedMarkets,arbScreenCount:arbScreens.length,arbScreens,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,100)};
 await fs.writeFile('data/screen-latest.json',JSON.stringify(output,null,2));
 console.log(`Eligible events=${eligibleEvents}, matched events=${matchedEventIds.size}, eligible markets=${eligibleMarkets}, matched markets=${matchedMarkets}, candidates=${output.candidates.length}, arbScreens=${arbScreens.length}, snapshotHealthy=${snapshotHealth.healthy}`);
