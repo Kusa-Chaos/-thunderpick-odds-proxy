@@ -244,17 +244,17 @@ function fanaticsExact(body){
 function stakeExact(body){
  const out=[]; const events=Array.isArray(body?.data)?body.data:Object.values(body?.data||{});
  for(const ev of events){
-  const home=ev?.home?.name||ev?.teams?.home?.name||ev?.homeName||ev?.competitors?.[0]?.name;
-  const away=ev?.away?.name||ev?.teams?.away?.name||ev?.awayName||ev?.competitors?.[1]?.name;
-  const title=ev?.name||ev?.title||ev?.eventName||'';
-  const pair=(home&&away)?[home,away]:teamsFromTitle(title); if(!pair)continue;
-  const markets=Array.isArray(ev?.markets)?ev.markets:[];
+  const title=String(ev?.name||ev?.title||'');
+  const pair=teamsFromTitle(title); if(!pair)continue;
   const exact=[];
-  for(const m of markets){
-   const text=`${m.name||''} ${m.title||''} ${m.marketName||''} ${m.periodName||''}`;
-   const sc=scopedKey(text); if(!sc||sc.key!=='map_winner'||sc.map==null)continue;
-   const os=(m.outcomes||[]).map(o=>({name:String(o.name||o.title||o.label||'').trim(),price:Number(o.odds)})).filter(o=>o.name&&o.price>1&&o.active!==false);
-   if(os.length===2)exact.push({key:'map_winner',name:m.name||m.title||`Map ${sc.map} Winner`,title:m.title||m.name||`Map ${sc.map} Winner`,period:`Map ${sc.map}`,scope:{map:sc.map,round:null},outcomes:os});
+  for(const m of (Array.isArray(ev?.markets)?ev.markets:[])){
+   const name=String(m?.name||m?.title||'');
+   const mm=name.match(/^Map\s+(\d+)\s+Winner\s+-\s+Twoway$/i);
+   if(!mm||String(m?.status||'active').toLowerCase()!=='active')continue;
+   const map=Number(mm[1]);
+   const os=(m.outcomes||[]).filter(o=>o?.active!==false&&String(o?.name||'').toLowerCase()!=='draw').map(o=>({name:String(o.name).trim(),price:Number(o.odds)})).filter(o=>o.name&&o.price>1);
+   if(os.length!==2)continue;
+   exact.push({key:'map_winner',name:`Map ${map} Winner`,title:`Map ${map} Winner`,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
   }
   if(exact.length)out.push({id:`stake:${ev.id||title}`,home_team:pair[0],away_team:pair[1],commence_time:ev?.startTime||ev?.start_time||null,live:Boolean(ev?.isLive||ev?.live),bookmakers:[{key:'stake-v2',title:'Stake v2',markets:exact}]});
  }
