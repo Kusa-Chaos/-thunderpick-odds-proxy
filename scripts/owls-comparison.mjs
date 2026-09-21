@@ -112,6 +112,23 @@ try{
  console.log('V2_CS2_SOURCE_DISCOVERY',JSON.stringify(discovery));
 }catch(e){console.warn('V2_CS2_SOURCE_DISCOVERY_ERROR',String(e?.message||e));}
 
+// Targeted Fanatics Markets diagnostic: capture route status/error and native shape.
+try{
+ const paths=['/fanaticsmarkets/cs2/leagues','/fanaticsmarkets/cs2'];
+ const d=[];
+ for(const path of paths){
+  const started=Date.now();
+  try{
+   const r=await fetch(v2base+path,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+   const txt=await r.text(); let body; try{body=JSON.parse(txt)}catch{body={raw:txt.slice(0,1000)}}
+   const data=body?.data;
+   d.push({path,status:r.status,ok:r.ok,ms:Date.now()-started,contentType:r.headers.get('content-type'),topKeys:body&&typeof body==='object'?Object.keys(body).slice(0,20):[],dataType:Array.isArray(data)?'array':typeof data,dataCount:Array.isArray(data)?data.length:(data&&typeof data==='object'?Object.keys(data).length:0),meta:body?.meta??null,sample:data&&typeof data==='object'?JSON.stringify(Array.isArray(data)?data.slice(0,2):Object.fromEntries(Object.entries(data).slice(0,2))).slice(0,12000):null});
+  }catch(e){d.push({path,status:null,ok:false,ms:Date.now()-started,error:String(e?.stack||e?.message||e),cause:String(e?.cause?.code||e?.cause||'')});}
+ }
+ sports.cs2.fanaticsDiagnostic=d;
+ console.log('FANATICS_TARGETED_DIAGNOSTIC',JSON.stringify(d));
+}catch(e){console.warn('FANATICS_TARGETED_DIAGNOSTIC_ERROR',String(e?.stack||e));}
+
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
