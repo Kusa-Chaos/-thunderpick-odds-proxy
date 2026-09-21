@@ -119,7 +119,7 @@ try{
  for(const path of paths){
   const started=Date.now();
   try{
-   const r=await fetch(v2base+path,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+   const r=await fetch('https://api.owlsinsight.com/api/v2'+path,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
    const txt=await r.text(); let body; try{body=JSON.parse(txt)}catch{body={raw:txt.slice(0,1000)}}
    const data=body?.data;
    d.push({path,status:r.status,ok:r.ok,ms:Date.now()-started,contentType:r.headers.get('content-type'),topKeys:body&&typeof body==='object'?Object.keys(body).slice(0,20):[],dataType:Array.isArray(data)?'array':typeof data,dataCount:Array.isArray(data)?data.length:(data&&typeof data==='object'?Object.keys(data).length:0),meta:body?.meta??null,sample:data&&typeof data==='object'?JSON.stringify(Array.isArray(data)?data.slice(0,2):Object.fromEntries(Object.entries(data).slice(0,2))).slice(0,12000):null});
