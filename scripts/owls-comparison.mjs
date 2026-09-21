@@ -62,13 +62,13 @@ for(const sport of SPORTS){
 try{
   const tp=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
   const leagueNames=new Set();
-  const stack=[tp?.sports?.cs2?.data??tp?.sports?.cs2??tp];
+  const stack=[tp?.sports?.cs2?.data?.data??tp?.sports?.cs2?.data??tp?.sports?.cs2??tp];
   while(stack.length){
     const v=stack.pop();
     if(Array.isArray(v)){for(const q of v)stack.push(q);continue;}
     if(!v||typeof v!=='object')continue;
     for(const [k,val] of Object.entries(v)){
-      if(/league|tournament|competition/i.test(k)&&typeof val==='string'&&val.trim().length>2&&val.length<100)leagueNames.add(val.trim());
+      if(/league|tournament|competition/i.test(k)&&typeof val==='string'&&val.trim().length>2&&val.length<100)leagueNames.add(val.trim()); if(['league','tournament','competition'].includes(k)&&val&&typeof val==='object'&&typeof val.name==='string')leagueNames.add(val.name.trim());
       if(val&&typeof val==='object')stack.push(val);
     }
   }
