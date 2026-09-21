@@ -87,6 +87,31 @@ try{
   console.log('PINNACLE_REALTIME_PROBE',JSON.stringify(probes.map(x=>({league:x.league,status:x.status,available:x.available,events:x.events,freshness:x.freshness}))));
 }catch(e){console.warn('PINNACLE_REALTIME_PROBE_ERROR',String(e?.message||e));}
 
+// Discover which current-plan v2 sources actually expose esports/CS2 boards.
+// This avoids guessing books one-by-one and records only compact access/shape metadata.
+try{
+ const sourceSpecs=[
+  ['fanaticsmarkets','cs2'],['bet105','esports'],['betus','esports'],['bookmaker','esports'],
+  ['bookmaker','e-gaming'],['4casters','cs2'],['novig','cs2'],['thescore','cs2'],
+  ['versus','cs2'],['stake','cs2']
+ ];
+ const discovery=[];
+ for(const [book,sport] of sourceSpecs){
+  let lr=await v2get(`/${book}/${sport}/leagues`);
+  const rows=lr.body?.data||lr.body?.leagues||lr.body||[];
+  const leagues=Array.isArray(rows)?rows:[];
+  let league=leagues.length?(typeof leagues[0]==='string'?leagues[0]:(leagues[0]?.leagueKey||leagues[0]?.key||leagues[0]?.slug||leagues[0]?.id||leagues[0]?.name)):null;
+  let br=null;
+  if(lr.ok&&league) br=await v2get(`/${book}/${sport}?league=${encodeURIComponent(String(league))}`);
+  else if(!lr.ok||!league) br=await v2get(`/${book}/${sport}`);
+  const raw=br?.ok?JSON.stringify(br.body):'';
+  discovery.push({book,sport,leagueStatus:lr.status,leagueCount:leagues.length,league:league||null,boardStatus:br?.status??null,boardOk:Boolean(br?.ok),hasMap:/\bmap\s*[12345]\b/i.test(raw),hasRound:/\bround\b/i.test(raw),bytes:raw.length});
+  await sleep(250);
+ }
+ sports.cs2.v2SourceDiscovery=discovery;
+ console.log('V2_CS2_SOURCE_DISCOVERY',JSON.stringify(discovery));
+}catch(e){console.warn('V2_CS2_SOURCE_DISCOVERY_ERROR',String(e?.message||e));}
+
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
