@@ -13,6 +13,7 @@ on:
       - 'scripts/owls-comparison.mjs'
       - 'scripts/propline-enrich.mjs'
       - 'scripts/screen-thunderpick-ev.mjs'
+      - 'data/owls-v2-access-probe.json'
       - '.github/workflows/thunderpick-comparison.yml'
 
 permissions:
@@ -40,6 +41,29 @@ jobs:
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
         run: node scripts/owls-comparison.mjs
+      - name: Probe Owls v2 raw esports access
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const key=(process.env.OWLS_API_KEY||'').trim();
+          const base='https://api.owlsinsight.com/api/v2';
+          async function get(path){
+            try{const r=await fetch(base+path,{headers:{Authorization:'Bearer '+key,Accept:'application/json'},signal:AbortSignal.timeout(20000)});const text=await r.text();let body;try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}};return {status:r.status,ok:r.ok,body};}catch(e){return {status:null,ok:false,error:String(e.message||e)}}
+          }
+          const out={generatedAt:new Date().toISOString(),tests:{}};
+          for(const book of ['pinnacle','kalshi','polymarket']){
+            const leagues=await get('/'+book+'/esports/leagues');
+            out.tests[book]={leagues:{status:leagues.status,ok:leagues.ok}};
+            const rows=leagues.body?.data||leagues.body?.leagues||[];
+            const first=Array.isArray(rows)?rows[0]:Object.entries(rows||{})[0];
+            const league=typeof first==='string'?first:(first?.key||first?.slug||first?.id||(Array.isArray(first)?first[0]:null));
+            if(league){const board=await get('/'+book+'/esports?league='+encodeURIComponent(league));out.tests[book].league=String(league);out.tests[book].board={status:board.status,ok:board.ok};if(board.ok){const raw=JSON.stringify(board.body);out.tests[book].hasMap=/map/i.test(raw);out.tests[book].hasRound=/round/i.test(raw);out.tests[book].sample=raw.slice(0,3000);}}
+          }
+          fs.writeFileSync('data/owls-v2-access-probe.json',JSON.stringify(out,null,2));
+          console.log('OWLS_V2_PROBE',JSON.stringify(out.tests));
+          NODE
       - name: Normalize OWLS sports aliases before enrichment
         run: |
           node - <<'NODE'
@@ -137,7 +161,7 @@ jobs:
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git restore scripts/screen-thunderpick-ev.mjs || true
-          git add data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/esports-derivative-schema.json data/pinnacle-esports-derivative-debug.json
+          git add data/owls-v2-access-probe.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/esports-derivative-schema.json data/pinnacle-esports-derivative-debug.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Thunderpick compact comparison screen [skip ci]'
           git push origin HEAD:${GITHUB_REF_NAME}
