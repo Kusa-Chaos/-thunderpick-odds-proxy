@@ -116,7 +116,15 @@ jobs:
           const seen=new Set(); const rows=[];
           for(const r of [...actionRows,...watchRows,...potentialRows]){const k=[r.sport,r.match,r.target,r.market].join('|');if(seen.has(k))continue;seen.add(k);rows.push(r);}
           const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},actionRows,watchRows,potentialRows,rows:rows.slice(0,100)};
-          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2)); console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length);
+          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
+          // Publish a deliberately small candidate artifact so chat/reporting clients
+          // never need to parse the multi-megabyte screen file. Keep every source-tier
+          // bucket visible, plus all current LoL rows for WSCI/EMEA inspection.
+          const compactRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,outside:(r.outside||[]).slice(0,8),fair:r.fair,arbScreen:r.arbScreen,startTime:r.startTime});
+          const lolRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.sport==='lol').map(compactRow);
+          const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},coverage:out.coverage,actionRows:actionRows.map(compactRow),watchRows:watchRows.map(compactRow),potentialRows:potentialRows.map(compactRow),lolRows};
+          fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(report,null,2));
+          console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length,'REPORT_BYTES',fs.statSync('data/scan-report-latest.json').size,'LOL_ROWS',lolRows.length);
           NODE
       - name: Compact full screen for repository publication
         run: |
@@ -180,7 +188,7 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          for(const p of ['data/owls-comparison-latest.json','data/screen-latest.json','data/scan-display-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json']) {
+          for(const p of ['data/owls-comparison-latest.json','data/screen-latest.json','data/scan-display-latest.json','data/scan-report-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json']) {
             if(!fs.existsSync(p)) throw new Error(`${p} missing`);
             const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
             if(st.size>50*1024*1024) throw new Error(`${p} too large for compact publication (${st.size} bytes)`);
@@ -193,7 +201,7 @@ jobs:
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git restore scripts/screen-thunderpick-ev.mjs || true
-          git add data/owls-v2-access-probe.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/esports-derivative-schema.json data/pinnacle-esports-derivative-debug.json data/player-props-latest.json
+          git add data/owls-v2-access-probe.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/scan-report-latest.json data/esports-derivative-schema.json data/pinnacle-esports-derivative-debug.json data/player-props-latest.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Thunderpick compact comparison screen [skip ci]'
           git push origin HEAD:${GITHUB_REF_NAME}
