@@ -153,7 +153,7 @@ function stakeExact(body){
  }
  return out;
 }
-function kalshiExact(body){
+function kalshiExact(body,sport='cs2'){
  const groups=new Map();
  for(const m of Object.values(body?.data||{})){
   const title=String(m.title||''); const rules=String(m.rules_primary||'');
@@ -161,7 +161,9 @@ function kalshiExact(body){
   // Kalshi rules are shaped like "... Tournament: Team A vs. Team B CS2 match ...".
   // Anchor the pair to the final colon before "vs" so tournament names containing
   // punctuation cannot become part of the team name.
-  const pairMatch=rules.match(/:\s*([^:\n]+?)\s+vs\.?\s+([^:\n]+?)\s+CS2\s+match/i); if(!pairMatch)continue;
+  const titlePattern=sport==='lol'?'(?:League\\s+of\\s+Legends|LoL)':sport==='valorant'?'VALORANT':sport==='dota2'?'Dota\\s*2':'CS2';
+  const pairRe=new RegExp(':\\s*([^:\\n]+?)\\s+vs\\.?\\s+([^:\\n]+?)\\s+'+titlePattern+'\\s+match','i');
+  const pairMatch=rules.match(pairRe)||rules.match(/:\s*([^:\n]+?)\s+vs\.?\s+([^:\n]+?)\s+(?:esports\s+)?match/i); if(!pairMatch)continue;
   const pair=[pairMatch[1].trim(),pairMatch[2].trim()];
   const eventTicker=String(m.event_ticker||'').toUpperCase();
   const k=eventTicker||`${pair[0]}|${pair[1]}|map${map}`;
@@ -198,7 +200,7 @@ try{
   for(const row of (Array.isArray(leagues)?leagues:[])){
    const league=typeof row==='string'?row:(row?.leagueKey||row?.key||row?.slug||row?.id); if(!league)continue;
    let br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`); if(!br.ok&&spec.book==='polymarket'){await sleep(1200);br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`);} if(!br.ok)continue;
-   if(spec.book==='polymarket') exact.push(...polyExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='fanaticsmarkets') exact.push(...fanaticsExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='stake') exact.push(...stakeExact(br.body).map(e=>({...e,_sourceSport:spec.sport})));
+   if(spec.book==='polymarket') exact.push(...polyExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body,spec.sport).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='fanaticsmarkets') exact.push(...fanaticsExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='stake') exact.push(...stakeExact(br.body).map(e=>({...e,_sourceSport:spec.sport})));
    await sleep(300);
   }
  }
