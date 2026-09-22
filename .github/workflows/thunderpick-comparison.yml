@@ -122,7 +122,12 @@ jobs:
           // bucket visible, plus all current LoL rows for WSCI/EMEA inspection.
           const compactRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,outside:(r.outside||[]).slice(0,8),fair:r.fair,arbScreen:r.arbScreen,startTime:r.startTime});
           const lolRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.sport==='lol').map(compactRow);
-          const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},coverage:out.coverage,actionRows:actionRows.map(compactRow),watchRows:watchRows.map(compactRow),potentialRows:potentialRows.map(compactRow),lolRows};
+          // Keep this file genuinely small/readable. Full tier counts remain in counts;
+          // publish bounded top rows plus every LoL candidate for explicit WSCI/EMEA review.
+          const topAction=actionRows.slice(0,20).map(compactRow);
+          const topWatch=watchRows.slice(0,30).map(compactRow);
+          const topPotential=potentialRows.slice(0,30).map(compactRow);
+          const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows};
           fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(report,null,2));
           console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length,'REPORT_BYTES',fs.statSync('data/scan-report-latest.json').size,'LOL_ROWS',lolRows.length);
           NODE
