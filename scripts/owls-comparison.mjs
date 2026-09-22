@@ -57,11 +57,13 @@ for(const sport of SPORTS){
   await sleep(3300);
 }
 
-let stakeCachedBody=null;
-// Stake CS2 raw Map Winner diagnostic: capture exact native market names/outcomes.
+// Cache exact-source v2 responses per run so enrichment never repeats the same request.
+const v2ResponseCache=new Map();
+let stakeCachedBodies={};
+// Stake raw Map Winner diagnostic: capture exact native market names/outcomes.: capture exact native market names/outcomes.
 try{
  const r=await fetch('https://api.owlsinsight.com/api/v2/stake/cs2',{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
- const body=await r.json().catch(()=>({})); stakeCachedBody=body;
+ const body=await r.json().catch(()=>({})); stakeCachedBodies.cs2=body;
  const hits=[];
  for(const ev of (Array.isArray(body?.data)?body.data:[])){
   for(const m of (Array.isArray(ev?.markets)?ev.markets:[])){
@@ -78,11 +80,12 @@ try{
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
 async function v2get(path){
+  if(v2ResponseCache.has(path)) return v2ResponseCache.get(path);
   try{
     const r=await fetch(v2base+path,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
     const text=await r.text(); let body; try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}}
-    return {ok:r.ok,status:r.status,body};
-  }catch(e){return {ok:false,status:null,error:String(e?.message||e)}}
+    const out={ok:r.ok,status:r.status,body}; v2ResponseCache.set(path,out); return out;
+  }catch(e){const out={ok:false,status:null,error:String(e?.message||e)};v2ResponseCache.set(path,out);return out}
 }
 function arr(v){if(Array.isArray(v))return v;try{return JSON.parse(v)}catch{return []}}
 function decOdds(p){const x=Number(p);return x>0&&x<1?1/x:null}
@@ -179,8 +182,17 @@ function kalshiExact(body){
 }
 try{
  const exact=[];
- for(const spec of [{book:'stake',sport:'cs2'},{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'},{book:'fanaticsmarkets',sport:'cs2'}]){
-  if(spec.book==='stake'){const body=stakeCachedBody; console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;}
+ const exactSpecs=[];
+ for(const sport of ['cs2','lol','valorant','dota2']){
+  exactSpecs.push({book:'stake',sport},{book:'polymarket',sport},{book:'kalshi',sport},{book:'fanaticsmarkets',sport});
+ }
+ // Pinnacle is queried once as its esports source is cross-title.
+ exactSpecs.push({book:'pinnacle',sport:'esports'});
+ for(const spec of exactSpecs){
+  if(spec.book==='stake'){
+   let body=stakeCachedBodies[spec.sport];
+   if(!body){const br=await v2get(`/stake/${spec.sport}`); if(br.ok){body=br.body;stakeCachedBodies[spec.sport]=body;}}
+ console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',spec.sport,parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;}
   let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
@@ -190,9 +202,19 @@ try{
    await sleep(300);
   }
  }
- sports.cs2 ||= {ok:true,status:200,data:{}};
- sports.cs2.exactV2=exact;
- sports.cs2.exactV2EventCount=exact.length;
+ // Route exact events back to their matching title instead of putting every
+ // esports quote under CS2. This is required for LoL/WSCI, Valorant and Dota2.
+ for(const sport of ['cs2','lol','valorant','dota2']){
+  sports[sport] ||= {ok:true,status:200,data:{}};
+  const needles=sport==='cs2'?[/cs2/i]:sport==='lol'?[/\blol\b/i,/league of legends/i]:sport==='valorant'?[/valorant/i]:[/dota\s*2/i];
+  const scoped=exact.filter(e=>needles.some(rx=>rx.test(JSON.stringify(e))));
+  sports[sport].exactV2=scoped;
+  sports[sport].exactV2EventCount=scoped.length;
+ }
+ // Keep unclassified exact events available to CS2 only when their source explicitly
+ // came from the CS2 endpoint; never leak LoL/Valorant/Dota2 events across sports.
+ sports.cs2.exactV2=exact.filter(e=>!/\b(lol|league of legends|valorant|dota\s*2)\b/i.test(JSON.stringify(e)));
+ sports.cs2.exactV2EventCount=sports.cs2.exactV2.length;
  console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length,'FANATICS',exact.filter(x=>String(x.id).startsWith('fanaticsmarkets:')).length,'STAKE',exact.filter(x=>String(x.id).startsWith('stake:')).length,'PINNACLE_LEAGUES',JSON.stringify((await v2get('/pinnacle/esports/leagues')).body?.data||[]).slice(0,1000));
 }catch(e){console.warn('OWLS_V2_EXACT_ERROR',String(e?.message||e));}
 
