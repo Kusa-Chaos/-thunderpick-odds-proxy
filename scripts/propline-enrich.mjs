@@ -71,7 +71,7 @@ function ensureBucket(sport){cmp.sports??={};cmp.sports[sport]??={ok:true,status
 
 let inserted=0,matchedEvents=0,requestCount=0;const books=new Set(),feedStats=[];let quota={used:null,remaining:null,reset:null};
 for(const feed of FEEDS){
- const wanted=feed.markets||'h2h,spreads,totals';
+ const wanted=feed.markets||'h2h,spreads,totals,player_props';
  let r=await fetch(`${base}/sports/${feed.api}/odds?markets=${encodeURIComponent(wanted)}&period=all`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
  requestCount++;quota={used:Number(r.headers.get('x-daily-used'))||quota.used,remaining:Number(r.headers.get('x-daily-remaining'))||quota.remaining,reset:r.headers.get('x-daily-reset')||quota.reset};
  if(!r.ok&&feed.api==='esports'){
@@ -94,7 +94,7 @@ for(const feed of FEEDS){
    matchedEvents++;feedMatched++;
    for(const bm of e.bookmakers||[]){
     const bookKey=`propline:${bm.key||bm.title||'unknown'}`,markets=[];
-    for(const m of bm.markets||[]){if(!['h2h','spreads','totals','map_winner','round_handicap','round_totals'].includes(m.key))continue;const outcomes=(m.outcomes||[]).map(o=>{let name=o.name;if(m.key!=='totals'){if(sameTeam(o.name,e.home_team))name=tpMatch.home;else if(sameTeam(o.name,e.away_team))name=tpMatch.away;}return {...o,source_name:o.name,name,price:dec(o.price)};}).filter(o=>o.price>1);if(outcomes.length<2)continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
+    for(const m of bm.markets||[]){if(!['h2h','spreads','totals','map_winner','round_handicap','round_totals'].includes(m.key)&&!/player/i.test(String(m.key||'')))continue;const outcomes=(m.outcomes||[]).map(o=>{let name=o.name;if(m.key!=='totals'){if(sameTeam(o.name,e.home_team))name=tpMatch.home;else if(sameTeam(o.name,e.away_team))name=tpMatch.away;}return {...o,source_name:o.name,name,price:dec(o.price)};}).filter(o=>o.price>1);if(outcomes.length<2)continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
     if(!markets.length)continue;
     // Canonicalize team display names to Thunderpick after a unique identity match so the downstream exact pair join is stable.
     const normalized={...e,home_team:tpMatch.home,away_team:tpMatch.away,status:e.live?'live':'scheduled',sourceLeague:feed.api,bookmakers:[{...bm,key:bookKey,title:bm.title||bm.key,markets}]};
