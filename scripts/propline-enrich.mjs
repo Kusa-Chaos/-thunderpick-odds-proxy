@@ -72,12 +72,12 @@ function ensureBucket(sport){cmp.sports??={};cmp.sports[sport]??={ok:true,status
 let inserted=0,matchedEvents=0,requestCount=0;const books=new Set(),feedStats=[];let quota={used:null,remaining:null,reset:null};
 for(const feed of FEEDS){
  const wanted=feed.markets||'h2h,spreads,totals';
- let r=await fetch(`${base}/sports/${feed.api}/odds?markets=${encodeURIComponent(wanted)}`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+ let r=await fetch(`${base}/sports/${feed.api}/odds?markets=${encodeURIComponent(wanted)}&period=all`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
  requestCount++;quota={used:Number(r.headers.get('x-daily-used'))||quota.used,remaining:Number(r.headers.get('x-daily-remaining'))||quota.remaining,reset:r.headers.get('x-daily-reset')||quota.reset};
  if(!r.ok&&feed.api==='esports'){
    const err=await r.text();
    console.warn('PROPLINE_ESPORTS_DERIVATIVE_QUERY_FAILED',r.status,err.slice(0,300));
-   r=await fetch(`${base}/sports/${feed.api}/odds?markets=h2h,spreads,totals`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+   r=await fetch(`${base}/sports/${feed.api}/odds?markets=h2h,spreads,totals&period=all`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
    requestCount++;quota={used:Number(r.headers.get('x-daily-used'))||quota.used,remaining:Number(r.headers.get('x-daily-remaining'))||quota.remaining,reset:r.headers.get('x-daily-reset')||quota.reset};
  }
  if(!r.ok){const text=await r.text();feedStats.push({feed:feed.api,ok:false,status:r.status,error:text.slice(0,200)});continue;}
