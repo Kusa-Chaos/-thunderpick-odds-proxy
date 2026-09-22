@@ -66,6 +66,9 @@ function scopeFromText(text=''){
 }
 function classifyMarket(m={}){
  const text=`${m.nickName||''} ${m.name||''}`.toLowerCase();
+ // Compound/correlated props are not interchangeable with a plain total/spread.
+ // Fail closed until an outside source exposes the same compound contract.
+ if(/\b(to win and|win and total|winner and total|and total games|and total points)\b/i.test(text))return null;
  if(/round/.test(text)&&/(handicap|spread)/.test(text))return 'round_handicap';
  if(/round/.test(text)&&/total/.test(text))return 'round_totals';
  if(!/round/.test(text)&&/(handicap|spread)/.test(text))return 'spreads';
@@ -109,8 +112,23 @@ function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmak
   [key];
  if(wanted.includes(mk))found.push({bookmaker:bm.key||bm.title,market:m});
 }}}return found;}
+function periodScope(text=''){
+ const t=String(text).toLowerCase();
+ const innings=(t.match(/(?:first|1st)\s*(\d+)\s*innings?/)||t.match(/\b(\d+)\s*innings?\b/))?.[1];
+ const set=(t.match(/(?:first|1st|set)\s*(?:set\s*)?(\d+)/)||t.match(/\bset\s*(\d+)\b/))?.[1];
+ const quarter=(t.match(/(?:quarter|q)\s*(\d+)/))?.[1];
+ const half=(t.match(/(?:half|h)\s*(\d+)/))?.[1];
+ if(innings)return 'innings:'+Number(innings);
+ if(set)return 'set:'+Number(set);
+ if(quarter)return 'quarter:'+Number(quarter);
+ if(half)return 'half:'+Number(half);
+ if(/first\s*half|1st\s*half/.test(t))return 'half:1';
+ if(/second\s*half|2nd\s*half/.test(t))return 'half:2';
+ return 'full';
+}
+function marketIdentityText(m={}){return [m.nickName,m.name,m.title,m.description,m.specifiers,m.market_name,m.marketName,m.period,m.period_name,m.periodName,m.scope,m.group,m.group_name].filter(v=>v!=null).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ');}
 function outsideScope(m={}){
- const raw=[m.name,m.title,m.description,m.specifiers,m.key,m.market_name,m.marketName,m.period,m.period_name,m.periodName,m.scope,m.group,m.group_name].filter(v=>v!=null).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ');
+ const raw=marketIdentityText(m);
  return scopeFromText(raw);
 }
 function findOutcome(outcomes,sel,key){
@@ -136,6 +154,13 @@ function quoteFor(row,d){
  // contract. This is the main fail-closed guard against giant false EV.
  if(!orientationAligned && !['totals','round_totals'].includes(d.key)) return found;
  for(const c of outsideMarkets(row.event,d.key)){
+  // Period identity is mandatory for totals/spreads. A 1st-7-innings total,
+  // set total, quarter line, etc. can never fall back to a full-game market.
+  if(['totals','spreads'].includes(d.key)){
+   const tpPeriod=periodScope(d.label||'');
+   const outPeriod=periodScope(marketIdentityText(c.market));
+   if(tpPeriod!==outPeriod)continue;
+  }
   const outs=c.market?.outcomes||[];if(outs.length<2)continue;
   const a=findOutcome(outs,d.selections[0],d.key),b=findOutcome(outs,d.selections[1],d.key);if(!a||!b)continue;
   if(!['totals','round_totals'].includes(d.key)){
