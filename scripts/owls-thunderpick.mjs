@@ -11,6 +11,7 @@ const TARGET_MARKET=/(winner|moneyline|handicap|spread|total|map|round|correct s
 const MAX_MARKETS_PER_EVENT=160;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function readPreviousMeta(){try{return JSON.parse(await fs.readFile(metaPath,'utf8'));}catch{return null;}}
+async function readPreviousSnapshot(){try{return JSON.parse(await fs.readFile(outPath,'utf8'));}catch{return null;}}
 const stableHash=v=>crypto.createHash('sha256').update(JSON.stringify(v)).digest('hex');
 function toEvents(p){if(Array.isArray(p))return p;if(Array.isArray(p?.data))return p.data;if(Array.isArray(p?.events))return p.events;if(p?.data&&typeof p.data==='object')return Object.values(p.data);return [];}
 const scalar=v=>['string','number','boolean'].includes(typeof v)?v:null;
@@ -21,18 +22,28 @@ function keepMarket(m={}){const text=`${m?.nickName||''} ${m?.name||''}`;const s
 function dedupeMarkets(ms){const seen=new Set(),out=[];for(const m of ms){const k=`${m.id??''}|${m.name??''}|${m.nickName??''}|${m.baseLine??''}|${m.specifiers??''}|${(m.selections||[]).map(s=>`${s.id??''}:${s.odds??''}:${s.handicap??''}:${s.total??''}`).join(',')}`;if(seen.has(k))continue;seen.add(k);out.push(m);if(out.length>=MAX_MARKETS_PER_EVENT)break;}return out;}
 function compactEvent(e={}){const preferred=Array.isArray(e.preferredMarkets)?e.preferredMarkets.filter(keepMarket).map(compactMarket):[];const deep=Array.isArray(e.markets)?e.markets.filter(keepMarket).map(compactMarket):[];const allMarkets=dedupeMarkets([...preferred,...deep]);const market=e?.market?{home:compactMarketSide(e.market.home),away:compactMarketSide(e.market.away)}:null;return{id:e.id??null,name:e.name??null,startTime:e.startTime??null,isLive:Boolean(e.isLive),status:e.status??null,lastUpdateMs:e.lastUpdateMs??null,league:e?.league?{id:e.league.id??null,name:e.league.name??null}:null,competition:e?.competition?{id:e.competition.id??null,name:e.competition.name??null}:null,tournament:e?.tournament?{id:e.tournament.id??null,name:e.tournament.name??null}:null,teams:{home:{name:e?.teams?.home?.name??market?.home?.name??null},away:{name:e?.teams?.away?.name??market?.away?.name??null}},market,preferredMarkets:allMarkets};}
 
-const previousMeta=await readPreviousMeta(),snapshots={},metaSports={},failures=[],coverageAnomalies=[];
+const previousMeta=await readPreviousMeta(),previousSnapshot=await readPreviousSnapshot(),snapshots={},metaSports={},failures=[],coverageAnomalies=[];
 for(const sport of SPORTS){
  const url=`${BASE}/${encodeURIComponent(sport)}`; console.log(`Fetching Thunderpick ${sport}...`);
  try{
   const response=await fetch(url,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
   const raw=await response.text();let body;try{body=JSON.parse(raw);}catch{body={raw};}
-  const hash=stableHash(body),old=previousMeta?.sports?.[sport],fetchedAt=new Date().toISOString(),compactEvents=toEvents(body).map(compactEvent);
+  const hash=stableHash(body),old=previousMeta?.sports?.[sport],fetchedAt=new Date().toISOString();
+  let compactEvents=toEvents(body).map(compactEvent);
+  let usedFallback=false;
+  // Owls can temporarily rate-limit/return an unusable board. Preserve the last
+  // healthy snapshot for validation instead of overwriting it with zero data.
+  if((!response.ok||compactEvents.length===0)&&Array.isArray(previousSnapshot?.sports?.[sport]?.data?.data)&&previousSnapshot.sports[sport].data.data.length){
+    compactEvents=previousSnapshot.sports[sport].data.data;
+    usedFallback=true;
+    console.warn(`Thunderpick ${sport}: HTTP ${response.status}; using previous healthy snapshot (${compactEvents.length} events)`);
+  }
   const marketCount=compactEvents.reduce((sum,e)=>sum+(e.preferredMarkets?.length||0)+(e.market?1:0),0);
-  const suspiciousEmpty=response.ok&&compactEvents.length===0;
-  const summary={ok:response.ok&&!suspiciousEmpty,httpOk:response.ok,status:response.status,fetchedAt,etag:response.headers.get('etag'),eventCount:compactEvents.length,retainedMarketCount:marketCount,hash,changedSincePrevious:old?old.hash!==hash:true,coverageStatus:suspiciousEmpty?'anomaly':'ok'};
+  const suspiciousEmpty=!usedFallback&&response.ok&&compactEvents.length===0;
+  const summary={ok:(response.ok&&!suspiciousEmpty)||usedFallback,httpOk:response.ok,status:response.status,fetchedAt,etag:response.headers.get('etag'),eventCount:compactEvents.length,retainedMarketCount:marketCount,hash:usedFallback?(old?.hash||hash):hash,changedSincePrevious:usedFallback?false:(old?old.hash!==hash:true),coverageStatus:usedFallback?'stale-fallback':(suspiciousEmpty?'anomaly':'ok'),usedFallback};
   snapshots[sport]={...summary,data:{data:compactEvents}};metaSports[sport]=summary;
-  if(!response.ok) failures.push({sport,status:response.status});
+  if(!response.ok&&!usedFallback) failures.push({sport,status:response.status});
+  if(usedFallback) coverageAnomalies.push({sport,status:response.status,reason:'Owls refresh unavailable; reused previous healthy snapshot for validation'});
   if(suspiciousEmpty) coverageAnomalies.push({sport,status:response.status,reason:'HTTP success but zero events; coverage cannot be considered complete'});
  }catch(error){const record={ok:false,httpOk:false,status:null,fetchedAt:new Date().toISOString(),error:String(error?.message||error),eventCount:0,retainedMarketCount:0,hash:null,changedSincePrevious:false,coverageStatus:'error'};snapshots[sport]={...record,data:{data:[]}};metaSports[sport]=record;failures.push({sport,error:record.error});}
  await sleep(3500);
