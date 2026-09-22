@@ -69,7 +69,7 @@ function playerPropIdentity(m={}){
  if(!/\bplayer\b/i.test(text))return null;
  const statRaw=(text.match(/\b(passing yards|rushing yards|receiving yards|receptions|passing touchdowns?|rushing touchdowns?|receiving touchdowns?|strikeouts?|hits?|home runs?|total bases|points|rebounds|assists|three pointers?|3 pointers?|kills?|headshots?|aces?|double faults?)\b/i)||[])[1];
  if(!statRaw)return null;
- const stat=statRaw.toLowerCase().replace(/\s+/g,'_').replace(/s$/,'');
+ const stat=canonicalPropStat(statRaw.toLowerCase().replace(/\s+/g,'_'));
  let player=specText(m.specifiers,'player')||specText(m.specifiers,'player_name')||specText(m.specifiers,'competitor')||null;
  if(!player){
   const raw=String(m.nickName||m.name||'').replace(/\bplayer\b/ig,'').replace(new RegExp(statRaw,'ig'),'').replace(/\b(over|under|total|props?)\b/ig,' ').replace(/[|:–—-]+/g,' ').trim();
@@ -146,13 +146,18 @@ function canonicalPropStat(v=''){
  const map={pass_yds:'passing_yards',passing_yds:'passing_yards',rush_yds:'rushing_yards',rushing_yds:'rushing_yards',rec_yds:'receiving_yards',receiving_yds:'receiving_yards',receptions:'receptions',pass_tds:'passing_touchdown',passing_tds:'passing_touchdown',rush_tds:'rushing_touchdown',receiving_tds:'receiving_touchdown',strikeouts:'strikeout',hits:'hit',home_runs:'home_run',total_bases:'total_base',points:'point',rebounds:'rebound',assists:'assist',threes:'three_pointer',three_pointers:'three_pointer',kills:'kill',headshots:'headshot',aces:'ace',double_faults:'double_fault'};
  return map[x]||x.replace(/s$/,'');
 }
+function cleanPlayerName(v=''){
+ return String(v).normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/\s*\([^)]*\)\s*$/,'').replace(/\b(over|under)\b/ig,' ')
+  .replace(/[^a-zA-Z0-9.' -]/g,' ').replace(/\s+/g,' ').trim();
+}
 function outsidePropIdentity(m={}){
  const mk=String(m.key||'').toLowerCase().replace(/[- ]/g,'_');
  const stat=canonicalPropStat(mk);
  const outs=m.outcomes||[];
- const desc=outs.map(o=>o.description).find(Boolean)||m.description||m.player||m.player_name||m.playerName||null;
- if(!desc)return null;
- const player=String(desc).replace(/\s*\([^)]*\)\s*$/,'').trim();
+ const desc=outs.map(o=>o.description).find(Boolean)||m.player||m.player_name||m.playerName||
+   String(m.description||'').replace(/^total\s+[^-]+-\s*/i,'');
+ const player=cleanPlayerName(desc);
  return player&&stat?{player,stat}:null;
 }
 function periodScope(text=''){
@@ -219,9 +224,13 @@ function quoteFor(row,d){
    const raw=marketIdentityText(c.market); const op=outsidePropIdentity(c.market)||playerPropIdentity(c.market);
    const outPlayer=op?.player||specText(c.market?.specifiers,'player')||specText(c.market?.specifiers,'player_name');
    const outStat=canonicalPropStat(op?.stat||c.market?.key||'');
-   if(!outPlayer||norm(outPlayer)!==norm(d.prop?.player||''))continue;
+   if(!outPlayer||norm(cleanPlayerName(outPlayer))!==norm(cleanPlayerName(d.prop?.player||'')))continue;
    if(!outStat||norm(outStat)!==norm(canonicalPropStat(d.prop?.stat||'')))continue;
-   if(periodScope(d.label||'')!==periodScope(raw))continue;
+   // PropLine's per-event props endpoint is full-game by contract. Only reject
+   // a scope mismatch when the outside market explicitly identifies a period.
+   const outsidePeriod=periodScope(raw),tpPeriod=periodScope(d.label||'');
+   if(outsidePeriod!=='full'&&tpPeriod!==outsidePeriod)continue;
+   if(outsidePeriod==='full'&&tpPeriod!=='full')continue;
   }
   // Team totals are distinct contracts from game totals and from the other
   // team's total. Never compare them using line alone.
