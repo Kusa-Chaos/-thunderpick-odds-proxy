@@ -220,6 +220,49 @@ try{
  console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length,'FANATICS',exact.filter(x=>String(x.id).startsWith('fanaticsmarkets:')).length,'STAKE',exact.filter(x=>String(x.id).startsWith('stake:')).length,'PINNACLE_LEAGUES',JSON.stringify((await v2get('/pinnacle/esports/leagues')).body?.data||[]).slice(0,1000));
 }catch(e){console.warn('OWLS_V2_EXACT_ERROR',String(e?.message||e));}
 
+
+// PLAYER_PROPS_ENRICHMENT: use Owls' dedicated merged props endpoint as an
+// independent normalized prop board. This is separate from /odds and keeps
+// exact player + category + line + side + book identity for fail-closed matching.
+const PROP_SPORT_MAP={cs2:'cs2',mlb:'mlb',nba:'nba',ncaaf:'ncaaf',nfl:'nfl',tennis:'tennis',wnba:'wnba'};
+function normalizePropRows(body,sourceSport){
+ const out=[]; const data=body?.data??body;
+ const stack=[data];
+ while(stack.length){
+  const v=stack.pop();
+  if(Array.isArray(v)){for(const q of v)stack.push(q);continue;}
+  if(!v||typeof v!=='object')continue;
+  const player=String(v.player??v.player_name??v.playerName??v.description??'').trim();
+  const market=String(v.market??v.market_key??v.category??v.stat??v.stat_type??'').trim();
+  const line=Number(v.line??v.point??v.threshold);
+  const over=Number(v.over_price??v.overPrice??v.over_odds??v.overOdds);
+  const under=Number(v.under_price??v.underPrice??v.under_odds??v.underOdds);
+  const book=String(v.bookmaker??v.book??v.sportsbook??v.source??'').trim();
+  if(player&&market&&Number.isFinite(line)&&book&&(over>1||under>1)){
+   out.push({player,market,line,book,over:over>1?over:null,under:under>1?under:null,eventId:v.event_id??v.eventId??null,eventName:v.event_name??v.eventName??v.match??null,lastUpdate:v.last_update??v.lastUpdate??v.updated_at??null,sourceSport});
+   continue;
+  }
+  for(const q of Object.values(v))if(q&&typeof q==='object')stack.push(q);
+ }
+ return out;
+}
+const playerProps={generatedAt:new Date().toISOString(),source:'Owls Insight dedicated props API',sports:{},requestCount:0};
+for(const [dst,apiSport] of Object.entries(PROP_SPORT_MAP)){
+ try{
+  const r=await fetch(`${base}/${apiSport}/props`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+  playerProps.requestCount++;
+  const text=await r.text();let body;try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}}
+  const rows=r.ok?normalizePropRows(body,apiSport):[];
+  playerProps.sports[dst]={ok:r.ok,status:r.status,fetchedAt:new Date().toISOString(),rowCount:rows.length,rows};
+  console.log('OWLS_PLAYER_PROPS',dst,'status='+r.status,'rows='+rows.length);
+ }catch(e){
+  playerProps.sports[dst]={ok:false,status:null,fetchedAt:new Date().toISOString(),rowCount:0,rows:[],error:String(e?.message||e)};
+  console.warn('OWLS_PLAYER_PROPS_ERROR',dst,String(e?.message||e));
+ }
+ await sleep(900);
+}
+await fs.writeFile('data/player-props-latest.json',JSON.stringify(playerProps,null,2));
+
 await fs.mkdir('data',{recursive:true});
 // Persist only a compact diagnostic view of raw Pinnacle realtime esports data.
 // The full comparison board can be too large for repository publication.
