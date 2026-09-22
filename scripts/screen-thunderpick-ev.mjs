@@ -25,12 +25,12 @@ function stripLine(s=''){return String(s).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$
 function pairKey(a,b){return [norm(a),norm(b)].sort().join('|');}
 function orientationKey(a,b){return norm(a)+'>'+norm(b);}
 function median(xs=[]){const a=xs.filter(Number.isFinite).sort((x,y)=>x-y);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
-function robustProbConsensus(fair=[]){
- const pa=fair.map(x=>x.a).filter(Number.isFinite); if(pa.length<3)return null;
+function robustProbConsensus(fair=[],minSources=3){
+ const pa=fair.map(x=>x.a).filter(Number.isFinite); if(pa.length<minSources)return null;
  const med=median(pa), mad=median(pa.map(x=>Math.abs(x-med)))||0;
  const tol=Math.max(0.04,3*mad);
  const kept=fair.filter(x=>Math.abs(x.a-med)<=tol);
- if(kept.length<3)return null;
+ if(kept.length<minSources)return null;
  return {kept,pA:kept.reduce((s,x)=>s+x.a,0)/kept.length,pB:kept.reduce((s,x)=>s+x.b,0)/kept.length,medianA:med,madA:mad};
 }
 function tpEvents(sport){return tp?.sports?.[sport]?.data?.data||[];}
@@ -239,14 +239,17 @@ for(const sport of SPORTS){
    matchedMarkets++;marketTypeCounts[d.key].matched++;eventMatched=true;
    const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
-   const consensus=robustProbConsensus(base); if(!consensus)continue;
+   const consensus=robustProbConsensus(base,3); if(!consensus)continue;
    saneOutside=saneOutside.filter(q=>consensus.kept.some(k=>String(k.book).toLowerCase()===String(q.book).toLowerCase()));
    const pA=consensus.pA,pB=consensus.pB;
    const evA=d.selections[0].odds*pA-1,evB=d.selections[1].odds*pB-1,arbScreen=arbDetector(d,saneOutside);
    // Hard anomaly quarantine: an apparent >=50% edge at 3+ books is much more
    // likely to be a contract/orientation mismatch. Keep it out of ACTION math.
    if(Math.max(evA,evB)>=0.50)continue;
-   const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,exactContractKey:exactContractKey(sport,e,d),marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
+   const independentSources=new Set(saneOutside.map(q=>String(q.book).toLowerCase())).size;
+   const verifiedIndependentSources=new Set(saneOutside.filter(q=>q.identityVerified).map(q=>String(q.book).toLowerCase())).size;
+   const verificationTier=verifiedIndependentSources>=5?'ACTION_ELIGIBLE':verifiedIndependentSources>=3?'WATCH_ONLY':verifiedIndependentSources===2?'SCREENING_ONLY':'INFORMATIONAL_ONLY';
+   const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,exactContractKey:exactContractKey(sport,e,d),marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,independentSources,verifiedIndependentSources,verificationTier,actionEligible:verifiedIndependentSources>=5,watchEligible:verifiedIndependentSources>=3,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
    if(row.plausible)marketTypeCounts[d.key].candidates++;all.push(row);
   }
   if(eventMatched){matchedEventIds.add(`${sport}:${e.id}`);matchedBySport[sport]++;}
