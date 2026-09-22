@@ -129,7 +129,7 @@ function makeSelections(m,key,e){
 function tpMarkets(e){
  const out=[];
  if(n(e?.market?.home?.odds)>1&&n(e?.market?.away?.odds)>1)out.push({key:'h2h',label:'Match Winner',scope:{map:null,round:null},selections:[{name:e.market.home.name,role:'home',odds:n(e.market.home.odds),point:null},{name:e.market.away.name,role:'away',odds:n(e.market.away.odds),point:null}]});
- for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);const prop=key==='player_prop'?playerPropIdentity(m):null;if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections,prop});}
+ for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;if(key==='totals'&&totalTarget(m,e)==='__unknown_team_total__')continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);const prop=key==='player_prop'?playerPropIdentity(m):null;if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections,prop});}
  const seen=new Set();return out.filter(m=>{const k=`${m.key}|${m.prop?.player??''}|${m.prop?.stat??''}|${m.scope.map??''}|${m.scope.round??''}|${m.selections.map(s=>`${norm(stripLine(s.name))}:${s.odds}:${s.point}`).join('|')}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
 function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmakers||[]){for(const m of bm.markets||[]){{
@@ -155,7 +155,24 @@ function periodScope(text=''){
  if(/second\s*half|2nd\s*half/.test(t))return 'half:2';
  return 'full';
 }
-function marketIdentityText(m={}){return [m.nickName,m.name,m.title,m.description,m.specifiers,m.market_name,m.marketName,m.period,m.period_name,m.periodName,m.scope,m.group,m.group_name].filter(v=>v!=null).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ');}
+function marketIdentityText(m={}){return [m.nickName,m.name,m.title,m.description,m.specifiers,m.market_name,m.marketName,m.period,m.period_name,m.periodName,m.scope,m.group,m.group_name,m.team,m.team_name,m.teamName].filter(v=>v!=null).map(v=>typeof v==='object'?JSON.stringify(v):String(v)).join(' ');}
+function totalTarget(m={},event=null){
+ const text=marketIdentityText(m);
+ const explicit=m.team||m.team_name||m.teamName||specText(m.specifiers,'team')||specText(m.specifiers,'competitor')||null;
+ const home=event?.teams?.home?.name||event?.market?.home?.name||event?.home_team;
+ const away=event?.teams?.away?.name||event?.market?.away?.name||event?.away_team;
+ if(explicit){
+  if(home&&norm(explicit)===norm(home))return norm(home);
+  if(away&&norm(explicit)===norm(away))return norm(away);
+  return norm(explicit);
+ }
+ if(/team\s*total/i.test(text)){
+  if(home&&norm(text).includes(norm(home)))return norm(home);
+  if(away&&norm(text).includes(norm(away)))return norm(away);
+  return '__unknown_team_total__';
+ }
+ return null;
+}
 function outsideScope(m={}){
  const raw=marketIdentityText(m);
  return scopeFromText(raw);
@@ -191,6 +208,14 @@ function quoteFor(row,d){
    if(!outPlayer||norm(outPlayer)!==norm(d.prop?.player||''))continue;
    if(!outStat||norm(outStat)!==norm(d.prop?.stat||''))continue;
    if(periodScope(d.label||'')!==periodScope(raw))continue;
+  }
+  // Team totals are distinct contracts from game totals and from the other
+  // team's total. Never compare them using line alone.
+  if(d.key==='totals'){
+   const tpTarget=totalTarget({name:d.label,specifiers:d.specifiers||''},{teams:{home:{name:tpHome},away:{name:tpAway}}});
+   const outTarget=totalTarget(c.market,row.event);
+   if(tpTarget==='__unknown_team_total__')continue;
+   if((tpTarget||null)!==(outTarget||null))continue;
   }
   // Period identity is mandatory for totals/spreads. A 1st-7-innings total,
   // set total, quarter line, etc. can never fall back to a full-game market.
