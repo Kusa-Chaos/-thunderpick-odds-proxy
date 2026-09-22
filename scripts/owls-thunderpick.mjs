@@ -65,4 +65,11 @@ const output={generatedAt,source:'Owls Insight Thunderpick Source API v2',format
 await fs.mkdir(outDir,{recursive:true});const serialized=JSON.stringify(output);await fs.writeFile(outPath,serialized);
 const meta={generatedAt,source:output.source,format:output.format,snapshotBytes:Buffer.byteLength(serialized),requestCountThisRun:SPORTS.length,requestedSports:SPORTS,successfulSports:output.successfulSports,failedSports:failures,coverageAnomalies,coverageComplete:failures.length===0&&coverageAnomalies.length===0,changedSports,totalEvents:SPORTS.reduce((sum,s)=>sum+(metaSports[s]?.eventCount||0),0),totalRetainedMarkets:SPORTS.reduce((sum,s)=>sum+(metaSports[s]?.retainedMarketCount||0),0),sports:metaSports};
 await fs.writeFile(metaPath,JSON.stringify(meta,null,2));
-console.log(`Saved ${SPORTS.length} compact Thunderpick sport snapshots.`);console.log(`Retained markets: ${meta.totalRetainedMarkets}`);console.log(`Coverage anomalies: ${coverageAnomalies.map(x=>x.sport).join(', ')||'none'}`);if(failures.length)process.exitCode=1;
+console.log(`Saved ${SPORTS.length} compact Thunderpick sport snapshots.`);console.log(`Retained markets: ${meta.totalRetainedMarkets}`);console.log(`Coverage anomalies: ${coverageAnomalies.map(x=>x.sport).join(', ')||'none'}`);
+const hardFailures=failures.filter(f=>!snapshots[f.sport]?.usedFallback);
+if(hardFailures.length){
+  console.error('HARD_REFRESH_FAILURES',JSON.stringify(hardFailures));
+  process.exitCode=1;
+} else if(coverageAnomalies.length){
+  console.warn('DEGRADED_REFRESH_CONTINUE',coverageAnomalies.length,'fallback/anomaly sport(s); comparison may continue but freshness policy must gate ACTION');
+}
