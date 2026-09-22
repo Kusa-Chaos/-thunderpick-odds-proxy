@@ -10,7 +10,12 @@ const aliases=new Map([
  ['natusvincere','navi'],['navi','navi'],['jd','jd'],['jdg','jd'],['jdgaming','jd'],
  ['invictus','invictus'],['invictusgaming','invictus'],['teamvitality','vitality'],['vitality','vitality'],
  ['furiaesports','furia'],['furia','furia'],['mibr','mibr'],['m80','m80'],['gamerlegion','gamerlegion'],
- ['shopifyrebelliongold','shopifyrebelliongold'],['flyquestred','flyquestred']
+ ['shopifyrebelliongold','shopifyrebelliongold'],['flyquestred','flyquestred'],
+ ['ctbcflyingoysteracademy','ctbcacademy'],['ctbcacademy','ctbcacademy'],['cfoacademy','ctbcacademy'],
+ ['ktrolsterchallengers','ktchallengers'],['ktchallengers','ktchallengers'],['ktrolstercl','ktchallengers'],
+ ['t1academy','t1academy'],['t1esportsacademy','t1academy'],['t1ea','t1academy'],
+ ['fuego','fuego'],['mkoifenix','mkoifenix'],['mkoifenix','mkoifenix'],['bilibiligamingjunior','blgjunior'],['blgjunior','blgjunior'],['blgj','blgjunior'],
+ ['sooperschallengers','sooperschallengers'],['soopers','sooperschallengers'],['edgyouth','edgyouth'],['edgy','edgyouth']
 ]);
 function norm(s=''){
  let x=String(s).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/&/g,'and').replace(/\b(team|esports|gaming|club)\b/g,'').replace(/[^a-z0-9]/g,'');
@@ -18,6 +23,16 @@ function norm(s=''){
 }
 function stripLine(s=''){return String(s).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$/,'').replace(/\s+[+-]\d+(?:\.\d+)?\s*$/,'').trim();}
 function pairKey(a,b){return [norm(a),norm(b)].sort().join('|');}
+function orientationKey(a,b){return norm(a)+'>'+norm(b);}
+function median(xs=[]){const a=xs.filter(Number.isFinite).sort((x,y)=>x-y);if(!a.length)return null;const m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+function robustProbConsensus(fair=[]){
+ const pa=fair.map(x=>x.a).filter(Number.isFinite); if(pa.length<3)return null;
+ const med=median(pa), mad=median(pa.map(x=>Math.abs(x-med)))||0;
+ const tol=Math.max(0.04,3*mad);
+ const kept=fair.filter(x=>Math.abs(x.a-med)<=tol);
+ if(kept.length<3)return null;
+ return {kept,pA:kept.reduce((s,x)=>s+x.a,0)/kept.length,pB:kept.reduce((s,x)=>s+x.b,0)/kept.length,medianA:med,madA:mad};
+}
 function tpEvents(sport){return tp?.sports?.[sport]?.data?.data||[];}
 function outsideEvents(sport){const data=cmp?.sports?.[sport]?.data;const exactV2=cmp?.sports?.[sport]?.exactV2;const out=[];const seen=new Set();function walk(v,bookHint='owls'){if(!v)return;if(Array.isArray(v)){for(const x of v)walk(x,bookHint);return;}if(typeof v!=='object')return;if(v.home_team&&v.away_team&&Array.isArray(v.bookmakers)){const id=String(v.id||v.eventId||`${v.home_team}|${v.away_team}|${v.commence_time||''}`);for(const bm of (v.bookmakers.length?v.bookmakers:[{key:bookHint}])){const k=`${id}|${bm.key||bm.title||bookHint}`;if(seen.has(k))continue;seen.add(k);out.push({book:bm.key||bm.title||bookHint,event:{...v,bookmakers:[bm]}});}return;}for(const [k,x] of Object.entries(v))walk(x,k||bookHint);}walk(data);walk(exactV2,'owls-v2-exact');return out;}
 function n(v){if(v===null||v===undefined||v==='')return null;const x=Number(v);return Number.isFinite(x)?x:null;}
@@ -112,8 +127,14 @@ function exactContractKey(sport,event,d){
 function quoteFor(row,d){
  const found=[];
  const eventHome=row.event?.home_team,eventAway=row.event?.away_team;
- const pairAligned=pairKey(eventHome,eventAway)===pairKey(d.selections[0]?.name,d.selections[1]?.name);
+ const tpHome=d.selections.find(x=>x.role==='home')?.name||d.selections[0]?.name;
+ const tpAway=d.selections.find(x=>x.role==='away')?.name||d.selections[1]?.name;
+ const pairAligned=pairKey(eventHome,eventAway)===pairKey(tpHome,tpAway);
  if(!pairAligned && !['totals','round_totals'].includes(d.key)) return found;
+ const orientationAligned=orientationKey(eventHome,eventAway)===orientationKey(tpHome,tpAway);
+ // Never allow a reversed provider event to be treated as the same named-side
+ // contract. This is the main fail-closed guard against giant false EV.
+ if(!orientationAligned && !['totals','round_totals'].includes(d.key)) return found;
  for(const c of outsideMarkets(row.event,d.key)){
   const outs=c.market?.outcomes||[];if(outs.length<2)continue;
   const a=findOutcome(outs,d.selections[0],d.key),b=findOutcome(outs,d.selections[1],d.key);if(!a||!b)continue;
@@ -193,8 +214,13 @@ for(const sport of SPORTS){
    matchedMarkets++;marketTypeCounts[d.key].matched++;eventMatched=true;
    const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
-   const pA=base.reduce((s,x)=>s+x.a,0)/base.length,pB=base.reduce((s,x)=>s+x.b,0)/base.length;
+   const consensus=robustProbConsensus(base); if(!consensus)continue;
+   saneOutside=saneOutside.filter(q=>consensus.kept.some(k=>String(k.book).toLowerCase()===String(q.book).toLowerCase()));
+   const pA=consensus.pA,pB=consensus.pB;
    const evA=d.selections[0].odds*pA-1,evB=d.selections[1].odds*pB-1,arbScreen=arbDetector(d,saneOutside);
+   // Hard anomaly quarantine: an apparent >=50% edge at 3+ books is much more
+   // likely to be a contract/orientation mismatch. Keep it out of ACTION math.
+   if(Math.max(evA,evB)>=0.50)continue;
    const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,exactContractKey:exactContractKey(sport,e,d),marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
    if(row.plausible)marketTypeCounts[d.key].candidates++;all.push(row);
   }
