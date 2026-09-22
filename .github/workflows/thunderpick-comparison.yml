@@ -105,10 +105,18 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs'); const s=JSON.parse(fs.readFileSync('data/screen-latest.json'));
-          const rows=[];
-          for(const c of s.candidates||[]){const a=c.thunderpick?.a,b=c.thunderpick?.b;if(!a||!b)continue;const side=Number(c.ev?.a)>=Number(c.ev?.b)?'a':'b';const pick=side==='a'?a:b;const ev=Number(side==='a'?c.ev?.a:c.ev?.b);if(ev<.0025)continue;rows.push({sport:c.sport,match:c.name,target:String(pick.name||''),market:c.marketLabel||c.marketKey,thunderpick:Number(pick.odds),verifiedEV:ev,independentSources:Number(c.verifiedIdentityDepth||0),startTime:c.startTime});}
-          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},rows:rows.slice(0,20)};
-          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2)); console.log('VISIBLE_ROWS',out.rows.length);
+          const esports=new Set(['cs2','dota2','lol','valorant']);
+          const slim=(c,tier)=>{const a=c.thunderpick?.a,b=c.thunderpick?.b;if(!a||!b)return null;const side=Number(c.ev?.a)>=Number(c.ev?.b)?'a':'b';const pick=side==='a'?a:b;const ev=Number(side==='a'?c.ev?.a:c.ev?.b);return {tier,verificationTier:c.verificationTier||null,sport:c.sport,match:c.name,target:String(pick.name||''),market:c.marketLabel||c.marketKey,thunderpick:Number(pick.odds),verifiedEV:ev,independentSources:Number(c.verifiedIndependentSources??c.verifiedIdentityDepth??0),startTime:c.startTime,esports:esports.has(c.sport)};};
+          const rank=(a,b)=>(Number(b.esports)-Number(a.esports))||(b.verifiedEV-a.verifiedEV)||(b.independentSources-a.independentSources);
+          const actionRows=(s.actionCandidates||[]).map(c=>slim(c,'ACTION')).filter(Boolean).sort(rank);
+          const watchRows=(s.watchCandidates||[]).map(c=>slim(c,'WATCH')).filter(Boolean).sort(rank);
+          const potentialRows=(s.potentialCandidates||[]).map(c=>slim(c,'POTENTIAL')).filter(Boolean).sort(rank);
+          // Never let high-EV low-source screens bury a verified 3-4 source WATCH.
+          // Publish every ACTION/WATCH first, with genuine esports first on ties.
+          const seen=new Set(); const rows=[];
+          for(const r of [...actionRows,...watchRows,...potentialRows]){const k=[r.sport,r.match,r.target,r.market].join('|');if(seen.has(k))continue;seen.add(k);rows.push(r);}
+          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},actionRows,watchRows,potentialRows,rows:rows.slice(0,100)};
+          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2)); console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length);
           NODE
       - name: Compact full screen for repository publication
         run: |
