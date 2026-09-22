@@ -137,10 +137,24 @@ function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmak
  const wanted=key==='map_winner'?['map_winner','map_moneyline','map_h2h','map_match_winner']:
   key==='round_handicap'?['round_handicap','round_spread','rounds_handicap','rounds_spread']:
   key==='round_totals'?['round_totals','round_total','total_rounds','rounds_total']:
-  key==='player_prop'?['player_prop','player_props','player_totals','player_total','player_over_under','player_overunder']:
   [key];
- if(wanted.includes(mk))found.push({bookmaker:bm.key||bm.title,market:m});
+ const isProp=key==='player_prop'&&(/^(player_|batter_|pitcher_)/.test(mk)||/(kills?|headshots?|aces?|double_faults?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists|home_runs?|total_bases|hits?)/.test(mk));
+ if((key==='player_prop'&&isProp)||(key!=='player_prop'&&wanted.includes(mk)))found.push({bookmaker:bm.key||bm.title,market:m});
 }}}return found;}
+function canonicalPropStat(v=''){
+ const x=String(v).toLowerCase().replace(/[- ]+/g,'_').replace(/^(player|batter|pitcher)_/,'').replace(/_(over_under|totals?|props?)$/,'');
+ const map={pass_yds:'passing_yards',passing_yds:'passing_yards',rush_yds:'rushing_yards',rushing_yds:'rushing_yards',rec_yds:'receiving_yards',receiving_yds:'receiving_yards',receptions:'receptions',pass_tds:'passing_touchdown',passing_tds:'passing_touchdown',rush_tds:'rushing_touchdown',receiving_tds:'receiving_touchdown',strikeouts:'strikeout',hits:'hit',home_runs:'home_run',total_bases:'total_base',points:'point',rebounds:'rebound',assists:'assist',threes:'three_pointer',three_pointers:'three_pointer',kills:'kill',headshots:'headshot',aces:'ace',double_faults:'double_fault'};
+ return map[x]||x.replace(/s$/,'');
+}
+function outsidePropIdentity(m={}){
+ const mk=String(m.key||'').toLowerCase().replace(/[- ]/g,'_');
+ const stat=canonicalPropStat(mk);
+ const outs=m.outcomes||[];
+ const desc=outs.map(o=>o.description).find(Boolean)||m.description||m.player||m.player_name||m.playerName||null;
+ if(!desc)return null;
+ const player=String(desc).replace(/\s*\([^)]*\)\s*$/,'').trim();
+ return player&&stat?{player,stat}:null;
+}
 function periodScope(text=''){
  const t=String(text).toLowerCase();
  const innings=(t.match(/(?:first|1st)\s*(\d+)\s*innings?/)||t.match(/\b(\d+)\s*innings?\b/))?.[1];
@@ -202,11 +216,11 @@ function quoteFor(row,d){
  if(!orientationAligned && !['totals','round_totals','player_prop'].includes(d.key)) return found;
  for(const c of outsideMarkets(row.event,d.key)){
   if(d.key==='player_prop'){
-   const raw=marketIdentityText(c.market); const op=playerPropIdentity(c.market);
+   const raw=marketIdentityText(c.market); const op=outsidePropIdentity(c.market)||playerPropIdentity(c.market);
    const outPlayer=op?.player||specText(c.market?.specifiers,'player')||specText(c.market?.specifiers,'player_name');
-   const outStat=op?.stat||String(c.market?.key||'').toLowerCase().replace(/^player_/,'').replace(/_over_under$|_totals?$|_props?$/g,'');
+   const outStat=canonicalPropStat(op?.stat||c.market?.key||'');
    if(!outPlayer||norm(outPlayer)!==norm(d.prop?.player||''))continue;
-   if(!outStat||norm(outStat)!==norm(d.prop?.stat||''))continue;
+   if(!outStat||norm(outStat)!==norm(canonicalPropStat(d.prop?.stat||'')))continue;
    if(periodScope(d.label||'')!==periodScope(raw))continue;
   }
   // Team totals are distinct contracts from game totals and from the other
