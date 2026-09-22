@@ -86,7 +86,13 @@ async function fetchEventProps(feed,e,tpMatch){
   const wanted=[...new Set(keys)].slice(0,40).join(',');
   let pr=await fetch(`${base}/sports/${feed.api}/events/${encodeURIComponent(e.id)}/odds?markets=${encodeURIComponent(wanted)}`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
   requestCount++; if(!pr.ok){console.warn('PROPLINE_EVENT_PROPS_FAILED',feed.api,e.id,pr.status);return null;}
-  const body=await pr.json(); console.log('PROPLINE_EVENT_PROPS',feed.api,e.id,'markets',keys.length); return body;
+  const body=await pr.json();
+  // Per-event odds returns the event object itself (with bookmakers), not a
+  // wrapper. Preserve it so the merge below actually consumes the prop books.
+  const propBooks=Array.isArray(body?.bookmakers)?body.bookmakers:Array.isArray(body?.data?.bookmakers)?body.data.bookmakers:[];
+  const propMarketCount=propBooks.reduce((n,b)=>n+(b.markets||[]).length,0);
+  console.log('PROPLINE_EVENT_PROPS',feed.api,e.id,'requestedKeys',keys.length,'books',propBooks.length,'markets',propMarketCount);
+  return {bookmakers:propBooks};
  }catch(err){console.warn('PROPLINE_EVENT_PROPS_ERROR',feed.api,e.id,String(err?.message||err));return null;}
 }
 for(const feed of FEEDS){
@@ -112,7 +118,7 @@ for(const feed of FEEDS){
    const tpMatch=findTPMatch(index,e);if(!tpMatch)continue;
    matchedEvents++;feedMatched++;
    const propBody=await fetchEventProps(feed,e,tpMatch);
-   const mergedBooks=[...(e.bookmakers||[]),...((propBody?.bookmakers||propBody?.data?.bookmakers||[]))];
+   const mergedBooks=[...(e.bookmakers||[]),...(propBody?.bookmakers||[])];
    for(const bm of mergedBooks){
     const bookKey=`propline:${bm.key||bm.title||'unknown'}`,markets=[];
     for(const m of bm.markets||[]){if(!['h2h','spreads','totals','map_winner','round_handicap','round_totals'].includes(m.key)&&!/(player|batter|pitcher|kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists)/i.test(String(m.key||'')))continue;const outcomes=(m.outcomes||[]).map(o=>{let name=o.name;if(m.key!=='totals'){if(sameTeam(o.name,e.home_team))name=tpMatch.home;else if(sameTeam(o.name,e.away_team))name=tpMatch.away;}return {...o,source_name:o.name,name,price:dec(o.price)};}).filter(o=>o.price>1);if(outcomes.length<2)continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
