@@ -192,13 +192,13 @@ try{
   if(spec.book==='stake'){
    let body=stakeCachedBodies[spec.sport];
    if(!body){const br=await v2get(`/stake/${spec.sport}`); if(br.ok){body=br.body;stakeCachedBodies[spec.sport]=body;}}
- console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',spec.sport,parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;}
+ console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body).map(e=>({...e,_sourceSport:spec.sport})); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',spec.sport,parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;}
   let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
    const league=typeof row==='string'?row:(row?.leagueKey||row?.key||row?.slug||row?.id); if(!league)continue;
    let br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`); if(!br.ok&&spec.book==='polymarket'){await sleep(1200);br=await v2get(`/${spec.book}/${spec.sport}?league=${encodeURIComponent(String(league))}`);} if(!br.ok)continue;
-   if(spec.book==='polymarket') exact.push(...polyExact(br.body)); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body)); else if(spec.book==='fanaticsmarkets') exact.push(...fanaticsExact(br.body)); else if(spec.book==='stake') exact.push(...stakeExact(br.body));
+   if(spec.book==='polymarket') exact.push(...polyExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='kalshi') exact.push(...kalshiExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='fanaticsmarkets') exact.push(...fanaticsExact(br.body).map(e=>({...e,_sourceSport:spec.sport}))); else if(spec.book==='stake') exact.push(...stakeExact(br.body).map(e=>({...e,_sourceSport:spec.sport})));
    await sleep(300);
   }
  }
@@ -207,13 +207,13 @@ try{
  for(const sport of ['cs2','lol','valorant','dota2']){
   sports[sport] ||= {ok:true,status:200,data:{}};
   const needles=sport==='cs2'?[/cs2/i]:sport==='lol'?[/\blol\b/i,/league of legends/i]:sport==='valorant'?[/valorant/i]:[/dota\s*2/i];
-  const scoped=exact.filter(e=>needles.some(rx=>rx.test(JSON.stringify(e))));
+  const scoped=exact.filter(e=>e._sourceSport===sport||needles.some(rx=>rx.test(JSON.stringify(e))));
   sports[sport].exactV2=scoped;
   sports[sport].exactV2EventCount=scoped.length;
  }
  // Keep unclassified exact events available to CS2 only when their source explicitly
  // came from the CS2 endpoint; never leak LoL/Valorant/Dota2 events across sports.
- sports.cs2.exactV2=exact.filter(e=>!/\b(lol|league of legends|valorant|dota\s*2)\b/i.test(JSON.stringify(e)));
+ sports.cs2.exactV2=exact.filter(e=>e._sourceSport==='cs2'||(!e._sourceSport&&!/\b(lol|league of legends|valorant|dota\s*2)\b/i.test(JSON.stringify(e))));
  sports.cs2.exactV2EventCount=sports.cs2.exactV2.length;
  console.log('OWLS_V2_EXACT_EVENTS',exact.length,'KALSHI',exact.filter(x=>String(x.id).startsWith('kalshi:')).length,'POLYMARKET',exact.filter(x=>String(x.id).startsWith('polymarket:')).length,'FANATICS',exact.filter(x=>String(x.id).startsWith('fanaticsmarkets:')).length,'STAKE',exact.filter(x=>String(x.id).startsWith('stake:')).length,'PINNACLE_LEAGUES',JSON.stringify((await v2get('/pinnacle/esports/leagues')).body?.data||[]).slice(0,1000));
 }catch(e){console.warn('OWLS_V2_EXACT_ERROR',String(e?.message||e));}
