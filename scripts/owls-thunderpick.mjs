@@ -26,7 +26,7 @@ const previousMeta=await readPreviousMeta(),previousSnapshot=await readPreviousS
 for(const sport of SPORTS){
  const url=`${BASE}/${encodeURIComponent(sport)}`; console.log(`Fetching Thunderpick ${sport}...`);
  try{
-  const response=await fetch(url,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+  const response=await fetch(url,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(45000)});
   const raw=await response.text();let body;try{body=JSON.parse(raw);}catch{body={raw};}
   const hash=stableHash(body),old=previousMeta?.sports?.[sport],fetchedAt=new Date().toISOString();
   let compactEvents=toEvents(body).map(compactEvent);
@@ -45,7 +45,19 @@ for(const sport of SPORTS){
   if(!response.ok&&!usedFallback) failures.push({sport,status:response.status});
   if(usedFallback) coverageAnomalies.push({sport,status:response.status,reason:'Owls refresh unavailable; reused previous healthy snapshot for validation'});
   if(suspiciousEmpty) coverageAnomalies.push({sport,status:response.status,reason:'HTTP success but zero events; coverage cannot be considered complete'});
- }catch(error){const record={ok:false,httpOk:false,status:null,fetchedAt:new Date().toISOString(),error:String(error?.message||error),eventCount:0,retainedMarketCount:0,hash:null,changedSincePrevious:false,coverageStatus:'error'};snapshots[sport]={...record,data:{data:[]}};metaSports[sport]=record;failures.push({sport,error:record.error});}
+ }catch(error){
+  const prev=previousSnapshot?.sports?.[sport]?.data?.data;
+  if(Array.isArray(prev)&&prev.length){
+    const marketCount=prev.reduce((sum,e)=>sum+(e.preferredMarkets?.length||0)+(e.market?1:0),0);
+    const record={ok:true,httpOk:false,status:null,fetchedAt:new Date().toISOString(),error:String(error?.message||error),eventCount:prev.length,retainedMarketCount:marketCount,hash:previousMeta?.sports?.[sport]?.hash||null,changedSincePrevious:false,coverageStatus:'stale-fallback',usedFallback:true};
+    snapshots[sport]={...record,data:{data:prev}};metaSports[sport]=record;
+    coverageAnomalies.push({sport,status:null,reason:'Owls request timed out/failed; reused previous healthy snapshot'});
+    console.warn(`Thunderpick ${sport}: request failed; using previous healthy snapshot (${prev.length} events)`);
+  }else{
+    const record={ok:false,httpOk:false,status:null,fetchedAt:new Date().toISOString(),error:String(error?.message||error),eventCount:0,retainedMarketCount:0,hash:null,changedSincePrevious:false,coverageStatus:'error'};
+    snapshots[sport]={...record,data:{data:[]}};metaSports[sport]=record;failures.push({sport,error:record.error});
+  }
+}
  await sleep(3500);
 }
 const changedSports=SPORTS.filter(s=>snapshots[s]?.changedSincePrevious),generatedAt=new Date().toISOString();
