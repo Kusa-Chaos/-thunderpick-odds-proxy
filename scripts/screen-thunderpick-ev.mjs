@@ -366,10 +366,8 @@ for(const sport of SPORTS){
   for(const d of markets){
    eligibleMarkets++;marketTypeCounts[d.key]??={eligible:0,matched:0,candidates:0};marketTypeCounts[d.key].eligible++;
    const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));
-   if(!outside.length){
-    if(d.key==='player_prop')for(const row of rows)oneWayPlayerPropScreensOut.push(...oneWayPlayerPropScreens(row,d));
-    continue;
-   }
+   if(d.key==='player_prop')for(const row of rows)oneWayPlayerPropScreensOut.push(...oneWayPlayerPropScreens(row,d));
+   if(!outside.length)continue;
    rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
    let saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
    // Provider orientation guard: when 3+ books disagree on which named team is
