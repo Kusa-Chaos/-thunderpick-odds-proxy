@@ -277,6 +277,27 @@ function quoteFor(row,d){
  }
  return found;
 }
+function oneWayPlayerPropScreens(row,d){
+ if(d.key!=='player_prop')return [];
+ const tpPlayer=norm(cleanPlayerName(d.prop?.player||'')),tpStat=canonicalPropStat(d.prop?.stat||'');
+ const over=d.selections.find(x=>x.role==='over'); if(!tpPlayer||!over)return [];
+ const out=[];
+ for(const c of outsideMarkets(row.event,'player_prop')){
+  const mk=String(c.market?.key||'').toLowerCase().replace(/[- ]/g,'_');
+  let stat=null,requiredPoint=null;
+  if(/(?:player|batter)_to_record_a_hit|to_record_a_hit/.test(mk)){stat='hit';requiredPoint=0.5;}
+  else if(/(?:player|batter)_to_hit_a_home_run|home_run/.test(mk)&&/to_/.test(mk)){stat='home_run';requiredPoint=0.5;}
+  if(!stat||norm(stat)!==norm(tpStat)||!close(over.point,requiredPoint))continue;
+  for(const o of c.market?.outcomes||[]){
+   if(norm(cleanPlayerName(o.name||o.description||''))!==tpPlayer)continue;
+   const raw=Number(o.price);let price=null;
+   if(raw>1&&raw<100)price=raw;else if(raw>=100)price=1+raw/100;else if(raw<=-100)price=1+100/Math.abs(raw);
+   if(!(price>1))continue;
+   out.push({sport:row.sport||null,book:row.book||c.bookmaker,player:d.prop.player,stat:tpStat,line:over.point,side:'Over',thunderpick:over.odds,outsidePrice:price,marketKey:mk,marketLabel:d.label,startTime:row.event?.commence_time||row.event?.start_time||null,blocker:'one-way outside price only; exact semantic contract but no two-sided de-vig, SCREENING ONLY'});
+  }
+ }
+ return out;
+}
 function arbDetector(d,outside){
  const combos=[];const[a,b]=d.selections;
  for(const q of outside){
@@ -343,7 +364,12 @@ for(const sport of SPORTS){
   const rows=idx.get(pairKey(e.teams?.home?.name||e.market?.home?.name,e.teams?.away?.name||e.market?.away?.name))||[];let eventMatched=false;
   for(const d of markets){
    eligibleMarkets++;marketTypeCounts[d.key]??={eligible:0,matched:0,candidates:0};marketTypeCounts[d.key].eligible++;
-   const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));if(!outside.length)continue; rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
+   const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));
+   if(!outside.length){
+    if(d.key==='player_prop')for(const row of rows)oneWayPlayerPropScreensOut.push(...oneWayPlayerPropScreens(row,d));
+    continue;
+   }
+   rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
    let saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
    // Provider orientation guard: when 3+ books disagree on which named team is
    // favorite, discard the minority orientation before EV/arb calculations.
@@ -380,11 +406,13 @@ for(const sport of SPORTS){
 }
 all.sort((x,y)=>Math.max(y.ev.a,y.ev.b)-Math.max(x.ev.a,x.ev.b));
 const maxEv=x=>Math.max(Number(x?.ev?.a??-Infinity),Number(x?.ev?.b??-Infinity));
+const oneWayPlayerPropScreensOut=[];
 const actionCandidates=all.filter(x=>x.actionEligible&&maxEv(x)>=0.02);
 const watchCandidates=all.filter(x=>x.watchEligible&&((!x.actionEligible&&maxEv(x)>=0.01)||(x.actionEligible&&maxEv(x)>=0.01&&maxEv(x)<0.02)||x.arbScreen?.trueArb||x.arbScreen?.nearArb));
 const potentialCandidates=all.filter(x=>maxEv(x)>=0.0025&&maxEv(x)<0.01);
 const arbScreens=all.filter(x=>x.identityVerified&&(x.arbScreen?.trueArb||x.arbScreen?.nearArb)).sort((a,b)=>a.arbScreen.arbSum-b.arbScreen.arbSum);
 const snapshotHealth={manifestPresent:Boolean(meta),generatedAt:meta?.generatedAt||tp.generatedAt||null,snapshotBytes:meta?.snapshotBytes??null,successfulSports:meta?.successfulSports||tp.successfulSports||[],failedSports:meta?.failedSports||tp.failedSports||[],totalEvents:meta?.totalEvents??null,totalRetainedMarkets:meta?.totalRetainedMarkets??null,sportEventCounts:Object.fromEntries(Object.entries(meta?.sports||{}).map(([sport,row])=>[sport,row?.eventCount??null])),healthy:Boolean((meta?.generatedAt||tp.generatedAt)&&!(meta?.failedSports||tp.failedSports||[]).length)};
-const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligibleEvents,matchedEvents:matchedEventIds.size,unmatchedEvents:eligibleEvents-matchedEventIds.size,eligibleMarkets,matchedMarkets,unmatchedMarkets:eligibleMarkets-matchedMarkets,eligibleBySport,matchedBySport,marketTypeCounts,rawExactQuoteMatchesByType,limitedExactComparisons:limitedExactComparisons.slice(0,100),arbitrageMarketsTested:matchedMarkets,arbScreenCount:arbScreens.length,arbScreens,actionCandidates,watchCandidates,potentialCandidates,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,100)};
+const oneWayUnique=[...new Map(oneWayPlayerPropScreensOut.map(r=>[[r.sport,r.book,r.player,r.stat,r.line,r.side].join('|'),r])).values()].slice(0,100);
+const output={generatedAt:new Date().toISOString(),thunderpickGeneratedAt:tp.generatedAt,comparisonGeneratedAt:cmp.generatedAt,horizonDays:15,snapshotHealth,eligibleThunderpickEvents:eligibleEvents,matchedEvents:matchedEventIds.size,unmatchedEvents:eligibleEvents-matchedEventIds.size,eligibleMarkets,matchedMarkets,unmatchedMarkets:eligibleMarkets-matchedMarkets,eligibleBySport,matchedBySport,marketTypeCounts,rawExactQuoteMatchesByType,limitedExactComparisons:limitedExactComparisons.slice(0,100),oneWayPlayerPropScreens:oneWayUnique,arbitrageMarketsTested:matchedMarkets,arbScreenCount:arbScreens.length,arbScreens,actionCandidates,watchCandidates,potentialCandidates,candidates:all.filter(x=>x.plausible),topScreens:all.slice(0,100)};
 await fs.writeFile('data/screen-latest.json',JSON.stringify(output,null,2));
 console.log(`Eligible events=${eligibleEvents}, matched events=${matchedEventIds.size}, eligible markets=${eligibleMarkets}, matched markets=${matchedMarkets}, candidates=${output.candidates.length}, arbScreens=${arbScreens.length}, snapshotHealthy=${snapshotHealth.healthy}`);
