@@ -33,10 +33,12 @@ for(const sport of SPORTS){
   let usedFallback=false;
   // Owls can temporarily rate-limit/return an unusable board. Preserve the last
   // healthy snapshot for validation instead of overwriting it with zero data.
-  if((!response.ok||compactEvents.length===0)&&Array.isArray(previousSnapshot?.sports?.[sport]?.data?.data)&&previousSnapshot.sports[sport].data.data.length){
-    compactEvents=previousSnapshot.sports[sport].data.data;
+  const priorEvents=previousSnapshot?.sports?.[sport]?.data?.data;
+  const priorKnown=Array.isArray(priorEvents)&&Boolean(previousMeta?.sports?.[sport]);
+  if((!response.ok||compactEvents.length===0)&&priorKnown){
+    compactEvents=priorEvents;
     usedFallback=true;
-    console.warn(`Thunderpick ${sport}: HTTP ${response.status}; using previous healthy snapshot (${compactEvents.length} events)`);
+    console.warn(`Thunderpick ${sport}: HTTP ${response.status}; using previous snapshot (${compactEvents.length} events)`);
   }
   const marketCount=compactEvents.reduce((sum,e)=>sum+(e.preferredMarkets?.length||0)+(e.market?1:0),0);
   const suspiciousEmpty=!usedFallback&&response.ok&&compactEvents.length===0;
