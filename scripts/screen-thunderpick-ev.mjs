@@ -375,11 +375,12 @@ for(const sport of SPORTS){
   if(outN>=12)break;
  }
 }
+await fs.writeFile('data/esports-derivative-diagnostics.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeDiagnostics},null,2));
 await fs.writeFile('data/player-prop-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),playerPropSchemaSamples},null,2));
 console.log('PLAYER_PROP_SCHEMA_SAMPLES','tp='+playerPropSchemaSamples.thunderpick.length,'outside='+playerPropSchemaSamples.outside.length);
 
 
-const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();const rawExactQuoteMatchesByType={};const limitedExactComparisons=[];
+const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();const rawExactQuoteMatchesByType={};const limitedExactComparisons=[];const derivativeDiagnostics={map_winner:{raw:0,sane:0,missingScope:0,scopeMismatch:0,under3Sources:0,orientationAmbiguous:0,matched:0},round_handicap:{raw:0,sane:0,missingScope:0,scopeMismatch:0,under3Sources:0,orientationAmbiguous:0,matched:0},round_totals:{raw:0,sane:0,missingScope:0,scopeMismatch:0,under3Sources:0,orientationAmbiguous:0,matched:0}};
 const eligibleBySport={},matchedBySport={},marketTypeCounts={};
 const oneWayPlayerPropScreensOut=[];
 for(const sport of SPORTS){
@@ -395,7 +396,9 @@ for(const sport of SPORTS){
    if(d.key==='player_prop')for(const row of rows)oneWayPlayerPropScreensOut.push(...oneWayPlayerPropScreens(row,d));
    if(!outside.length)continue;
    rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
+   if(derivativeDiagnostics[d.key]) derivativeDiagnostics[d.key].raw++;
    let saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
+   if(derivativeDiagnostics[d.key]) derivativeDiagnostics[d.key].sane+=saneOutside.length;
    // Provider orientation guard: when 3+ books disagree on which named team is
    // favorite, discard the minority orientation before EV/arb calculations.
    if(!['totals','round_totals'].includes(d.key)&&saneOutside.length>=3){
@@ -403,14 +406,14 @@ for(const sport of SPORTS){
     const pos=votes.filter(v=>v>0).length,neg=votes.filter(v=>v<0).length;
     const direction=pos>neg?1:neg>pos?-1:0;
     // A tied/ambiguous favorite orientation is unsafe: do not calculate EV/arb.
-    if(!direction) continue;
+    if(!direction){if(derivativeDiagnostics[d.key])derivativeDiagnostics[d.key].orientationAmbiguous++;continue;}
     saneOutside=saneOutside.filter(q=>Math.sign(q.b-q.a)===direction);
    }
    // Require >=3 independent books for ACTION/WATCH math. A two-book screen
    // remains diagnostic only and cannot create a candidate or arbitrage.
    const uniqueBooks=new Set(saneOutside.map(q=>String(q.book||'').toLowerCase()).filter(Boolean));
-   if(saneOutside.length<3||uniqueBooks.size<3){if(['map_winner','round_handicap','round_totals','player_prop'].includes(d.key)&&saneOutside.length){limitedExactComparisons.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:d.selections,outside:saneOutside,independentSources:uniqueBooks.size,blocker:'fewer than 3 independent exact-scope sources; SCREENING ONLY'});}continue;}
-   matchedMarkets++;marketTypeCounts[d.key].matched++;eventMatched=true;
+   if(saneOutside.length<3||uniqueBooks.size<3){if(derivativeDiagnostics[d.key])derivativeDiagnostics[d.key].under3Sources++;if(['map_winner','round_handicap','round_totals','player_prop'].includes(d.key)&&saneOutside.length){limitedExactComparisons.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:d.selections,outside:saneOutside,independentSources:uniqueBooks.size,blocker:'fewer than 3 independent exact-scope sources; SCREENING ONLY'});}continue;}
+   matchedMarkets++;marketTypeCounts[d.key].matched++;if(derivativeDiagnostics[d.key])derivativeDiagnostics[d.key].matched++;eventMatched=true;
    const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
    const consensus=robustProbConsensus(base,3); if(!consensus)continue;
