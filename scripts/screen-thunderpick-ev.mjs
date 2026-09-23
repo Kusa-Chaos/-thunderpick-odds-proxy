@@ -64,6 +64,14 @@ function scopeFromText(text=''){
  const round=t.match(/(?:\bround|roundnr|round_number|roundnumber)\s*(?:=|:|#|-)?\s*(\d+)\b/i);
  return{map:map?Number(map[1]):null,round:round?Number(round[1]):null};
 }
+function explicitScope(m={}){
+ // Exact-source adapters (Stake/Kalshi/Polymarket/etc.) publish structured scope.
+ // Prefer it over reparsing display text so Map 1/2/3 identity survives normalization.
+ const sm=n(m?.scope?.map??m?.map??m?.mapNumber??m?.map_number);
+ const sr=n(m?.scope?.round??m?.round??m?.roundNumber??m?.round_number);
+ const parsed=scopeFromText(marketIdentityText(m));
+ return {map:sm!=null?sm:parsed.map,round:sr!=null?sr:parsed.round};
+}
 function playerPropIdentity(m={}){
  const text=[m.nickName,m.name,m.category,m.subCategory,m.specifiers].filter(Boolean).join(' ');
  if(!/\bplayer\b/i.test(text))return null;
@@ -215,10 +223,7 @@ function totalTarget(m={},event=null){
  }
  return null;
 }
-function outsideScope(m={}){
- const raw=marketIdentityText(m);
- return scopeFromText(raw);
-}
+function outsideScope(m={}){ return explicitScope(m); }
 function findOutcome(outcomes,sel,key,market={}){
  if(key==='player_prop'){
   if(sel.point==null)return null;
