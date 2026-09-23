@@ -296,22 +296,23 @@ for(const sport of SPORTS){
 await fs.writeFile('data/esports-derivative-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeSchemaSamples},null,2));
 const playerPropSchemaSamples={thunderpick:[],outside:[]};
 for(const sport of SPORTS){
+ let tpN=0,outN=0;
  for(const e of tpEvents(sport)){
   for(const m of e?.preferredMarkets||[]){
    if(classifyMarket(m)!=='player_prop')continue;
    playerPropSchemaSamples.thunderpick.push({sport,event:`${e?.teams?.home?.name||e?.market?.home?.name||''} vs ${e?.teams?.away?.name||e?.market?.away?.name||''}`,key:m.key||null,name:m.name||null,nickName:m.nickName||null,category:m.category||null,subCategory:m.subCategory||null,specifiers:m.specifiers||null,selections:(m.selections||[]).slice(0,2)});
-   if(playerPropSchemaSamples.thunderpick.length>=25)break;
+   if(++tpN>=8)break;
   }
-  if(playerPropSchemaSamples.thunderpick.length>=25)break;
+  if(tpN>=8)break;
  }
  for(const row of outsideEvents(sport)){
   for(const bm of row.event?.bookmakers||[])for(const m of bm.markets||[]){
    const mk=String(m.key||'').toLowerCase();
    if(!(/^(player_|batter_|pitcher_)/.test(mk)||/(kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists)/.test(mk)))continue;
    playerPropSchemaSamples.outside.push({sport,book:row.book||bm.key||bm.title,event:`${row.event?.home_team||''} vs ${row.event?.away_team||''}`,key:m.key||null,name:m.name||null,description:m.description||null,specifiers:m.specifiers||null,outcomes:(m.outcomes||[]).slice(0,2)});
-   if(playerPropSchemaSamples.outside.length>=50)break;
+   if(++outN>=12)break;
   }
-  if(playerPropSchemaSamples.outside.length>=50)break;
+  if(outN>=12)break;
  }
 }
 await fs.writeFile('data/player-prop-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),playerPropSchemaSamples},null,2));
