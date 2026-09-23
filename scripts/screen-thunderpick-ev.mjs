@@ -148,7 +148,10 @@ function canonicalPropStat(v=''){
  // Provider prop keys often append contract scope (e.g. kills_maps_1_2).
  // Remove scope before canonicalizing the stat; scope is verified separately.
  x=x.replace(/_(?:maps?|games?)_\d+(?:_\d+)*$/,'').replace(/_(?:first|second)_half$/,'');
- const map={pass_yds:'passing_yards',passing_yds:'passing_yards',rush_yds:'rushing_yards',rushing_yds:'rushing_yards',rec_yds:'receiving_yards',receiving_yds:'receiving_yards',receptions:'receptions',pass_tds:'passing_touchdown',passing_tds:'passing_touchdown',rush_tds:'rushing_touchdown',receiving_tds:'receiving_touchdown',strikeouts:'strikeout',hits:'hit',home_runs:'home_run',total_bases:'total_base',points:'point',rebounds:'rebound',assists:'assist',threes:'three_pointer',three_pointers:'three_pointer',kills:'kill',headshots:'headshot',aces:'ace',double_faults:'double_fault'};
+ // Normalize provider wording such as player_headshots_maps_1_2 to the same
+ // stat vocabulary Thunderpick uses ("Total Headshot Kills").
+ x=x.replace(/^total_/,'').replace(/_kills$/,'_kill').replace(/^headshot_kill$/,'headshot');
+ const map={pass_yds:'passing_yards',passing_yds:'passing_yards',rush_yds:'rushing_yards',rushing_yds:'rushing_yards',rec_yds:'receiving_yards',receiving_yds:'receiving_yards',receptions:'receptions',pass_tds:'passing_touchdown',passing_tds:'passing_touchdown',rush_tds:'rushing_touchdown',receiving_tds:'receiving_touchdown',strikeouts:'strikeout',hits:'hit',home_runs:'home_run',total_bases:'total_base',points:'point',rebounds:'rebound',assists:'assist',threes:'three_pointer',three_pointers:'three_pointer',kills:'kill',kill:'kill',headshots:'headshot',headshot_kills:'headshot',headshot_kill:'headshot',aces:'ace',double_faults:'double_fault'};
  return map[x]||x.replace(/s$/,'');
 }
 function cleanPlayerName(v=''){
