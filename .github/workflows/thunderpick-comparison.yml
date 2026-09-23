@@ -115,7 +115,10 @@ jobs:
           // Publish every ACTION/WATCH first, with genuine esports first on ties.
           const seen=new Set(); const rows=[];
           for(const r of [...actionRows,...watchRows,...potentialRows]){const k=[r.sport,r.match,r.target,r.market].join('|');if(seen.has(k))continue;seen.add(k);rows.push(r);}
-          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},actionRows,watchRows,potentialRows,rows:rows.slice(0,100)};
+          // Keep scan-display intentionally lightweight for GitHub/API readers. Detailed
+          // source quotes remain in scan-report-latest.json and screen-latest.json.
+          const displayRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,startTime:r.startTime});
+          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},actionRows:actionRows.slice(0,20).map(displayRow),watchRows:watchRows.slice(0,30).map(displayRow),potentialRows:potentialRows.slice(0,30).map(displayRow),rows:rows.slice(0,100).map(displayRow),publication:{compact:true,detailArtifact:'data/scan-report-latest.json'}};
           fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
           // Fail loudly if the generated display artifact is unexpectedly empty.
           const displaySize=fs.statSync('data/scan-display-latest.json').size;
