@@ -160,10 +160,25 @@ function outsidePropIdentity(m={}){
  const mk=String(m.key||'').toLowerCase().replace(/[- ]/g,'_');
  const stat=canonicalPropStat(mk);
  const outs=m.outcomes||[];
- const desc=outs.map(o=>o.description).find(Boolean)||m.player||m.player_name||m.playerName||
-   String(m.description||'').replace(/^total\s+[^-]+-\s*/i,'');
+ // Providers encode player identity in several incompatible shapes. Prefer
+ // explicit player fields/descriptions, then fall back to the outcome name
+ // only when it is not merely Over/Under.
+ const outcomeDesc=outs.map(o=>o.description||o.player||o.player_name||o.playerName).find(Boolean);
+ const namedOutcome=outs.map(o=>String(o.name||'').trim()).find(v=>v&&!/^(over|under)$/i.test(v));
+ const desc=m.player||m.player_name||m.playerName||outcomeDesc||
+   String(m.description||'').replace(/^total\s+[^-]+-\s*/i,'')||namedOutcome||'';
  const player=cleanPlayerName(desc);
  return player&&stat?{player,stat}:null;
+}
+function propOutcomeRole(o={}){
+ const nme=String(o.name||o.label||o.side||o.type||'').trim().toLowerCase();
+ if(/^(over|o)$/.test(nme)||/\bover\b/.test(nme))return 'over';
+ if(/^(under|u)$/.test(nme)||/\bunder\b/.test(nme))return 'under';
+ return null;
+}
+function propOutcomePoint(o={},m={}){
+ for(const v of [o.point,o.total,o.line,o.handicap,m.baseLine,specNumber(m.specifiers,'threshold'),specNumber(m.specifiers,'line')]){const x=n(v);if(x!=null)return x;}
+ return parsedNamePoint(o.name||o.label||'');
 }
 function periodScope(text=''){
  const t=String(text).toLowerCase();
@@ -201,8 +216,11 @@ function outsideScope(m={}){
  const raw=marketIdentityText(m);
  return scopeFromText(raw);
 }
-function findOutcome(outcomes,sel,key){
- if(key==='player_prop'){if(sel.point==null)return null;return outcomes.find(o=>String(o.name||'').toLowerCase()===sel.role&&n(o.point)!=null&&close(n(o.point),sel.point));}
+function findOutcome(outcomes,sel,key,market={}){
+ if(key==='player_prop'){
+  if(sel.point==null)return null;
+  return outcomes.find(o=>propOutcomeRole(o)===sel.role&&propOutcomePoint(o,market)!=null&&close(propOutcomePoint(o,market),sel.point));
+ }
  if(key==='totals'||key==='round_totals'){if(sel.point==null)return null;return outcomes.find(o=>String(o.name||'').toLowerCase()===sel.role&&n(o.point)!=null&&close(n(o.point),sel.point));}
  if(key==='spreads'||key==='round_handicap'){if(sel.point==null)return null;return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name))&&n(o.point)!=null&&close(n(o.point),sel.point));}
  return outcomes.find(o=>norm(stripLine(o.name))===norm(stripLine(sel.name)));
@@ -261,7 +279,7 @@ function quoteFor(row,d){
    if(tpPeriod!==outPeriod)continue;
   }
   const outs=c.market?.outcomes||[];if(outs.length<2)continue;
-  const a=findOutcome(outs,d.selections[0],d.key),b=findOutcome(outs,d.selections[1],d.key);if(!a||!b)continue;
+  const a=findOutcome(outs,d.selections[0],d.key,c.market),b=findOutcome(outs,d.selections[1],d.key,c.market);if(!a||!b)continue;
   if(!['totals','round_totals','player_prop'].includes(d.key)){
    const aName=norm(stripLine(a.name)),bName=norm(stripLine(b.name));
    const ta=norm(stripLine(d.selections[0].name)),tb=norm(stripLine(d.selections[1].name));
