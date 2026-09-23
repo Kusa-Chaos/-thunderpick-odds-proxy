@@ -294,6 +294,29 @@ for(const sport of SPORTS){
  derivativeSchemaSamples[sport]=samples;
 }
 await fs.writeFile('data/esports-derivative-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeSchemaSamples},null,2));
+const playerPropSchemaSamples={thunderpick:[],outside:[]};
+for(const sport of SPORTS){
+ for(const e of tpEvents(sport)){
+  for(const m of e?.preferredMarkets||[]){
+   if(classifyMarket(m)!=='player_prop')continue;
+   playerPropSchemaSamples.thunderpick.push({sport,event:`${e?.teams?.home?.name||e?.market?.home?.name||''} vs ${e?.teams?.away?.name||e?.market?.away?.name||''}`,key:m.key||null,name:m.name||null,nickName:m.nickName||null,category:m.category||null,subCategory:m.subCategory||null,specifiers:m.specifiers||null,selections:(m.selections||[]).slice(0,2)});
+   if(playerPropSchemaSamples.thunderpick.length>=25)break;
+  }
+  if(playerPropSchemaSamples.thunderpick.length>=25)break;
+ }
+ for(const row of outsideEvents(sport)){
+  for(const bm of row.event?.bookmakers||[])for(const m of bm.markets||[]){
+   const mk=String(m.key||'').toLowerCase();
+   if(!(/^(player_|batter_|pitcher_)/.test(mk)||/(kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists)/.test(mk)))continue;
+   playerPropSchemaSamples.outside.push({sport,book:row.book||bm.key||bm.title,event:`${row.event?.home_team||''} vs ${row.event?.away_team||''}`,key:m.key||null,name:m.name||null,description:m.description||null,specifiers:m.specifiers||null,outcomes:(m.outcomes||[]).slice(0,2)});
+   if(playerPropSchemaSamples.outside.length>=50)break;
+  }
+  if(playerPropSchemaSamples.outside.length>=50)break;
+ }
+}
+await fs.writeFile('data/player-prop-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),playerPropSchemaSamples},null,2));
+console.log('PLAYER_PROP_SCHEMA_SAMPLES','tp='+playerPropSchemaSamples.thunderpick.length,'outside='+playerPropSchemaSamples.outside.length);
+
 
 const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();const rawExactQuoteMatchesByType={};const limitedExactComparisons=[];
 const eligibleBySport={},matchedBySport={},marketTypeCounts={};
