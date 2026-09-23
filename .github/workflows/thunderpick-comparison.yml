@@ -117,6 +117,10 @@ jobs:
           for(const r of [...actionRows,...watchRows,...potentialRows]){const k=[r.sport,r.match,r.target,r.market].join('|');if(seen.has(k))continue;seen.add(k);rows.push(r);}
           const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},actionRows,watchRows,potentialRows,rows:rows.slice(0,100)};
           fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
+          // Fail loudly if the generated display artifact is unexpectedly empty.
+          const displaySize=fs.statSync('data/scan-display-latest.json').size;
+          if(displaySize<100) throw new Error('scan-display-latest.json unexpectedly empty: '+displaySize+' bytes');
+          console.log('SCAN_DISPLAY_BYTES',displaySize);
           // Publish a deliberately small candidate artifact so chat/reporting clients
           // never need to parse the multi-megabyte screen file. Keep every source-tier
           // bucket visible, plus all current LoL rows for WSCI/EMEA inspection.
@@ -220,6 +224,7 @@ jobs:
             const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
             if(st.size>50*1024*1024) throw new Error(`${p} too large for compact publication (${st.size} bytes)`);
             const x=JSON.parse(fs.readFileSync(p,'utf8')); if(!x || typeof x!=='object') throw new Error(`${p} invalid JSON object`);
+            if(p==='data/scan-display-latest.json' && st.size<100) throw new Error(`${p} unexpectedly empty (${st.size} bytes)`);
             console.log('VALID_OUTPUT',p,st.size,'bytes');
           }
           NODE
