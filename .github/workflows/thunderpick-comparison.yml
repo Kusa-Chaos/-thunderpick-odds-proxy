@@ -128,7 +128,25 @@ jobs:
           const topWatch=watchRows.slice(0,30).map(compactRow);
           const topPotential=potentialRows.slice(0,30).map(compactRow);
           const limitedProps=(s.limitedExactComparisons||[]).filter(r=>r.marketKey==='player_prop').slice(0,30);
-          const playerPropScreenRows=[...limitedProps,...(s.oneWayPlayerPropScreens||[])].slice(0,30);
+          let semanticScreens=s.oneWayPlayerPropScreens||[];
+          // Fallback audit path for one-way exact semantic props (e.g. MLB "to record a hit"
+          // == TP hits Over 0.5). These are SCREENING only because there is no Under price to de-vig.
+          if(!semanticScreens.length&&fs.existsSync('data/player-prop-schema.json')){
+            const ps=JSON.parse(fs.readFileSync('data/player-prop-schema.json')).playerPropSchemaSamples||{};
+            const outs=ps.outside||[];
+            for(const t of ps.thunderpick||[]){
+              const nm=String(t.name||''); const pm=nm.match(/^Player\s+(.+?)\s+-\s+Total\s+hits\b/i);
+              if(!pm)continue; const player=pm[1].trim(); const over=(t.selections||[]).find(z=>/^over$/i.test(String(z.name||'')));
+              const line=Number(over?.total??over?.point); if(line!==0.5)continue;
+              for(const o of outs.filter(z=>z.sport===t.sport&&z.event===t.event&&/to_record_a_hit/i.test(String(z.key||'')))){
+                const hit=(o.outcomes||[]).find(z=>String(z.name||'').toLowerCase()===player.toLowerCase()); if(!hit)continue;
+                const raw=Number(hit.price); const price=raw>=100?1+raw/100:raw<=-100?1+100/Math.abs(raw):raw;
+                if(!(price>1))continue;
+                semanticScreens.push({tier:'SCREENING',sport:t.sport,match:t.event,target:player+' Over 0.5 hits',market:'Player total hits',marketKey:'player_prop',line:0.5,thunderpick:Number(over.odds),outsidePrice:price,book:o.book,independentSources:1,blocker:'one-way exact semantic price; no Under price for de-vig, SCREENING ONLY'});
+              }
+            }
+          }
+          const playerPropScreenRows=[...limitedProps,...semanticScreens].slice(0,30);
           const handicapRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.marketKey==='spreads'||r.marketKey==='round_handicap').slice(0,30).map(compactRow);
           out.coverage.rawExactQuoteMatchesByType=s.rawExactQuoteMatchesByType||{};
           const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows,limitedPlayerPropRows:playerPropScreenRows,handicapRows};
