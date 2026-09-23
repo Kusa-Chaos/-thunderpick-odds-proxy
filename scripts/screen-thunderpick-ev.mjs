@@ -375,7 +375,6 @@ for(const sport of SPORTS){
   if(outN>=12)break;
  }
 }
-await fs.writeFile('data/esports-derivative-diagnostics.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeDiagnostics},null,2));
 await fs.writeFile('data/player-prop-schema.json',JSON.stringify({generatedAt:new Date().toISOString(),playerPropSchemaSamples},null,2));
 console.log('PLAYER_PROP_SCHEMA_SAMPLES','tp='+playerPropSchemaSamples.thunderpick.length,'outside='+playerPropSchemaSamples.outside.length);
 
@@ -432,6 +431,7 @@ for(const sport of SPORTS){
   if(eventMatched){matchedEventIds.add(`${sport}:${e.id}`);matchedBySport[sport]++;}
  }
 }
+await fs.writeFile('data/esports-derivative-diagnostics.json',JSON.stringify({generatedAt:new Date().toISOString(),derivativeDiagnostics},null,2));
 all.sort((x,y)=>Math.max(y.ev.a,y.ev.b)-Math.max(x.ev.a,x.ev.b));
 const maxEv=x=>Math.max(Number(x?.ev?.a??-Infinity),Number(x?.ev?.b??-Infinity));
 const actionCandidates=all.filter(x=>x.actionEligible&&maxEv(x)>=0.02);
