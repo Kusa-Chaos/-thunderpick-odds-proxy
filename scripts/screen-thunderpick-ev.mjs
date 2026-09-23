@@ -72,7 +72,9 @@ function playerPropIdentity(m={}){
  const stat=canonicalPropStat(statRaw.toLowerCase().replace(/\s+/g,'_'));
  let player=specText(m.specifiers,'player')||specText(m.specifiers,'player_name')||specText(m.specifiers,'competitor')||null;
  if(!player){
-  const raw=String(m.nickName||m.name||'').replace(/\bplayer\b/ig,'').replace(new RegExp(statRaw,'ig'),'').replace(/\b(over|under|total|props?)\b/ig,' ').replace(/[|:–—-]+/g,' ').trim();
+  const raw=String(m.nickName||m.name||'').replace(/\bplayer\b/ig,'').replace(new RegExp(statRaw,'ig'),'')
+   .replace(/\([^)]*\)/g,' ').replace(/\bmap\s*\d+\b/ig,' ').replace(/\bround\s*\d+\b/ig,' ')
+   .replace(/\b(over|under|total|props?)\b/ig,' ').replace(/[|:–—-]+/g,' ').replace(/\s+/g,' ').trim();
   player=raw||null;
  }
  return player?{player:String(player).trim(),stat}:null;
@@ -142,7 +144,10 @@ function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmak
  if((key==='player_prop'&&isProp)||(key!=='player_prop'&&wanted.includes(mk)))found.push({bookmaker:bm.key||bm.title,market:m});
 }}}return found;}
 function canonicalPropStat(v=''){
- const x=String(v).toLowerCase().replace(/[- ]+/g,'_').replace(/^(player|batter|pitcher)_/,'').replace(/_(over_under|totals?|props?)$/,'');
+ let x=String(v).toLowerCase().replace(/[- ]+/g,'_').replace(/^(player|batter|pitcher)_/,'').replace(/_(over_under|totals?|props?)$/,'');
+ // Provider prop keys often append contract scope (e.g. kills_maps_1_2).
+ // Remove scope before canonicalizing the stat; scope is verified separately.
+ x=x.replace(/_(?:maps?|games?)_\d+(?:_\d+)*$/,'').replace(/_(?:first|second)_half$/,'');
  const map={pass_yds:'passing_yards',passing_yds:'passing_yards',rush_yds:'rushing_yards',rushing_yds:'rushing_yards',rec_yds:'receiving_yards',receiving_yds:'receiving_yards',receptions:'receptions',pass_tds:'passing_touchdown',passing_tds:'passing_touchdown',rush_tds:'rushing_touchdown',receiving_tds:'receiving_touchdown',strikeouts:'strikeout',hits:'hit',home_runs:'home_run',total_bases:'total_base',points:'point',rebounds:'rebound',assists:'assist',threes:'three_pointer',three_pointers:'three_pointer',kills:'kill',headshots:'headshot',aces:'ace',double_faults:'double_fault'};
  return map[x]||x.replace(/s$/,'');
 }
@@ -231,6 +236,14 @@ function quoteFor(row,d){
    const outsidePeriod=periodScope(raw),tpPeriod=periodScope(d.label||'');
    if(outsidePeriod!=='full'&&tpPeriod!==outsidePeriod)continue;
    if(outsidePeriod==='full'&&tpPeriod!=='full')continue;
+   const tpMap=d.scope?.map??null;
+   const mk=String(c.market?.key||'').toLowerCase().replace(/[- ]/g,'_');
+   const range=mk.match(/_(?:maps?|games?)_(\d+)_(\d+)$/), single=mk.match(/_(?:map|game)_(\d+)$/);
+   const outMap=single?Number(single[1]):null;
+   // A combined Maps 1+2 contract is not the same as a single-map prop.
+   if(range){if(tpMap!=null)continue;}
+   else if(tpMap!=null&&outMap!==tpMap)continue;
+   else if(tpMap==null&&outMap!=null)continue;
   }
   // Team totals are distinct contracts from game totals and from the other
   // team's total. Never compare them using line alone.
