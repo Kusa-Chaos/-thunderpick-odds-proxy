@@ -355,6 +355,7 @@ console.log('PLAYER_PROP_SCHEMA_SAMPLES','tp='+playerPropSchemaSamples.thunderpi
 
 const all=[];let eligibleEvents=0,eligibleMarkets=0,matchedMarkets=0;const matchedEventIds=new Set();const rawExactQuoteMatchesByType={};const limitedExactComparisons=[];
 const eligibleBySport={},matchedBySport={},marketTypeCounts={};
+const oneWayPlayerPropScreensOut=[];
 for(const sport of SPORTS){
  eligibleBySport[sport]=0;matchedBySport[sport]=0;
  const idx=new Map();for(const row of outsideEvents(sport)){const e=row.event;if(e.live===true||String(e.status||'').toLowerCase()==='live')continue;const k=pairKey(e.home_team,e.away_team);if(!idx.has(k))idx.set(k,[]);idx.get(k).push(row);}
@@ -406,7 +407,6 @@ for(const sport of SPORTS){
 }
 all.sort((x,y)=>Math.max(y.ev.a,y.ev.b)-Math.max(x.ev.a,x.ev.b));
 const maxEv=x=>Math.max(Number(x?.ev?.a??-Infinity),Number(x?.ev?.b??-Infinity));
-const oneWayPlayerPropScreensOut=[];
 const actionCandidates=all.filter(x=>x.actionEligible&&maxEv(x)>=0.02);
 const watchCandidates=all.filter(x=>x.watchEligible&&((!x.actionEligible&&maxEv(x)>=0.01)||(x.actionEligible&&maxEv(x)>=0.01&&maxEv(x)<0.02)||x.arbScreen?.trueArb||x.arbScreen?.nearArb));
 const potentialCandidates=all.filter(x=>maxEv(x)>=0.0025&&maxEv(x)<0.01);
