@@ -127,7 +127,10 @@ jobs:
           const topAction=actionRows.slice(0,20).map(compactRow);
           const topWatch=watchRows.slice(0,30).map(compactRow);
           const topPotential=potentialRows.slice(0,30).map(compactRow);
-          const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows};
+          const limitedProps=(s.limitedExactComparisons||[]).filter(r=>r.marketKey==='player_prop').slice(0,30);
+          const handicapRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.marketKey==='spreads'||r.marketKey==='round_handicap').slice(0,30).map(compactRow);
+          out.coverage.rawExactQuoteMatchesByType=s.rawExactQuoteMatchesByType||{};
+          const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length,limitedPlayerProps:limitedProps.length,handicaps:handicapRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length,limitedPlayerProps:limitedProps.length,handicaps:handicapRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows,limitedPlayerPropRows:limitedProps,handicapRows};
           fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(report,null,2));
           console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length,'REPORT_BYTES',fs.statSync('data/scan-report-latest.json').size,'LOL_ROWS',lolRows.length);
           NODE
