@@ -323,7 +323,7 @@ async function fetchOddsPapiExact(){
      // The semantic side/line lives in market metadata + outcome metadata, not on the price leaf.
      const rawOut=md?.outcomes||{};
      for(const [oid,od] of Object.entries(rawOut)){
-      const om=marketMeta.get(String(oid))||{};
+      const om=(Array.isArray(meta.outcomes)?meta.outcomes.find(x=>String(x.outcomeId??x.id)===String(oid)):null)||{};
       const semantic=String(om.outcomeName||om.name||om.label||od?.outcomeName||od?.name||'').trim();
       const pts=Number(om.handicap??om.line??om.total??line);
       const players=od?.players&&typeof od.players==='object'?Object.values(od.players):[od];
