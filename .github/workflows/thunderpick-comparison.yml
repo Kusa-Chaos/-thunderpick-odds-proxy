@@ -155,7 +155,8 @@ jobs:
               }
             }
           }
-          const playerPropScreenRows=[...limitedProps,...semanticScreens].slice(0,30);
+          const inventoryProps=(s.playerPropInventory||[]).map(r=>({...r,tier:r.tier||'INFORMATIONAL'}));
+const playerPropScreenRows=[...limitedProps,...semanticScreens,...inventoryProps].slice(0,30);
           const handicapRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.marketKey==='spreads'||r.marketKey==='round_handicap').slice(0,30).map(compactRow);
           out.coverage.rawExactQuoteMatchesByType=s.rawExactQuoteMatchesByType||{};
           const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows,limitedPlayerPropRows:playerPropScreenRows,handicapRows,esportsScreenRows};
