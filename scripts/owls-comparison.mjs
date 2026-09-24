@@ -68,13 +68,13 @@ try{
  for(const ev of (Array.isArray(body?.data)?body.data:[])){
   for(const m of (Array.isArray(ev?.markets)?ev.markets:[])){
    const raw=`${m?.name||''} ${m?.title||''} ${m?.templateExtId||''}`;
-   if(/map/i.test(raw)&&/winner|result|1x2/i.test(raw)){
+   if(/round|handicap|total|kill|assist|headshot|player/i.test(raw)){
     hits.push({eventId:ev.id,eventName:ev.name,marketId:m.id,name:m.name,title:m.title,templateExtId:m.templateExtId,status:m.status,provider:m.provider,outcomes:(m.outcomes||[]).map(o=>({id:o.id,name:o.name,odds:o.odds,active:o.active,extId:o.extId}))});
    }
   }
  }
- sports.cs2.stakeMapDiagnostic={meta:body?.meta??null,count:hits.length,hits:hits.slice(0,30)};
- console.log('STAKE_MAP_DIAGNOSTIC',JSON.stringify({meta:body?.meta??null,count:hits.length,hits:hits.slice(0,12)}));
+ sports.cs2.stakeMapDiagnostic={meta:body?.meta??null,count:hits.length,hits:hits.slice(0,250)};
+ console.log('STAKE_MAP_DIAGNOSTIC',JSON.stringify({meta:body?.meta??null,count:hits.length,hits:hits.slice(0,120)}));
 }catch(e){console.warn('STAKE_MAP_DIAGNOSTIC_ERROR',String(e?.stack||e));}
 
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
