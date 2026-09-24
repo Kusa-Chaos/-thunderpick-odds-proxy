@@ -82,7 +82,7 @@ const v2base='https://api.owlsinsight.com/api/v2';
 // Optional direct esports derivative source. Odds-API.io documents explicit
 // Map 1/2/3 Winner, Round Handicap and Total Rounds markets. Keep this optional:
 // the scan remains operational without a key and fails closed on identity.
-const ODDS_API_IO_KEY=(process.env.ODDS_API_IO_KEY||'').trim();
+const ODDS_API_IO_KEY=''; // paid source deliberately disabled; scanner uses free Owls/Kalshi/Polymarket paths
 const ODDS_API_IO_BASE='https://api.odds-api.io/v3';
 async function v2get(path){
   if(v2ResponseCache.has(path)) return v2ResponseCache.get(path);
