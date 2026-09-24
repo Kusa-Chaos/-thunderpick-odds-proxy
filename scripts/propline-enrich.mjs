@@ -70,7 +70,7 @@ function findTPMatch(index,e){
 function ensureBucket(sport){cmp.sports??={};cmp.sports[sport]??={ok:true,status:200,data:{}};const b=cmp.sports[sport];if(!b.data||typeof b.data!=='object'||Array.isArray(b.data))b.data={};return b;}
 
 let inserted=0,matchedEvents=0,requestCount=0;const books=new Set(),feedStats=[];let quota={used:null,remaining:null,reset:null};
-const propFetchSeen=new Set(); let propEventRequests=0; const MAX_PROP_EVENTS=12;
+const propFetchSeen=new Set(); let propEventRequests=0; const MAX_PROP_EVENTS=40;
 function tpWantsProps(ev){
  return (ev?.preferredMarkets||[]).some(m=>/\bplayer\b/i.test([m?.nickName,m?.name,m?.category,m?.subCategory,m?.specifiers].filter(Boolean).join(' ')));
 }
@@ -82,6 +82,7 @@ async function fetchEventProps(feed,e,tpMatch){
   requestCount++; if(!mr.ok)return null;
   const ms=await mr.json(); const keys=(Array.isArray(ms)?ms:ms?.data||[]).map(x=>String(x.key||x.market||'')).filter(k=>/^(player_|batter_|pitcher_)|player|kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists/i.test(k));
   if(!keys.length)return null;
+  // Spend the targeted prop budget only after an event actually exposes prop keys.
   propEventRequests++;
   const wanted=[...new Set(keys)].slice(0,40).join(',');
   let pr=await fetch(`${base}/sports/${feed.api}/events/${encodeURIComponent(e.id)}/odds?markets=${encodeURIComponent(wanted)}`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
@@ -121,7 +122,7 @@ for(const feed of FEEDS){
    const mergedBooks=[...(e.bookmakers||[]),...(propBody?.bookmakers||[])];
    for(const bm of mergedBooks){
     const bookKey=`propline:${bm.key||bm.title||'unknown'}`,markets=[];
-    for(const m of bm.markets||[]){if(!['h2h','spreads','totals','map_winner','round_handicap','round_totals'].includes(m.key)&&!/(player|batter|pitcher|kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists)/i.test(String(m.key||'')))continue;const outcomes=(m.outcomes||[]).map(o=>{let name=o.name;if(m.key!=='totals'){if(sameTeam(o.name,e.home_team))name=tpMatch.home;else if(sameTeam(o.name,e.away_team))name=tpMatch.away;}return {...o,source_name:o.name,name,price:dec(o.price)};}).filter(o=>o.price>1);if(outcomes.length<2)continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
+    for(const m of bm.markets||[]){if(!['h2h','spreads','totals','map_winner','round_handicap','round_totals'].includes(m.key)&&!/(player|batter|pitcher|kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists)/i.test(String(m.key||'')))continue;const isProp=/(player|batter|pitcher|kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists)/i.test(String(m.key||''));const outcomes=(m.outcomes||[]).map(o=>{let name=o.name;if(m.key!=='totals'){if(sameTeam(o.name,e.home_team))name=tpMatch.home;else if(sameTeam(o.name,e.away_team))name=tpMatch.away;}return {...o,source_name:o.name,name,price:dec(o.price)};}).filter(o=>o.price>1);if(outcomes.length<(isProp?1:2))continue;markets.push({...m,outcomes,last_update:bm.last_update||e.last_update||null});}
     if(!markets.length)continue;
     // Canonicalize team display names to Thunderpick after a unique identity match so the downstream exact pair join is stable.
     const normalized={...e,home_team:tpMatch.home,away_team:tpMatch.away,status:e.live?'live':'scheduled',sourceLeague:feed.api,bookmakers:[{...bm,key:bookKey,title:bm.title||bm.key,markets}]};
