@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-24T19:31:51.511Z",
-  "thunderpickGeneratedAt": "2026-09-24T19:30:50.340Z",
-  "comparisonGeneratedAt": "2026-09-24T19:31:42.841Z",
+  "generatedAt": "2026-09-24T21:50:05.816Z",
+  "thunderpickGeneratedAt": "2026-09-24T21:49:02.443Z",
+  "comparisonGeneratedAt": "2026-09-24T21:49:56.077Z",
   "counts": {
     "action": 0,
     "watch": 0,
@@ -20,20 +20,20 @@
     "esportsScreens": 50
   },
   "coverage": {
-    "eligibleThunderpickEvents": 619,
+    "eligibleThunderpickEvents": 623,
     "matchedEvents": 0,
-    "eligibleMarkets": 16981,
+    "eligibleMarkets": 17273,
     "matchedMarkets": 0,
     "eligibleBySport": {
-      "cs2": 76,
+      "cs2": 75,
       "dota2": 7,
       "lol": 16,
       "valorant": 8,
       "american-football": 114,
-      "baseball": 21,
-      "basketball": 201,
+      "baseball": 28,
+      "basketball": 202,
       "soccer": 0,
-      "tennis": 176
+      "tennis": 173
     },
     "matchedBySport": {
       "cs2": 0,
@@ -48,46 +48,48 @@
     },
     "marketTypeCounts": {
       "h2h": {
-        "eligible": 788,
+        "eligible": 792,
         "matched": 0,
         "candidates": 0
       },
       "spreads": {
-        "eligible": 3749,
+        "eligible": 3842,
         "matched": 0,
         "candidates": 0
       },
       "totals": {
-        "eligible": 7014,
+        "eligible": 7154,
         "matched": 0,
         "candidates": 0
       },
       "map_winner": {
-        "eligible": 232,
+        "eligible": 238,
         "matched": 0,
         "candidates": 0
       },
       "round_handicap": {
-        "eligible": 1932,
+        "eligible": 2011,
         "matched": 0,
         "candidates": 0
       },
       "round_totals": {
-        "eligible": 1736,
+        "eligible": 1815,
         "matched": 0,
         "candidates": 0
       },
       "player_prop": {
-        "eligible": 1530,
+        "eligible": 1421,
         "matched": 0,
         "candidates": 0
       }
     },
     "arbitrageMarketsTested": 0,
     "rawExactQuoteMatchesByType": {
-      "h2h": 70,
-      "totals": 48,
-      "map_winner": 84
+      "h2h": 72,
+      "totals": 49,
+      "map_winner": 106,
+      "round_handicap": 136,
+      "round_totals": 149
     }
   },
   "actionRows": [],
@@ -95,20 +97,6 @@
   "potentialRows": [],
   "lolRows": [],
   "limitedPlayerPropRows": [
-    {
-      "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "Colorado Rockies vs Arizona Diamondbacks",
-      "target": "TJ Rumfield Over 0.5 hits",
-      "market": "Player total hits",
-      "marketKey": "player_prop",
-      "line": 0.5,
-      "thunderpick": 1.34,
-      "outsidePrice": 1.3636363636363638,
-      "book": "fanduel",
-      "independentSources": 1,
-      "blocker": "one-way exact semantic price; no Under price for de-vig, SCREENING ONLY"
-    },
     {
       "tier": "INFORMATIONAL",
       "sport": "cs2",
@@ -717,56 +705,31 @@
       },
       "independentSources": 0,
       "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    }
-  ],
-  "handicapRows": [],
-  "esportsScreenRows": [
+    },
     {
+      "tier": "INFORMATIONAL",
       "sport": "cs2",
-      "eventId": 2712742,
-      "name": "Galorys vs Metanoia Wolves",
-      "startTime": "2026-09-25T21:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
+      "match": "Wraith PCIFIC vs Bebop",
+      "eventId": 2695633,
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "player": "lugseN",
+      "stat": "kill",
+      "market": "Player lugseN - Total Kills Over/Under (Incl. Overtime) - Map 2",
+      "line": 16.5,
       "scope": {
         "map": 2,
         "round": null
       },
-      "thunderpick": [
-        {
-          "name": "Galorys",
-          "role": "home",
-          "odds": 1.2,
-          "point": null
-        },
-        {
-          "name": "Metanoia Wolves",
-          "role": "away",
-          "odds": 3.97,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.1978021978021975,
-          "b": 1.8348623853211008,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.45500000000000007,
-        "bProbability": 0.545
+      "thunderpick": {
+        "over": 2.12,
+        "under": 1.62
       },
-      "screenEV": {
-        "a": -0.45399999999999996,
-        "b": 1.16365
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
+      "independentSources": 0,
+      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
+    }
+  ],
+  "handicapRows": [],
+  "esportsScreenRows": [
     {
       "sport": "cs2",
       "eventId": 2676109,
@@ -795,581 +758,21 @@
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.36986301369863,
-          "b": 3.7037037037037033,
+          "a": 1.5873015873015872,
+          "b": 2.7027027027027026,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.7300000000000001,
-        "bProbability": 0.27
+        "aProbability": 0.63,
+        "bProbability": 0.37
       },
       "screenEV": {
-        "a": -0.23349999999999982,
-        "b": 1.0250000000000004
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2712635,
-      "name": "Eternal Premium vs Team Spirit Academy",
-      "startTime": "2026-09-25T14:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Eternal Premium",
-          "role": "home",
-          "odds": 3.1,
-          "point": null
-        },
-        {
-          "name": "Team Spirit Academy",
-          "role": "away",
-          "odds": 1.32,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.7094017094017095,
-          "b": 2.4096385542168677,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.585,
-        "bProbability": 0.415
-      },
-      "screenEV": {
-        "a": 0.8134999999999999,
-        "b": -0.45220000000000005
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2712635,
-      "name": "Eternal Premium vs Team Spirit Academy",
-      "startTime": "2026-09-25T14:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Eternal Premium",
-          "role": "home",
-          "odds": 3.1,
-          "point": null
-        },
-        {
-          "name": "Team Spirit Academy",
-          "role": "away",
-          "odds": 1.32,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2,
-          "b": 2,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.5,
-        "bProbability": 0.5
-      },
-      "screenEV": {
-        "a": 0.55,
-        "b": -0.33999999999999997
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2711961,
-      "name": "MIRA vs Peladona",
-      "startTime": "2026-09-25T19:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "MIRA",
-          "role": "home",
-          "odds": 1.73,
-          "point": null
-        },
-        {
-          "name": "Peladona",
-          "role": "away",
-          "odds": 1.98,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.73972602739726,
-          "b": 1.574803149606299,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.36500000000000005,
-        "bProbability": 0.635
-      },
-      "screenEV": {
-        "a": -0.36854999999999993,
-        "b": 0.2573000000000001
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2711961,
-      "name": "MIRA vs Peladona",
-      "startTime": "2026-09-25T19:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "MIRA",
-          "role": "home",
-          "odds": 1.73,
-          "point": null
-        },
-        {
-          "name": "Peladona",
-          "role": "away",
-          "odds": 1.98,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.7027027027027026,
-          "b": 1.5873015873015872,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.37,
-        "bProbability": 0.63
-      },
-      "screenEV": {
-        "a": -0.3599,
-        "b": 0.24740000000000006
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2707183,
-      "name": "Misa Esports vs Leo Team",
-      "startTime": "2026-09-26T10:30:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Misa Esports",
-          "role": "home",
-          "odds": 1.97,
-          "point": null
-        },
-        {
-          "name": "Leo Team",
-          "role": "away",
-          "odds": 1.74,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.6,
-          "b": 2.6666666666666665,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.625,
-        "bProbability": 0.375
-      },
-      "screenEV": {
-        "a": 0.23124999999999996,
-        "b": -0.34750000000000003
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2711968,
-      "name": "STATE vs BakS eSports",
-      "startTime": "2026-09-25T17:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "STATE",
-          "role": "home",
-          "odds": 2.23,
-          "point": null
-        },
-        {
-          "name": "BakS eSports",
-          "role": "away",
-          "odds": 1.55,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.9047619047619047,
-          "b": 2.1052631578947367,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.525,
-        "bProbability": 0.47500000000000003
-      },
-      "screenEV": {
-        "a": 0.17074999999999996,
-        "b": -0.26374999999999993
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2676112,
-      "name": "DENDELE CS vs Voca",
-      "startTime": "2026-09-25T20:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "DENDELE CS",
-          "role": "home",
-          "odds": 1.32,
-          "point": null
-        },
-        {
-          "name": "Voca",
-          "role": "away",
-          "odds": 3.1,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.6,
-          "b": 2.6666666666666665,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.625,
-        "bProbability": 0.375
-      },
-      "screenEV": {
-        "a": -0.17499999999999993,
-        "b": 0.1625000000000001
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2705952,
-      "name": "FlyQuest vs Rooster",
-      "startTime": "2026-09-25T09:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FlyQuest",
-          "role": "home",
-          "odds": 1.12,
-          "point": null
-        },
-        {
-          "name": "Rooster",
-          "role": "away",
-          "odds": 5.2,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.2738853503184713,
-          "b": 4.651162790697675,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.785,
-        "bProbability": 0.215
-      },
-      "screenEV": {
-        "a": -0.12079999999999991,
-        "b": 0.1180000000000001
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2712742,
-      "name": "Galorys vs Metanoia Wolves",
-      "startTime": "2026-09-25T21:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Galorys",
-          "role": "home",
-          "odds": 1.19,
-          "point": null
-        },
-        {
-          "name": "Metanoia Wolves",
-          "role": "away",
-          "odds": 4.01,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.3605442176870748,
-          "b": 3.773584905660377,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.735,
-        "bProbability": 0.265
-      },
-      "screenEV": {
-        "a": -0.12535000000000007,
-        "b": 0.0626500000000001
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2711601,
-      "name": "Abyssal vs Arcade Esports",
-      "startTime": "2026-09-25T09:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Abyssal",
-          "role": "home",
-          "odds": 1.68,
-          "point": null
-        },
-        {
-          "name": "Arcade Esports",
-          "role": "away",
-          "odds": 2.05,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.0408163265306123,
-          "b": 1.9607843137254901,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.49,
-        "bProbability": 0.51
-      },
-      "screenEV": {
-        "a": -0.17680000000000007,
-        "b": 0.045499999999999874
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2709855,
-      "name": "Villainous vs NuTorious",
-      "startTime": "2026-09-25T01:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Villainous",
-          "role": "home",
-          "odds": 1.72,
-          "point": null
-        },
-        {
-          "name": "NuTorious",
-          "role": "away",
-          "odds": 2,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.0408163265306123,
-          "b": 1.9607843137254901,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.49,
-        "bProbability": 0.51
-      },
-      "screenEV": {
-        "a": -0.1572,
-        "b": 0.020000000000000018
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2713410,
-      "name": "Bounty Hunters Esports vs Yawara Esports",
-      "startTime": "2026-09-25T13:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Bounty Hunters Esports",
-          "role": "home",
-          "odds": 1.58,
-          "point": null
-        },
-        {
-          "name": "Yawara Esports",
-          "role": "away",
-          "odds": 2.2,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.574803149606299,
-          "b": 2.73972602739726,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        },
-        {
-          "book": "kalshi-v2",
-          "a": 1.4925373134328357,
-          "b": 2.7777777777777777,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T01:35:00.772491Z"
-        }
-      ],
-      "independentSources": 2,
-      "screenFair": {
-        "aProbability": 0.6427427184466019,
-        "bProbability": 0.3572572815533981
-      },
-      "screenEV": {
-        "a": 0.01553349514563096,
-        "b": -0.2140339805825241
+        "a": -0.3384999999999999,
+        "b": 1.775
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1401,21 +804,67 @@
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.680672268907563,
-          "b": 2.4691358024691357,
+          "a": 2.272727272727273,
+          "b": 1.7857142857142856,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.595,
-        "bProbability": 0.405
+        "aProbability": 0.43999999999999995,
+        "bProbability": 0.56
       },
       "screenEV": {
-        "a": -0.11940000000000006,
-        "b": 0.012500000000000178
+        "a": -0.3488000000000001,
+        "b": 0.40000000000000013
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2641793,
+      "name": "GamerLegion vs K27",
+      "startTime": "2026-09-25T18:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "GamerLegion",
+          "role": "home",
+          "odds": 1.62,
+          "point": null
+        },
+        {
+          "name": "K27",
+          "role": "away",
+          "odds": 2.15,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 2.73972602739726,
+          "b": 1.574803149606299,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.36500000000000005,
+        "bProbability": 0.635
+      },
+      "screenEV": {
+        "a": -0.40869999999999984,
+        "b": 0.36524999999999985
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1434,34 +883,968 @@
         {
           "name": "NRG Esports",
           "role": "home",
-          "odds": 1.45,
+          "odds": 1.48,
           "point": null
         },
         {
           "name": "Wildcard",
           "role": "away",
-          "odds": 2.6,
+          "odds": 2.5,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.6129032258064517,
-          "b": 2.6315789473684212,
+          "a": 1.941747572815534,
+          "b": 2.061855670103093,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.62,
-        "bProbability": 0.37999999999999995
+        "aProbability": 0.515,
+        "bProbability": 0.48499999999999993
       },
       "screenEV": {
-        "a": -0.10099999999999998,
-        "b": -0.012000000000000122
+        "a": -0.2378,
+        "b": 0.2124999999999999
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 2.15,
+          "point": 12.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 1.62,
+          "point": 12.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.15,
+          "b": 1.62,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.38,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.5497823410709073,
+        "bProbability": 0.45021765892909266
+      },
+      "screenEV": {
+        "a": 0.18203203330245055,
+        "b": -0.2706473925348698
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 2",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 2.15,
+          "point": 12.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 1.62,
+          "point": 12.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.15,
+          "b": 1.62,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.38,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.5497823410709073,
+        "bProbability": 0.45021765892909266
+      },
+      "screenEV": {
+        "a": 0.18203203330245055,
+        "b": -0.2706473925348698
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2695633,
+      "name": "Wraith PCIFIC vs Bebop",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Wraith PCIFIC",
+          "role": "home",
+          "odds": 1.77,
+          "point": null
+        },
+        {
+          "name": "Bebop",
+          "role": "away",
+          "odds": 1.94,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 2.531645569620253,
+          "b": 1.6528925619834711,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.395,
+        "bProbability": 0.605
+      },
+      "screenEV": {
+        "a": -0.30084999999999995,
+        "b": 0.17369999999999997
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 2.1,
+          "point": 11.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 1.65,
+          "point": 11.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.1,
+          "b": 1.65,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.38,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.5549282296650717,
+        "bProbability": 0.44507177033492823
+      },
+      "screenEV": {
+        "a": 0.1653492822966507,
+        "b": -0.26563157894736844
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 2",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 2.1,
+          "point": 11.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 1.65,
+          "point": 11.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.1,
+          "b": 1.65,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.38,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.5549282296650717,
+        "bProbability": 0.44507177033492823
+      },
+      "screenEV": {
+        "a": 0.1653492822966507,
+        "b": -0.26563157894736844
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2676112,
+      "name": "DENDELE CS vs Voca",
+      "startTime": "2026-09-25T20:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "DENDELE CS",
+          "role": "home",
+          "odds": 1.32,
+          "point": null
+        },
+        {
+          "name": "Voca",
+          "role": "away",
+          "odds": 3.1,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.6,
+          "b": 2.6666666666666665,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.625,
+        "bProbability": 0.375
+      },
+      "screenEV": {
+        "a": -0.17499999999999993,
+        "b": 0.1625000000000001
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.85,
+          "point": 10.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 1.85,
+          "point": 10.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.85,
+          "b": 1.85,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.28,
+          "b": 3.3,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6102620087336245,
+        "bProbability": 0.38973799126637554
+      },
+      "screenEV": {
+        "a": 0.1289847161572053,
+        "b": -0.2789847161572052
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 2",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.85,
+          "point": 10.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 1.85,
+          "point": 10.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.85,
+          "b": 1.85,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.28,
+          "b": 3.3,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6102620087336245,
+        "bProbability": 0.38973799126637554
+      },
+      "screenEV": {
+        "a": 0.1289847161572053,
+        "b": -0.2789847161572052
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2641793,
+      "name": "GamerLegion vs K27",
+      "startTime": "2026-09-25T18:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 1 Winner",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "GamerLegion",
+          "role": "home",
+          "odds": 1.85,
+          "point": null
+        },
+        {
+          "name": "K27",
+          "role": "away",
+          "odds": 1.85,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 2.5,
+          "b": 1.6528925619834711,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.3980099502487563,
+        "bProbability": 0.6019900497512438
+      },
+      "screenEV": {
+        "a": -0.2636815920398008,
+        "b": 0.1136815920398011
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2705952,
+      "name": "FlyQuest vs Rooster",
+      "startTime": "2026-09-25T09:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 1 Winner",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "FlyQuest",
+          "role": "home",
+          "odds": 1.12,
+          "point": null
+        },
+        {
+          "name": "Rooster",
+          "role": "away",
+          "odds": 5.2,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.2658227848101264,
+          "b": 4.761904761904762,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.79,
+        "bProbability": 0.21
+      },
+      "screenEV": {
+        "a": -0.11519999999999986,
+        "b": 0.09200000000000008
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 1 Winner",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 1.48,
+          "point": null
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 2.5,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.65,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.48,
+          "b": 2.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.75,
+          "b": 1.95,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.75,
+          "b": 1.95,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "polymarket-v2",
+          "a": 1.9607843137254901,
+          "b": 2.0408163265306123,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 2,
+      "screenFair": {
+        "aProbability": 0.5642816481435418,
+        "bProbability": 0.43571835185645813
+      },
+      "screenEV": {
+        "a": -0.16486316074755825,
+        "b": 0.08929587964114538
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.65,
+          "point": 9.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 2.1,
+          "point": 9.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.65,
+          "b": 2.1,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.22,
+          "b": 3.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6584860557768926,
+        "bProbability": 0.34151394422310755
+      },
+      "screenEV": {
+        "a": 0.08650199203187259,
+        "b": -0.28282071713147416
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 2",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.65,
+          "point": 9.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 2.1,
+          "point": 9.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.65,
+          "b": 2.1,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.22,
+          "b": 3.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6584860557768926,
+        "bProbability": 0.34151394422310755
+      },
+      "screenEV": {
+        "a": 0.08650199203187259,
+        "b": -0.28282071713147416
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 3",
+      "scope": {
+        "map": 3,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.65,
+          "point": 9.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 2.1,
+          "point": 9.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.65,
+          "b": 2.1,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.22,
+          "b": 3.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6584860557768926,
+        "bProbability": 0.34151394422310755
+      },
+      "screenEV": {
+        "a": 0.08650199203187259,
+        "b": -0.28282071713147416
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 1.48,
+          "point": null
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 2.5,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.65,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.48,
+          "b": 2.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.75,
+          "b": 1.95,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.75,
+          "b": 1.95,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.5778520601794273,
+        "bProbability": 0.4221479398205727
+      },
+      "screenEV": {
+        "a": -0.1447789509344477,
+        "b": 0.05536984955143165
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 3 Winner",
+      "scope": {
+        "map": 3,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 1.48,
+          "point": null
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 2.5,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.65,
+          "b": 2.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.48,
+          "b": 2.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.75,
+          "b": 1.95,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        },
+        {
+          "book": "stake-v2",
+          "a": 1.75,
+          "b": 1.95,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.5778520601794273,
+        "bProbability": 0.4221479398205727
+      },
+      "screenEV": {
+        "a": -0.1447789509344477,
+        "b": 0.05536984955143165
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2641195,
+      "name": "BIG vs fnatic",
+      "startTime": "2026-10-01T12:30:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "BIG",
+          "role": "home",
+          "odds": 1.65,
+          "point": null
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 2.1,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.9801980198019802,
+          "b": 2.0202020202020203,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.505,
+        "bProbability": 0.495
+      },
+      "screenEV": {
+        "a": -0.16675000000000006,
+        "b": 0.03950000000000009
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1493,21 +1876,205 @@
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.183431952662722,
-          "b": 6.451612903225807,
+          "a": 1.1976047904191618,
+          "b": 6.0606060606060606,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.845,
-        "bProbability": 0.155
+        "aProbability": 0.835,
+        "bProbability": 0.165
       },
       "screenEV": {
-        "a": -0.08739999999999992,
-        "b": -0.023500000000000076
+        "a": -0.09819999999999995,
+        "b": 0.03950000000000009
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2641193,
+      "name": "FaZe vs Nemiga",
+      "startTime": "2026-10-01T17:30:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "FaZe",
+          "role": "home",
+          "odds": 1.55,
+          "point": null
+        },
+        {
+          "name": "Nemiga",
+          "role": "away",
+          "odds": 2.3,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.8018018018018016,
+          "b": 2.247191011235955,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.555,
+        "bProbability": 0.44499999999999995
+      },
+      "screenEV": {
+        "a": -0.13974999999999993,
+        "b": 0.023499999999999854
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2676111,
+      "name": "NRG Esports vs Wildcard",
+      "startTime": "2026-09-25T17:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 1 Winner",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "NRG Esports",
+          "role": "home",
+          "odds": 1.65,
+          "point": null
+        },
+        {
+          "name": "Wildcard",
+          "role": "away",
+          "odds": 2.1,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.941747572815534,
+          "b": 2.061855670103093,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.515,
+        "bProbability": 0.48499999999999993
+      },
+      "screenEV": {
+        "a": -0.15025,
+        "b": 0.01849999999999996
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2641195,
+      "name": "BIG vs fnatic",
+      "startTime": "2026-10-01T12:30:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 1 Winner",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "BIG",
+          "role": "home",
+          "odds": 1.65,
+          "point": null
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 2.1,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.923076923076923,
+          "b": 2.0833333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.52,
+        "bProbability": 0.48
+      },
+      "screenEV": {
+        "a": -0.14200000000000002,
+        "b": 0.008000000000000007
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2641193,
+      "name": "FaZe vs Nemiga",
+      "startTime": "2026-10-01T17:30:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 1 Winner",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "FaZe",
+          "role": "home",
+          "odds": 1.55,
+          "point": null
+        },
+        {
+          "name": "Nemiga",
+          "role": "away",
+          "odds": 2.3,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.7543859649122808,
+          "b": 2.3255813953488373,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.57,
+        "bProbability": 0.43
+      },
+      "screenEV": {
+        "a": -0.11650000000000005,
+        "b": -0.01100000000000012
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1526,80 +2093,34 @@
         {
           "name": "Alliance",
           "role": "home",
-          "odds": 1.52,
+          "odds": 1.55,
           "point": null
         },
         {
           "name": "SINNERS",
           "role": "away",
-          "odds": 2.35,
+          "odds": 2.3,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.7094017094017095,
-          "b": 2.4096385542168677,
+          "a": 1.7543859649122808,
+          "b": 2.3255813953488373,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.585,
-        "bProbability": 0.415
+        "aProbability": 0.57,
+        "bProbability": 0.43
       },
       "screenEV": {
-        "a": -0.11080000000000001,
-        "b": -0.02475000000000005
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2695633,
-      "name": "Wraith PCIFIC vs Bebop",
-      "startTime": "2026-09-25T08:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Wraith PCIFIC",
-          "role": "home",
-          "odds": 1.77,
-          "point": null
-        },
-        {
-          "name": "Bebop",
-          "role": "away",
-          "odds": 1.94,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.8181818181818181,
-          "b": 2.2222222222222223,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.55,
-        "bProbability": 0.44999999999999996
-      },
-      "screenEV": {
-        "a": -0.026499999999999857,
-        "b": -0.1270000000000001
+        "a": -0.11650000000000005,
+        "b": -0.01100000000000012
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1609,52 +2130,6 @@
       "name": "M80 vs BESTIA",
       "startTime": "2026-09-25T20:00:00+00:00",
       "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "M80",
-          "role": "home",
-          "odds": 1.42,
-          "point": null
-        },
-        {
-          "name": "BESTIA",
-          "role": "away",
-          "odds": 2.7,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.5625,
-          "b": 2.7777777777777777,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.64,
-        "bProbability": 0.36
-      },
-      "screenEV": {
-        "a": -0.09120000000000006,
-        "b": -0.028000000000000025
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2695633,
-      "name": "Wraith PCIFIC vs Bebop",
-      "startTime": "2026-09-25T08:00:00+00:00",
-      "marketKey": "map_winner",
       "marketLabel": "Map 2 Winner",
       "scope": {
         "map": 2,
@@ -1662,36 +2137,36 @@
       },
       "thunderpick": [
         {
-          "name": "Wraith PCIFIC",
+          "name": "M80",
           "role": "home",
-          "odds": 1.77,
+          "odds": 1.35,
           "point": null
         },
         {
-          "name": "Bebop",
+          "name": "BESTIA",
           "role": "away",
-          "odds": 1.94,
+          "odds": 2.9,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 2,
-          "b": 2,
+          "a": 1.36986301369863,
+          "b": 3.7037037037037033,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.5,
-        "bProbability": 0.5
+        "aProbability": 0.7300000000000001,
+        "bProbability": 0.27
       },
       "screenEV": {
-        "a": -0.11499999999999999,
-        "b": -0.030000000000000027
+        "a": -0.014499999999999846,
+        "b": -0.21699999999999997
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1710,88 +2185,88 @@
         {
           "name": "Magic",
           "role": "home",
-          "odds": 1.52,
+          "odds": 1.55,
           "point": null
         },
         {
           "name": "EYEBALLERS",
           "role": "away",
-          "odds": 2.35,
+          "odds": 2.3,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.6949152542372883,
-          "b": 2.4390243902439024,
+          "a": 1.7391304347826089,
+          "b": 2.3529411764705883,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.59,
-        "bProbability": 0.41000000000000003
+        "aProbability": 0.575,
+        "bProbability": 0.425
       },
       "screenEV": {
-        "a": -0.10320000000000007,
-        "b": -0.036499999999999866
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "lol",
-      "eventId": 2694565,
-      "name": "FURIA Esports vs RED Canids",
-      "startTime": "2026-09-26T16:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 3 Winner",
-      "scope": {
-        "map": 3,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FURIA Esports",
-          "role": "home",
-          "odds": 1.35,
-          "point": null
-        },
-        {
-          "name": "RED Canids",
-          "role": "away",
-          "odds": 2.9,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 1.2658227848101264,
-          "b": 3.125,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-23T00:25:01.0291Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.7117117117117117,
-        "bProbability": 0.2882882882882883
-      },
-      "screenEV": {
-        "a": -0.03918918918918923,
-        "b": -0.16396396396396395
+        "a": -0.10875000000000001,
+        "b": -0.022500000000000075
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "sport": "cs2",
-      "eventId": 2702212,
-      "name": "SINNERS vs Ex-RUBY",
-      "startTime": "2026-09-25T15:00:00+00:00",
+      "eventId": 2709855,
+      "name": "Villainous vs NuTorious",
+      "startTime": "2026-09-25T01:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Villainous",
+          "role": "home",
+          "odds": 1.71,
+          "point": null
+        },
+        {
+          "name": "NuTorious",
+          "role": "away",
+          "odds": 2.01,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 1.7543859649122808,
+          "b": 2.3255813953488373,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.57,
+        "bProbability": 0.43
+      },
+      "screenEV": {
+        "a": -0.0253000000000001,
+        "b": -0.13570000000000015
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2708723,
+      "name": "Omega vs ex-RUSTEC",
+      "startTime": "2026-09-25T14:00:00+00:00",
       "marketKey": "map_winner",
       "marketLabel": "Map 1 Winner",
       "scope": {
@@ -1800,36 +2275,82 @@
       },
       "thunderpick": [
         {
-          "name": "SINNERS",
+          "name": "Omega",
           "role": "home",
-          "odds": 1.65,
+          "odds": 2.1,
           "point": null
         },
         {
-          "name": "Ex-RUBY",
+          "name": "ex-RUSTEC",
           "role": "away",
-          "odds": 2.1,
+          "odds": 1.65,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.8348623853211008,
-          "b": 2.1978021978021975,
+          "a": 2.1978021978021975,
+          "b": 1.8348623853211008,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.545,
-        "bProbability": 0.45500000000000007
+        "aProbability": 0.45500000000000007,
+        "bProbability": 0.545
       },
       "screenEV": {
-        "a": -0.10075,
-        "b": -0.04449999999999976
+        "a": -0.04449999999999976,
+        "b": -0.10075
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2708723,
+      "name": "Omega vs ex-RUSTEC",
+      "startTime": "2026-09-25T14:00:00+00:00",
+      "marketKey": "map_winner",
+      "marketLabel": "Map 2 Winner",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Omega",
+          "role": "home",
+          "odds": 2.1,
+          "point": null
+        },
+        {
+          "name": "ex-RUSTEC",
+          "role": "away",
+          "odds": 1.65,
+          "point": null
+        }
+      ],
+      "outside": [
+        {
+          "book": "polymarket-v2",
+          "a": 2.1978021978021975,
+          "b": 1.8348623853211008,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.45500000000000007,
+        "bProbability": 0.545
+      },
+      "screenEV": {
+        "a": -0.04449999999999976,
+        "b": -0.10075
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1865,7 +2386,7 @@
           "b": 2.941176470588235,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
@@ -1880,10 +2401,10 @@
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
-      "sport": "lol",
-      "eventId": 2693973,
-      "name": "FlyQuest vs Shopify Rebellion",
-      "startTime": "2026-09-25T20:00:00+00:00",
+      "sport": "cs2",
+      "eventId": 2695633,
+      "name": "Wraith PCIFIC vs Bebop",
+      "startTime": "2026-09-25T08:00:00+00:00",
       "marketKey": "map_winner",
       "marketLabel": "Map 1 Winner",
       "scope": {
@@ -1892,36 +2413,36 @@
       },
       "thunderpick": [
         {
-          "name": "FlyQuest",
+          "name": "Wraith PCIFIC",
           "role": "home",
-          "odds": 1.5,
+          "odds": 1.77,
           "point": null
         },
         {
-          "name": "Shopify Rebellion",
+          "name": "Bebop",
           "role": "away",
-          "odds": 2.4,
+          "odds": 1.94,
           "point": null
         }
       ],
       "outside": [
         {
-          "book": "kalshi-v2",
-          "a": 1.5151515151515151,
-          "b": 2.6315789473684212,
+          "book": "polymarket-v2",
+          "a": 1.9607843137254901,
+          "b": 2.0408163265306123,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-22T00:25:01.151017Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.6346153846153846,
-        "bProbability": 0.3653846153846153
+        "aProbability": 0.51,
+        "bProbability": 0.49
       },
       "screenEV": {
-        "a": -0.04807692307692313,
-        "b": -0.1230769230769233
+        "a": -0.09729999999999994,
+        "b": -0.0494
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -1931,51 +2452,51 @@
       "name": "Villainous vs NuTorious",
       "startTime": "2026-09-25T01:00:00+00:00",
       "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
+      "marketLabel": "Map 1 Winner",
       "scope": {
-        "map": 2,
+        "map": 1,
         "round": null
       },
       "thunderpick": [
         {
           "name": "Villainous",
           "role": "home",
-          "odds": 1.71,
+          "odds": 1.72,
           "point": null
         },
         {
           "name": "NuTorious",
           "role": "away",
-          "odds": 2.01,
+          "odds": 2,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.8018018018018016,
-          "b": 2.247191011235955,
+          "a": 1.9047619047619047,
+          "b": 2.1052631578947367,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.555,
-        "bProbability": 0.44499999999999995
+        "aProbability": 0.525,
+        "bProbability": 0.47500000000000003
       },
       "screenEV": {
-        "a": -0.05094999999999994,
-        "b": -0.10555000000000014
+        "a": -0.09699999999999998,
+        "b": -0.04999999999999993
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "sport": "cs2",
-      "eventId": 2702211,
-      "name": "Nuclear TigeRES vs ex-Zero Tenacity",
-      "startTime": "2026-09-25T12:00:00+00:00",
+      "eventId": 2702212,
+      "name": "SINNERS vs Ex-RUBY",
+      "startTime": "2026-09-25T15:00:00+00:00",
       "marketKey": "map_winner",
       "marketLabel": "Map 2 Winner",
       "scope": {
@@ -1984,44 +2505,44 @@
       },
       "thunderpick": [
         {
-          "name": "Nuclear TigeRES",
+          "name": "SINNERS",
           "role": "home",
-          "odds": 1.45,
+          "odds": 1.48,
           "point": null
         },
         {
-          "name": "ex-Zero Tenacity",
+          "name": "Ex-RUBY",
           "role": "away",
-          "odds": 2.6,
+          "odds": 2.5,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.574803149606299,
-          "b": 2.73972602739726,
+          "a": 1.5625,
+          "b": 2.7777777777777777,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.635,
-        "bProbability": 0.36500000000000005
+        "aProbability": 0.64,
+        "bProbability": 0.36
       },
       "screenEV": {
-        "a": -0.07925000000000004,
-        "b": -0.05099999999999982
+        "a": -0.05279999999999996,
+        "b": -0.10000000000000009
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
-      "sport": "lol",
-      "eventId": 2693973,
-      "name": "FlyQuest vs Shopify Rebellion",
-      "startTime": "2026-09-25T20:00:00+00:00",
+      "sport": "cs2",
+      "eventId": 2705952,
+      "name": "FlyQuest vs Rooster",
+      "startTime": "2026-09-25T09:00:00+00:00",
       "marketKey": "map_winner",
       "marketLabel": "Map 2 Winner",
       "scope": {
@@ -2032,180 +2553,80 @@
         {
           "name": "FlyQuest",
           "role": "home",
-          "odds": 1.5,
+          "odds": 1.13,
           "point": null
         },
         {
-          "name": "Shopify Rebellion",
+          "name": "Rooster",
           "role": "away",
-          "odds": 2.4,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 1.4925373134328357,
-          "b": 2.564102564102564,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-22T00:25:01.151017Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.6320754716981132,
-        "bProbability": 0.36792452830188677
-      },
-      "screenEV": {
-        "a": -0.05188679245283023,
-        "b": -0.11698113207547178
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2641793,
-      "name": "GamerLegion vs K27",
-      "startTime": "2026-09-25T18:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "GamerLegion",
-          "role": "home",
-          "odds": 1.62,
-          "point": null
-        },
-        {
-          "name": "K27",
-          "role": "away",
-          "odds": 2.15,
+          "odds": 5.1,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.7857142857142856,
-          "b": 2.272727272727273,
+          "a": 1.1976047904191618,
+          "b": 6.0606060606060606,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.56,
-        "bProbability": 0.43999999999999995
+        "aProbability": 0.835,
+        "bProbability": 0.165
       },
       "screenEV": {
-        "a": -0.09279999999999988,
-        "b": -0.05400000000000016
+        "a": -0.05645000000000011,
+        "b": -0.15849999999999997
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "sport": "cs2",
-      "eventId": 2676110,
-      "name": "M80 vs BESTIA",
-      "startTime": "2026-09-25T20:00:00+00:00",
+      "eventId": 2707183,
+      "name": "Misa Esports vs Leo Team",
+      "startTime": "2026-09-26T10:30:00+00:00",
       "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
+      "marketLabel": "Map 1 Winner",
       "scope": {
-        "map": 2,
+        "map": 1,
         "round": null
       },
       "thunderpick": [
         {
-          "name": "M80",
+          "name": "Misa Esports",
           "role": "home",
-          "odds": 1.3,
+          "odds": 1.97,
           "point": null
         },
         {
-          "name": "BESTIA",
+          "name": "Leo Team",
           "role": "away",
-          "odds": 3.2,
+          "odds": 1.74,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.3793103448275863,
-          "b": 3.6363636363636362,
+          "a": 2.1739130434782608,
+          "b": 1.8518518518518516,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.725,
-        "bProbability": 0.275
+        "aProbability": 0.46,
+        "bProbability": 0.54
       },
       "screenEV": {
-        "a": -0.057499999999999996,
-        "b": -0.11999999999999988
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2713410,
-      "name": "Bounty Hunters Esports vs Yawara Esports",
-      "startTime": "2026-09-25T13:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Bounty Hunters Esports",
-          "role": "home",
-          "odds": 1.4,
-          "point": null
-        },
-        {
-          "name": "Yawara Esports",
-          "role": "away",
-          "odds": 2.7,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.4814814814814814,
-          "b": 3.0769230769230766,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        },
-        {
-          "book": "kalshi-v2",
-          "a": 1.4492753623188408,
-          "b": 2.941176470588235,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T01:35:00.772491Z"
-        }
-      ],
-      "independentSources": 2,
-      "screenFair": {
-        "aProbability": 0.6724514563106796,
-        "bProbability": 0.3275485436893204
-      },
-      "screenEV": {
-        "a": -0.05856796116504859,
-        "b": -0.11561893203883489
+        "a": -0.0938,
+        "b": -0.0603999999999999
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -2241,7 +2662,7 @@
           "b": 1.8518518518518516,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
@@ -2256,10 +2677,10 @@
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
-      "sport": "lol",
-      "eventId": 2694565,
-      "name": "FURIA Esports vs RED Canids",
-      "startTime": "2026-09-26T16:00:00+00:00",
+      "sport": "cs2",
+      "eventId": 2676110,
+      "name": "M80 vs BESTIA",
+      "startTime": "2026-09-25T20:00:00+00:00",
       "marketKey": "map_winner",
       "marketLabel": "Map 1 Winner",
       "scope": {
@@ -2268,136 +2689,44 @@
       },
       "thunderpick": [
         {
-          "name": "FURIA Esports",
+          "name": "M80",
           "role": "home",
-          "odds": 1.35,
+          "odds": 1.5,
           "point": null
         },
         {
-          "name": "RED Canids",
+          "name": "BESTIA",
           "role": "away",
-          "odds": 2.9,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 1.36986301369863,
-          "b": 3.125,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-23T00:25:01.0291Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.6952380952380953,
-        "bProbability": 0.30476190476190473
-      },
-      "screenEV": {
-        "a": -0.06142857142857128,
-        "b": -0.11619047619047629
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "lol",
-      "eventId": 2694565,
-      "name": "FURIA Esports vs RED Canids",
-      "startTime": "2026-09-26T16:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FURIA Esports",
-          "role": "home",
-          "odds": 1.35,
-          "point": null
-        },
-        {
-          "name": "RED Canids",
-          "role": "away",
-          "odds": 2.9,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 1.36986301369863,
-          "b": 3.125,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-23T00:25:01.0291Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.6952380952380953,
-        "bProbability": 0.30476190476190473
-      },
-      "screenEV": {
-        "a": -0.06142857142857128,
-        "b": -0.11619047619047629
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2705952,
-      "name": "FlyQuest vs Rooster",
-      "startTime": "2026-09-25T09:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FlyQuest",
-          "role": "home",
-          "odds": 1.13,
-          "point": null
-        },
-        {
-          "name": "Rooster",
-          "role": "away",
-          "odds": 5.1,
+          "odds": 2.4,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.2048192771084338,
-          "b": 5.88235294117647,
+          "a": 1.6,
+          "b": 2.6666666666666665,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.83,
-        "bProbability": 0.17
+        "aProbability": 0.625,
+        "bProbability": 0.375
       },
       "screenEV": {
-        "a": -0.062100000000000155,
-        "b": -0.133
+        "a": -0.0625,
+        "b": -0.10000000000000009
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "sport": "cs2",
-      "eventId": 2702212,
-      "name": "SINNERS vs Ex-RUBY",
-      "startTime": "2026-09-25T15:00:00+00:00",
+      "eventId": 2702211,
+      "name": "Nuclear TigeRES vs ex-Zero Tenacity",
+      "startTime": "2026-09-25T12:00:00+00:00",
       "marketKey": "map_winner",
       "marketLabel": "Map 2 Winner",
       "scope": {
@@ -2406,13 +2735,13 @@
       },
       "thunderpick": [
         {
-          "name": "SINNERS",
+          "name": "Nuclear TigeRES",
           "role": "home",
           "odds": 1.48,
           "point": null
         },
         {
-          "name": "Ex-RUBY",
+          "name": "ex-Zero Tenacity",
           "role": "away",
           "odds": 2.5,
           "point": null
@@ -2425,7 +2754,7 @@
           "b": 2.6666666666666665,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
@@ -2436,558 +2765,6 @@
       "screenEV": {
         "a": -0.07499999999999996,
         "b": -0.0625
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2711968,
-      "name": "STATE vs BakS eSports",
-      "startTime": "2026-09-25T17:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "STATE",
-          "role": "home",
-          "odds": 2.23,
-          "point": null
-        },
-        {
-          "name": "BakS eSports",
-          "role": "away",
-          "odds": 1.55,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.380952380952381,
-          "b": 1.7241379310344829,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.42,
-        "bProbability": 0.58
-      },
-      "screenEV": {
-        "a": -0.06340000000000001,
-        "b": -0.10100000000000009
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2641193,
-      "name": "FaZe vs Nemiga",
-      "startTime": "2026-10-01T17:30:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FaZe",
-          "role": "home",
-          "odds": 1.5,
-          "point": null
-        },
-        {
-          "name": "Nemiga",
-          "role": "away",
-          "odds": 2.4,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.639344262295082,
-          "b": 2.564102564102564,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.61,
-        "bProbability": 0.39
-      },
-      "screenEV": {
-        "a": -0.08499999999999996,
-        "b": -0.06400000000000006
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2641193,
-      "name": "FaZe vs Nemiga",
-      "startTime": "2026-10-01T17:30:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FaZe",
-          "role": "home",
-          "odds": 1.5,
-          "point": null
-        },
-        {
-          "name": "Nemiga",
-          "role": "away",
-          "odds": 2.4,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.639344262295082,
-          "b": 2.564102564102564,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.61,
-        "bProbability": 0.39
-      },
-      "screenEV": {
-        "a": -0.08499999999999996,
-        "b": -0.06400000000000006
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2676111,
-      "name": "NRG Esports vs Wildcard",
-      "startTime": "2026-09-25T17:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "NRG Esports",
-          "role": "home",
-          "odds": 1.62,
-          "point": null
-        },
-        {
-          "name": "Wildcard",
-          "role": "away",
-          "odds": 2.15,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.7699115044247788,
-          "b": 2.2988505747126435,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.565,
-        "bProbability": 0.43500000000000005
-      },
-      "screenEV": {
-        "a": -0.0847,
-        "b": -0.06474999999999997
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2641195,
-      "name": "BIG vs fnatic",
-      "startTime": "2026-10-01T12:30:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "BIG",
-          "role": "home",
-          "odds": 1.65,
-          "point": null
-        },
-        {
-          "name": "fnatic",
-          "role": "away",
-          "odds": 2.1,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.8018018018018016,
-          "b": 2.247191011235955,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.555,
-        "bProbability": 0.44499999999999995
-      },
-      "screenEV": {
-        "a": -0.08424999999999994,
-        "b": -0.06550000000000011
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2641195,
-      "name": "BIG vs fnatic",
-      "startTime": "2026-10-01T12:30:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "BIG",
-          "role": "home",
-          "odds": 1.65,
-          "point": null
-        },
-        {
-          "name": "fnatic",
-          "role": "away",
-          "odds": 2.1,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.8018018018018016,
-          "b": 2.247191011235955,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.555,
-        "bProbability": 0.44499999999999995
-      },
-      "screenEV": {
-        "a": -0.08424999999999994,
-        "b": -0.06550000000000011
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2708723,
-      "name": "Omega vs ex-RUSTEC",
-      "startTime": "2026-09-25T14:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Omega",
-          "role": "home",
-          "odds": 2.1,
-          "point": null
-        },
-        {
-          "name": "ex-RUSTEC",
-          "role": "away",
-          "odds": 1.65,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.247191011235955,
-          "b": 1.8018018018018016,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.44499999999999995,
-        "bProbability": 0.555
-      },
-      "screenEV": {
-        "a": -0.06550000000000011,
-        "b": -0.08424999999999994
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2708723,
-      "name": "Omega vs ex-RUSTEC",
-      "startTime": "2026-09-25T14:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Omega",
-          "role": "home",
-          "odds": 2.1,
-          "point": null
-        },
-        {
-          "name": "ex-RUSTEC",
-          "role": "away",
-          "odds": 1.65,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 2.247191011235955,
-          "b": 1.8018018018018016,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.44499999999999995,
-        "bProbability": 0.555
-      },
-      "screenEV": {
-        "a": -0.06550000000000011,
-        "b": -0.08424999999999994
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "lol",
-      "eventId": 2657382,
-      "name": "LOUD vs LOS",
-      "startTime": "2026-09-27T16:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "LOUD",
-          "role": "home",
-          "odds": 1.92,
-          "point": null
-        },
-        {
-          "name": "LOS",
-          "role": "away",
-          "odds": 1.78,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 2,
-          "b": 1.8181818181818181,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T00:25:00.803616Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.47619047619047616,
-        "bProbability": 0.5238095238095238
-      },
-      "screenEV": {
-        "a": -0.08571428571428585,
-        "b": -0.06761904761904758
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "lol",
-      "eventId": 2657382,
-      "name": "LOUD vs LOS",
-      "startTime": "2026-09-27T16:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 2 Winner",
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "LOUD",
-          "role": "home",
-          "odds": 1.92,
-          "point": null
-        },
-        {
-          "name": "LOS",
-          "role": "away",
-          "odds": 1.78,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 2,
-          "b": 1.8181818181818181,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T00:25:00.803616Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.47619047619047616,
-        "bProbability": 0.5238095238095238
-      },
-      "screenEV": {
-        "a": -0.08571428571428585,
-        "b": -0.06761904761904758
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "lol",
-      "eventId": 2693973,
-      "name": "FlyQuest vs Shopify Rebellion",
-      "startTime": "2026-09-25T20:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 3 Winner",
-      "scope": {
-        "map": 3,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "FlyQuest",
-          "role": "home",
-          "odds": 1.5,
-          "point": null
-        },
-        {
-          "name": "Shopify Rebellion",
-          "role": "away",
-          "odds": 2.4,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "kalshi-v2",
-          "a": 1.5873015873015872,
-          "b": 2.5,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-22T00:25:01.151017Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.6116504854368932,
-        "bProbability": 0.3883495145631068
-      },
-      "screenEV": {
-        "a": -0.08252427184466027,
-        "b": -0.06796116504854377
-      },
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2702211,
-      "name": "Nuclear TigeRES vs ex-Zero Tenacity",
-      "startTime": "2026-09-25T12:00:00+00:00",
-      "marketKey": "map_winner",
-      "marketLabel": "Map 1 Winner",
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": [
-        {
-          "name": "Nuclear TigeRES",
-          "role": "home",
-          "odds": 1.62,
-          "point": null
-        },
-        {
-          "name": "ex-Zero Tenacity",
-          "role": "away",
-          "odds": 2.15,
-          "point": null
-        }
-      ],
-      "outside": [
-        {
-          "book": "polymarket-v2",
-          "a": 1.7391304347826089,
-          "b": 2.3529411764705883,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
-        }
-      ],
-      "independentSources": 1,
-      "screenFair": {
-        "aProbability": 0.575,
-        "bProbability": 0.425
-      },
-      "screenEV": {
-        "a": -0.0685,
-        "b": -0.08625000000000005
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -3006,34 +2783,402 @@
         {
           "name": "Alliance",
           "role": "home",
-          "odds": 1.75,
+          "odds": 1.78,
           "point": null
         },
         {
           "name": "SINNERS",
           "role": "away",
-          "odds": 1.95,
+          "odds": 1.92,
           "point": null
         }
       ],
       "outside": [
         {
           "book": "polymarket-v2",
-          "a": 1.9047619047619047,
-          "b": 2.1052631578947367,
+          "a": 1.941747572815534,
+          "b": 2.061855670103093,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-24T19:26:18.488263Z"
+          "lastUpdate": "2026-09-24T21:48:20.719691Z"
         }
       ],
       "independentSources": 1,
       "screenFair": {
-        "aProbability": 0.525,
-        "bProbability": 0.47500000000000003
+        "aProbability": 0.515,
+        "bProbability": 0.48499999999999993
       },
       "screenEV": {
-        "a": -0.08124999999999993,
-        "b": -0.07374999999999998
+        "a": -0.08329999999999993,
+        "b": -0.0688000000000002
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_handicap",
+      "marketLabel": "Round Handicap (Incl. Overtime) - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 2.5,
+          "point": -4.5
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 1.48,
+          "point": 4.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.5,
+          "b": 1.48,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.37185929648241206,
+        "bProbability": 0.6281407035175879
+      },
+      "screenEV": {
+        "a": -0.07035175879396982,
+        "b": -0.07035175879396993
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_handicap",
+      "marketLabel": "Round Handicap (Incl. Overtime) - Map 2",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 2.5,
+          "point": -4.5
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 1.48,
+          "point": 4.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.5,
+          "b": 1.48,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.37185929648241206,
+        "bProbability": 0.6281407035175879
+      },
+      "screenEV": {
+        "a": -0.07035175879396982,
+        "b": -0.07035175879396993
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_handicap",
+      "marketLabel": "Round Handicap (Incl. Overtime) - Map 3",
+      "scope": {
+        "map": 3,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 2.5,
+          "point": -4.5
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 1.48,
+          "point": 4.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 2.5,
+          "b": 1.48,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.37185929648241206,
+        "bProbability": 0.6281407035175879
+      },
+      "screenEV": {
+        "a": -0.07035175879396982,
+        "b": -0.07035175879396993
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.48,
+          "point": 8.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 2.5,
+          "point": 8.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.48,
+          "b": 2.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6281407035175879,
+        "bProbability": 0.37185929648241206
+      },
+      "screenEV": {
+        "a": -0.07035175879396993,
+        "b": -0.07035175879396982
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 2",
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.48,
+          "point": 8.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 2.5,
+          "point": 8.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.48,
+          "b": 2.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6281407035175879,
+        "bProbability": 0.37185929648241206
+      },
+      "screenEV": {
+        "a": -0.07035175879396993,
+        "b": -0.07035175879396982
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_totals",
+      "marketLabel": "fnatic Total Rounds - Map 3",
+      "scope": {
+        "map": 3,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "Over",
+          "role": "over",
+          "odds": 1.48,
+          "point": 8.5
+        },
+        {
+          "name": "Under",
+          "role": "under",
+          "odds": 2.5,
+          "point": 8.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.48,
+          "b": 2.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.6281407035175879,
+        "bProbability": 0.37185929648241206
+      },
+      "screenEV": {
+        "a": -0.07035175879396993,
+        "b": -0.07035175879396982
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_handicap",
+      "marketLabel": "Round Handicap (Incl. Overtime) - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 1.32,
+          "point": 2.5
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 3.1,
+          "point": -2.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 1.32,
+          "b": 3.1,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.7013574660633485,
+        "bProbability": 0.2986425339366516
+      },
+      "screenEV": {
+        "a": -0.07420814479637994,
+        "b": -0.07420814479638005
+      },
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2711111,
+      "name": "HEROIC vs fnatic",
+      "startTime": "2026-09-25T08:00:00+00:00",
+      "marketKey": "round_handicap",
+      "marketLabel": "Round Handicap (Incl. Overtime) - Map 1",
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "thunderpick": [
+        {
+          "name": "HEROIC",
+          "role": "home",
+          "odds": 3.1,
+          "point": -5.5
+        },
+        {
+          "name": "fnatic",
+          "role": "away",
+          "odds": 1.32,
+          "point": 5.5
+        }
+      ],
+      "outside": [
+        {
+          "book": "stake-v2",
+          "a": 3.1,
+          "b": 1.32,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null
+        }
+      ],
+      "independentSources": 1,
+      "screenFair": {
+        "aProbability": 0.2986425339366516,
+        "bProbability": 0.7013574660633485
+      },
+      "screenEV": {
+        "a": -0.07420814479638005,
+        "b": -0.07420814479637994
       },
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     }
