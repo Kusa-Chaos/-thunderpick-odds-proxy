@@ -81,10 +81,19 @@ async function fetchEventProps(feed,e,tpMatch){
   let mr=await fetch(`${base}/sports/${feed.api}/events/${encodeURIComponent(e.id)}/markets`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(20000)});
   requestCount++; if(!mr.ok)return null;
   const ms=await mr.json(); const keys=(Array.isArray(ms)?ms:ms?.data||[]).map(x=>String(x.key||x.market||'')).filter(k=>/^(player_|batter_|pitcher_)|player|kills?|headshots?|aces?|strikeouts?|passing|rushing|receiving|receptions|points|rebounds|assists/i.test(k));
-  if(!keys.length)return null;
-  // Spend the targeted prop budget only after an event actually exposes prop keys.
+  const fallbackKeys={
+    football_nfl:['player_passing_yards','player_rushing_yards','player_receiving_yards','player_receptions','player_passing_tds'],
+    americanfootball_ncaaf:['player_passing_yards','player_rushing_yards','player_receiving_yards','player_receptions','player_passing_tds'],
+    baseball_mlb:['batter_hits','batter_home_runs','batter_total_bases','pitcher_strikeouts'],
+    basketball_nba:['player_points','player_rebounds','player_assists','player_threes'],
+    basketball_wnba:['player_points','player_rebounds','player_assists','player_threes'],
+    esports:['player_kills','player_kills_map_1','player_kills_map_2','player_headshots_map_1','player_headshots_map_2']
+  };
+  const discovered=keys.length?keys:(fallbackKeys[feed.api]||[]);
+  if(!discovered.length)return null;
+  // Spend the targeted prop budget only when there are discovered or known prop keys.
   propEventRequests++;
-  const wanted=[...new Set(keys)].slice(0,40).join(',');
+  const wanted=[...new Set(discovered)].slice(0,40).join(',');
   let pr=await fetch(`${base}/sports/${feed.api}/events/${encodeURIComponent(e.id)}/odds?markets=${encodeURIComponent(wanted)}`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
   requestCount++; if(!pr.ok){console.warn('PROPLINE_EVENT_PROPS_FAILED',feed.api,e.id,pr.status);return null;}
   const body=await pr.json();
@@ -92,7 +101,7 @@ async function fetchEventProps(feed,e,tpMatch){
   // wrapper. Preserve it so the merge below actually consumes the prop books.
   const propBooks=Array.isArray(body?.bookmakers)?body.bookmakers:Array.isArray(body?.data?.bookmakers)?body.data.bookmakers:[];
   const propMarketCount=propBooks.reduce((n,b)=>n+(b.markets||[]).length,0);
-  console.log('PROPLINE_EVENT_PROPS',feed.api,e.id,'requestedKeys',keys.length,'books',propBooks.length,'markets',propMarketCount);
+  console.log('PROPLINE_EVENT_PROPS',feed.api,e.id,'requestedKeys',discovered.length,'books',propBooks.length,'markets',propMarketCount);
   return {bookmakers:propBooks};
  }catch(err){console.warn('PROPLINE_EVENT_PROPS_ERROR',feed.api,e.id,String(err?.message||err));return null;}
 }
