@@ -253,10 +253,10 @@ async function fetchOddsPapiExact(){
  if(!ODDSPAPI_API_KEY){console.log('ODDSPAPI_SKIP missing ODDSPAPI_API_KEY');return []}
  const get=async(path,params={})=>{
   const u=new URL(ODDSPAPI_BASE+'/'+path); for(const [k,v] of Object.entries({...params,apiKey:ODDSPAPI_API_KEY})) if(v!=null)u.searchParams.set(k,String(v));
-  const r=await fetch(u,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+  const r=await fetch(u,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(60000)});
   const text=await r.text(); let body; try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}}
-  if(!r.ok) console.warn('ODDSPAPI_FAIL',path,r.status,JSON.stringify(body).slice(0,300));
-  return {ok:r.ok,status:r.status,body};
+  if(!r.ok)console.warn('ODDSPAPI_FAIL',path,r.status,JSON.stringify(body).slice(0,300));
+  await sleep(1050); return {ok:r.ok,status:r.status,body};
  };
  const sr=await get('sports'); if(!sr.ok)return [];
  const sports=Array.isArray(sr.body)?sr.body:(sr.body?.data||[]);
@@ -264,45 +264,68 @@ async function fetchOddsPapiExact(){
  for(const s of sports){
   const n=String(s.sportName||s.name||s.slug||'').toLowerCase();
   const dst=/counter|cs2|cs:go|csgo/.test(n)?'cs2':/league of legends|\\blol\\b/.test(n)?'lol':/valorant/.test(n)?'valorant':/dota/.test(n)?'dota2':null;
-  if(dst)wanted.push({id:s.sportId??s.id,dst});
+  if(dst)wanted.push({id:Number(s.sportId??s.id),dst});
  }
- const mr=await get('markets',{language:'en'}); const marketMeta=new Map();
- if(mr.ok)for(const m of (Array.isArray(mr.body)?mr.body:(mr.body?.data||[])))marketMeta.set(String(m.marketId??m.id),m);
+ console.log('ODDSPAPI_SPORTS',JSON.stringify(wanted));
+ const mr=await get('markets',{language:'en'}); if(!mr.ok)return [];
+ const allMarkets=Array.isArray(mr.body)?mr.body:(mr.body?.data||[]);
+ const marketMeta=new Map(allMarkets.map(m=>[String(m.marketId??m.id),m]));
+ const relevant=allMarkets.filter(m=>wanted.some(s=>s.id===Number(m.sportId)) && (
+   /map.*winner|maps handicap|total maps/i.test(String(m.marketName||'')) || m.playerProp===true
+ ));
+ console.log('ODDSPAPI_MARKET_CATALOG',relevant.length,JSON.stringify(relevant.slice(0,60).map(m=>({id:m.marketId,name:m.marketName,sportId:m.sportId,line:m.handicap,period:m.period,type:m.marketType,playerProp:m.playerProp}))));
  const out=[]; const now=new Date(), to=new Date(Date.now()+9*864e5);
+ const wordMap={first:1,second:2,third:3,fourth:4,fifth:5};
+ const mapNo=(meta)=>{
+  const z=(String(meta.marketName||'')+' '+String(meta.period||'')).toLowerCase();
+  const d=z.match(/(?:map|p)\\s*(\\d+)/); if(d)return Number(d[1]);
+  const w=z.match(/(first|second|third|fourth|fifth)\\s+map/); return w?wordMap[w[1]]:null;
+ };
  for(const s of wanted){
-  const fr=await get('fixtures',{sportId:s.id,from:now.toISOString(),to:to.toISOString(),statusId:0,hasOdds:true});
-  if(!fr.ok)continue;
+  const fr=await get('fixtures',{sportId:s.id,from:now.toISOString(),to:to.toISOString(),statusId:0,hasOdds:true}); if(!fr.ok)continue;
   const fixtures=Array.isArray(fr.body)?fr.body:(fr.body?.data||[]);
+  console.log('ODDSPAPI_FIXTURES',s.dst,fixtures.length);
   for(const ev of fixtures.slice(0,80)){
    const id=ev.fixtureId??ev.id;if(!id)continue;
    const or=await get('odds',{fixtureId:id,oddsFormat:'decimal',language:'en',verbosity:3}); if(!or.ok)continue;
-   const b=or.body?.data??or.body; const books=b?.bookmakerOdds||b?.bookmakers||{};
+   const bdy=or.body?.data??or.body; const books=bdy?.bookmakerOdds||bdy?.bookmakers||{};
    const bookmakers=[];
    for(const [book,bd] of Object.entries(books)){
     const markets=[];
     for(const [mid,md] of Object.entries(bd?.markets||{})){
      const meta=marketMeta.get(String(mid))||{}; const label=String(meta.marketName||md?.marketName||md?.name||'');
-     const period=String(meta.period||md?.period||''); const sc=oddsApiIoScope(label+' '+period); if(!sc)continue;
+     const period=String(meta.period||md?.period||''); const line=Number(meta.handicap);
+     let key=null,map=mapNo(meta);
+     if(/map.*winner/i.test(label))key='map_winner';
+     // OddsPapi CS2 "Maps Handicap" and "Total Maps" are SERIES map-count markets,
+     // not Thunderpick per-map round handicaps/totals. Keep them exact instead of
+     // falsely relabelling them as round markets.
+     else if(/maps handicap/i.test(label))key='map_handicap';
+     else if(/total maps/i.test(label))key='map_totals';
+     else if(meta.playerProp===true)key='player_prop';
+     else continue;
      const outcomes=[];
      const walk=(v)=>{
       if(Array.isArray(v)){for(const x of v)walk(x);return}
       if(!v||typeof v!=='object')return;
       const price=Number(v.price??v.odds), name=String(v.outcomeName||v.name||v.label||'').trim();
-      if(name&&price>1){const point=Number(v.handicap??v.line??v.total);outcomes.push({name,price,point:Number.isFinite(point)?point:null});return}
+      if(name&&price>1){const p=Number(v.handicap??v.line??v.total??(Number.isFinite(line)?line:null));outcomes.push({name,price,point:Number.isFinite(p)?p:null});return}
       for(const x of Object.values(v))if(x&&typeof x==='object')walk(x);
      }; walk(md?.outcomes||md);
      const uniq=[];const seen=new Set();for(const o of outcomes){const k=o.name+'|'+o.point+'|'+o.price;if(!seen.has(k)){seen.add(k);uniq.push(o)}}
-     if(uniq.length>=2)markets.push({key:sc.key,name:label,title:label,period:period||('Map '+sc.map),scope:{map:sc.map,round:null},last_update:md?.changedAt||b?.updatedAt||null,outcomes:uniq});
+     if(uniq.length>=2)markets.push({key,name:label,title:label,period,scope:{map,round:null},line:Number.isFinite(line)?line:null,last_update:md?.changedAt||bdy?.updatedAt||null,outcomes:uniq});
     }
     if(markets.length)bookmakers.push({key:'oddspapi:'+book,title:book,markets});
    }
    if(bookmakers.length){
-    const p1=String(b?.participant1Name||ev?.participant1Name||ev?.homeName||'').trim(),p2=String(b?.participant2Name||ev?.participant2Name||ev?.awayName||'').trim();
-    if(p1&&p2)out.push({id:'oddspapi:'+id,home_team:p1,away_team:p2,commence_time:b?.startTime||ev?.startTime||null,live:false,bookmakers,_sourceSport:s.dst});
+    const p1=String(bdy?.participant1Name||ev?.participant1Name||ev?.homeName||ev?.participants?.[0]?.name||'').trim();
+    const p2=String(bdy?.participant2Name||ev?.participant2Name||ev?.awayName||ev?.participants?.[1]?.name||'').trim();
+    if(p1&&p2)out.push({id:'oddspapi:'+id,home_team:p1,away_team:p2,commence_time:bdy?.startTime||ev?.startTime||null,live:false,bookmakers,_sourceSport:s.dst});
    }
   }
  }
- console.log('ODDSPAPI_EXACT_EVENTS',out.length,'BOOK_ROWS',out.reduce((n,e)=>n+e.bookmakers.length,0));
+ const counts={};for(const e of out)for(const b of e.bookmakers)for(const m of b.markets)counts[m.key]=(counts[m.key]||0)+1;
+ console.log('ODDSPAPI_EXACT_EVENTS',out.length,'BOOK_ROWS',out.reduce((n,e)=>n+e.bookmakers.length,0),'MARKETS',JSON.stringify(counts));
  return out;
 }
 function kalshiExact(body,sport='cs2'){
