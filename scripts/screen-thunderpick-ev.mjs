@@ -5,6 +5,7 @@ const cmp=JSON.parse(await fs.readFile('data/owls-comparison-latest.json','utf8'
 let meta=null; try{meta=JSON.parse(await fs.readFile('data/owls-meta.json','utf8'));}catch{}
 const SPORTS=['cs2','dota2','lol','valorant','american-football','baseball','basketball','soccer','tennis'];
 const now=Date.now(), horizon=now+15*24*3600e3;
+// manual-live-test-trigger: 2026-09-23
 
 const aliases=new Map([
  ['natusvincere','navi'],['navi','navi'],['jd','jd'],['jdg','jd'],['jdgaming','jd'],
