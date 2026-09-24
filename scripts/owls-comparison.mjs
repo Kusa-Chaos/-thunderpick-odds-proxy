@@ -79,6 +79,11 @@ try{
 
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
+// Optional direct esports derivative source. Odds-API.io documents explicit
+// Map 1/2/3 Winner, Round Handicap and Total Rounds markets. Keep this optional:
+// the scan remains operational without a key and fails closed on identity.
+const ODDS_API_IO_KEY=(process.env.ODDS_API_IO_KEY||'').trim();
+const ODDS_API_IO_BASE='https://api.odds-api.io/v3';
 async function v2get(path){
   if(v2ResponseCache.has(path)) return v2ResponseCache.get(path);
   try{
@@ -167,6 +172,80 @@ function stakeExact(body,source='stake'){
  }
  return out;
 }
+
+function oddsApiIoSport(raw=''){
+ const s=String(raw).toLowerCase();
+ if(/counter|cs2|cs:go|csgo/.test(s))return 'cs2';
+ if(/valorant/.test(s))return 'valorant';
+ if(/league of legends|\\blol\\b/.test(s))return 'lol';
+ if(/dota/.test(s))return 'dota2';
+ return null;
+}
+function oddsApiIoScope(text=''){
+ const t=String(text);
+ const map=Number((t.match(/\\bmap\\s*(\\d+)\\b/i)||t.match(/\\b(first|second|third|fourth|fifth)\\s+map\\b/i)||[])[1]);
+ const word=(t.match(/\\b(first|second|third|fourth|fifth)\\s+map\\b/i)||[])[1];
+ const mapNum=Number.isFinite(map)&&map>0?map:({first:1,second:2,third:3,fourth:4,fifth:5}[String(word||'').toLowerCase()]||null);
+ if(!mapNum)return null;
+ if(/winner|moneyline|result/i.test(t))return {key:'map_winner',map:mapNum};
+ if(/round.*(handicap|spread)|(handicap|spread).*round/i.test(t))return {key:'round_handicap',map:mapNum};
+ if(/(total.*round|round.*total|rounds.*over|rounds.*under)/i.test(t))return {key:'round_totals',map:mapNum};
+ return null;
+}
+function oddsApiIoExact(body,sourceSport){
+ const out=[];
+ const events=Array.isArray(body?.data)?body.data:Array.isArray(body)?body:Object.values(body?.data||body?.events||{});
+ for(const ev of events){
+  const title=String(ev?.name||ev?.title||ev?.eventName||'');
+  const pair=[ev?.home,ev?.away].every(Boolean)?[String(ev.home),String(ev.away)]:teamsFromTitle(title);
+  if(!pair)continue;
+  const markets=Array.isArray(ev?.markets)?ev.markets:Array.isArray(ev?.odds)?ev.odds:[];
+  const books=new Map();
+  for(const m of markets){
+   const book=String(m?.bookmaker||m?.book||m?.sportsbook||m?.source||'odds-api-io').trim();
+   const label=String(m?.name||m?.market||m?.marketName||m?.label||'');
+   const sc=oddsApiIoScope(label); if(!sc)continue;
+   const os=Array.isArray(m?.outcomes)?m.outcomes:Array.isArray(m?.prices)?m.prices:[];
+   const outcomes=os.map(o=>{
+    const name=String(o?.name||o?.label||o?.outcome||'').trim();
+    const price=Number(o?.price??o?.odds);
+    const point=Number(o?.point??o?.handicap??o?.line??o?.total);
+    return {name,price,point:Number.isFinite(point)?point:null};
+   }).filter(o=>o.name&&o.price>1);
+   if(outcomes.length<2)continue;
+   const bm={key:'odds-api-io:'+book.toLowerCase().replace(/[^a-z0-9]+/g,'-'),title:book,markets:[]};
+   const key=bm.key; if(!books.has(key))books.set(key,bm);
+   books.get(key).markets.push({key:sc.key,name:label,title:label,period:`Map ${sc.map}`,scope:{map:sc.map,round:null},last_update:m?.updatedAt||m?.lastUpdate||ev?.updatedAt||null,outcomes});
+  }
+  if(books.size)out.push({id:'odds-api-io:'+(ev?.id||title),home_team:pair[0],away_team:pair[1],commence_time:ev?.startTime||ev?.start_time||ev?.commence_time||null,live:Boolean(ev?.live||ev?.isLive),bookmakers:[...books.values()],_sourceSport:sourceSport});
+ }
+ return out;
+}
+async function fetchOddsApiIoExact(){
+ if(!ODDS_API_IO_KEY){console.log('ODDS_API_IO_SKIP missing ODDS_API_IO_KEY');return []}
+ const all=[];
+ try{
+  const er=await fetch(`${ODDS_API_IO_BASE}/events?apiKey=${encodeURIComponent(ODDS_API_IO_KEY)}&sport=esports`,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+  const eb=await er.json().catch(()=>({})); if(!er.ok){console.warn('ODDS_API_IO_EVENTS_FAIL',er.status);return []}
+  const events=Array.isArray(eb?.data)?eb.data:Array.isArray(eb)?eb:Object.values(eb?.data||eb?.events||{});
+  // Spend requests only on supported target titles and upcoming/live events.
+  for(const ev of events.slice(0,250)){
+   const sport=oddsApiIoSport(ev?.sport||ev?.league||ev?.category||ev?.name||ev?.title); if(!sport)continue;
+   const id=ev?.id||ev?.eventId; if(!id)continue;
+   try{
+    const r=await fetch(`${ODDS_API_IO_BASE}/odds?apiKey=${encodeURIComponent(ODDS_API_IO_KEY)}&eventId=${encodeURIComponent(id)}`,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(20000)});
+    const b=await r.json().catch(()=>({})); if(!r.ok)continue;
+    // Some responses omit event metadata, so merge it back before normalization.
+    const payload=Array.isArray(b?.data)?{data:b.data.map(x=>({...ev,...x}))}:{data:[{...ev,...(b?.data||b)}]};
+    all.push(...oddsApiIoExact(payload,sport));
+   }catch{}
+   if(all.length>=250)break;
+  }
+ }catch(e){console.warn('ODDS_API_IO_ERROR',String(e?.message||e))}
+ console.log('ODDS_API_IO_EXACT_EVENTS',all.length);
+ return all;
+}
+
 function kalshiExact(body,sport='cs2'){
  const groups=new Map();
  for(const m of Object.values(body?.data||{})){
@@ -198,6 +277,9 @@ function kalshiExact(body,sport='cs2'){
 }
 try{
  const exact=[];
+ // Direct derivative feed first. Every bookmaker remains a separate independent
+ // source; screen-thunderpick-ev still enforces exact event/side/line/map identity.
+ exact.push(...await fetchOddsApiIoExact());
  const exactSpecs=[];
  for(const sport of ['cs2','lol','valorant','dota2']){
   exactSpecs.push({book:'stake',sport},{book:'rainbet',sport},{book:'polymarket',sport},{book:'kalshi',sport},{book:'fanaticsmarkets',sport});
