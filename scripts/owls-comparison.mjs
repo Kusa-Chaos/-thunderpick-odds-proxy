@@ -314,8 +314,8 @@ async function fetchOddsPapiExact(){
      // OddsPapi CS2 "Maps Handicap" and "Total Maps" are SERIES map-count markets,
      // not Thunderpick per-map round handicaps/totals. Keep them exact instead of
      // falsely relabelling them as round markets.
-     else if(/maps handicap/i.test(label))key='map_handicap';
-     else if(/total maps/i.test(label))key='map_totals';
+     else if(/maps handicap/i.test(label))key='spreads';
+     else if(/total maps/i.test(label))key='totals';
      else if(meta.playerProp===true)key='player_prop';
      else continue;
      const outcomes=[];
