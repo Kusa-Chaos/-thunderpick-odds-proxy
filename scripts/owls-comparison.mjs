@@ -274,7 +274,7 @@ async function fetchOddsPapiExact(){
    /map.*winner|maps handicap|total maps/i.test(String(m.marketName||'')) || m.playerProp===true
  ));
  console.log('ODDSPAPI_MARKET_CATALOG',relevant.length,JSON.stringify(relevant.slice(0,60).map(m=>({id:m.marketId,name:m.marketName,sportId:m.sportId,line:m.handicap,period:m.period,type:m.marketType,playerProp:m.playerProp}))));
- const out=[]; const now=new Date(), to=new Date(Date.now()+9*864e5);
+ const out=[]; const now=new Date(), to=new Date(Date.now()+9*864e5); let oddsShapeLogged=false;
  const wordMap={first:1,second:2,third:3,fourth:4,fifth:5};
  const mapNo=(meta)=>{
   const z=(String(meta.marketName||'')+' '+String(meta.period||'')).toLowerCase();
@@ -288,7 +288,21 @@ async function fetchOddsPapiExact(){
   for(const ev of fixtures.slice(0,80)){
    const id=ev.fixtureId??ev.id;if(!id)continue;
    const or=await get('odds',{fixtureId:id,oddsFormat:'decimal',language:'en',verbosity:3}); if(!or.ok)continue;
-   const bdy=or.body?.data??or.body; const books=bdy?.bookmakerOdds||bdy?.bookmakers||{};
+   const bdy=or.body?.data??or.body;
+   if(!oddsShapeLogged){console.log('ODDSPAPI_ODDS_SHAPE',JSON.stringify(bdy).slice(0,5000));oddsShapeLogged=true}
+   let books=bdy?.bookmakerOdds||bdy?.bookmakers||{};
+   // v4 can return flat odds rows instead of nested bookmaker objects.
+   if(Array.isArray(bdy)){
+    books={};
+    for(const row of bdy){
+     const bk=String(row.bookmakerSlug||row.bookmakerName||row.bookmaker||row.bookmakerId||'unknown');
+     const mid=String(row.marketId??row.market?.marketId??'');
+     if(!mid)continue;
+     books[bk]??={markets:{}}; books[bk].markets[mid]??={outcomes:[],changedAt:row.changedAt||row.updatedAt};
+     const vals=Array.isArray(row.outcomes)?row.outcomes:[row];
+     for(const v of vals)books[bk].markets[mid].outcomes.push(v);
+    }
+   }
    const bookmakers=[];
    for(const [book,bd] of Object.entries(books)){
     const markets=[];
