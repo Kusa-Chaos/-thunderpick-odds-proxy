@@ -256,11 +256,19 @@ function quoteFor(row,d){
  // contract. This is the main fail-closed guard against giant false EV.
  if(!orientationAligned && !['totals','round_totals','player_prop'].includes(d.key)) return found;
  for(const c of outsideMarkets(row.event,d.key)){
+  let propOutcomes=null;
   if(d.key==='player_prop'){
    const raw=marketIdentityText(c.market); const op=outsidePropIdentity(c.market)||playerPropIdentity(c.market);
-   const outPlayer=op?.player||specText(c.market?.specifiers,'player')||specText(c.market?.specifiers,'player_name');
+   const wantedPlayer=norm(cleanPlayerName(d.prop?.player||''));
+   const outcomePlayer=o=>cleanPlayerName(o?.description||o?.player||o?.player_name||o?.playerName||'');
+   // Many PropLine books publish several players inside one market. Do not use
+   // the first outcome's description as the market-wide player identity:
+   // select the Over/Under pair belonging to the Thunderpick player first.
+   const matching=(c.market?.outcomes||[]).filter(o=>norm(outcomePlayer(o))===wantedPlayer);
+   const explicitPlayer=op?.player||specText(c.market?.specifiers,'player')||specText(c.market?.specifiers,'player_name');
+   if(matching.length>=2) propOutcomes=matching;
+   else if(!explicitPlayer||norm(cleanPlayerName(explicitPlayer))!==wantedPlayer)continue;
    const outStat=canonicalPropStat(op?.stat||c.market?.key||'');
-   if(!outPlayer||norm(cleanPlayerName(outPlayer))!==norm(cleanPlayerName(d.prop?.player||'')))continue;
    if(!outStat||norm(outStat)!==norm(canonicalPropStat(d.prop?.stat||'')))continue;
    // PropLine's per-event props endpoint is full-game by contract. Only reject
    // a scope mismatch when the outside market explicitly identifies a period.
@@ -291,7 +299,7 @@ function quoteFor(row,d){
    const outPeriod=periodScope(marketIdentityText(c.market));
    if(tpPeriod!==outPeriod)continue;
   }
-  const outs=c.market?.outcomes||[];if(outs.length<2)continue;
+  const outs=propOutcomes||c.market?.outcomes||[];if(outs.length<2)continue;
   const a=findOutcome(outs,d.selections[0],d.key,c.market),b=findOutcome(outs,d.selections[1],d.key,c.market);if(!a||!b)continue;
   if(!['totals','round_totals','player_prop'].includes(d.key)){
    const aName=norm(stripLine(a.name)),bName=norm(stripLine(b.name));
