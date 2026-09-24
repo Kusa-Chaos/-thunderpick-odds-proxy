@@ -41,6 +41,7 @@ jobs:
       - name: Fetch normalized outside boards
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
         run: node scripts/owls-comparison.mjs
       - name: Probe Owls v2 raw esports access
         env:
