@@ -319,13 +319,29 @@ async function fetchOddsPapiExact(){
      else if(meta.playerProp===true)key='player_prop';
      else continue;
      const outcomes=[];
-     const walk=(v)=>{
-      if(Array.isArray(v)){for(const x of v)walk(x);return}
-      if(!v||typeof v!=='object')return;
-      const price=Number(v.price??v.odds), name=String(v.outcomeName||v.name||v.label||'').trim();
-      if(name&&price>1){const p=Number(v.handicap??v.line??v.total??(Number.isFinite(line)?line:null));outcomes.push({name,price,point:Number.isFinite(p)?p:null});return}
-      for(const x of Object.values(v))if(x&&typeof x==='object')walk(x);
-     }; walk(md?.outcomes||md);
+     // OddsPapi v4 nests executable prices as market.outcomes[outcomeId].players[playerId].
+     // The semantic side/line lives in market metadata + outcome metadata, not on the price leaf.
+     const rawOut=md?.outcomes||{};
+     for(const [oid,od] of Object.entries(rawOut)){
+      const om=marketMeta.get(String(oid))||{};
+      const semantic=String(om.outcomeName||om.name||om.label||od?.outcomeName||od?.name||'').trim();
+      const pts=Number(om.handicap??om.line??om.total??line);
+      const players=od?.players&&typeof od.players==='object'?Object.values(od.players):[od];
+      for(const pv of players){
+       const price=Number(pv?.price??pv?.odds);
+       const pname=String(pv?.playerName||'').trim();
+       const name=(meta.playerProp&&pname)?(semantic?semantic+' '+pname:pname):semantic;
+       if(name&&price>1)outcomes.push({name,price,point:Number.isFinite(pts)?pts:null,player:pname||null});
+      }
+     }
+     // Fallback for providers that return already flattened outcomes.
+     if(!outcomes.length){
+      const walk=(v)=>{if(Array.isArray(v)){for(const x of v)walk(x);return}if(!v||typeof v!=='object')return;
+       const price=Number(v.price??v.odds),name=String(v.outcomeName||v.name||v.label||'').trim();
+       if(name&&price>1){const p=Number(v.handicap??v.line??v.total??line);outcomes.push({name,price,point:Number.isFinite(p)?p:null});return}
+       for(const x of Object.values(v))if(x&&typeof x==='object')walk(x);
+      };walk(md?.outcomes||md);
+     }
      const uniq=[];const seen=new Set();for(const o of outcomes){const k=o.name+'|'+o.point+'|'+o.price;if(!seen.has(k)){seen.add(k);uniq.push(o)}}
      if(uniq.length>=2)markets.push({key,name:label,title:label,period,scope:{map,round:null},line:Number.isFinite(line)?line:null,last_update:md?.changedAt||bdy?.updatedAt||null,outcomes:uniq});
     }
