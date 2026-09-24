@@ -154,7 +154,15 @@ function stakeExact(body,source='stake'){
    if(!map)continue;
    const active=(m.outcomes||[]).filter(o=>o?.active!==false&&String(o?.name||'').toLowerCase()!=='draw');
    const price=o=>Number(o?.odds??o?.price);
-   const point=o=>Number(o?.handicap??o?.point??o?.line??o?.total);
+   const point=o=>{
+    const direct=Number(o?.handicap??o?.point??o?.line??o?.total);
+    if(Number.isFinite(direct))return direct;
+    const txt=String(o?.name||'');
+    const par=(txt.match(/\(([+-]?\d+(?:\.\d+)?)\)\s*$/)||[])[1];
+    if(par!=null)return Number(par);
+    const ou=(txt.match(/\b(?:over|under)\s+(?:[^\d+-]+\s+)?([+-]?\d+(?:\.\d+)?)\b/i)||[])[1];
+    return ou!=null?Number(ou):NaN;
+   };
    if(/\b(winner|moneyline|result)\b/i.test(name)){
     const os=active.map(o=>({name:String(o.name).trim(),price:price(o)})).filter(o=>o.name&&o.price>1);
     if(os.length===2)exact.push({key:'map_winner',name:`Map ${map} Winner`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
