@@ -84,7 +84,7 @@ const v2base='https://api.owlsinsight.com/api/v2';
 // the scan remains operational without a key and fails closed on identity.
 const ODDS_API_IO_KEY=''; // paid source deliberately disabled
 const ODDSPAPI_API_KEY=(process.env.ODDSPAPI_API_KEY||'').trim();
-const ODDSPAPI_BASE='https://api.oddspapi.io/v4';
+const ODDSPAPI_BASE='https://api.oddspapi.io/v4'; // structured derivative source
 const ODDS_API_IO_BASE='https://api.odds-api.io/v3';
 async function v2get(path){
   if(v2ResponseCache.has(path)) return v2ResponseCache.get(path);
