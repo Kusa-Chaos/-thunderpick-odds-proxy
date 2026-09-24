@@ -107,7 +107,9 @@ async function fetchEventProps(feed,e,tpMatch){
 }
 for(const feed of FEEDS){
  const wanted=feed.markets||'h2h,spreads,totals,player_props';
- let r=await fetch(`${base}/sports/${feed.api}/odds?markets=${encodeURIComponent(wanted)}&period=all`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+ let r;
+ try{r=await fetch(`${base}/sports/${feed.api}/odds?markets=${encodeURIComponent(wanted)}&period=all`,{headers:{'X-API-Key':KEY,Accept:'application/json'},signal:AbortSignal.timeout(30000)});}
+ catch(err){console.warn('PROPLINE_FEED_TIMEOUT',feed.api,String(err?.message||err));feedStats.push({feed:feed.api,ok:false,error:'timeout'});continue;}
  requestCount++;quota={used:Number(r.headers.get('x-daily-used'))||quota.used,remaining:Number(r.headers.get('x-daily-remaining'))||quota.remaining,reset:r.headers.get('x-daily-reset')||quota.reset};
  if(!r.ok&&feed.api==='esports'){
    const err=await r.text();
