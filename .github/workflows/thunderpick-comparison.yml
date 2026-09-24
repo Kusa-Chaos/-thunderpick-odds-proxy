@@ -159,7 +159,21 @@ jobs:
           const inventoryProps=(s.playerPropInventory||[]).map(r=>({...r,tier:r.tier||'INFORMATIONAL'}));
           const playerPropScreenRows=[...limitedProps,...semanticScreens,...inventoryProps].slice(0,30);
           const handicapRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.marketKey==='spreads'||r.marketKey==='round_handicap').slice(0,30).map(compactRow);
+          // IMPORTANT: hourly chat readers use scan-display-latest.json first. Publish
+          // lower-source esports screens there too so genuine esports never disappears
+          // merely because it has <3 independent exact sources.
+          const screenDisplay=r=>{
+            const a=r?.thunderpick?.[0]||r?.thunderpick?.a||null,b=r?.thunderpick?.[1]||r?.thunderpick?.b||null;
+            const eva=Number(r?.screenEV?.a??-99),evb=Number(r?.screenEV?.b??-99),pick=eva>=evb?a:b;
+            return {tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:pick?.name||r.target||r.player||null,market:r.marketLabel||r.market||r.marketKey,marketKey:r.marketKey||null,line:pick?.point??r.line??null,scope:r.scope||null,thunderpick:pick?.odds??r.thunderpick??null,screenEV:Number.isFinite(Math.max(eva,evb))?Math.max(eva,evb):null,independentSources:Number(r.independentSources??0),outside:(r.outside||[]).slice(0,4),startTime:r.startTime||null,blocker:r.blocker||null};
+          };
           out.coverage.rawExactQuoteMatchesByType=s.rawExactQuoteMatchesByType||{};
+          out.counts.esportsScreen=esportsScreenRows.length;
+          out.counts.playerPropScreen=playerPropScreenRows.length;
+          out.esportsScreenRows=esportsScreenRows.map(screenDisplay);
+          out.limitedPlayerPropRows=playerPropScreenRows.map(r=>({tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:r.target||r.player||null,market:r.market||r.marketLabel||'Player Prop',marketKey:r.marketKey||'player_prop',line:r.line??null,scope:r.scope||null,thunderpick:r.thunderpick??null,independentSources:Number(r.independentSources??0),startTime:r.startTime||null,blocker:r.blocker||null}));
+          // Rewrite display after screening buckets are attached.
+          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
           const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows,limitedPlayerPropRows:playerPropScreenRows,handicapRows,esportsScreenRows};
           fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(report,null,2));
           console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length,'REPORT_BYTES',fs.statSync('data/scan-report-latest.json').size,'LOL_ROWS',lolRows.length);
