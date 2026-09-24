@@ -274,6 +274,7 @@ async function fetchOddsPapiExact(){
    /map.*winner|maps handicap|total maps/i.test(String(m.marketName||'')) || m.playerProp===true
  ));
  console.log('ODDSPAPI_MARKET_CATALOG',relevant.length,JSON.stringify(relevant.slice(0,60).map(m=>({id:m.marketId,name:m.marketName,sportId:m.sportId,line:m.handicap,period:m.period,type:m.marketType,playerProp:m.playerProp}))));
+ console.log('ODDSPAPI_DERIVATIVE_CATALOG',JSON.stringify(allMarkets.filter(m=>wanted.some(s=>s.id===Number(m.sportId))&&/round|kill|assist|headshot|player|handicap|total/i.test(String(m.marketName||''))).map(m=>({id:m.marketId,name:m.marketName,sportId:m.sportId,line:m.handicap,period:m.period,type:m.marketType,playerProp:m.playerProp})).slice(0,500)));
  const out=[]; const now=new Date(), to=new Date(Date.now()+9*864e5); let oddsShapeLogged=false;
  const wordMap={first:1,second:2,third:3,fourth:4,fifth:5};
  const mapNo=(meta)=>{
