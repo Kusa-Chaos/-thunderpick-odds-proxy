@@ -83,7 +83,7 @@ function playerPropIdentity(m={}){
  if(!player){
   const raw=String(m.nickName||m.name||'').replace(/\bplayer\b/ig,'').replace(new RegExp(statRaw,'ig'),'')
    .replace(/\([^)]*\)/g,' ').replace(/\bmap\s*\d+\b/ig,' ').replace(/\bround\s*\d+\b/ig,' ')
-   .replace(/\b(over|under|total|props?)\b/ig,' ').replace(/[|:–—-]+/g,' ').replace(/\s+/g,' ').trim();
+   .replace(/\b(over|under|total|props?)\b/ig,' ').replace(/[|/:–—-]+/g,' ').replace(/\s+/g,' ').trim();
   player=raw||null;
  }
  return player?{player:String(player).trim(),stat}:null;
