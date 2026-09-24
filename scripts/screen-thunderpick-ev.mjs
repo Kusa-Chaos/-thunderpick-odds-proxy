@@ -104,10 +104,14 @@ function classifyMarket(m={}){
  if(/\b(to win and|win and total|winner and total|and total games|and total points)\b/i.test(text))return null;
  if(/round/.test(text)&&/(handicap|spread)/.test(text))return 'round_handicap';
  if(/round/.test(text)&&/total/.test(text))return 'round_totals';
+ // Half/segment winners are distinct three-way/two-way contracts and must
+ // never fall through to plain Map Winner or Match Winner.
+ if(/\b(?:1st|first|2nd|second)\s+half\b/.test(text)&&/\b(?:winner|1x2|moneyline)\b/.test(text))return 'map_half_winner';
  if(!/round/.test(text)&&/(handicap|spread)/.test(text))return 'spreads';
  if(!/round/.test(text)&&/total/.test(text))return 'totals';
- if(/map/.test(text)&&/\bwinner\b/.test(text)&&!/round/.test(text))return 'map_winner';
- if(/\b(winner|moneyline)\b/.test(text)&&!(/map|round/.test(text)))return 'h2h';
+ // Plain map winner only. Explicit half/segment/1X2 labels are excluded.
+ if(/map/.test(text)&&/\bwinner\b/.test(text)&&!/round/.test(text)&&!/\b(?:1st|first|2nd|second)\s+half\b/.test(text)&&!/\b1x2\b/.test(text))return 'map_winner';
+ if(/\b(winner|moneyline)\b/.test(text)&&!(/map|round|half/.test(text))&&!/\b1x2\b/.test(text))return 'h2h';
  return null;
 }
 function makeSelections(m,key,e){
@@ -140,7 +144,7 @@ function makeSelections(m,key,e){
 function tpMarkets(e){
  const out=[];
  if(n(e?.market?.home?.odds)>1&&n(e?.market?.away?.odds)>1)out.push({key:'h2h',label:'Match Winner',scope:{map:null,round:null},selections:[{name:e.market.home.name,role:'home',odds:n(e.market.home.odds),point:null},{name:e.market.away.name,role:'away',odds:n(e.market.away.odds),point:null}]});
- for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key)continue;if(key==='totals'&&totalTarget(m,e)==='__unknown_team_total__')continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);const prop=key==='player_prop'?playerPropIdentity(m):null;if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections,prop});}
+ for(const m of e?.preferredMarkets||[]){const key=classifyMarket(m);if(!key||key==='map_half_winner')continue;if(key==='totals'&&totalTarget(m,e)==='__unknown_team_total__')continue;const selections=makeSelections(m,key,e);if(!selections)continue;const label=m.nickName||m.name||key;const scope=scopeFromText(`${m.nickName||''} ${m.name||''} ${m.specifiers||''}`);const prop=key==='player_prop'?playerPropIdentity(m):null;if((key==='map_winner'||key==='round_totals'||key==='round_handicap')&&scope.map==null&&scope.round==null)continue;out.push({key,label,scope,selections,prop});}
  const seen=new Set();return out.filter(m=>{const k=`${m.key}|${m.prop?.player??''}|${m.prop?.stat??''}|${m.scope.map??''}|${m.scope.round??''}|${m.selections.map(s=>`${norm(stripLine(s.name))}:${s.odds}:${s.point}`).join('|')}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
 function outsideMarkets(event,key){const found=[];for(const bm of event?.bookmakers||[]){for(const m of bm.markets||[]){{
