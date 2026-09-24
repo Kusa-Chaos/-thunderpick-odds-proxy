@@ -82,7 +82,9 @@ const v2base='https://api.owlsinsight.com/api/v2';
 // Optional direct esports derivative source. Odds-API.io documents explicit
 // Map 1/2/3 Winner, Round Handicap and Total Rounds markets. Keep this optional:
 // the scan remains operational without a key and fails closed on identity.
-const ODDS_API_IO_KEY=''; // paid source deliberately disabled; scanner uses free Owls/Kalshi/Polymarket paths
+const ODDS_API_IO_KEY=''; // paid source deliberately disabled
+const ODDSPAPI_API_KEY=(process.env.ODDSPAPI_API_KEY||'').trim();
+const ODDSPAPI_BASE='https://api.oddspapi.io/v4';
 const ODDS_API_IO_BASE='https://api.odds-api.io/v3';
 async function v2get(path){
   if(v2ResponseCache.has(path)) return v2ResponseCache.get(path);
@@ -246,6 +248,63 @@ async function fetchOddsApiIoExact(){
  return all;
 }
 
+
+async function fetchOddsPapiExact(){
+ if(!ODDSPAPI_API_KEY){console.log('ODDSPAPI_SKIP missing ODDSPAPI_API_KEY');return []}
+ const get=async(path,params={})=>{
+  const u=new URL(ODDSPAPI_BASE+'/'+path); for(const [k,v] of Object.entries({...params,apiKey:ODDSPAPI_API_KEY})) if(v!=null)u.searchParams.set(k,String(v));
+  const r=await fetch(u,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+  const text=await r.text(); let body; try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}}
+  if(!r.ok) console.warn('ODDSPAPI_FAIL',path,r.status,JSON.stringify(body).slice(0,300));
+  return {ok:r.ok,status:r.status,body};
+ };
+ const sr=await get('sports'); if(!sr.ok)return [];
+ const sports=Array.isArray(sr.body)?sr.body:(sr.body?.data||[]);
+ const wanted=[];
+ for(const s of sports){
+  const n=String(s.sportName||s.name||s.slug||'').toLowerCase();
+  const dst=/counter|cs2|cs:go|csgo/.test(n)?'cs2':/league of legends|\\blol\\b/.test(n)?'lol':/valorant/.test(n)?'valorant':/dota/.test(n)?'dota2':null;
+  if(dst)wanted.push({id:s.sportId??s.id,dst});
+ }
+ const mr=await get('markets',{language:'en'}); const marketMeta=new Map();
+ if(mr.ok)for(const m of (Array.isArray(mr.body)?mr.body:(mr.body?.data||[])))marketMeta.set(String(m.marketId??m.id),m);
+ const out=[]; const now=new Date(), to=new Date(Date.now()+9*864e5);
+ for(const s of wanted){
+  const fr=await get('fixtures',{sportId:s.id,from:now.toISOString(),to:to.toISOString(),statusId:0,hasOdds:true});
+  if(!fr.ok)continue;
+  const fixtures=Array.isArray(fr.body)?fr.body:(fr.body?.data||[]);
+  for(const ev of fixtures.slice(0,80)){
+   const id=ev.fixtureId??ev.id;if(!id)continue;
+   const or=await get('odds',{fixtureId:id,oddsFormat:'decimal',language:'en',verbosity:3}); if(!or.ok)continue;
+   const b=or.body?.data??or.body; const books=b?.bookmakerOdds||b?.bookmakers||{};
+   const bookmakers=[];
+   for(const [book,bd] of Object.entries(books)){
+    const markets=[];
+    for(const [mid,md] of Object.entries(bd?.markets||{})){
+     const meta=marketMeta.get(String(mid))||{}; const label=String(meta.marketName||md?.marketName||md?.name||'');
+     const period=String(meta.period||md?.period||''); const sc=oddsApiIoScope(label+' '+period); if(!sc)continue;
+     const outcomes=[];
+     const walk=(v)=>{
+      if(Array.isArray(v)){for(const x of v)walk(x);return}
+      if(!v||typeof v!=='object')return;
+      const price=Number(v.price??v.odds), name=String(v.outcomeName||v.name||v.label||'').trim();
+      if(name&&price>1){const point=Number(v.handicap??v.line??v.total);outcomes.push({name,price,point:Number.isFinite(point)?point:null});return}
+      for(const x of Object.values(v))if(x&&typeof x==='object')walk(x);
+     }; walk(md?.outcomes||md);
+     const uniq=[];const seen=new Set();for(const o of outcomes){const k=o.name+'|'+o.point+'|'+o.price;if(!seen.has(k)){seen.add(k);uniq.push(o)}}
+     if(uniq.length>=2)markets.push({key:sc.key,name:label,title:label,period:period||('Map '+sc.map),scope:{map:sc.map,round:null},last_update:md?.changedAt||b?.updatedAt||null,outcomes:uniq});
+    }
+    if(markets.length)bookmakers.push({key:'oddspapi:'+book,title:book,markets});
+   }
+   if(bookmakers.length){
+    const p1=String(b?.participant1Name||ev?.participant1Name||ev?.homeName||'').trim(),p2=String(b?.participant2Name||ev?.participant2Name||ev?.awayName||'').trim();
+    if(p1&&p2)out.push({id:'oddspapi:'+id,home_team:p1,away_team:p2,commence_time:b?.startTime||ev?.startTime||null,live:false,bookmakers,_sourceSport:s.dst});
+   }
+  }
+ }
+ console.log('ODDSPAPI_EXACT_EVENTS',out.length,'BOOK_ROWS',out.reduce((n,e)=>n+e.bookmakers.length,0));
+ return out;
+}
 function kalshiExact(body,sport='cs2'){
  const groups=new Map();
  for(const m of Object.values(body?.data||{})){
@@ -280,6 +339,7 @@ try{
  // Direct derivative feed first. Every bookmaker remains a separate independent
  // source; screen-thunderpick-ev still enforces exact event/side/line/map identity.
  exact.push(...await fetchOddsApiIoExact());
+ exact.push(...await fetchOddsPapiExact());
  const exactSpecs=[];
  for(const sport of ['cs2','lol','valorant','dota2']){
   exactSpecs.push({book:'stake',sport},{book:'rainbet',sport},{book:'polymarket',sport},{book:'kalshi',sport},{book:'fanaticsmarkets',sport});
