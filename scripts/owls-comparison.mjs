@@ -160,12 +160,12 @@ function stakeExact(body,source='stake'){
     if(os.length===2)exact.push({key:'map_winner',name:`Map ${map} Winner`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
     continue;
    }
-   if(/\b(round|rounds)\b/i.test(name)&&/\b(handicap|spread)\b/i.test(name)){
+   if((/\b(round|rounds)\b/i.test(name)||/\bMap\s*\d+\s+(?:Round\s+)?Handicap\b/i.test(name))&&/\b(handicap|spread)\b/i.test(name)){
     const os=active.map(o=>({name:String(o.name).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$/,'').trim(),price:price(o),point:point(o)})).filter(o=>o.name&&o.price>1&&Number.isFinite(o.point));
     if(os.length===2)exact.push({key:'round_handicap',name:`Map ${map} Round Handicap`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
     continue;
    }
-   if(/\b(round|rounds)\b/i.test(name)&&/\b(total|over\/under|o\/u)\b/i.test(name)){
+   if((/\b(round|rounds)\b/i.test(name)||/\bMap\s*\d+\s+Total\b/i.test(name))&&/\b(total|over\/under|o\/u)\b/i.test(name)){
     const os=active.map(o=>({name:/under/i.test(String(o.name))?'Under':/over/i.test(String(o.name))?'Over':String(o.name).trim(),price:price(o),point:point(o)})).filter(o=>/^(Over|Under)$/i.test(o.name)&&o.price>1&&Number.isFinite(o.point));
     if(os.length===2)exact.push({key:'round_totals',name:`Map ${map} Round Total`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
    }
