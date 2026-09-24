@@ -134,22 +134,36 @@ function fanaticsExact(body){
  }
  return out;
 }
-function stakeExact(body){
+function stakeExact(body,source='stake'){
  const out=[]; const events=Array.isArray(body?.data)?body.data:Object.values(body?.data||{});
  for(const ev of events){
   const title=String(ev?.name||ev?.title||'');
   const pair=teamsFromTitle(title)||title.split(/\s+VS\s+|\s+vs\.?\s+/i).map(x=>x.trim()).filter(Boolean); if(pair.length!==2)continue;
   const exact=[];
   for(const m of (Array.isArray(ev?.markets)?ev.markets:[])){
-   const name=String(m?.name||m?.title||'');
-   const mm=name.match(/^Map\s+(\d+)\s+Winner\s+-\s+Twoway$/i);
-   if(!mm||String(m?.status||'active').toLowerCase()!=='active')continue;
-   const map=Number(mm[1]);
-   const os=(m.outcomes||[]).filter(o=>o?.active!==false&&String(o?.name||'').toLowerCase()!=='draw').map(o=>({name:String(o.name).trim(),price:Number(o.odds)})).filter(o=>o.name&&o.price>1);
-   if(os.length!==2)continue;
-   exact.push({key:'map_winner',name:`Map ${map} Winner`,title:`Map ${map} Winner`,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
+   const name=String(m?.name||m?.title||'').trim();
+   if(String(m?.status||'active').toLowerCase()!=='active')continue;
+   const map=Number((name.match(/\bMap\s*(\d+)\b/i)||[])[1]);
+   if(!map)continue;
+   const active=(m.outcomes||[]).filter(o=>o?.active!==false&&String(o?.name||'').toLowerCase()!=='draw');
+   const price=o=>Number(o?.odds??o?.price);
+   const point=o=>Number(o?.handicap??o?.point??o?.line??o?.total);
+   if(/\b(winner|moneyline|result)\b/i.test(name)){
+    const os=active.map(o=>({name:String(o.name).trim(),price:price(o)})).filter(o=>o.name&&o.price>1);
+    if(os.length===2)exact.push({key:'map_winner',name:`Map ${map} Winner`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
+    continue;
+   }
+   if(/\b(round|rounds)\b/i.test(name)&&/\b(handicap|spread)\b/i.test(name)){
+    const os=active.map(o=>({name:String(o.name).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$/,'').trim(),price:price(o),point:point(o)})).filter(o=>o.name&&o.price>1&&Number.isFinite(o.point));
+    if(os.length===2)exact.push({key:'round_handicap',name:`Map ${map} Round Handicap`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
+    continue;
+   }
+   if(/\b(round|rounds)\b/i.test(name)&&/\b(total|over\/under|o\/u)\b/i.test(name)){
+    const os=active.map(o=>({name:/under/i.test(String(o.name))?'Under':/over/i.test(String(o.name))?'Over':String(o.name).trim(),price:price(o),point:point(o)})).filter(o=>/^(Over|Under)$/i.test(o.name)&&o.price>1&&Number.isFinite(o.point));
+    if(os.length===2)exact.push({key:'round_totals',name:`Map ${map} Round Total`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
+   }
   }
-  if(exact.length)out.push({id:`stake:${ev.id||title}`,home_team:pair[0],away_team:pair[1],commence_time:ev?.startTime||ev?.start_time||null,live:Boolean(ev?.isLive||ev?.live),bookmakers:[{key:'stake-v2',title:'Stake v2',markets:exact}]});
+  if(exact.length)out.push({id:`${source}:${ev.id||title}`,home_team:pair[0],away_team:pair[1],commence_time:ev?.startTime||ev?.start_time||null,live:Boolean(ev?.isLive||ev?.live),bookmakers:[{key:`${source}-v2`,title:`${source} v2`,markets:exact}]});
  }
  return out;
 }
@@ -186,7 +200,7 @@ try{
  const exact=[];
  const exactSpecs=[];
  for(const sport of ['cs2','lol','valorant','dota2']){
-  exactSpecs.push({book:'stake',sport},{book:'polymarket',sport},{book:'kalshi',sport},{book:'fanaticsmarkets',sport});
+  exactSpecs.push({book:'stake',sport},{book:'rainbet',sport},{book:'polymarket',sport},{book:'kalshi',sport},{book:'fanaticsmarkets',sport});
  }
  // Pinnacle is queried once as its esports source is cross-title.
  exactSpecs.push({book:'pinnacle',sport:'esports'});
@@ -194,7 +208,13 @@ try{
   if(spec.book==='stake'){
    let body=stakeCachedBodies[spec.sport];
    if(!body){const br=await v2get(`/stake/${spec.sport}`); if(br.ok){body=br.body;stakeCachedBodies[spec.sport]=body;}}
- console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body).map(e=>({...e,_sourceSport:spec.sport})); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',spec.sport,parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;}
+   console.log('STAKE_REUSE',Boolean(body),body?.count,body?.meta?.status); if(body){const parsed=stakeExact(body,'stake').map(e=>({...e,_sourceSport:spec.sport})); exact.push(...parsed); console.log('STAKE_EXACT_PARSED',spec.sport,parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),body?.meta?.status,body?.meta?.ageSeconds);} continue;
+  }
+  if(spec.book==='rainbet'){
+   const br=await v2get(`/rainbet/${spec.sport}`);
+   if(br.ok){const parsed=stakeExact(br.body,'rainbet').map(e=>({...e,_sourceSport:spec.sport})); exact.push(...parsed); console.log('RAINBET_EXACT_PARSED',spec.sport,parsed.length,parsed.reduce((n,e)=>n+(e.bookmakers?.[0]?.markets?.length||0),0),br.body?.meta?.status,br.body?.meta?.ageSeconds);}
+   continue;
+  }
   let lr=await v2get(`/${spec.book}/${spec.sport}/leagues`); if(!lr.ok&&spec.book==='polymarket'){await sleep(1500);lr=await v2get(`/${spec.book}/${spec.sport}/leagues`);} if(!lr.ok){ if(spec.book==='stake'){const br=await v2get('/stake/cs2'); if(br.ok) exact.push(...stakeExact(br.body));} continue; }
   const leagues=lr.body?.data||lr.body?.leagues||lr.body||[];
   for(const row of (Array.isArray(leagues)?leagues:[])){
