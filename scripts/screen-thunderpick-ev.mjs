@@ -425,7 +425,13 @@ for(const sport of SPORTS){
    // Require >=3 independent books for ACTION/WATCH math. A two-book screen
    // remains diagnostic only and cannot create a candidate or arbitrage.
    const uniqueBooks=new Set(saneOutside.map(q=>String(q.book||'').toLowerCase()).filter(Boolean));
-   if(saneOutside.length<3||uniqueBooks.size<3){if(derivativeDiagnostics[d.key])derivativeDiagnostics[d.key].under3Sources++;if(['map_winner','round_handicap','round_totals','player_prop'].includes(d.key)&&saneOutside.length){const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});const pA=fair.reduce((n,x)=>n+x.a,0)/fair.length,pB=fair.reduce((n,x)=>n+x.b,0)/fair.length;limitedExactComparisons.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:d.selections,outside:saneOutside,independentSources:uniqueBooks.size,screenFair:{aProbability:pA,bProbability:pB},screenEV:{a:d.selections[0].odds*pA-1,b:d.selections[1].odds*pB-1},blocker:'fewer than 3 independent exact-scope sources; SCREENING ONLY'});}continue;}
+   if(saneOutside.length<3||uniqueBooks.size<3){
+    // A raw exact comparison is still a real matched contract even when it is
+    // below the 3-source promotion gate. Count it for coverage, but keep it
+    // SCREENING-only and out of ACTION/WATCH/arb math.
+    matchedMarkets++; marketTypeCounts[d.key].matched++; eventMatched=true;
+    if(derivativeDiagnostics[d.key])derivativeDiagnostics[d.key].under3Sources++;
+    if(['map_winner','round_handicap','round_totals','player_prop'].includes(d.key)&&saneOutside.length){const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});const pA=fair.reduce((n,x)=>n+x.a,0)/fair.length,pB=fair.reduce((n,x)=>n+x.b,0)/fair.length;limitedExactComparisons.push({sport,eventId:e.id,name:e.name,startTime:e.startTime,marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:d.selections,outside:saneOutside,independentSources:uniqueBooks.size,screenFair:{aProbability:pA,bProbability:pB},screenEV:{a:d.selections[0].odds*pA-1,b:d.selections[1].odds*pB-1},blocker:'fewer than 3 independent exact-scope sources; SCREENING ONLY'});}continue;}
    matchedMarkets++;marketTypeCounts[d.key].matched++;if(derivativeDiagnostics[d.key])derivativeDiagnostics[d.key].matched++;eventMatched=true;
    const fair=saneOutside.map(q=>{const ia=1/q.a,ib=1/q.b,z=ia+ib;return{book:q.book,a:ia/z,b:ib/z,identityVerified:q.identityVerified};});
    const verified=fair.filter(x=>x.identityVerified),base=verified.length?verified:fair;
