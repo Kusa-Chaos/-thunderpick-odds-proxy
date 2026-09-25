@@ -6,8 +6,12 @@ on:
     workflows: ["Thunderpick Owls Snapshot"]
     types: [completed]
   schedule:
-    - cron: '10 * * * *'
-    - cron: '40 * * * *'
+    # Redundant off-peak cron slots: GitHub can delay/drop scheduled events under load.
+    # Four independent chances per hour keep the published scan fresh even if one slot is missed.
+    - cron: '7 * * * *'
+    - cron: '22 * * * *'
+    - cron: '37 * * * *'
+    - cron: '52 * * * *'
   push:
     branches: [main]
     paths:
@@ -22,7 +26,8 @@ permissions:
 
 concurrency:
   group: thunderpick-comparison-screen
-  cancel-in-progress: true
+  # Never cancel a healthy scan just because another trigger arrives.
+  cancel-in-progress: false
 
 jobs:
   screen:
