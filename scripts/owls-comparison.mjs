@@ -46,11 +46,30 @@ for(const sport of SPORTS){
       //
       // Production rule: keep normalized derivatives as diagnostics only. The EV
       // screener must require explicit scope metadata before matching a derivative.
-      sports[sport].derivativeScope={
-        exactScopeAvailable:false,
-        reason:'Owls normalized derivative rows omit map/round identity; direct 1xBet detail feed blocked on runner',
-        policy:'fail-closed'
+      // Owls' documented CS2 v1 feed explicitly carries round_totals and
+      // round_handicap. Preserve those rows as a fallback inventory instead of
+      // throwing them away when Stake is temporarily no-data. They remain
+      // SCREENING-only unless exact map identity can be proven.
+      const derivativeRows=[];
+      const walk=(v,ctx={})=>{
+        if(Array.isArray(v)){for(const q of v)walk(q,ctx);return;}
+        if(!v||typeof v!=='object')return;
+        const key=String(v.key||v.marketKey||v.market||'').toLowerCase();
+        if(key==='round_handicap'||key==='round_totals'){
+          derivativeRows.push({key,event:ctx.event||null,book:ctx.book||null,name:v.name||null,title:v.title||null,period:v.period||null,scope:v.scope||null,outcomes:v.outcomes||[]});
+        }
+        const next={...ctx,event:v.home_team&&v.away_team?`${v.home_team} vs ${v.away_team}`:ctx.event,book:v.key&&v.bookmakers?ctx.book:(v.title||v.book||ctx.book)};
+        for(const q of Object.values(v))if(q&&typeof q==='object')walk(q,next);
       };
+      walk(data);
+      sports[sport].normalizedDerivativeInventory=derivativeRows.slice(0,2000);
+      sports[sport].derivativeScope={
+        exactScopeAvailable:derivativeRows.some(x=>x.scope?.map!=null||/map\s*\d+/i.test(String(x.period||x.name||x.title||''))),
+        normalizedRows:derivativeRows.length,
+        reason:'Owls normalized derivative inventory retained; exact matching still fails closed when map identity is absent',
+        policy:'screen-with-scope-only'
+      };
+      console.log('NORMALIZED_DERIVATIVE_INVENTORY',sport,derivativeRows.length);
     }
     if(!r.ok) { failures.push({sport,status:r.status,body}); console.error('OWLS_FAIL',sport,r.status,JSON.stringify(body).slice(0,500)); }
   }catch(e){sports[sport]={ok:false,status:null,fetchedAt:new Date().toISOString(),error:String(e?.message||e),eventCount:0,data:null};failures.push({sport,error:String(e?.message||e)});console.error('OWLS_ERROR',sport,String(e?.message||e));}
