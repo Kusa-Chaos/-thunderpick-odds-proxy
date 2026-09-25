@@ -429,6 +429,26 @@ function kalshiExact(body,sport='cs2'){
 }
 try{
  const exact=[];
+ // Promote only normalized Owls derivative rows that carry provable map scope.
+ // This restores round handicap/totals from the already-fetched v1 board without
+ // weakening exact identity. Rows lacking map identity remain diagnostic only.
+ for(const sport of ['cs2','lol','valorant','dota2']){
+  for(const d of (sports[sport]?.normalizedDerivativeInventory||[])){
+   const txt=[d.name,d.title,d.period,typeof d.scope==='object'?JSON.stringify(d.scope):d.scope].filter(Boolean).join(' ');
+   const map=Number(d?.scope?.map??(txt.match(/\\bmap\\s*(\\d+)\\b/i)||[])[1]);
+   if(!map||!['round_handicap','round_totals'].includes(d.key))continue;
+   const pair=teamsFromTitle(d.event||''); if(!pair)continue;
+   const outcomes=(d.outcomes||[]).map(o=>{
+    const price=Number(o?.price??o?.odds);
+    const point=Number(o?.point??o?.handicap??o?.line??o?.total);
+    const name=d.key==='round_totals'?(/under/i.test(String(o?.name))?'Under':/over/i.test(String(o?.name))?'Over':String(o?.name||'')):String(o?.name||'').replace(/\\s*\\([+-]?\\d+(?:\\.\\d+)?\\)\\s*$/,'').trim();
+    return {name,price,point:Number.isFinite(point)?point:null};
+   }).filter(o=>o.name&&o.price>1&&Number.isFinite(o.point));
+   if(outcomes.length!==2)continue;
+   exact.push({id:`owls-v1-derivative:${sport}:${d.event}:${d.key}:${map}`,home_team:pair[0],away_team:pair[1],live:false,_sourceSport:sport,bookmakers:[{key:'owls-v1-normalized',title:d.book||'Owls normalized',markets:[{key:d.key,name:d.name||d.key,title:d.title||d.name||d.key,period:`Map ${map}`,scope:{map,round:d?.scope?.round??null},outcomes}]}]});
+  }
+ }
+ console.log('OWLS_V1_EXACT_DERIVATIVES',exact.filter(e=>String(e.id).startsWith('owls-v1-derivative:')).length);
  // Direct derivative feed first. Every bookmaker remains a separate independent
  // source; screen-thunderpick-ev still enforces exact event/side/line/map identity.
  exact.push(...await fetchOddsApiIoExact());
