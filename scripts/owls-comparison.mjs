@@ -74,6 +74,7 @@ for(const sport of SPORTS){
         policy:'screen-with-scope-only'
       };
       console.log('NORMALIZED_DERIVATIVE_INVENTORY',sport,derivativeRows.length);
+      if(derivativeRows.length) console.log('NORMALIZED_DERIVATIVE_NATIVE_SAMPLE',sport,JSON.stringify(derivativeRows.slice(0,8)).slice(0,24000));
     }
     if(!r.ok) { failures.push({sport,status:r.status,body}); console.error('OWLS_FAIL',sport,r.status,JSON.stringify(body).slice(0,500)); }
   }catch(e){sports[sport]={ok:false,status:null,fetchedAt:new Date().toISOString(),error:String(e?.message||e),eventCount:0,data:null};failures.push({sport,error:String(e?.message||e)});console.error('OWLS_ERROR',sport,String(e?.message||e));}
