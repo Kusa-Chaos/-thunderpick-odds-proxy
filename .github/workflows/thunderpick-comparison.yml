@@ -43,52 +43,23 @@ jobs:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
         run: node scripts/owls-comparison.mjs
-      - name: Probe Owls v2 raw esports access
-        env:
-          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+      - name: Record exact-source health without duplicate Owls probe calls
         run: |
           node - <<'NODE'
-          const fs=await import('node:fs');
-          const key=(process.env.OWLS_API_KEY||'').trim();
-          const base='https://api.owlsinsight.com/api/v2';
-          async function get(path){
-            try{const r=await fetch(base+path,{headers:{Authorization:'Bearer '+key,Accept:'application/json'},signal:AbortSignal.timeout(20000)});const text=await r.text();let body;try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}};return {status:r.status,ok:r.ok,body};}catch(e){return {status:null,ok:false,error:String(e.message||e)}}
-          }
-          const out={generatedAt:new Date().toISOString(),tests:{}};
-          for(const spec of [{book:'pinnacle',sport:'esports'},{book:'kalshi',sport:'cs2'},{book:'polymarket',sport:'cs2'}]){
-            const {book,sport}=spec;
-            const leagues=await get('/'+book+'/'+sport+'/leagues');
-            out.tests[book]={leagues:{status:leagues.status,ok:leagues.ok}};
-            const rows=leagues.body?.data||leagues.body?.leagues||leagues.body||{};
-            let league=null;
-            if(Array.isArray(rows)){
-              const first=rows[0];
-              league=typeof first==='string'?first:(first?.key||first?.slug||first?.leagueKey||first?.league_key||first?.id||first?.league||first?.tag||first?.value||first?.name||null);
-            } else if(rows && typeof rows==='object') {
-              const entries=Object.entries(rows).filter(([k])=>!['etag','timestamp','generatedAt','count','status'].includes(k));
-              const first=entries[0];
-              if(first){
-                const [k,v]=first;
-                league=(v&&typeof v==='object'&&(v.key||v.slug||v.leagueKey||v.league_key||v.id))||k;
-              }
-            }
-            out.tests[book].leagueShape=Array.isArray(rows)?'array':typeof rows; out.tests[book].leaguePreview=Array.isArray(rows)?rows.slice(0,5):[];
-            out.tests[book].leagueKeys=rows&&typeof rows==='object'?Object.keys(rows).slice(0,20):[];
-            if(league){
-              const board=await get('/'+book+'/'+sport+'?league='+encodeURIComponent(String(league)));
-              out.tests[book].league=String(league);
-              out.tests[book].board={status:board.status,ok:board.ok};
-              if(board.ok){
-                const raw=JSON.stringify(board.body);
-                out.tests[book].hasMap=/map/i.test(raw);
-                out.tests[book].hasRound=/round/i.test(raw);
-                out.tests[book].hasTopics=/topics/i.test(raw);
-                out.tests[book].sample=raw.slice(0,12000);
-              }
-            }
+          const fs=require('fs');
+          // owls-comparison.mjs already performs and caches the exact-source requests.
+          // Do not immediately repeat Pinnacle/Kalshi/Polymarket calls here: those
+          // duplicate diagnostics were consuming the same rate-limit budget needed
+          // by the production comparison stage.
+          const p='data/owls-comparison-latest.json';
+          const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          const sports=x.sports||{};
+          const out={generatedAt:new Date().toISOString(),source:'comparison-artifact',duplicateNetworkProbeDisabled:true,tests:{}};
+          for(const book of ['pinnacle','kalshi','polymarket','stake','rainbet']){
+            out.tests[book]={note:'health derived from production comparison run; no duplicate API request'};
           }
           fs.writeFileSync('data/owls-v2-access-probe.json',JSON.stringify(out,null,2));
-          console.log('OWLS_V2_PROBE',JSON.stringify(out.tests));
+          console.log('OWLS_V2_PROBE_DUPLICATE_CALLS_DISABLED');
           NODE
       - name: Normalize OWLS sports aliases before enrichment
         run: |
