@@ -76,6 +76,9 @@ try{
  sports.cs2.stakeMapDiagnostic={meta:body?.meta??null,count:hits.length,hits:hits.slice(0,250)};
  console.log('STAKE_MAP_DIAGNOSTIC',JSON.stringify({meta:body?.meta??null,count:hits.length,hits:hits.slice(0,120)}));
 }catch(e){console.warn('STAKE_MAP_DIAGNOSTIC_ERROR',String(e?.stack||e));}
+if(stakeCachedBodies.cs2?.meta?.status==='no-data'){
+  console.warn('STAKE_EXACT_SOURCE_NO_DATA','Stake/Oddin returned no-data; derivative parser cannot manufacture exact round markets.');
+}
 
 // Owls v2 exact-scope esports enrichment. Preserve native map/round identity.
 const v2base='https://api.owlsinsight.com/api/v2';
