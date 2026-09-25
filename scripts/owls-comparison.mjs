@@ -14,7 +14,11 @@ const sports={}; const failures=[];
 for(const sport of SPORTS){
   console.log(`Fetching outside ${sport} board...`);
   try{
-    const r=await fetch(`${base}/${sport}/odds`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+    const boardUrl=ESPORTS.has(sport)?`${base}/${sport}/odds?market=round_totals,round_handicap,map_winner`:`${base}/${sport}/odds`;
+    let r=await fetch(boardUrl,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+    // Owls accepts one market value per request. If a multi-market filter is rejected,
+    // fall back to the full board; dedicated exact-market probes below preserve scope.
+    if(!r.ok&&ESPORTS.has(sport)) r=await fetch(`${base}/${sport}/odds`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
     const text=await r.text(); let body; try{body=JSON.parse(text)}catch{body={raw:text}};
     const h=hash(body);
     const data=body?.data??null;
@@ -79,6 +83,20 @@ for(const sport of SPORTS){
     if(!r.ok) { failures.push({sport,status:r.status,body}); console.error('OWLS_FAIL',sport,r.status,JSON.stringify(body).slice(0,500)); }
   }catch(e){sports[sport]={ok:false,status:null,fetchedAt:new Date().toISOString(),error:String(e?.message||e),eventCount:0,data:null};failures.push({sport,error:String(e?.message||e)});console.error('OWLS_ERROR',sport,String(e?.message||e));}
   await sleep(3300);
+}
+
+// Dedicated documented CS2 derivative endpoints. These are intentionally fetched
+// separately because the all-market normalized board can collapse derivative scope.
+// Preserve the endpoint market identity; do not invent map scope when the API omits it.
+for(const mk of ['round_totals','round_handicap']){
+ try{
+  const r=await fetch(`${base}/cs2/odds?market=${mk}`,{headers:{Authorization:`Bearer ${API_KEY}`,Accept:'application/json'},signal:AbortSignal.timeout(30000)});
+  const body=await r.json().catch(()=>({}));
+  const data=body?.data??null;
+  sports.cs2[`dedicated_${mk}`]={ok:r.ok,status:r.status,meta:body?.meta??null,data};
+  console.log('OWLS_DEDICATED_DERIVATIVE',mk,r.status,JSON.stringify({meta:body?.meta??null,data}).slice(0,24000));
+ }catch(e){console.warn('OWLS_DEDICATED_DERIVATIVE_ERROR',mk,String(e?.message||e))}
+ await sleep(3300);
 }
 
 // Cache exact-source v2 responses per run so enrichment never repeats the same request.
