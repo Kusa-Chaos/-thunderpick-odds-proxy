@@ -158,13 +158,18 @@ function stakeExact(body,source='stake'){
    if(!map)continue;
    const active=(m.outcomes||[]).filter(o=>o?.active!==false&&String(o?.name||'').toLowerCase()!=='draw');
    const price=o=>Number(o?.odds??o?.price);
+   // Oddin/Stake has used several native shapes for derivative lines. Search
+   // outcome fields first, then market-level line fields, then native text.
    const point=o=>{
-    const direct=Number(o?.handicap??o?.point??o?.line??o?.total);
-    if(Number.isFinite(direct))return direct;
-    const txt=String(o?.name||'');
-    const par=(txt.match(/\(([+-]?\d+(?:\.\d+)?)\)\s*$/)||[])[1];
+    const candidates=[o?.handicap,o?.point,o?.line,o?.total,o?.value,o?.spread,
+      m?.handicap,m?.point,m?.line,m?.total,m?.value,m?.spread];
+    for(const v of candidates){const n=Number(v);if(Number.isFinite(n))return n;}
+    const txt=[o?.name,o?.title,o?.extId,m?.name,m?.title,m?.templateExtId,m?.templateId].filter(Boolean).join(' ');
+    const par=(txt.match(/\(([+-]?\d+(?:\.\d+)?)\)/)||[])[1];
     if(par!=null)return Number(par);
-    const ou=(txt.match(/\b(?:over|under)\s+(?:[^\d+-]+\s+)?([+-]?\d+(?:\.\d+)?)\b/i)||[])[1];
+    const signed=(txt.match(/(?:handicap|spread|line)\D*([+-]\d+(?:\.\d+)?)/i)||[])[1];
+    if(signed!=null)return Number(signed);
+    const ou=(txt.match(/\b(?:over|under|total)\D*([+-]?\d+(?:\.\d+)?)\b/i)||[])[1];
     return ou!=null?Number(ou):NaN;
    };
    if(/\b(winner|moneyline|result)\b/i.test(identityText)){
