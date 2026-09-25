@@ -56,9 +56,13 @@ for(const sport of SPORTS){
         if(!v||typeof v!=='object')return;
         const key=String(v.key||v.marketKey||v.market||'').toLowerCase();
         if(key==='round_handicap'||key==='round_totals'){
-          derivativeRows.push({key,event:ctx.event||null,book:ctx.book||null,name:v.name||null,title:v.title||null,period:v.period||null,scope:v.scope||null,outcomes:v.outcomes||[]});
+          // Keep the complete native row plus inherited parent identity. Owls can
+          // place map/line metadata above the normalized market object.
+          derivativeRows.push({key,event:ctx.event||null,book:ctx.book||null,parentIdentity:ctx.identity||null,native:v,name:v.name||null,title:v.title||null,period:v.period||null,scope:v.scope||null,outcomes:v.outcomes||[]});
         }
-        const next={...ctx,event:v.home_team&&v.away_team?`${v.home_team} vs ${v.away_team}`:ctx.event,book:v.key&&v.bookmakers?ctx.book:(v.title||v.book||ctx.book)};
+        const ownIdentity=[v.name,v.title,v.period,v.period_name,v.periodName,v.scope,v.specifiers,v.market_name,v.marketName,v.group,v.group_name,v.key,v.marketKey].filter(x=>x!=null).map(x=>typeof x==='object'?JSON.stringify(x):String(x)).join(' ');
+        const next={...ctx,event:v.home_team&&v.away_team?`${v.home_team} vs ${v.away_team}`:ctx.event,book:v.key&&v.bookmakers?ctx.book:(v.title||v.book||ctx.book),identity:[ctx.identity,ownIdentity].filter(Boolean).join(' | ')};
+
         for(const q of Object.values(v))if(q&&typeof q==='object')walk(q,next);
       };
       walk(data);
@@ -434,8 +438,9 @@ try{
  // weakening exact identity. Rows lacking map identity remain diagnostic only.
  for(const sport of ['cs2','lol','valorant','dota2']){
   for(const d of (sports[sport]?.normalizedDerivativeInventory||[])){
-   const txt=[d.name,d.title,d.period,typeof d.scope==='object'?JSON.stringify(d.scope):d.scope].filter(Boolean).join(' ');
-   const map=Number(d?.scope?.map??(txt.match(/\\bmap\\s*(\\d+)\\b/i)||[])[1]);
+   const txt=[d.name,d.title,d.period,d.parentIdentity,typeof d.scope==='object'?JSON.stringify(d.scope):d.scope,typeof d.native==='object'?JSON.stringify(d.native):d.native].filter(Boolean).join(' ');
+   const word=(txt.match(/\\b(first|second|third|fourth|fifth)\\s+map\\b/i)||[])[1];
+   const map=Number(d?.scope?.map??(txt.match(/\\bmap[\\s_:-]*(\\d+)\\b/i)||[])[1]??({first:1,second:2,third:3,fourth:4,fifth:5}[String(word||'').toLowerCase()]||0));
    if(!map||!['round_handicap','round_totals'].includes(d.key))continue;
    const pair=teamsFromTitle(d.event||''); if(!pair)continue;
    const outcomes=(d.outcomes||[]).map(o=>{
