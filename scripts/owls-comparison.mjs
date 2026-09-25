@@ -472,7 +472,20 @@ try{
    exact.push({id:`owls-v1-derivative:${sport}:${d.event}:${d.key}:${map}`,home_team:pair[0],away_team:pair[1],live:false,_sourceSport:sport,bookmakers:[{key:'owls-v1-normalized',title:d.book||'Owls normalized',markets:[{key:d.key,name:d.name||d.key,title:d.title||d.name||d.key,period:`Map ${map}`,scope:{map,round:d?.scope?.round??null},outcomes}]}]});
   }
  }
- console.log('OWLS_V1_EXACT_DERIVATIVES',exact.filter(e=>String(e.id).startsWith('owls-v1-derivative:')).length);
+ // Dedicated Owls round_totals is a full-match contract, not Map-N.
+ // Preserve it with explicit full-match scope; never manufacture map identity.
+ {
+  const body=sports.cs2?.dedicated_round_totals?.data;
+  for(const rows of Object.values(body||{})) for(const ev of (Array.isArray(rows)?rows:[])){
+   for(const bm of (ev.bookmakers||[])) for(const m of (bm.markets||[])){
+    if(String(m.key||'').toLowerCase()!=='round_totals')continue;
+    const outcomes=(m.outcomes||[]).map(o=>({name:/under/i.test(String(o.name))?'Under':'Over',price:Number(o.price),point:Number(o.point)})).filter(o=>o.price>1&&Number.isFinite(o.point));
+    if(outcomes.length!==2)continue;
+    exact.push({id:'owls-v1-fullmatch-round-total:'+ev.id,home_team:ev.home_team,away_team:ev.away_team,commence_time:ev.commence_time,live:String(ev.status||'scheduled').toLowerCase()==='live',_sourceSport:'cs2',bookmakers:[{key:'owls-v1-1xbet-fullmatch',title:'1xBet via Owls',markets:[{key:'round_totals',name:'Full Match Total Rounds',title:'Full Match Total Rounds',period:'Full Match',scope:{map:null,round:null,fullMatch:true},last_update:m.last_update||bm.last_update||null,outcomes}]}]});
+   }
+  }
+ }
+ console.log('OWLS_V1_EXACT_DERIVATIVES',exact.filter(e=>String(e.id).startsWith('owls-v1-derivative:')).length,'FULLMATCH_ROUND_TOTAL_EVENTS',exact.filter(e=>String(e.id).startsWith('owls-v1-fullmatch-round-total:')).length);
  // Direct derivative feed first. Every bookmaker remains a separate independent
  // source; screen-thunderpick-ev still enforces exact event/side/line/map identity.
  exact.push(...await fetchOddsApiIoExact());
