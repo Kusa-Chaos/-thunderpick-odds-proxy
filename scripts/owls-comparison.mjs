@@ -149,8 +149,12 @@ function stakeExact(body,source='stake'){
   const exact=[];
   for(const m of (Array.isArray(ev?.markets)?ev.markets:[])){
    const name=String(m?.name||m?.title||'').trim();
+   // Stake/Oddin sometimes puts map identity in title/templateExtId rather than
+   // the display name. Parse all native identity fields before rejecting scope.
+   const identityText=[m?.name,m?.title,m?.templateExtId,m?.templateId,m?.marketType,m?.period].filter(Boolean).join(' ');
    if(String(m?.status||'active').toLowerCase()!=='active')continue;
-   const map=Number((name.match(/\bMap\s*(\d+)\b/i)||[])[1]);
+   const mapWord=(identityText.match(/\b(first|second|third|fourth|fifth)\s+map\b/i)||[])[1];
+   const map=Number((identityText.match(/\bMap[\s_:-]*(\d+)\b/i)||[])[1])||({first:1,second:2,third:3,fourth:4,fifth:5}[String(mapWord||'').toLowerCase()]||0);
    if(!map)continue;
    const active=(m.outcomes||[]).filter(o=>o?.active!==false&&String(o?.name||'').toLowerCase()!=='draw');
    const price=o=>Number(o?.odds??o?.price);
@@ -163,17 +167,17 @@ function stakeExact(body,source='stake'){
     const ou=(txt.match(/\b(?:over|under)\s+(?:[^\d+-]+\s+)?([+-]?\d+(?:\.\d+)?)\b/i)||[])[1];
     return ou!=null?Number(ou):NaN;
    };
-   if(/\b(winner|moneyline|result)\b/i.test(name)){
+   if(/\b(winner|moneyline|result)\b/i.test(identityText)){
     const os=active.map(o=>({name:String(o.name).trim(),price:price(o)})).filter(o=>o.name&&o.price>1);
     if(os.length===2)exact.push({key:'map_winner',name:`Map ${map} Winner`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
     continue;
    }
-   if((/\b(round|rounds)\b/i.test(name)||/\bMap\s*\d+\s+(?:Round\s+)?Handicap\b/i.test(name))&&/\b(handicap|spread)\b/i.test(name)){
+   if((/\b(round|rounds)\b/i.test(identityText)||/\bMap[\s_:-]*\d+\s+(?:Round\s+)?Handicap\b/i.test(identityText))&&/\b(handicap|spread)\b/i.test(identityText)){
     const os=active.map(o=>({name:String(o.name).replace(/\s*\([+-]?\d+(?:\.\d+)?\)\s*$/,'').trim(),price:price(o),point:point(o)})).filter(o=>o.name&&o.price>1&&Number.isFinite(o.point));
     if(os.length===2)exact.push({key:'round_handicap',name:`Map ${map} Round Handicap`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
     continue;
    }
-   if((/\b(round|rounds)\b/i.test(name)||/\bMap\s*\d+\s+Total\b/i.test(name))&&/\b(total|over\/under|o\/u)\b/i.test(name)){
+   if((/\b(round|rounds)\b/i.test(identityText)||/\bMap[\s_:-]*\d+\s+Total\b/i.test(identityText))&&/\b(total|over\/under|o\/u)\b/i.test(identityText)){
     const os=active.map(o=>({name:/under/i.test(String(o.name))?'Under':/over/i.test(String(o.name))?'Over':String(o.name).trim(),price:price(o),point:point(o)})).filter(o=>/^(Over|Under)$/i.test(o.name)&&o.price>1&&Number.isFinite(o.point));
     if(os.length===2)exact.push({key:'round_totals',name:`Map ${map} Round Total`,title:name,period:`Map ${map}`,scope:{map,round:null},outcomes:os,provider:m.provider||null,marketId:m.id||null});
    }
