@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T22:01:50.593Z",
+  "generatedAt": "2026-09-26T22:23:57.800Z",
   "mode": "loose-direct-discovery",
   "providerHealth": {
     "polymarket": {
@@ -9,19 +9,19 @@
       "pages": 20,
       "acceptedEvents": 0,
       "rejectedStale": 7688,
-      "fetchedAt": "2026-09-26T22:01:40.838Z"
+      "fetchedAt": "2026-09-26T22:23:33.608Z"
     },
     "stake": {
       "ok": true,
       "status": 200,
       "sports": 9,
-      "scheduleFixtures": 240,
-      "detailRequests": 240,
+      "scheduleFixtures": 244,
+      "detailRequests": 244,
       "acceptedEvents": 214,
-      "marketCount": 3206,
+      "marketCount": 3196,
       "playerPropMarkets": 513,
       "errors": [],
-      "fetchedAt": "2026-09-26T22:01:44.805Z"
+      "fetchedAt": "2026-09-26T22:23:40.738Z"
     },
     "kalshi": {
       "ok": true,
@@ -29,16 +29,28 @@
       "rawMarkets": 60000,
       "pages": 60,
       "acceptedEvents": 1,
-      "rejectedMulti": 59998,
+      "rejectedMulti": 59937,
       "rejectedNonSports": 0,
-      "rejectedShape": 1,
-      "fetchedAt": "2026-09-26T22:01:50.273Z"
+      "rejectedShape": 62,
+      "fetchedAt": "2026-09-26T22:23:47.604Z"
+    },
+    "betway": {
+      "ok": true,
+      "status": 200,
+      "fetchedPages": 6,
+      "rawEvents": 101,
+      "rawMarkets": 8,
+      "rawOutcomes": 922,
+      "acceptedEvents": 6,
+      "errors": [],
+      "fetchedAt": "2026-09-26T22:23:57.557Z",
+      "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
     }
   },
   "counts": {
-    "rows": 68,
+    "rows": 74,
     "screening": 6,
-    "priceBoard": 62
+    "priceBoard": 68
   },
   "rows": [
     {
@@ -57,22 +69,22 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.31764705882352945,
-          "fairDecimal": 3.148148148148148,
+          "fairProbability": 0.2986425339366516,
+          "fairDecimal": 3.3484848484848486,
           "selections": [
             {
               "name": "Marsborne",
-              "odds": 1.35
+              "odds": 1.32
             },
             {
               "name": "Detonate",
-              "odds": 2.9
+              "odds": 3.1
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.5882352941176472,
+      "estimatedEV": 0.49321266968325794,
       "startTime": "2026-09-27T01:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -148,6 +160,41 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "lol",
+      "match": "Dplus KIA Challengers vs DN SOOPers Challengers",
+      "target": "DN SOOPers Challengers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.84,
+      "outside": [
+        {
+          "book": "Betway Direct",
+          "fairProbability": 0.2866696388765047,
+          "fairDecimal": 3.4883359253499218,
+          "selections": [
+            {
+              "name": "DPlus Kia Challengers",
+              "odds": 1.286
+            },
+            {
+              "name": "DN SOOPers Challengers",
+              "odds": 3.2
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.10081141328577803,
+      "startTime": "2026-09-27T09:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
       "sport": "dota2",
       "match": "Team Yandex vs MOUZ",
       "target": "MOUZ",
@@ -217,7 +264,7 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
-      "tier": "SCREENING",
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "JD Gaming vs FUT Esports",
       "target": "FUT Esports",
@@ -232,22 +279,22 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.756972111553785,
-          "fairDecimal": 1.3210526315789473,
+          "fairProbability": 0.7368421052631579,
+          "fairDecimal": 1.3571428571428572,
           "selections": [
             {
               "name": "JD Gaming",
-              "odds": 3.8
+              "odds": 3.5
             },
             {
               "name": "FUT Esports",
-              "odds": 1.22
+              "odds": 1.25
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.021912350597609764,
+      "estimatedEV": -0.0052631578947368585,
       "startTime": "2026-09-27T12:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -267,22 +314,22 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.8684863523573201,
-          "fairDecimal": 1.1514285714285715,
+          "fairProbability": 0.8536585365853657,
+          "fairDecimal": 1.1714285714285717,
           "selections": [
             {
               "name": "Metanoia Wolves",
-              "odds": 7
+              "odds": 6.3
             },
             {
               "name": "Yawara Esports",
-              "odds": 1.06
+              "odds": 1.08
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.001240694789081953,
+      "estimatedEV": -0.018292682926829507,
       "startTime": "2026-09-26T21:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -424,6 +471,41 @@
       "independentSources": 1,
       "estimatedEV": -0.036799999999999944,
       "startTime": "2026-09-27T16:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "tennis",
+      "match": "Hugo Gaston vs Andrey Rublev",
+      "target": "Andrey Rublev",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.24,
+      "outside": [
+        {
+          "book": "Betway Direct",
+          "fairProbability": 0.7766812865497077,
+          "fairDecimal": 1.2875294117647058,
+          "selections": [
+            {
+              "name": "Hugo Gaston",
+              "odds": 4.25
+            },
+            {
+              "name": "Andrey Rublev",
+              "odds": 1.222
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03691520467836251,
+      "startTime": "2026-09-27T02:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1583,6 +1665,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "lol",
+      "match": "T1 Academy vs Cupid Esports",
+      "target": "T1 Academy",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.06,
+      "outside": [
+        {
+          "book": "Betway Direct",
+          "fairProbability": 0.8695652173913044,
+          "fairDecimal": 1.15,
+          "selections": [
+            {
+              "name": "T1 Esports Academy",
+              "odds": 1.05
+            },
+            {
+              "name": "Cupid Esports",
+              "odds": 7
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07826086956521727,
+      "startTime": "2026-09-28T06:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "cs2",
       "match": "ENCE vs Sangal",
       "target": "ENCE",
@@ -2073,6 +2190,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "tennis",
+      "match": "Hugo Gaston vs Andrey Rublev",
+      "target": "Hugo Gaston",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.98,
+      "outside": [
+        {
+          "book": "Betway Direct",
+          "fairProbability": 0.22331871345029242,
+          "fairDecimal": 4.4779050736497545,
+          "selections": [
+            {
+              "name": "Hugo Gaston",
+              "odds": 4.25
+            },
+            {
+              "name": "Andrey Rublev",
+              "odds": 1.222
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.1111915204678362,
+      "startTime": "2026-09-27T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "dota2",
       "match": "LGD Gaming vs Xtreme",
       "target": "Xtreme",
@@ -2109,6 +2261,41 @@
     {
       "tier": "PRICE BOARD",
       "sport": "lol",
+      "match": "T1 Academy vs Cupid Esports",
+      "target": "Cupid Esports",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 6.8,
+      "outside": [
+        {
+          "book": "Betway Direct",
+          "fairProbability": 0.13043478260869565,
+          "fairDecimal": 7.666666666666667,
+          "selections": [
+            {
+              "name": "T1 Esports Academy",
+              "odds": 1.05
+            },
+            {
+              "name": "Cupid Esports",
+              "odds": 7
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.11304347826086958,
+      "startTime": "2026-09-28T06:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "lol",
       "match": "LOUD vs LOS",
       "target": "LOUD",
       "market": "Match Winner",
@@ -2139,6 +2326,41 @@
       "independentSources": 1,
       "estimatedEV": -0.12,
       "startTime": "2026-09-27T16:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "lol",
+      "match": "Dplus KIA Challengers vs DN SOOPers Challengers",
+      "target": "Dplus KIA Challengers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.22,
+      "outside": [
+        {
+          "book": "Betway Direct",
+          "fairProbability": 0.7133303611234953,
+          "fairDecimal": 1.401875,
+          "selections": [
+            {
+              "name": "DPlus Kia Challengers",
+              "odds": 1.286
+            },
+            {
+              "name": "DN SOOPers Challengers",
+              "odds": 3.2
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.12973695942933572,
+      "startTime": "2026-09-27T09:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2283,6 +2505,76 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "Marsborne vs Detonate",
+      "target": "Marsborne",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.13,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.7013574660633485,
+          "fairDecimal": 1.4258064516129032,
+          "selections": [
+            {
+              "name": "Marsborne",
+              "odds": 1.32
+            },
+            {
+              "name": "Detonate",
+              "odds": 3.1
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.20746606334841633,
+      "startTime": "2026-09-27T01:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "valorant",
+      "match": "JD Gaming vs FUT Esports",
+      "target": "JD Gaming",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.01,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.26315789473684204,
+          "fairDecimal": 3.800000000000001,
+          "selections": [
+            {
+              "name": "JD Gaming",
+              "odds": 3.5
+            },
+            {
+              "name": "FUT Esports",
+              "odds": 1.25
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.20789473684210558,
+      "startTime": "2026-09-27T12:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "lol",
       "match": "T1 Academy vs Cupid Esports",
       "target": "Cupid Esports",
@@ -2319,76 +2611,6 @@
     {
       "tier": "PRICE BOARD",
       "sport": "cs2",
-      "match": "Marsborne vs Detonate",
-      "target": "Marsborne",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.13,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.6823529411764706,
-          "fairDecimal": 1.4655172413793103,
-          "selections": [
-            {
-              "name": "Marsborne",
-              "odds": 1.35
-            },
-            {
-              "name": "Detonate",
-              "odds": 2.9
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.22894117647058831,
-      "startTime": "2026-09-27T01:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "valorant",
-      "match": "JD Gaming vs FUT Esports",
-      "target": "JD Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.01,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.24302788844621515,
-          "fairDecimal": 4.114754098360655,
-          "selections": [
-            {
-              "name": "JD Gaming",
-              "odds": 3.8
-            },
-            {
-              "name": "FUT Esports",
-              "odds": 1.22
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.26848605577689244,
-      "startTime": "2026-09-27T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
       "match": "Metanoia Wolves vs Yawara Esports",
       "target": "Metanoia Wolves",
       "market": "Match Winner",
@@ -2402,22 +2624,22 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.1315136476426799,
-          "fairDecimal": 7.603773584905661,
+          "fairProbability": 0.14634146341463414,
+          "fairDecimal": 6.833333333333334,
           "selections": [
             {
               "name": "Metanoia Wolves",
-              "odds": 7
+              "odds": 6.3
             },
             {
               "name": "Yawara Esports",
-              "odds": 1.06
+              "odds": 1.08
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.3845161290322582,
+      "estimatedEV": -0.31512195121951225,
       "startTime": "2026-09-26T21:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
