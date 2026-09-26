@@ -1,0 +1,42 @@
+name: Thunderpick Scan Watchdog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '13 * * * *'
+    - cron: '43 * * * *'
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: thunderpick-scan-watchdog
+  cancel-in-progress: true
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check scan freshness and recover
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const {execFileSync}=require('child_process');
+          let stale=true, ageMin=null, generatedAt=null;
+          try {
+            const r=JSON.parse(fs.readFileSync('data/scan-report-latest.json','utf8'));
+            generatedAt=r.generatedAt||r.comparisonGeneratedAt||r.thunderpickGeneratedAt||null;
+            const ts=Date.parse(generatedAt||'');
+            if(Number.isFinite(ts)) { ageMin=(Date.now()-ts)/60000; stale=ageMin>70; }
+          } catch(e) { console.error('SCAN_FRESHNESS_READ_FAILED',e.message); }
+          console.log('SCAN_FRESHNESS',{generatedAt,ageMin,stale});
+          if(stale){
+            execFileSync('gh',['workflow','run','thunderpick-comparison.yml','--ref','main'],{stdio:'inherit'});
+            console.log('RECOVERY_DISPATCH_SENT');
+          } else console.log('SCAN_FRESH_NO_RECOVERY_NEEDED');
+          NODE
