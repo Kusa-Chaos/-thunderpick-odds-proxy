@@ -200,8 +200,11 @@ function periodScope(text=''){
  const t=String(text).toLowerCase();
  const innings=(t.match(/(?:first|1st)\s*(\d+)\s*innings?/)||t.match(/\b(\d+)\s*innings?\b/))?.[1];
  const set=(t.match(/(?:first|1st|set)\s*(?:set\s*)?(\d+)/)||t.match(/\bset\s*(\d+)\b/))?.[1];
- const quarter=(t.match(/(?:quarter|q)\s*(\d+)/))?.[1];
- const half=(t.match(/(?:half|h)\s*(\d+)/))?.[1];
+ // Accept both "Quarter 3"/"Q3" and ordinal-first provider labels such as
+ // "3rd Quarter", "1st Quarter", "2nd Half", etc. Missing explicit scope must
+ // never silently become equivalent to one of these segmented contracts.
+ const quarter=(t.match(/(?:quarter|q)\s*(\d+)/)||t.match(/\b(\d+)(?:st|nd|rd|th)?\s*quarter\b/))?.[1];
+ const half=(t.match(/(?:half|h)\s*(\d+)/)||t.match(/\b(\d+)(?:st|nd|rd|th)?\s*half\b/))?.[1];
  if(innings)return 'innings:'+Number(innings);
  if(set)return 'set:'+Number(set);
  if(quarter)return 'quarter:'+Number(quarter);
