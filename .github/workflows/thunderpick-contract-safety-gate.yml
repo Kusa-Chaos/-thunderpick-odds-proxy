@@ -1,0 +1,48 @@
+name: Thunderpick Contract Identity Safety Gate
+
+on:
+  workflow_run:
+    workflows: ["Thunderpick Comparison Screen"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-contract-safety-gate
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply fail-closed contract identity gate
+        run: node scripts/contract-safety-gate.mjs
+      - name: Verify quarantined contracts cannot remain ACTION/WATCH
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          for(const p of ['data/scan-report-latest.json','data/scan-display-latest.json']){
+            const x=JSON.parse(fs.readFileSync(p,'utf8'));
+            const bad=[...(x.actionRows||[]),...(x.watchRows||[])].filter(r=>r.marketKey==='totals'&&(/^\s*Player\s+/i.test(String(r.market||''))||/\b(?:1st|first|2nd|second|3rd|third|4th|fourth)\s+(?:quarter|half|innings?)\b|\b(?:quarter|half|innings?)\s*\d+\b/i.test(String(r.market||''))));
+            if(bad.length) throw new Error('Unsafe contracts survived identity gate: '+JSON.stringify(bad.slice(0,3)));
+            console.log(p,'IDENTITY_GATE_OK','quarantined',x.identitySafety?.quarantined||0);
+          }
+          NODE
+      - name: Publish safety-gated scan artifacts
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add data/scan-report-latest.json data/scan-display-latest.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Apply contract identity safety gate"
+          git pull --rebase origin main
+          git push
