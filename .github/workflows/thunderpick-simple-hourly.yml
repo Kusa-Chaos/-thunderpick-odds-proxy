@@ -10,6 +10,7 @@ on:
       - 'scripts/simple-opportunity-board.mjs'
       - 'scripts/simple-direct-discovery.mjs'
       - 'scripts/direct-public-sources.mjs'
+      - 'scripts/betway-direct.mjs'
       - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
@@ -35,6 +36,8 @@ jobs:
         run: node scripts/owls-thunderpick.mjs
       - name: Collect quota-free public sources
         run: node scripts/direct-public-sources.mjs
+      - name: Add Betway independent bookmaker source
+        run: node scripts/betway-direct.mjs
       - name: Build loose direct discovery board
         run: node scripts/simple-direct-discovery.mjs
       - name: Merge direct sources into comparison board
