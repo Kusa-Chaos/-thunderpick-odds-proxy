@@ -1,136 +1,16 @@
-name: Thunderpick Comparison Screen
+name: Thunderpick Comparison Screen (Legacy Manual)
 
+# Legacy scanner retained only as a manual diagnostic marker.
+# Scheduled production is handled exclusively by Thunderpick Simple Hourly Board.
 on:
   workflow_dispatch:
-  schedule:
-    # One production scan per hour. The watchdog handles genuinely stale runs.
-    - cron: '17 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/owls-comparison.mjs'
-      - 'scripts/propline-enrich.mjs'
-      - 'scripts/screen-thunderpick-ev.mjs'
-      - 'data/owls-v2-access-probe.json'
-      - '.github/workflows/thunderpick-comparison.yml'
 
 permissions:
-  contents: write
-
-concurrency:
-  group: thunderpick-comparison-screen
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  screen:
+  legacy_notice:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Refresh Thunderpick board for this scan
-        env:
-          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
-        run: node scripts/owls-thunderpick.mjs
-      - name: Fetch normalized outside boards
-        env:
-          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
-          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
-        run: node scripts/owls-comparison.mjs
-      - name: Record exact-source health without duplicate Owls probe calls
-        run: |
-          node - <<'NODE'
-          const fs=require('fs');
-          const p='data/owls-comparison-latest.json';
-          const x=JSON.parse(fs.readFileSync(p,'utf8'));
-          const out={generatedAt:new Date().toISOString(),source:'comparison-artifact',duplicateNetworkProbeDisabled:true,tests:{}};
-          for(const book of ['pinnacle','kalshi','polymarket','stake','rainbet']) out.tests[book]={note:'health derived from production comparison run; no duplicate API request'};
-          fs.writeFileSync('data/owls-v2-access-probe.json',JSON.stringify(out,null,2));
-          console.log('OWLS_V2_PROBE_DUPLICATE_CALLS_DISABLED');
-          NODE
-      - name: Normalize OWLS sports aliases before enrichment
-        run: |
-          node - <<'NODE'
-          const fs=require('fs'); const p='data/owls-comparison-latest.json'; const x=JSON.parse(fs.readFileSync(p)); x.sports ||= {};
-          for(const [dst,src] of [['american-football','nfl'],['baseball','mlb'],['basketball','nba']]) if(!x.sports[dst]) x.sports[dst]=x.sports[src]||{ok:true,status:200,data:{}};
-          fs.writeFileSync(p,JSON.stringify(x,null,2));
-          NODE
-      - name: Add PropLine independent-book verification
-        env:
-          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
-        run: node scripts/propline-enrich.mjs
-      - name: Screen Thunderpick against outside boards
-        run: node scripts/screen-thunderpick-ev.mjs
-      - name: Build visible scan summary
-        run: |
-          node - <<'NODE'
-          const fs=require('fs'); const s=JSON.parse(fs.readFileSync('data/screen-latest.json'));
-          const esports=new Set(['cs2','dota2','lol','valorant']);
-          const slim=(c,tier)=>{const a=c.thunderpick?.a,b=c.thunderpick?.b;if(!a||!b)return null;const side=Number(c.ev?.a)>=Number(c.ev?.b)?'a':'b';const pick=side==='a'?a:b;const ev=Number(side==='a'?c.ev?.a:c.ev?.b);return {tier,verificationTier:c.verificationTier||null,sport:c.sport,match:c.name,target:String(pick.name||''),market:c.marketLabel||c.marketKey,marketKey:c.marketKey||null,line:pick.point??null,scope:c.scope||null,thunderpick:Number(pick.odds),verifiedEV:ev,independentSources:Number(c.verifiedIndependentSources??c.verifiedIdentityDepth??0),outside:(c.outside||[]).slice(0,12),fair:c.fair||null,arbScreen:c.arbScreen||null,startTime:c.startTime,esports:esports.has(c.sport)};};
-          const rank=(a,b)=>(Number(b.esports)-Number(a.esports))||(b.verifiedEV-a.verifiedEV)||(b.independentSources-a.independentSources);
-          const actionRows=(s.actionCandidates||[]).map(c=>slim(c,'ACTION')).filter(Boolean).sort(rank);
-          const watchRows=(s.watchCandidates||[]).map(c=>slim(c,'WATCH')).filter(Boolean).sort(rank);
-          const potentialRows=(s.potentialCandidates||[]).map(c=>slim(c,'POTENTIAL')).filter(Boolean).sort(rank);
-          const seen=new Set(); const rows=[];
-          for(const r of [...actionRows,...watchRows,...potentialRows]){const k=[r.sport,r.match,r.target,r.market].join('|');if(seen.has(k))continue;seen.add(k);rows.push(r);}
-          const displayRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,startTime:r.startTime});
-          const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},actionRows:actionRows.slice(0,20).map(displayRow),watchRows:watchRows.slice(0,30).map(displayRow),potentialRows:potentialRows.slice(0,30).map(displayRow),rows:rows.slice(0,100).map(displayRow),publication:{compact:true,detailArtifact:'data/scan-report-latest.json'}};
-          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
-          const compactRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,outside:(r.outside||[]).slice(0,8),fair:r.fair,arbScreen:r.arbScreen,startTime:r.startTime});
-          const lolRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.sport==='lol').map(compactRow);
-          const topAction=actionRows.slice(0,20).map(compactRow), topWatch=watchRows.slice(0,30).map(compactRow), topPotential=potentialRows.slice(0,30).map(compactRow);
-          const limitedProps=(s.limitedExactComparisons||[]).filter(r=>r.marketKey==='player_prop').slice(0,30);
-          const esportsScreenRows=(s.limitedExactComparisons||[]).filter(r=>['map_winner','round_handicap','round_totals'].includes(r.marketKey)).sort((a,b)=>Math.max(Number(b.screenEV?.a??-99),Number(b.screenEV?.b??-99))-Math.max(Number(a.screenEV?.a??-99),Number(a.screenEV?.b??-99))).slice(0,50);
-          let semanticScreens=s.oneWayPlayerPropScreens||[];
-          const inventoryProps=(s.playerPropInventory||[]).map(r=>({...r,tier:r.tier||'INFORMATIONAL'}));
-          const playerPropScreenRows=[...limitedProps,...semanticScreens,...inventoryProps].slice(0,30);
-          const handicapRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.marketKey==='spreads'||r.marketKey==='round_handicap').slice(0,30).map(compactRow);
-          const screenDisplay=r=>{const a=r?.thunderpick?.[0]||r?.thunderpick?.a||null,b=r?.thunderpick?.[1]||r?.thunderpick?.b||null;const eva=Number(r?.screenEV?.a??-99),evb=Number(r?.screenEV?.b??-99),pick=eva>=evb?a:b;return {tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:pick?.name||r.target||r.player||null,market:r.marketLabel||r.market||r.marketKey,marketKey:r.marketKey||null,line:pick?.point??r.line??null,scope:r.scope||null,thunderpick:pick?.odds??r.thunderpick??null,screenEV:Number.isFinite(Math.max(eva,evb))?Math.max(eva,evb):null,independentSources:Number(r.independentSources??0),outside:(r.outside||[]).slice(0,4),startTime:r.startTime||null,blocker:r.blocker||null};};
-          out.coverage.rawExactQuoteMatchesByType=s.rawExactQuoteMatchesByType||{};
-          out.counts.esportsScreen=esportsScreenRows.length; out.counts.playerPropScreen=playerPropScreenRows.length;
-          out.esportsScreenRows=esportsScreenRows.map(screenDisplay);
-          out.limitedPlayerPropRows=playerPropScreenRows.map(r=>({tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:r.target||r.player||null,market:r.market||r.marketLabel||'Player Prop',marketKey:r.marketKey||'player_prop',line:r.line??null,scope:r.scope||null,thunderpick:r.thunderpick??null,independentSources:Number(r.independentSources??0),startTime:r.startTime||null,blocker:r.blocker||null}));
-          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
-          const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows,limitedPlayerPropRows:playerPropScreenRows,handicapRows,esportsScreenRows};
-          fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(report,null,2));
-          console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length);
-          NODE
-      - name: Compact full screen for repository publication
-        run: |
-          node - <<'NODE'
-          const fs=require('fs'); const p='data/screen-latest.json'; const s=JSON.parse(fs.readFileSync(p,'utf8'));
-          const slim=c=>({...c,outside:Array.isArray(c.outside)?c.outside.slice(0,12):[]});
-          const candidates=(s.candidates||[]).slice(0,100).map(slim), arbScreens=(s.arbScreens||[]).slice(0,50).map(slim);
-          fs.writeFileSync(p,JSON.stringify({...s,candidates,arbScreens,publication:{compact:true,originalCandidateCount:(s.candidates||[]).length,publishedCandidateCount:candidates.length,originalArbScreenCount:(s.arbScreens||[]).length,publishedArbScreenCount:arbScreens.length,maxOutsideQuotesPerCandidate:12}},null,2));
-          NODE
-      - name: Compact comparison for repository publication
-        run: |
-          node - <<'NODE'
-          const fs=require('fs'); const p='data/owls-comparison-latest.json'; const x=JSON.parse(fs.readFileSync(p,'utf8'));
-          function compact(v,depth=0){if(depth>7)return '[truncated]';if(Array.isArray(v))return v.slice(0,60).map(x=>compact(x,depth+1));if(v&&typeof v==='object'){const o={};for(const [k,val] of Object.entries(v)){if(['raw','html','body','responseText'].includes(k))continue;o[k]=compact(val,depth+1);}return o;}return v;}
-          const out=compact(x); out.publication={compact:true,purpose:'auditable comparison artifact; full board screened before compaction'}; fs.writeFileSync(p,JSON.stringify(out,null,2));
-          NODE
-      - name: Freshness gate
-        run: |
-          node - <<'NODE'
-          const fs=require('fs'); const now=Date.now();
-          const limits={'data/owls-latest.json':30*60*1000,'data/owls-meta.json':30*60*1000,'data/owls-comparison-latest.json':30*60*1000,'data/screen-latest.json':30*60*1000};
-          for(const [p,maxAge] of Object.entries(limits)){if(!fs.existsSync(p))throw new Error(p+' missing');const x=JSON.parse(fs.readFileSync(p,'utf8'));const ts=x.generatedAt||x.fetchedAt||x.updatedAt||x.timestamp||x.thunderpickGeneratedAt;if(!ts)throw new Error(p+' missing timestamp');const age=now-Date.parse(ts);if(!Number.isFinite(age)||age<0||age>maxAge)throw new Error(p+' stale: '+ts);console.log('FRESHNESS_OK',p,ts);}
-          NODE
-      - name: Validate compact outputs before publish
-        run: |
-          node - <<'NODE'
-          const fs=require('fs');
-          for(const p of ['data/owls-comparison-latest.json','data/screen-latest.json','data/scan-display-latest.json','data/scan-report-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json','data/esports-derivative-diagnostics.json']){if(!fs.existsSync(p))throw new Error(`${p} missing`);const st=fs.statSync(p);if(st.size<3)throw new Error(`${p} empty`);JSON.parse(fs.readFileSync(p,'utf8'));console.log('VALID_OUTPUT',p,st.size,'bytes');}
-          NODE
-      - name: Commit compact fresh scan outputs
-        run: |
-          git config user.name 'thunderpick-bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git restore scripts/screen-thunderpick-ev.mjs || true
-          git add data/owls-v2-access-probe.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/scan-report-latest.json data/esports-derivative-schema.json data/player-prop-schema.json data/pinnacle-esports-derivative-debug.json data/esports-derivative-diagnostics.json data/player-props-latest.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Update Thunderpick compact comparison screen [skip ci]'
-          git push origin HEAD:${GITHUB_REF_NAME}
+      - name: Legacy scanner retired
+        run: echo 'Legacy Thunderpick Comparison Screen is disabled. Use Thunderpick Simple Hourly Board.'
