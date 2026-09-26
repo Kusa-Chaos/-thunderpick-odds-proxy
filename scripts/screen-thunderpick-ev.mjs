@@ -231,6 +231,22 @@ function totalTarget(m={},event=null){
  }
  return null;
 }
+function explicitTotalTarget(m={},event=null){
+ const text=marketIdentityText(m);
+ const explicit=m.team||m.team_name||m.teamName||specText(m.specifiers,'team')||specText(m.specifiers,'competitor')||null;
+ const home=event?.teams?.home?.name||event?.market?.home?.name||event?.home_team;
+ const away=event?.teams?.away?.name||event?.market?.away?.name||event?.away_team;
+ if(explicit){
+  if(home&&norm(explicit)===norm(home))return norm(home);
+  if(away&&norm(explicit)===norm(away))return norm(away);
+  return norm(explicit);
+ }
+ // Text attribution counts only when the actual team name is present. Generic
+ // "team total" labels are deliberately insufficient for segmented markets.
+ if(home&&norm(text).includes(norm(home)))return norm(home);
+ if(away&&norm(text).includes(norm(away)))return norm(away);
+ return null;
+}
 function totalSettlementScope(text='',sport=''){
  const t=String(text).toLowerCase();
  const extra=/incl(?:uding|\.)?\s*(?:extra innings|overtime)|including\s*(?:extra innings|overtime)|\bwith\s+(?:extra innings|overtime)\b|\bot included\b/.test(t);
@@ -304,6 +320,14 @@ function quoteFor(row,d){
    const outTarget=totalTarget(c.market,row.event);
    if(tpTarget==='__unknown_team_total__'||outTarget==='__unknown_team_total__')continue;
    if((tpTarget||null)!==(outTarget||null))continue;
+   const tpPeriodForTarget=periodScope(tpIdentity);
+   // Segmented team totals are especially collision-prone. Require explicit
+   // team attribution on BOTH contracts before accepting quarter/half/innings.
+   if(tpTarget!=null&&tpPeriodForTarget!=='full'){
+    const tpExplicit=explicitTotalTarget({name:d.label,specifiers:d.specifiers||''},{teams:{home:{name:tpHome},away:{name:tpAway}}});
+    const outExplicit=explicitTotalTarget(c.market,row.event);
+    if(!tpExplicit||!outExplicit||tpExplicit!==outExplicit)continue;
+   }
    // Settlement semantics are part of sports-total contract identity. If
    // Thunderpick explicitly includes/excludes OT or extra innings, the outside
    // source must explicitly state the same rule before it can count.
