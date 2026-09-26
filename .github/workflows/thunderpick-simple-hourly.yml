@@ -12,6 +12,7 @@ on:
       - 'scripts/simple-two-source-watch.mjs'
       - 'scripts/direct-public-sources.mjs'
       - 'scripts/betway-direct.mjs'
+      - 'scripts/pinnacle-direct.mjs'
       - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
@@ -39,6 +40,8 @@ jobs:
         run: node scripts/direct-public-sources.mjs
       - name: Add Betway independent bookmaker source
         run: node scripts/betway-direct.mjs
+      - name: Add Pinnacle independent bookmaker source
+        run: node scripts/pinnacle-direct.mjs
       - name: Build loose direct discovery board
         run: node scripts/simple-direct-discovery.mjs
       - name: Merge direct sources into comparison board
