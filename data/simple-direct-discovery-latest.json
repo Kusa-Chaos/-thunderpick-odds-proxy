@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T22:23:57.800Z",
+  "generatedAt": "2026-09-26T22:28:23.274Z",
   "mode": "loose-direct-discovery",
   "providerHealth": {
     "polymarket": {
@@ -9,30 +9,30 @@
       "pages": 20,
       "acceptedEvents": 0,
       "rejectedStale": 7688,
-      "fetchedAt": "2026-09-26T22:23:33.608Z"
+      "fetchedAt": "2026-09-26T22:28:09.872Z"
     },
     "stake": {
       "ok": true,
       "status": 200,
       "sports": 9,
-      "scheduleFixtures": 244,
-      "detailRequests": 244,
-      "acceptedEvents": 214,
-      "marketCount": 3196,
+      "scheduleFixtures": 242,
+      "detailRequests": 242,
+      "acceptedEvents": 212,
+      "marketCount": 3216,
       "playerPropMarkets": 513,
       "errors": [],
-      "fetchedAt": "2026-09-26T22:23:40.738Z"
+      "fetchedAt": "2026-09-26T22:28:13.937Z"
     },
     "kalshi": {
-      "ok": true,
-      "status": 200,
-      "rawMarkets": 60000,
-      "pages": 60,
-      "acceptedEvents": 1,
-      "rejectedMulti": 59937,
+      "ok": false,
+      "error": "HTTP 429",
+      "rawMarkets": 45000,
+      "pages": 45,
+      "acceptedEvents": 2,
+      "rejectedMulti": 44996,
       "rejectedNonSports": 0,
-      "rejectedShape": 62,
-      "fetchedAt": "2026-09-26T22:23:47.604Z"
+      "rejectedShape": 2,
+      "fetchedAt": "2026-09-26T22:28:15.008Z"
     },
     "betway": {
       "ok": true,
@@ -43,14 +43,14 @@
       "rawOutcomes": 922,
       "acceptedEvents": 6,
       "errors": [],
-      "fetchedAt": "2026-09-26T22:23:57.557Z",
+      "fetchedAt": "2026-09-26T22:28:23.095Z",
       "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
     }
   },
   "counts": {
     "rows": 74,
-    "screening": 6,
-    "priceBoard": 68
+    "screening": 8,
+    "priceBoard": 66
   },
   "rows": [
     {
@@ -69,22 +69,22 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.2986425339366516,
-          "fairDecimal": 3.3484848484848486,
+          "fairProbability": 0.2888888888888889,
+          "fairDecimal": 3.4615384615384612,
           "selections": [
             {
               "name": "Marsborne",
-              "odds": 1.32
+              "odds": 1.3
             },
             {
               "name": "Detonate",
-              "odds": 3.1
+              "odds": 3.2
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.49321266968325794,
+      "estimatedEV": 0.44444444444444464,
       "startTime": "2026-09-27T01:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -264,42 +264,7 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
-      "tier": "PRICE BOARD",
-      "sport": "valorant",
-      "match": "JD Gaming vs FUT Esports",
-      "target": "FUT Esports",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.35,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.7368421052631579,
-          "fairDecimal": 1.3571428571428572,
-          "selections": [
-            {
-              "name": "JD Gaming",
-              "odds": 3.5
-            },
-            {
-              "name": "FUT Esports",
-              "odds": 1.25
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0052631578947368585,
-      "startTime": "2026-09-27T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
+      "tier": "SCREENING",
       "sport": "cs2",
       "match": "Metanoia Wolves vs Yawara Esports",
       "target": "Yawara Esports",
@@ -314,23 +279,58 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.8536585365853657,
-          "fairDecimal": 1.1714285714285717,
+          "fairProbability": 0.8973080757726819,
+          "fairDecimal": 1.1144444444444446,
           "selections": [
             {
               "name": "Metanoia Wolves",
-              "odds": 6.3
+              "odds": 9
             },
             {
               "name": "Yawara Esports",
-              "odds": 1.08
+              "odds": 1.03
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.018292682926829507,
+      "estimatedEV": 0.031904287138584175,
       "startTime": "2026-09-26T21:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "valorant",
+      "match": "JD Gaming vs FUT Esports",
+      "target": "FUT Esports",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.35,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.756972111553785,
+          "fairDecimal": 1.3210526315789473,
+          "selections": [
+            {
+              "name": "JD Gaming",
+              "odds": 3.8
+            },
+            {
+              "name": "FUT Esports",
+              "odds": 1.22
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.021912350597609764,
+      "startTime": "2026-09-27T12:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2519,58 +2519,23 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.7013574660633485,
-          "fairDecimal": 1.4258064516129032,
+          "fairProbability": 0.7111111111111111,
+          "fairDecimal": 1.40625,
           "selections": [
             {
               "name": "Marsborne",
-              "odds": 1.32
+              "odds": 1.3
             },
             {
               "name": "Detonate",
-              "odds": 3.1
+              "odds": 3.2
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.20746606334841633,
+      "estimatedEV": -0.19644444444444453,
       "startTime": "2026-09-27T01:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "valorant",
-      "match": "JD Gaming vs FUT Esports",
-      "target": "JD Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.01,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.26315789473684204,
-          "fairDecimal": 3.800000000000001,
-          "selections": [
-            {
-              "name": "JD Gaming",
-              "odds": 3.5
-            },
-            {
-              "name": "FUT Esports",
-              "odds": 1.25
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.20789473684210558,
-      "startTime": "2026-09-27T12:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2610,6 +2575,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "valorant",
+      "match": "JD Gaming vs FUT Esports",
+      "target": "JD Gaming",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.01,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.24302788844621515,
+          "fairDecimal": 4.114754098360655,
+          "selections": [
+            {
+              "name": "JD Gaming",
+              "odds": 3.8
+            },
+            {
+              "name": "FUT Esports",
+              "odds": 1.22
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.26848605577689244,
+      "startTime": "2026-09-27T12:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "cs2",
       "match": "Metanoia Wolves vs Yawara Esports",
       "target": "Metanoia Wolves",
@@ -2624,22 +2624,22 @@
       "outside": [
         {
           "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.14634146341463414,
-          "fairDecimal": 6.833333333333334,
+          "fairProbability": 0.10269192422731803,
+          "fairDecimal": 9.737864077669904,
           "selections": [
             {
               "name": "Metanoia Wolves",
-              "odds": 6.3
+              "odds": 9
             },
             {
               "name": "Yawara Esports",
-              "odds": 1.08
+              "odds": 1.03
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.31512195121951225,
+      "estimatedEV": -0.5194017946161517,
       "startTime": "2026-09-26T21:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
