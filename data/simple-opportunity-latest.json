@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T18:01:43.684Z",
+  "generatedAt": "2026-09-26T18:07:25.555Z",
   "mode": "simple-discovery-first",
   "rules": {
     "action": "3+ independent exact sources and EV >= 2%",
@@ -7,14 +7,245 @@
     "screening": "1+ outside source and EV >= 0.25% or one-way semantic match",
     "informational": "Thunderpick inventory with no outside quote"
   },
+  "sourceHealth": {
+    "direct": {
+      "polymarket": {
+        "ok": true,
+        "status": 200,
+        "rawEvents": 2000,
+        "pages": 20,
+        "acceptedEvents": 695,
+        "fetchedAt": "2026-09-26T18:07:20.078Z"
+      },
+      "kalshi": {
+        "ok": true,
+        "status": 200,
+        "rawMarkets": 40000,
+        "pages": 40,
+        "acceptedEvents": 0,
+        "fetchedAt": "2026-09-26T18:07:24.960Z"
+      }
+    },
+    "strictSnapshotHealthy": null
+  },
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
-    "SCREENING": 0,
-    "PRICE BOARD": 0,
+    "SCREENING": 2,
+    "PRICE BOARD": 4,
     "INFORMATIONAL": 75
   },
   "rows": [
+    {
+      "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "NC Dinos vs Hanwha Eagles",
+      "target": "NC Dinos",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.84,
+      "outside": [
+        {
+          "book": "Polymarket Direct",
+          "fairProbability": 0.745,
+          "fairDecimal": 1.342281879194631,
+          "selections": [
+            {
+              "name": "Hanwha Eagles",
+              "odds": 3.9215686274509802
+            },
+            {
+              "name": "NC Dinos",
+              "odds": 1.342281879194631
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.3708,
+      "startTime": "2026-09-26T08:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "cs2",
+      "match": "Bestia Academy vs QUINTESSENCIA",
+      "target": "Bestia Academy",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.32,
+      "outside": [
+        {
+          "book": "Polymarket Direct",
+          "fairProbability": 0.5,
+          "fairDecimal": 2,
+          "selections": [
+            {
+              "name": "BESTIA Academy",
+              "odds": 2
+            },
+            {
+              "name": "QUINTESSÊNCIA",
+              "odds": 2
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.15999999999999992,
+      "startTime": "2026-09-28T13:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "KIA Tigers vs LG Twins",
+      "target": "LG Twins",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.84,
+      "outside": [
+        {
+          "book": "Polymarket Direct",
+          "fairProbability": 0.505,
+          "fairDecimal": 1.9801980198019802,
+          "selections": [
+            {
+              "name": "LG Twins",
+              "odds": 1.9801980198019802
+            },
+            {
+              "name": "Kia Tigers",
+              "odds": 2.0202020202020203
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07079999999999997,
+      "startTime": "2026-09-26T08:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "KIA Tigers vs LG Twins",
+      "target": "KIA Tigers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.84,
+      "outside": [
+        {
+          "book": "Polymarket Direct",
+          "fairProbability": 0.495,
+          "fairDecimal": 2.0202020202020203,
+          "selections": [
+            {
+              "name": "LG Twins",
+              "odds": 1.9801980198019802
+            },
+            {
+              "name": "Kia Tigers",
+              "odds": 2.0202020202020203
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.08919999999999995,
+      "startTime": "2026-09-26T08:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "Bestia Academy vs QUINTESSENCIA",
+      "target": "QUINTESSENCIA",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.52,
+      "outside": [
+        {
+          "book": "Polymarket Direct",
+          "fairProbability": 0.5,
+          "fairDecimal": 2,
+          "selections": [
+            {
+              "name": "BESTIA Academy",
+              "odds": 2
+            },
+            {
+              "name": "QUINTESSÊNCIA",
+              "odds": 2
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.24,
+      "startTime": "2026-09-28T13:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "NC Dinos vs Hanwha Eagles",
+      "target": "Hanwha Eagles",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.84,
+      "outside": [
+        {
+          "book": "Polymarket Direct",
+          "fairProbability": 0.255,
+          "fairDecimal": 3.9215686274509802,
+          "selections": [
+            {
+              "name": "Hanwha Eagles",
+              "odds": 3.9215686274509802
+            },
+            {
+              "name": "NC Dinos",
+              "odds": 1.342281879194631
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.5307999999999999,
+      "startTime": "2026-09-26T08:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
     {
       "tier": "INFORMATIONAL",
       "sport": "cs2",
@@ -22,14 +253,14 @@
       "target": "destiny",
       "market": "Player destiny - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 14.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.02,
-        "under": 1.65
+        "over": 1.72,
+        "under": 1.93
       },
       "outside": [],
       "independentSources": 0,
@@ -44,14 +275,14 @@
       "target": "destiny",
       "market": "Player destiny - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 13.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.04,
-        "under": 1.65
+        "over": 1.5,
+        "under": 2.32
       },
       "outside": [],
       "independentSources": 0,
@@ -66,14 +297,14 @@
       "target": "detr0ittJ",
       "market": "Player detr0ittJ - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 13.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.28,
-        "under": 1.51
+        "over": 1.63,
+        "under": 2.07
       },
       "outside": [],
       "independentSources": 0,
@@ -88,14 +319,14 @@
       "target": "detr0ittJ",
       "market": "Player detr0ittJ - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 13.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.29,
-        "under": 1.51
+        "over": 1.63,
+        "under": 2.05
       },
       "outside": [],
       "independentSources": 0,
@@ -110,14 +341,14 @@
       "target": "gbb",
       "market": "Player gbb - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 14.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 1.95,
-        "under": 1.71
+        "over": 1.67,
+        "under": 2
       },
       "outside": [],
       "independentSources": 0,
@@ -132,14 +363,14 @@
       "target": "gbb",
       "market": "Player gbb - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 14.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 1.96,
-        "under": 1.7
+        "over": 1.67,
+        "under": 1.99
       },
       "outside": [],
       "independentSources": 0,
@@ -154,14 +385,14 @@
       "target": "laser",
       "market": "Player laser - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 14.5,
+      "line": 12.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.3,
-        "under": 1.5
+        "over": 1.68,
+        "under": 1.99
       },
       "outside": [],
       "independentSources": 0,
@@ -176,14 +407,14 @@
       "target": "laser",
       "market": "Player laser - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 14.5,
+      "line": 12.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.31,
-        "under": 1.5
+        "over": 1.68,
+        "under": 1.98
       },
       "outside": [],
       "independentSources": 0,
@@ -198,14 +429,14 @@
       "target": "lenci",
       "market": "Player lenci - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 13.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.06,
-        "under": 1.63
+        "over": 1.56,
+        "under": 2.18
       },
       "outside": [],
       "independentSources": 0,
@@ -220,14 +451,14 @@
       "target": "lenci",
       "market": "Player lenci - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 15.5,
+      "line": 13.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.06,
-        "under": 1.63
+        "over": 1.57,
+        "under": 2.17
       },
       "outside": [],
       "independentSources": 0,
@@ -242,14 +473,14 @@
       "target": "MaxOff",
       "market": "Player MaxOff - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 14.5,
+      "line": 12.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.07,
-        "under": 1.62
+        "over": 1.55,
+        "under": 2.2
       },
       "outside": [],
       "independentSources": 0,
@@ -264,14 +495,14 @@
       "target": "MaxOff",
       "market": "Player MaxOff - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 14.5,
+      "line": 12.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.08,
-        "under": 1.62
+        "over": 1.56,
+        "under": 2.19
       },
       "outside": [],
       "independentSources": 0,
@@ -286,14 +517,14 @@
       "target": "next",
       "market": "Player next - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 14.5,
+      "line": 12.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.3,
-        "under": 1.5
+        "over": 1.68,
+        "under": 1.99
       },
       "outside": [],
       "independentSources": 0,
@@ -308,14 +539,14 @@
       "target": "next",
       "market": "Player next - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 14.5,
+      "line": 12.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.31,
-        "under": 1.5
+        "over": 1.68,
+        "under": 1.98
       },
       "outside": [],
       "independentSources": 0,
@@ -330,14 +561,14 @@
       "target": "pavv",
       "market": "Player pavv - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 12.5,
+      "line": 11.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 1.96,
-        "under": 1.7
+        "over": 1.67,
+        "under": 2
       },
       "outside": [],
       "independentSources": 0,
@@ -352,14 +583,14 @@
       "target": "pavv",
       "market": "Player pavv - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 12.5,
+      "line": 11.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 1.96,
-        "under": 1.7
+        "over": 1.67,
+        "under": 1.99
       },
       "outside": [],
       "independentSources": 0,
@@ -374,14 +605,14 @@
       "target": "PKL",
       "market": "Player PKL - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 13.5,
+      "line": 11.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.3,
-        "under": 1.51
+        "over": 1.59,
+        "under": 2.12
       },
       "outside": [],
       "independentSources": 0,
@@ -396,14 +627,14 @@
       "target": "PKL",
       "market": "Player PKL - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 13.5,
+      "line": 11.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.31,
-        "under": 1.5
+        "over": 1.6,
+        "under": 2.11
       },
       "outside": [],
       "independentSources": 0,
@@ -418,14 +649,14 @@
       "target": "Tomate",
       "market": "Player Tomate - Total Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 16.5,
+      "line": 14.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.07,
-        "under": 1.63
+        "over": 1.53,
+        "under": 2.24
       },
       "outside": [],
       "independentSources": 0,
@@ -440,14 +671,14 @@
       "target": "Tomate",
       "market": "Player Tomate - Total Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 16.5,
+      "line": 14.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.08,
-        "under": 1.62
+        "over": 1.54,
+        "under": 2.23
       },
       "outside": [],
       "independentSources": 0,
@@ -462,14 +693,14 @@
       "target": "destiny Kills",
       "market": "Player destiny - Total Headshot Kills Over/Under (Incl. Overtime) - Map 1",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 6.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.02,
-        "under": 1.69
+        "over": 1.58,
+        "under": 2.19
       },
       "outside": [],
       "independentSources": 0,
@@ -484,14 +715,14 @@
       "target": "destiny Kills",
       "market": "Player destiny - Total Headshot Kills Over/Under (Incl. Overtime) - Map 2",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 6.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.02,
-        "under": 1.68
+        "over": 1.59,
+        "under": 2.18
       },
       "outside": [],
       "independentSources": 0,
@@ -572,14 +803,14 @@
       "target": "Batyuk",
       "market": "Player Batyuk - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.38,
-        "under": 1.48
+        "over": 1.62,
+        "under": 2.1
       },
       "outside": [],
       "independentSources": 0,
@@ -594,14 +825,14 @@
       "target": "Batyuk",
       "market": "Player Batyuk - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.38,
-        "under": 1.48
+        "over": 1.62,
+        "under": 2.1
       },
       "outside": [],
       "independentSources": 0,
@@ -616,14 +847,14 @@
       "target": "Jackky",
       "market": "Player Jackky - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 5.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.35,
-        "under": 1.5
+        "over": 1.66,
+        "under": 2.03
       },
       "outside": [],
       "independentSources": 0,
@@ -638,14 +869,14 @@
       "target": "Jackky",
       "market": "Player Jackky - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 5.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.35,
-        "under": 1.5
+        "over": 1.66,
+        "under": 2.03
       },
       "outside": [],
       "independentSources": 0,
@@ -660,14 +891,14 @@
       "target": "Jhocam",
       "market": "Player Jhocam - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 2.5,
+      "line": 1.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.38,
-        "under": 1.48
+        "over": 1.54,
+        "under": 2.24
       },
       "outside": [],
       "independentSources": 0,
@@ -682,14 +913,14 @@
       "target": "Jhocam",
       "market": "Player Jhocam - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 2.5,
+      "line": 1.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.38,
-        "under": 1.48
+        "over": 1.54,
+        "under": 2.24
       },
       "outside": [],
       "independentSources": 0,
@@ -704,14 +935,14 @@
       "target": "Larl",
       "market": "Player Larl - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 9.5,
+      "line": 6.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.46,
-        "under": 1.45
+        "over": 1.57,
+        "under": 2.19
       },
       "outside": [],
       "independentSources": 0,
@@ -726,14 +957,14 @@
       "target": "Larl",
       "market": "Player Larl - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 9.5,
+      "line": 6.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.46,
-        "under": 1.45
+        "over": 1.57,
+        "under": 2.19
       },
       "outside": [],
       "independentSources": 0,
@@ -748,14 +979,14 @@
       "target": "Mo13ei",
       "market": "Player Mo13ei - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.19,
-        "under": 1.57
+        "over": 1.54,
+        "under": 2.25
       },
       "outside": [],
       "independentSources": 0,
@@ -770,14 +1001,14 @@
       "target": "Mo13ei",
       "market": "Player Mo13ei - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.19,
-        "under": 1.57
+        "over": 1.54,
+        "under": 2.25
       },
       "outside": [],
       "independentSources": 0,
@@ -836,14 +1067,14 @@
       "target": "not me",
       "market": "Player not me - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 4.5,
+      "line": 2.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.5,
-        "under": 1.44
+        "over": 1.46,
+        "under": 2.43
       },
       "outside": [],
       "independentSources": 0,
@@ -858,14 +1089,14 @@
       "target": "not me",
       "market": "Player not me - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 4.5,
+      "line": 2.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.5,
-        "under": 1.44
+        "over": 1.46,
+        "under": 2.43
       },
       "outside": [],
       "independentSources": 0,
@@ -924,14 +1155,14 @@
       "target": "SabeRLighT",
       "market": "Player SabeRLighT - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 4.5,
+      "line": 2.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.47,
-        "under": 1.45
+        "over": 1.46,
+        "under": 2.45
       },
       "outside": [],
       "independentSources": 0,
@@ -946,14 +1177,14 @@
       "target": "SabeRLighT",
       "market": "Player SabeRLighT - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 4.5,
+      "line": 2.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.47,
-        "under": 1.45
+        "over": 1.46,
+        "under": 2.45
       },
       "outside": [],
       "independentSources": 0,
@@ -968,14 +1199,14 @@
       "target": "Yatoro",
       "market": "Player Yatoro - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 11.5,
+      "line": 7.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.45,
-        "under": 1.46
+        "over": 1.45,
+        "under": 2.47
       },
       "outside": [],
       "independentSources": 0,
@@ -990,14 +1221,14 @@
       "target": "Yatoro",
       "market": "Player Yatoro - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 11.5,
+      "line": 7.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.45,
-        "under": 1.46
+        "over": 1.45,
+        "under": 2.47
       },
       "outside": [],
       "independentSources": 0,
@@ -1012,14 +1243,14 @@
       "target": "33",
       "market": "Player 33 - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 5.5,
+      "line": 3.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.08,
-        "under": 1.63
+        "over": 1.43,
+        "under": 2.53
       },
       "outside": [],
       "independentSources": 0,
@@ -1034,14 +1265,14 @@
       "target": "33",
       "market": "Player 33 - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 5.5,
+      "line": 3.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.08,
-        "under": 1.63
+        "over": 1.43,
+        "under": 2.53
       },
       "outside": [],
       "independentSources": 0,
@@ -1056,14 +1287,14 @@
       "target": "Ari",
       "market": "Player Ari - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 4.5,
+      "line": 2.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.56,
-        "under": 1.42
+        "over": 1.48,
+        "under": 2.39
       },
       "outside": [],
       "independentSources": 0,
@@ -1078,14 +1309,14 @@
       "target": "Ari",
       "market": "Player Ari - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 4.5,
+      "line": 2.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.56,
-        "under": 1.42
+        "over": 1.48,
+        "under": 2.39
       },
       "outside": [],
       "independentSources": 0,
@@ -1100,14 +1331,14 @@
       "target": "bzm",
       "market": "Player bzm - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 8.5,
+      "line": 5.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.38,
-        "under": 1.48
+        "over": 1.49,
+        "under": 2.36
       },
       "outside": [],
       "independentSources": 0,
@@ -1122,14 +1353,14 @@
       "target": "bzm",
       "market": "Player bzm - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 8.5,
+      "line": 5.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.38,
-        "under": 1.48
+        "over": 1.49,
+        "under": 2.36
       },
       "outside": [],
       "independentSources": 0,
@@ -1144,14 +1375,14 @@
       "target": "Daze",
       "market": "Player Daze - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 2.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 1.95,
-        "under": 1.72
+        "over": 1.51,
+        "under": 2.31
       },
       "outside": [],
       "independentSources": 0,
@@ -1166,14 +1397,14 @@
       "target": "Daze",
       "market": "Player Daze - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 2.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 1.95,
-        "under": 1.72
+        "over": 1.51,
+        "under": 2.31
       },
       "outside": [],
       "independentSources": 0,
@@ -1188,14 +1419,14 @@
       "target": "gotthejuice",
       "market": "Player gotthejuice - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 8.5,
+      "line": 5.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.27,
-        "under": 1.53
+        "over": 1.45,
+        "under": 2.47
       },
       "outside": [],
       "independentSources": 0,
@@ -1210,14 +1441,14 @@
       "target": "Ame",
       "market": "Player Ame - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 5.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.26,
-        "under": 1.53
+        "over": 1.62,
+        "under": 2.09
       },
       "outside": [],
       "independentSources": 0,
@@ -1232,14 +1463,14 @@
       "target": "Ame",
       "market": "Player Ame - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 5.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.26,
-        "under": 1.53
+        "over": 1.62,
+        "under": 2.09
       },
       "outside": [],
       "independentSources": 0,
@@ -1254,14 +1485,14 @@
       "target": "BoBoKa",
       "market": "Player BoBoKa - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 2.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.24,
-        "under": 1.55
+        "over": 1.66,
+        "under": 2.03
       },
       "outside": [],
       "independentSources": 0,
@@ -1276,14 +1507,14 @@
       "target": "BoBoKa",
       "market": "Player BoBoKa - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 2.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.24,
-        "under": 1.55
+        "over": 1.66,
+        "under": 2.03
       },
       "outside": [],
       "independentSources": 0,
@@ -1298,14 +1529,14 @@
       "target": "Davai Lama",
       "market": "Player Davai Lama - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 5.5,
+      "line": 3.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.5,
-        "under": 1.44
+        "over": 1.58,
+        "under": 2.17
       },
       "outside": [],
       "independentSources": 0,
@@ -1320,14 +1551,14 @@
       "target": "Davai Lama",
       "market": "Player Davai Lama - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 5.5,
+      "line": 3.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.5,
-        "under": 1.44
+        "over": 1.58,
+        "under": 2.17
       },
       "outside": [],
       "independentSources": 0,
@@ -1386,14 +1617,14 @@
       "target": "SumaiL",
       "market": "Player SumaiL - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 8.5,
+      "line": 5.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.44,
-        "under": 1.46
+        "over": 1.51,
+        "under": 2.31
       },
       "outside": [],
       "independentSources": 0,
@@ -1408,14 +1639,14 @@
       "target": "SumaiL",
       "market": "Player SumaiL - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 8.5,
+      "line": 5.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.44,
-        "under": 1.46
+        "over": 1.51,
+        "under": 2.31
       },
       "outside": [],
       "independentSources": 0,
@@ -1474,14 +1705,14 @@
       "target": "Wits",
       "market": "Player Wits - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 9.5,
+      "line": 6.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.46,
-        "under": 1.45
+        "over": 1.57,
+        "under": 2.18
       },
       "outside": [],
       "independentSources": 0,
@@ -1496,14 +1727,14 @@
       "target": "Wits",
       "market": "Player Wits - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 9.5,
+      "line": 6.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.46,
-        "under": 1.45
+        "over": 1.57,
+        "under": 2.18
       },
       "outside": [],
       "independentSources": 0,
@@ -1518,14 +1749,14 @@
       "target": "XinQ",
       "market": "Player XinQ - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 2.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.29,
-        "under": 1.52
+        "over": 1.68,
+        "under": 2
       },
       "outside": [],
       "independentSources": 0,
@@ -1540,14 +1771,14 @@
       "target": "XinQ",
       "market": "Player XinQ - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 2.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.29,
-        "under": 1.52
+        "over": 1.68,
+        "under": 2
       },
       "outside": [],
       "independentSources": 0,
@@ -1584,14 +1815,14 @@
       "target": "423",
       "market": "Player 423 - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.46,
-        "under": 1.44
+        "over": 1.65,
+        "under": 2.03
       },
       "outside": [],
       "independentSources": 0,
@@ -1606,14 +1837,14 @@
       "target": "423",
       "market": "Player 423 - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 2.46,
-        "under": 1.44
+        "over": 1.65,
+        "under": 2.03
       },
       "outside": [],
       "independentSources": 0,
@@ -1628,14 +1859,14 @@
       "target": "ATF",
       "market": "Player ATF - Total Kills Over/Under - Map 1",
       "marketKey": "player_prop",
-      "line": 7.5,
+      "line": 4.5,
       "scope": {
         "map": 1,
         "round": null
       },
       "thunderpick": {
-        "over": 2.32,
-        "under": 1.5
+        "over": 1.41,
+        "under": 2.56
       },
       "outside": [],
       "independentSources": 0,
@@ -1650,14 +1881,14 @@
       "target": "ATF",
       "market": "Player ATF - Total Kills Over/Under - Map 2",
       "marketKey": "player_prop",
-      "line": 6.5,
+      "line": 4.5,
       "scope": {
         "map": 2,
         "round": null
       },
       "thunderpick": {
-        "over": 1.91,
-        "under": 1.74
+        "over": 1.41,
+        "under": 2.56
       },
       "outside": [],
       "independentSources": 0,
