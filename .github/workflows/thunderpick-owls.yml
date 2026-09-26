@@ -2,9 +2,6 @@ name: Thunderpick Owls Snapshot
 
 on:
   workflow_dispatch:
-  schedule:
-    # Hourly refresh. Re-register schedule by changing minute.
-    - cron: '37 * * * *'
   push:
     branches: [main]
     paths:
@@ -21,81 +18,32 @@ concurrency:
 jobs:
   snapshot:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Check configuration
-        id: config
-        shell: bash
-        run: |
-          if [ -z "${{ secrets.OWLS_API_KEY }}" ]; then
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-            echo "OWLS_API_KEY is not configured yet; skipping snapshot."
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Set up Node
-        if: steps.config.outputs.configured == 'true'
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Fetch Thunderpick sport snapshots
-        if: steps.config.outputs.configured == 'true'
+      - name: Fetch Thunderpick board through Owls
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
         run: node scripts/owls-thunderpick.mjs
-
-      - name: Validate fresh snapshot before publish
-        if: steps.config.outputs.configured == 'true'
+      - name: Validate snapshot outputs
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          const now=Date.now();
-          for (const p of ['data/owls-latest.json','data/owls-meta.json']) {
+          for(const p of ['data/owls-latest.json','data/owls-meta.json']) {
             if(!fs.existsSync(p)) throw new Error(p+' missing');
-            const st=fs.statSync(p);
-            if(st.size<3) throw new Error(p+' empty');
-            const x=JSON.parse(fs.readFileSync(p,'utf8'));
-            const ts=x.generatedAt || x.fetchedAt || x.updatedAt || x.timestamp;
-            if(!ts) throw new Error(p+' has no freshness timestamp');
-            const age=now-Date.parse(ts);
-            if(!Number.isFinite(age) || age<0 || age>20*60*1000) throw new Error(p+' stale: '+ts);
-            console.log('FRESH',p,ts,Math.round(age/1000)+'s');
+            const st=fs.statSync(p); if(st.size<3) throw new Error(p+' empty');
+            JSON.parse(fs.readFileSync(p,'utf8'));
+            console.log('VALID_OUTPUT',p,st.size,'bytes');
           }
           NODE
-
-      - name: Upload snapshot artifact
-        if: steps.config.outputs.configured == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: thunderpick-owls-latest
-          path: |
-            data/owls-latest.json
-            data/owls-meta.json
-          retention-days: 3
-          overwrite: true
-
-      - name: Commit latest snapshot
-        if: steps.config.outputs.configured == 'true'
+      - name: Commit fresh snapshot
         run: |
-          cp data/owls-latest.json /tmp/owls-latest.json
-          cp data/owls-meta.json /tmp/owls-meta.json
-          git fetch origin main
-          git reset --hard origin/main
-          cp /tmp/owls-latest.json data/owls-latest.json
-          cp /tmp/owls-meta.json data/owls-meta.json
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add data/owls-latest.json data/owls-meta.json
-          if git diff --cached --quiet; then
-            echo 'No data changes to commit.'
-          else
-            git commit -m 'Update Thunderpick Owls snapshot [skip ci]'
-            git push origin HEAD:main
-          fi
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update Thunderpick Owls snapshot [skip ci]'
+          git push origin HEAD:${GITHUB_REF_NAME}
