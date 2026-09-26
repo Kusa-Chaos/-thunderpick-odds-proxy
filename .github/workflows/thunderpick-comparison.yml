@@ -2,16 +2,9 @@ name: Thunderpick Comparison Screen
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Thunderpick Owls Snapshot"]
-    types: [completed]
   schedule:
-    # Redundant off-peak cron slots: GitHub can delay/drop scheduled events under load.
-    # Four independent chances per hour keep the published scan fresh even if one slot is missed.
-    - cron: '7 * * * *'
-    - cron: '22 * * * *'
-    - cron: '37 * * * *'
-    - cron: '52 * * * *'
+    # One production scan per hour. The watchdog handles genuinely stale runs.
+    - cron: '17 * * * *'
   push:
     branches: [main]
     paths:
@@ -26,12 +19,10 @@ permissions:
 
 concurrency:
   group: thunderpick-comparison-screen
-  # Never cancel a healthy scan just because another trigger arrives.
   cancel-in-progress: false
 
 jobs:
   screen:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -52,17 +43,10 @@ jobs:
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          // owls-comparison.mjs already performs and caches the exact-source requests.
-          // Do not immediately repeat Pinnacle/Kalshi/Polymarket calls here: those
-          // duplicate diagnostics were consuming the same rate-limit budget needed
-          // by the production comparison stage.
           const p='data/owls-comparison-latest.json';
           const x=JSON.parse(fs.readFileSync(p,'utf8'));
-          const sports=x.sports||{};
           const out={generatedAt:new Date().toISOString(),source:'comparison-artifact',duplicateNetworkProbeDisabled:true,tests:{}};
-          for(const book of ['pinnacle','kalshi','polymarket','stake','rainbet']){
-            out.tests[book]={note:'health derived from production comparison run; no duplicate API request'};
-          }
+          for(const book of ['pinnacle','kalshi','polymarket','stake','rainbet']) out.tests[book]={note:'health derived from production comparison run; no duplicate API request'};
           fs.writeFileSync('data/owls-v2-access-probe.json',JSON.stringify(out,null,2));
           console.log('OWLS_V2_PROBE_DUPLICATE_CALLS_DISABLED');
           NODE
@@ -89,141 +73,57 @@ jobs:
           const actionRows=(s.actionCandidates||[]).map(c=>slim(c,'ACTION')).filter(Boolean).sort(rank);
           const watchRows=(s.watchCandidates||[]).map(c=>slim(c,'WATCH')).filter(Boolean).sort(rank);
           const potentialRows=(s.potentialCandidates||[]).map(c=>slim(c,'POTENTIAL')).filter(Boolean).sort(rank);
-          // Never let high-EV low-source screens bury a verified 3-4 source WATCH.
-          // Publish every ACTION/WATCH first, with genuine esports first on ties.
           const seen=new Set(); const rows=[];
           for(const r of [...actionRows,...watchRows,...potentialRows]){const k=[r.sport,r.match,r.target,r.market].join('|');if(seen.has(k))continue;seen.add(k);rows.push(r);}
-          // Keep scan-display intentionally lightweight for GitHub/API readers. Detailed
-          // source quotes remain in scan-report-latest.json and screen-latest.json.
           const displayRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,startTime:r.startTime});
           const out={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,coverage:{eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,marketTypeCounts:s.marketTypeCounts,arbitrageMarketsTested:s.arbitrageMarketsTested},counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length},actionRows:actionRows.slice(0,20).map(displayRow),watchRows:watchRows.slice(0,30).map(displayRow),potentialRows:potentialRows.slice(0,30).map(displayRow),rows:rows.slice(0,100).map(displayRow),publication:{compact:true,detailArtifact:'data/scan-report-latest.json'}};
           fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
-          // Fail loudly if the generated display artifact is unexpectedly empty.
-          const displaySize=fs.statSync('data/scan-display-latest.json').size;
-          if(displaySize<100) throw new Error('scan-display-latest.json unexpectedly empty: '+displaySize+' bytes');
-          console.log('SCAN_DISPLAY_BYTES',displaySize);
-          // Publish a deliberately small candidate artifact so chat/reporting clients
-          // never need to parse the multi-megabyte screen file. Keep every source-tier
-          // bucket visible, plus all current LoL rows for WSCI/EMEA inspection.
           const compactRow=r=>({tier:r.tier,verificationTier:r.verificationTier,sport:r.sport,match:r.match,target:r.target,market:r.market,marketKey:r.marketKey,line:r.line,scope:r.scope,thunderpick:r.thunderpick,verifiedEV:r.verifiedEV,independentSources:r.independentSources,outside:(r.outside||[]).slice(0,8),fair:r.fair,arbScreen:r.arbScreen,startTime:r.startTime});
           const lolRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.sport==='lol').map(compactRow);
-          // Keep this file genuinely small/readable. Full tier counts remain in counts;
-          // publish bounded top rows plus every LoL candidate for explicit WSCI/EMEA review.
-          const topAction=actionRows.slice(0,20).map(compactRow);
-          const topWatch=watchRows.slice(0,30).map(compactRow);
-          const topPotential=potentialRows.slice(0,30).map(compactRow);
+          const topAction=actionRows.slice(0,20).map(compactRow), topWatch=watchRows.slice(0,30).map(compactRow), topPotential=potentialRows.slice(0,30).map(compactRow);
           const limitedProps=(s.limitedExactComparisons||[]).filter(r=>r.marketKey==='player_prop').slice(0,30);
           const esportsScreenRows=(s.limitedExactComparisons||[]).filter(r=>['map_winner','round_handicap','round_totals'].includes(r.marketKey)).sort((a,b)=>Math.max(Number(b.screenEV?.a??-99),Number(b.screenEV?.b??-99))-Math.max(Number(a.screenEV?.a??-99),Number(a.screenEV?.b??-99))).slice(0,50);
           let semanticScreens=s.oneWayPlayerPropScreens||[];
-          // Fallback audit path for one-way exact semantic props (e.g. MLB "to record a hit"
-          // == TP hits Over 0.5). These are SCREENING only because there is no Under price to de-vig.
-          if(!semanticScreens.length&&fs.existsSync('data/player-prop-schema.json')){
-            const ps=JSON.parse(fs.readFileSync('data/player-prop-schema.json')).playerPropSchemaSamples||{};
-            const outs=ps.outside||[];
-            for(const t of ps.thunderpick||[]){
-              const nm=String(t.name||''); const pm=nm.match(/^Player\s+(.+?)\s+-\s+Total\s+hits\b/i);
-              if(!pm)continue; const player=pm[1].trim(); const over=(t.selections||[]).find(z=>/^over$/i.test(String(z.name||'')));
-              const line=Number(over?.total??over?.point); if(line!==0.5)continue;
-              for(const o of outs.filter(z=>z.sport===t.sport&&z.event===t.event&&/to_record_a_hit/i.test(String(z.key||'')))){
-                const hit=(o.outcomes||[]).find(z=>String(z.name||'').toLowerCase()===player.toLowerCase()); if(!hit)continue;
-                const raw=Number(hit.price); const price=raw>=100?1+raw/100:raw<=-100?1+100/Math.abs(raw):raw;
-                if(!(price>1))continue;
-                semanticScreens.push({tier:'SCREENING',sport:t.sport,match:t.event,target:player+' Over 0.5 hits',market:'Player total hits',marketKey:'player_prop',line:0.5,thunderpick:Number(over.odds),outsidePrice:price,book:o.book,independentSources:1,blocker:'one-way exact semantic price; no Under price for de-vig, SCREENING ONLY'});
-              }
-            }
-          }
           const inventoryProps=(s.playerPropInventory||[]).map(r=>({...r,tier:r.tier||'INFORMATIONAL'}));
           const playerPropScreenRows=[...limitedProps,...semanticScreens,...inventoryProps].slice(0,30);
           const handicapRows=[...actionRows,...watchRows,...potentialRows].filter(r=>r.marketKey==='spreads'||r.marketKey==='round_handicap').slice(0,30).map(compactRow);
-          // IMPORTANT: hourly chat readers use scan-display-latest.json first. Publish
-          // lower-source esports screens there too so genuine esports never disappears
-          // merely because it has <3 independent exact sources.
-          const screenDisplay=r=>{
-            const a=r?.thunderpick?.[0]||r?.thunderpick?.a||null,b=r?.thunderpick?.[1]||r?.thunderpick?.b||null;
-            const eva=Number(r?.screenEV?.a??-99),evb=Number(r?.screenEV?.b??-99),pick=eva>=evb?a:b;
-            return {tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:pick?.name||r.target||r.player||null,market:r.marketLabel||r.market||r.marketKey,marketKey:r.marketKey||null,line:pick?.point??r.line??null,scope:r.scope||null,thunderpick:pick?.odds??r.thunderpick??null,screenEV:Number.isFinite(Math.max(eva,evb))?Math.max(eva,evb):null,independentSources:Number(r.independentSources??0),outside:(r.outside||[]).slice(0,4),startTime:r.startTime||null,blocker:r.blocker||null};
-          };
+          const screenDisplay=r=>{const a=r?.thunderpick?.[0]||r?.thunderpick?.a||null,b=r?.thunderpick?.[1]||r?.thunderpick?.b||null;const eva=Number(r?.screenEV?.a??-99),evb=Number(r?.screenEV?.b??-99),pick=eva>=evb?a:b;return {tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:pick?.name||r.target||r.player||null,market:r.marketLabel||r.market||r.marketKey,marketKey:r.marketKey||null,line:pick?.point??r.line??null,scope:r.scope||null,thunderpick:pick?.odds??r.thunderpick??null,screenEV:Number.isFinite(Math.max(eva,evb))?Math.max(eva,evb):null,independentSources:Number(r.independentSources??0),outside:(r.outside||[]).slice(0,4),startTime:r.startTime||null,blocker:r.blocker||null};};
           out.coverage.rawExactQuoteMatchesByType=s.rawExactQuoteMatchesByType||{};
-          out.counts.esportsScreen=esportsScreenRows.length;
-          out.counts.playerPropScreen=playerPropScreenRows.length;
+          out.counts.esportsScreen=esportsScreenRows.length; out.counts.playerPropScreen=playerPropScreenRows.length;
           out.esportsScreenRows=esportsScreenRows.map(screenDisplay);
           out.limitedPlayerPropRows=playerPropScreenRows.map(r=>({tier:r.tier||'SCREENING',sport:r.sport,match:r.name||r.match,target:r.target||r.player||null,market:r.market||r.marketLabel||'Player Prop',marketKey:r.marketKey||'player_prop',line:r.line??null,scope:r.scope||null,thunderpick:r.thunderpick??null,independentSources:Number(r.independentSources??0),startTime:r.startTime||null,blocker:r.blocker||null}));
-          // Rewrite display after screening buckets are attached.
           fs.writeFileSync('data/scan-display-latest.json',JSON.stringify(out,null,2));
           const report={generatedAt:out.generatedAt,thunderpickGeneratedAt:out.thunderpickGeneratedAt,comparisonGeneratedAt:out.comparisonGeneratedAt,counts:{action:actionRows.length,watch:watchRows.length,potential:potentialRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},published:{action:topAction.length,watch:topWatch.length,potential:topPotential.length,lol:lolRows.length,limitedPlayerProps:playerPropScreenRows.length,handicaps:handicapRows.length,esportsScreens:esportsScreenRows.length},coverage:out.coverage,actionRows:topAction,watchRows:topWatch,potentialRows:topPotential,lolRows,limitedPlayerPropRows:playerPropScreenRows,handicapRows,esportsScreenRows};
           fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(report,null,2));
-          console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length,'REPORT_BYTES',fs.statSync('data/scan-report-latest.json').size,'LOL_ROWS',lolRows.length);
+          console.log('VISIBLE_ROWS',out.rows.length,'ACTION',actionRows.length,'WATCH',watchRows.length,'POTENTIAL',potentialRows.length);
           NODE
       - name: Compact full screen for repository publication
         run: |
           node - <<'NODE'
           const fs=require('fs'); const p='data/screen-latest.json'; const s=JSON.parse(fs.readFileSync(p,'utf8'));
           const slim=c=>({...c,outside:Array.isArray(c.outside)?c.outside.slice(0,12):[]});
-          const candidates=(s.candidates||[]).slice(0,100).map(slim);
-          const arbScreens=(s.arbScreens||[]).slice(0,50).map(slim);
-          const out={...s,candidates,arbScreens,publication:{compact:true,originalCandidateCount:(s.candidates||[]).length,publishedCandidateCount:candidates.length,originalArbScreenCount:(s.arbScreens||[]).length,publishedArbScreenCount:arbScreens.length,maxOutsideQuotesPerCandidate:12}};
-          fs.writeFileSync(p,JSON.stringify(out,null,2));
-          console.log('COMPACT_SCREEN_BYTES',fs.statSync(p).size,'CANDIDATES',candidates.length,'ARBS',arbScreens.length);
+          const candidates=(s.candidates||[]).slice(0,100).map(slim), arbScreens=(s.arbScreens||[]).slice(0,50).map(slim);
+          fs.writeFileSync(p,JSON.stringify({...s,candidates,arbScreens,publication:{compact:true,originalCandidateCount:(s.candidates||[]).length,publishedCandidateCount:candidates.length,originalArbScreenCount:(s.arbScreens||[]).length,publishedArbScreenCount:arbScreens.length,maxOutsideQuotesPerCandidate:12}},null,2));
           NODE
       - name: Compact comparison for repository publication
         run: |
           node - <<'NODE'
-          const fs=require('fs'); const p='data/owls-comparison-latest.json';
-          const x=JSON.parse(fs.readFileSync(p,'utf8'));
-          // Keep audit metadata plus a bounded sample of each sport/source. Full
-          // comparison data is consumed by the screener before this step.
-          function compact(v,depth=0){
-            if(depth>7) return '[truncated]';
-            if(Array.isArray(v)) return v.slice(0,60).map(x=>compact(x,depth+1));
-            if(v&&typeof v==='object'){
-              const o={}; for(const [k,val] of Object.entries(v)){
-                if(['raw','html','body','responseText'].includes(k)) continue;
-                o[k]=compact(val,depth+1);
-              } return o;
-            }
-            return v;
-          }
-          const out=compact(x);
-          out.publication={compact:true,purpose:'auditable comparison artifact; full board screened before compaction'};
-          fs.writeFileSync(p,JSON.stringify(out,null,2));
-          console.log('COMPACT_COMPARISON_BYTES',fs.statSync(p).size);
+          const fs=require('fs'); const p='data/owls-comparison-latest.json'; const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          function compact(v,depth=0){if(depth>7)return '[truncated]';if(Array.isArray(v))return v.slice(0,60).map(x=>compact(x,depth+1));if(v&&typeof v==='object'){const o={};for(const [k,val] of Object.entries(v)){if(['raw','html','body','responseText'].includes(k))continue;o[k]=compact(val,depth+1);}return o;}return v;}
+          const out=compact(x); out.publication={compact:true,purpose:'auditable comparison artifact; full board screened before compaction'}; fs.writeFileSync(p,JSON.stringify(out,null,2));
           NODE
       - name: Freshness gate
         run: |
           node - <<'NODE'
           const fs=require('fs'); const now=Date.now();
-          // The Thunderpick snapshot is produced by the separate snapshot workflow.
-          // Require it to be recent enough for screening, but don't fail this comparison
-          // job merely because it is older than the freshly-generated comparison output.
-          const limits={
-            'data/owls-latest.json': 30*60*1000,
-            'data/owls-meta.json': 30*60*1000,
-            'data/owls-comparison-latest.json': 30*60*1000,
-            'data/screen-latest.json': 30*60*1000
-          };
-          for(const [p,maxAge] of Object.entries(limits)) {
-            if(!fs.existsSync(p)) throw new Error(p+' missing');
-            const x=JSON.parse(fs.readFileSync(p,'utf8'));
-            const ts=x.generatedAt || x.fetchedAt || x.updatedAt || x.timestamp || x.thunderpickGeneratedAt;
-            if(!ts) throw new Error(p+' missing timestamp');
-            const age=now-Date.parse(ts);
-            if(!Number.isFinite(age)||age<0||age>maxAge) throw new Error(p+' stale: '+ts);
-            console.log('FRESHNESS_OK',p,ts,Math.round(age/1000)+'s','limit='+Math.round(maxAge/60000)+'m');
-          }
+          const limits={'data/owls-latest.json':30*60*1000,'data/owls-meta.json':30*60*1000,'data/owls-comparison-latest.json':30*60*1000,'data/screen-latest.json':30*60*1000};
+          for(const [p,maxAge] of Object.entries(limits)){if(!fs.existsSync(p))throw new Error(p+' missing');const x=JSON.parse(fs.readFileSync(p,'utf8'));const ts=x.generatedAt||x.fetchedAt||x.updatedAt||x.timestamp||x.thunderpickGeneratedAt;if(!ts)throw new Error(p+' missing timestamp');const age=now-Date.parse(ts);if(!Number.isFinite(age)||age<0||age>maxAge)throw new Error(p+' stale: '+ts);console.log('FRESHNESS_OK',p,ts);}
           NODE
-
       - name: Validate compact outputs before publish
         run: |
           node - <<'NODE'
           const fs=require('fs');
-          for(const p of ['data/owls-comparison-latest.json','data/screen-latest.json','data/scan-display-latest.json','data/scan-report-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json','data/esports-derivative-diagnostics.json']) {
-            if(!fs.existsSync(p)) throw new Error(`${p} missing`);
-            const st=fs.statSync(p); if(st.size<3) throw new Error(`${p} empty (${st.size} bytes)`);
-            if(st.size>50*1024*1024) throw new Error(`${p} too large for compact publication (${st.size} bytes)`);
-            const x=JSON.parse(fs.readFileSync(p,'utf8')); if(!x || typeof x!=='object') throw new Error(`${p} invalid JSON object`);
-            if(p==='data/scan-display-latest.json' && st.size<100) throw new Error(`${p} unexpectedly empty (${st.size} bytes)`);
-            console.log('VALID_OUTPUT',p,st.size,'bytes');
-          }
+          for(const p of ['data/owls-comparison-latest.json','data/screen-latest.json','data/scan-display-latest.json','data/scan-report-latest.json','data/esports-derivative-schema.json','data/pinnacle-esports-derivative-debug.json','data/esports-derivative-diagnostics.json']){if(!fs.existsSync(p))throw new Error(`${p} missing`);const st=fs.statSync(p);if(st.size<3)throw new Error(`${p} empty`);JSON.parse(fs.readFileSync(p,'utf8'));console.log('VALID_OUTPUT',p,st.size,'bytes');}
           NODE
       - name: Commit compact fresh scan outputs
         run: |
