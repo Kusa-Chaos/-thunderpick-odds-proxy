@@ -411,6 +411,25 @@ for(const sport of SPORTS){
    rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
    if(derivativeDiagnostics[d.key]) derivativeDiagnostics[d.key].raw++;
    let saneOutside=outside.filter(q=>{const sum=1/q.a+1/q.b;return q.identityVerified!==false&&q.a>1.01&&q.b>1.01&&q.a<20&&q.b<20&&sum>=0.90&&sum<=1.15;});
+   // One bookmaker/source may expose several rows that normalize to the same
+   // event/market. Never let those rows inflate independent-source depth or
+   // contaminate fair value. If duplicate rows from the same source disagree
+   // materially, fail that source closed for this contract. Otherwise retain
+   // the freshest representative quote only.
+   const byBook=new Map();
+   for(const q of saneOutside){
+    const bk=String(q.book||'').trim().toLowerCase(); if(!bk)continue;
+    if(!byBook.has(bk))byBook.set(bk,[]); byBook.get(bk).push(q);
+   }
+   const deduped=[];
+   for(const rows of byBook.values()){
+    const ref=rows[0];
+    const agree=rows.every(q=>Math.abs(q.a-ref.a)<=0.08&&Math.abs(q.b-ref.b)<=0.08);
+    if(!agree)continue;
+    rows.sort((x,y)=>(Date.parse(y.lastUpdate||0)||0)-(Date.parse(x.lastUpdate||0)||0));
+    deduped.push(rows[0]);
+   }
+   saneOutside=deduped;
    if(derivativeDiagnostics[d.key]) derivativeDiagnostics[d.key].sane+=saneOutside.length;
    // Provider orientation guard: when 3+ books disagree on which named team is
    // favorite, discard the minority orientation before EV/arb calculations.
