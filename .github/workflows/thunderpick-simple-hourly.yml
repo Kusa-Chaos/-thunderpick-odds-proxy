@@ -1,0 +1,54 @@
+name: Thunderpick Simple Hourly Board
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Offset from the legacy scan and from the top of the hour to reduce queue delays.
+    - cron: '27 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-simple-hourly
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Refresh Thunderpick
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+        run: node scripts/owls-thunderpick.mjs
+      - name: Collect every available outside source
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: node scripts/owls-comparison.mjs
+      - name: Optional PropLine enrichment with quota breaker
+        continue-on-error: true
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: node scripts/propline-enrich.mjs
+      - name: Exact safety screen
+        run: node scripts/screen-thunderpick-ev.mjs
+      - name: Build simple discovery-first board
+        run: node scripts/simple-opportunity-board.mjs
+      - name: Publish simple board
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/simple-opportunity-latest.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update simple Thunderpick opportunity board [skip ci]'
+          for n in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((n*3))
+          done
+          exit 1
