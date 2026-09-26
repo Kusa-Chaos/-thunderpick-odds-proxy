@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/simple-opportunity-board.mjs'
+      - 'scripts/direct-source-collector.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
 permissions:
@@ -30,16 +31,8 @@ jobs:
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
         run: node scripts/owls-thunderpick.mjs
-      - name: Collect every available outside source
-        env:
-          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
-          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
-        run: node scripts/owls-comparison.mjs
-      - name: Optional PropLine enrichment with quota breaker
-        continue-on-error: true
-        env:
-          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
-        run: node scripts/propline-enrich.mjs
+      - name: Collect quota-free direct sources
+        run: node scripts/direct-source-collector.mjs
       - name: Exact safety screen
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Build simple discovery-first board
@@ -48,11 +41,13 @@ jobs:
         run: |
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/simple-opportunity-latest.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json
+          git add -A data/
           git diff --cached --quiet && exit 0
           git commit -m 'Update simple Thunderpick opportunity board [skip ci]'
+          # Generated diagnostics must never block rebase/publish.
+          git status --porcelain
           for n in 1 2 3; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            git pull --rebase --autostash origin main && git push origin HEAD:main && exit 0
             sleep $((n*3))
           done
           exit 1
