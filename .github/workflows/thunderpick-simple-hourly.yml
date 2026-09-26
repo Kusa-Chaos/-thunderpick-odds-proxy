@@ -8,7 +8,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/simple-opportunity-board.mjs'
-      - 'scripts/direct-source-collector.mjs'
+      - 'scripts/direct-public-sources.mjs'
+      - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
 permissions:
@@ -31,8 +32,10 @@ jobs:
         env:
           OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
         run: node scripts/owls-thunderpick.mjs
-      - name: Collect quota-free direct sources
-        run: node scripts/direct-source-collector.mjs
+      - name: Collect quota-free public sources
+        run: node scripts/direct-public-sources.mjs
+      - name: Merge direct sources into comparison board
+        run: node scripts/merge-direct-sources.mjs
       - name: Exact safety screen
         run: node scripts/screen-thunderpick-ev.mjs
       - name: Build simple discovery-first board
@@ -44,8 +47,6 @@ jobs:
           git add -A data/
           git diff --cached --quiet && exit 0
           git commit -m 'Update simple Thunderpick opportunity board [skip ci]'
-          # Generated diagnostics must never block rebase/publish.
-          git status --porcelain
           for n in 1 2 3; do
             git pull --rebase --autostash origin main && git push origin HEAD:main && exit 0
             sleep $((n*3))
