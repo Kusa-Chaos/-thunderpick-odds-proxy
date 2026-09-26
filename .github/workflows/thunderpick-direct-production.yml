@@ -1,0 +1,78 @@
+name: Thunderpick Direct Production Scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '22 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-production
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Refresh Thunderpick board
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+        run: node scripts/owls-thunderpick.mjs
+      - name: Build aggregator plus quota-free direct comparison
+        env:
+          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: node scripts/run-comparison-with-direct.mjs
+      - name: PropLine enrichment with quota circuit breaker
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: node scripts/run-propline-guarded.mjs || true
+      - name: Screen exact contracts
+        run: node scripts/screen-thunderpick-ev.mjs
+      - name: Build durable visible report
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');const s=JSON.parse(fs.readFileSync('data/screen-latest.json','utf8'));
+          const esports=new Set(['cs2','dota2','lol','valorant']);
+          const slim=(c,tier)=>{const a=c.thunderpick?.a,b=c.thunderpick?.b;if(!a||!b)return null;const side=Number(c.ev?.a)>=Number(c.ev?.b)?'a':'b';const p=side==='a'?a:b;return {tier,sport:c.sport,match:c.name,target:p.name,market:c.marketLabel||c.marketKey,marketKey:c.marketKey,line:p.point??null,scope:c.scope||null,thunderpick:Number(p.odds),verifiedEV:Number(side==='a'?c.ev?.a:c.ev?.b),independentSources:Number(c.verifiedIndependentSources??c.verifiedIdentityDepth??0),outside:(c.outside||[]).slice(0,8),fair:c.fair||null,arbScreen:c.arbScreen||null,startTime:c.startTime};};
+          const rows=(key,tier)=>(s[key]||[]).map(c=>slim(c,tier)).filter(Boolean).sort((a,b)=>b.verifiedEV-a.verifiedEV);
+          const action=rows('actionCandidates','ACTION'),watch=rows('watchCandidates','WATCH'),potential=rows('potentialCandidates','POTENTIAL');
+          const screen=(s.limitedExactComparisons||[]).filter(r=>esports.has(r.sport));
+          const props=[...(s.oneWayPlayerPropScreens||[]),...(s.playerPropInventory||[])];
+          const handicap=[...action,...watch,...potential].filter(r=>['spreads','round_handicap'].includes(r.marketKey));
+          const coverage={eligibleThunderpickEvents:s.eligibleThunderpickEvents,matchedEvents:s.matchedEvents,eligibleMarkets:s.eligibleMarkets,matchedMarkets:s.matchedMarkets,eligibleBySport:s.eligibleBySport,matchedBySport:s.matchedBySport,rawExactQuoteMatchesByType:s.rawExactQuoteMatchesByType||{},marketTypeCounts:s.marketTypeCounts||{}};
+          let direct={};try{direct=JSON.parse(fs.readFileSync('data/direct-sources-latest.json','utf8'))}catch{}
+          const base={generatedAt:s.generatedAt,thunderpickGeneratedAt:s.thunderpickGeneratedAt,comparisonGeneratedAt:s.comparisonGeneratedAt,directSourceHealth:direct.providerHealth||{},coverage,counts:{action:action.length,watch:watch.length,potential:potential.length,esportsScreens:screen.length,playerProps:props.length,handicaps:handicap.length},actionRows:action.slice(0,30),watchRows:watch.slice(0,40),potentialRows:potential.slice(0,40),esportsScreenRows:screen.slice(0,50),limitedPlayerPropRows:props.slice(0,40),handicapRows:handicap.slice(0,40)};
+          fs.writeFileSync('data/scan-report-latest.json',JSON.stringify(base,null,2));
+          fs.writeFileSync('data/scan-display-latest.json',JSON.stringify({...base,actionRows:base.actionRows.map(({outside,...x})=>x),watchRows:base.watchRows.map(({outside,...x})=>x),potentialRows:base.potentialRows.map(({outside,...x})=>x)},null,2));
+          console.log('DIRECT_REPORT',JSON.stringify({health:base.directSourceHealth,counts:base.counts,coverage}));
+          NODE
+      - name: Validate outputs
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');for(const p of ['data/direct-sources-latest.json','data/owls-comparison-latest.json','data/screen-latest.json','data/scan-report-latest.json','data/scan-display-latest.json']){if(!fs.existsSync(p))throw new Error(p+' missing');JSON.parse(fs.readFileSync(p,'utf8'));console.log('VALID',p,fs.statSync(p).size)}
+          NODE
+      - name: Publish with rebase/retry
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/direct-sources-latest.json data/owls-latest.json data/owls-meta.json data/owls-comparison-latest.json data/screen-latest.json data/scan-display-latest.json data/scan-report-latest.json data/player-props-latest.json data/esports-derivative-schema.json data/player-prop-schema.json data/pinnacle-esports-derivative-debug.json data/esports-derivative-diagnostics.json || true
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update quota-resistant Thunderpick scan [skip ci]'
+          for i in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main && git push origin HEAD:main && exit 0
+            git rebase --abort || true
+            sleep $((i*5))
+          done
+          echo 'Publication race persisted after retries' >&2
+          exit 1
