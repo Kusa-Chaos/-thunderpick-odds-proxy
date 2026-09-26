@@ -3,8 +3,12 @@ name: Thunderpick Simple Hourly Board
 on:
   workflow_dispatch:
   schedule:
-    # Offset from the legacy scan and from the top of the hour to reduce queue delays.
     - cron: '27 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/simple-opportunity-board.mjs'
+      - '.github/workflows/thunderpick-simple-hourly.yml'
 
 permissions:
   contents: write
