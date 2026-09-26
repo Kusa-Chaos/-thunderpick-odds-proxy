@@ -16,38 +16,53 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Patch production scan cadence and quota guard
+      - name: Patch production scan cadence
         run: |
           python3 - <<'PY'
           from pathlib import Path
+
           p=Path('.github/workflows/thunderpick-comparison.yml')
           s=p.read_text()
           s=s.replace('  workflow_run:\n    workflows: ["Thunderpick Owls Snapshot"]\n    types: [completed]\n','')
-          old="""    # Redundant off-peak cron slots: GitHub can delay/drop scheduled events under load.\n    # Four independent chances per hour keep the published scan fresh even if one slot is missed.\n    - cron: '7 * * * *'\n    - cron: '22 * * * *'\n    - cron: '37 * * * *'\n    - cron: '52 * * * *'"""
-          new="""    # One production scan per hour. The watchdog handles genuinely stale runs.\n    - cron: '17 * * * *'"""
+          old="""    # Redundant off-peak cron slots: GitHub can delay/drop scheduled events under load.
+    # Four independent chances per hour keep the published scan fresh even if one slot is missed.
+    - cron: '7 * * * *'
+    - cron: '22 * * * *'
+    - cron: '37 * * * *'
+    - cron: '52 * * * *'"""
+          new="""    # One production scan per hour. The watchdog handles genuinely stale runs.
+    - cron: '17 * * * *'"""
           if old not in s: raise SystemExit('expected comparison schedule block not found')
           s=s.replace(old,new)
           s=s.replace("    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}\n",'')
-          s=s.replace('run: node scripts/propline-enrich.mjs','run: node scripts/run-propline-guarded.mjs')
+          # propline-enrich.mjs now contains its own quota circuit breaker; keep the direct invocation.
           p.write_text(s)
 
-          # The comparison workflow refreshes Thunderpick itself. Keep the standalone
-          # snapshot manual-only so it cannot trigger redundant API work.
+          # Comparison refreshes Thunderpick itself. Keep standalone snapshot manual-only.
           p=Path('.github/workflows/thunderpick-owls.yml')
           s=p.read_text()
-          s=s.replace("  schedule:\n    # Hourly refresh. Re-register schedule by changing minute.\n    - cron: '37 * * * *'\n",'')
-          p.write_text(s)
+          old="  schedule:\n    # Hourly refresh. Re-register schedule by changing minute.\n    - cron: '37 * * * *'\n"
+          if old not in s: raise SystemExit('expected Owls schedule block not found')
+          p.write_text(s.replace(old,''))
 
-          # Watch once per hour, after enough time for the production scan to finish.
+          # One recovery check per hour, after the production scan has had time to finish.
           p=Path('.github/workflows/thunderpick-scan-watchdog.yml')
-          s=p.read_text().replace("    - cron: '13 * * * *'\n    - cron: '43 * * * *'","    - cron: '47 * * * *'")
-          p.write_text(s)
+          s=p.read_text()
+          old="    - cron: '13 * * * *'\n    - cron: '43 * * * *'"
+          if old not in s: raise SystemExit('expected watchdog schedule block not found')
+          p.write_text(s.replace(old,"    - cron: '47 * * * *'"))
           PY
+      - name: Verify intended configuration
+        run: |
+          grep -A4 '^  schedule:' .github/workflows/thunderpick-comparison.yml
+          ! grep -q '^  schedule:' .github/workflows/thunderpick-owls.yml
+          grep -A2 '^  schedule:' .github/workflows/thunderpick-scan-watchdog.yml
+          grep -q 'node scripts/propline-enrich.mjs' .github/workflows/thunderpick-comparison.yml
       - name: Commit repair
         run: |
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add .github/workflows/thunderpick-comparison.yml .github/workflows/thunderpick-owls.yml .github/workflows/thunderpick-scan-watchdog.yml
           git diff --cached --check
-          git commit -m 'Repair scan cadence and add quota circuit breaker [skip ci]'
+          git commit -m 'Repair hourly scan cadence [skip ci]'
           git push origin HEAD:main
