@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '22 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/direct-public-sources.mjs'
+      - 'scripts/merge-direct-sources.mjs'
+      - 'scripts/run-comparison-with-direct.mjs'
+      - '.github/workflows/thunderpick-direct-production.yml'
 
 permissions:
   contents: write
