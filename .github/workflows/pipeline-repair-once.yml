@@ -1,0 +1,53 @@
+name: Pipeline Repair Once
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/pipeline-repair-once.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Patch production scan cadence and quota guard
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/thunderpick-comparison.yml')
+          s=p.read_text()
+          s=s.replace('  workflow_run:\n    workflows: ["Thunderpick Owls Snapshot"]\n    types: [completed]\n','')
+          old="""    # Redundant off-peak cron slots: GitHub can delay/drop scheduled events under load.\n    # Four independent chances per hour keep the published scan fresh even if one slot is missed.\n    - cron: '7 * * * *'\n    - cron: '22 * * * *'\n    - cron: '37 * * * *'\n    - cron: '52 * * * *'"""
+          new="""    # One production scan per hour. The watchdog handles genuinely stale runs.\n    - cron: '17 * * * *'"""
+          if old not in s: raise SystemExit('expected comparison schedule block not found')
+          s=s.replace(old,new)
+          s=s.replace("    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}\n",'')
+          s=s.replace('run: node scripts/propline-enrich.mjs','run: node scripts/run-propline-guarded.mjs')
+          p.write_text(s)
+
+          # The comparison workflow refreshes Thunderpick itself. Keep the standalone
+          # snapshot manual-only so it cannot trigger redundant API work.
+          p=Path('.github/workflows/thunderpick-owls.yml')
+          s=p.read_text()
+          s=s.replace("  schedule:\n    # Hourly refresh. Re-register schedule by changing minute.\n    - cron: '37 * * * *'\n",'')
+          p.write_text(s)
+
+          # Watch once per hour, after enough time for the production scan to finish.
+          p=Path('.github/workflows/thunderpick-scan-watchdog.yml')
+          s=p.read_text().replace("    - cron: '13 * * * *'\n    - cron: '43 * * * *'","    - cron: '47 * * * *'")
+          p.write_text(s)
+          PY
+      - name: Commit repair
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add .github/workflows/thunderpick-comparison.yml .github/workflows/thunderpick-owls.yml .github/workflows/thunderpick-scan-watchdog.yml
+          git diff --cached --check
+          git commit -m 'Repair scan cadence and add quota circuit breaker [skip ci]'
+          git push origin HEAD:main
