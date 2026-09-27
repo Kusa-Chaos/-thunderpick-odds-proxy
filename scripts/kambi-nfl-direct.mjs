@@ -36,7 +36,7 @@ try{
   const nfl=[];for(const row of events){const e=row?.event||{};if(e.sport!=='AMERICAN_FOOTBALL'||!current(e.start)||String(e.group||'').toUpperCase()!=='NFL'||e.state==='FINISHED')continue;nfl.push({e,row});}health.nflEvents=nfl.length;
   const deep=await mapLimit(nfl,8,async x=>{health.deepRequests++;return{...x,offers:(await getJson(`${ROOT}/betoffer/event/${x.e.id}.json?lang=en_GB&market=GB&includeParticipants=true`))?.betOffers||[]}});
   for(const x of deep){if(x?.__error){health.errors.push(x.__error);continue}const e=x.e,t=teams(e);if(!t)continue;const markets=[];for(const offer of x.offers||[]){const m=normalize(offer,e);if(!m)continue;markets.push(m);health.marketCount++;if(m.key==='h2h')health.h2h++;else if(m.key==='spreads')health.spreads++;else if(m.key==='totals'){health.totals++;if(m.team)health.teamTotals++;}else if(String(m.key).startsWith('player_'))health.playerPropMarkets++;}
-    if(!markets.length)continue;out.sports['american-football'].exactV2.push({id:`unibet-kambi-nfl-direct:${e.id}`,home_team:t[0],away_team:t[1],commence_time:e.start,live:false,bookmakers:[{key:'unibet-kambi-nfl-direct',title:'Unibet/Kambi NFL Direct',markets}]});health.acceptedEvents++;}
+    if(!markets.length)continue;out.sports['american-football'].exactV2.push({id:`unibet-kambi-nfl-deep:${e.id}`,home_team:t[0],away_team:t[1],commence_time:e.start,live:false,bookmakers:[{key:'unibet-kambi-direct',title:'Unibet/Kambi Direct',markets}]});health.acceptedEvents++;}
   health.ok=true;health.status=200;
 }catch(e){health.errors.push(String(e?.message||e));health.status=500;}
 for(const s of Object.keys(out.sports||{}))out.sports[s].exactV2EventCount=(out.sports[s].exactV2||[]).length;
