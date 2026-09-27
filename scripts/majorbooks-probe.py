@@ -30,11 +30,11 @@ def sample_props(client, book, sport):
         text = f"{getattr(c, 'category_name', '')} {getattr(c, 'subcategory_name', '')}"
         if rx.search(text):
             selected.append(c)
-    # Probe a bounded set so this stays lightweight and does not hammer the books.
     selected = selected[:8]
     prop_count = 0
     errors = []
     names = []
+    samples = []
     for c in selected:
         names.append({
             "category": getattr(c, "category_name", None),
@@ -48,12 +48,27 @@ def sample_props(client, book, sport):
                 book=book,
             ) or []
             prop_count += len(props)
+            for p in props:
+                if len(samples) >= 12:
+                    break
+                if getattr(p, "line", None) is None:
+                    continue
+                samples.append({
+                    "player": getattr(p, "player", None),
+                    "market": getattr(p, "market", None),
+                    "line": getattr(p, "line", None),
+                    "over": getattr(p, "over_odds", None),
+                    "under": getattr(p, "under_odds", None),
+                    "game": getattr(p, "game", None),
+                    "eventId": getattr(p, "event_id", None),
+                })
         except Exception as e:
             errors.append(f"{getattr(c, 'subcategory_name', None) or getattr(c, 'category_name', None)}: {type(e).__name__}: {e}")
     return {
         "categories": len(cats),
         "selectedCategories": names,
         "props": prop_count,
+        "samples": samples,
         "errors": errors[:5],
     }
 
