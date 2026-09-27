@@ -25,6 +25,7 @@ on:
       - 'scripts/bovada-nfl-direct.mjs'
       - 'scripts/bovada-traditional-direct.mjs'
       - 'scripts/fanduel-direct.py'
+      - 'scripts/fanduel-props-direct.py'
       - 'scripts/draftkings-nfl-direct.py'
       - 'scripts/draftkings-traditional-direct.py'
       - 'scripts/merge-direct-sources.mjs'
@@ -144,6 +145,9 @@ jobs:
       - name: Add FanDuel NFL NBA MLB game lines
         continue-on-error: true
         run: python scripts/fanduel-direct.py
+      - name: Add FanDuel NFL NBA MLB exact player props
+        continue-on-error: true
+        run: python scripts/fanduel-props-direct.py
       - name: Add DraftKings NFL exact two-sided player props
         continue-on-error: true
         run: python scripts/draftkings-nfl-direct.py
