@@ -40,7 +40,7 @@ function tpFresh(){const m=meta?.sports?.['american-football'];return Boolean(m&
 
 function parseTpProp(m={}){
   const text=[m.nickName,m.name].filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
-  const pm=text.match(/\bPlayer\s+(.+?)\s*-\s*Total\s+(Passing Yards|Rushing Yards|Receiving Yards|Receptions|Passing Touchdowns?|Touchdown Passes Thrown)\s+Over\/Under\b/i);
+  const pm=text.match(/\bPlayer\s+(.+?)\s*-\s*Total\s+(Passing Yards|Rushing Yards|Receiving Yards|Receptions|Passing Touchdowns?|Touchdown Passes Thrown)(?:\s+Over\/Under)?\b/i);
   if(!pm)return null;
   const player=pm[1].trim(),stat=STAT_MAP.get(pm[2].toLowerCase());if(!player||!stat)return null;
   const sels=(m.selections||[]).filter(s=>Number(s.odds)>1);
