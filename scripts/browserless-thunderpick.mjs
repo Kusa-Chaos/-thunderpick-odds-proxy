@@ -1,3 +1,4 @@
+// residential fallback probe: 2026-09-26
 import { chromium } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -63,7 +64,6 @@ const context = browser.contexts()[0];
 const pages = context.pages();
 const page = pages[0] || await context.newPage();
 
-// Keep residential bandwidth low after the initial Cloudflare-unblock navigation.
 await page.route('**/*', route => {
   const type = route.request().resourceType();
   if (['image','media','font'].includes(type)) return route.abort();
@@ -83,11 +83,8 @@ page.on('response', async response => {
 
 const snapshots = [];
 snapshots.push(await snapshot(page, 'esports-unblocked'));
-
 await page.goto(SECOND_URL, { waitUntil:'domcontentloaded', timeout:30000 });
 snapshots.push(await snapshot(page, 'sports'));
-
-// Reload esports after response listeners are attached so we can discover hidden JSON/XHR feeds.
 await page.goto(START_URL, { waitUntil:'domcontentloaded', timeout:30000 });
 snapshots.push(await snapshot(page, 'esports-network-capture'));
 
