@@ -12,12 +12,15 @@ const aws=await read(SNAP,null);
 const awsMeta=await read(META,null);
 if(!aws||!awsMeta){console.log('AWS_TP_SEED_SKIP missing snapshot/meta');process.exit(0);}
 const record=aws?.sports?.[SPORT];
-const metaRecord=awsMeta?.sports?.[SPORT];
 const fetchedAt=record?.fetchedAt||aws?.generatedAt||awsMeta?.generatedAt;
 const age=Date.now()-Date.parse(fetchedAt||'');
 const rows=record?.data?.data;
-const healthy=record?.ok===true&&record?.httpOk===true&&Number(record?.status)===200&&record?.usedFallback!==true&&Array.isArray(rows)&&rows.length>0&&Number.isFinite(age)&&age>=-5*60*1000&&age<=MAX_AGE_MS;
-if(!healthy){console.log('AWS_TP_SEED_SKIP',JSON.stringify({fetchedAt,age,eventCount:record?.eventCount,status:record?.status,ok:record?.ok,failures:record?.deepMarketFailures}));process.exit(0);}
+const failures=Number(record?.deepMarketFailures??awsMeta?.sports?.[SPORT]?.deepMarketFailures??0);
+const successes=Number(record?.deepMarketSuccess??awsMeta?.sports?.[SPORT]?.deepMarketSuccess??0);
+const requested=Number(record?.deepMarketRequests??awsMeta?.sports?.[SPORT]?.deepMarketRequests??0);
+const complete=failures===0&&successes>0&&successes===requested;
+const healthy=record?.ok===true&&record?.httpOk===true&&Number(record?.status)===200&&record?.usedFallback!==true&&complete&&Array.isArray(rows)&&rows.length===successes&&Number.isFinite(age)&&age>=-5*60*1000&&age<=MAX_AGE_MS;
+if(!healthy){console.log('AWS_TP_SEED_SKIP',JSON.stringify({fetchedAt,age,eventCount:record?.eventCount,status:record?.status,ok:record?.ok,requested,successes,failures}));process.exit(0);}
 
 const target=await read(TARGET,{generatedAt:null,source:null,format:null,sports:{}});
 const targetMeta=await read(TARGET_META,{generatedAt:null,source:null,format:null,sports:{}});
@@ -35,7 +38,7 @@ targetMeta.quotaResetMonth=null;
 targetMeta.successfulSports=[...new Set([...(targetMeta.successfulSports||[]).filter(x=>x!==SPORT),SPORT])];
 targetMeta.failedSports=(targetMeta.failedSports||[]).filter(x=>x!==SPORT);
 targetMeta.coverageAnomalies=(targetMeta.coverageAnomalies||[]).filter(x=>x?.sport!==SPORT);
-targetMeta.awsSeed={ok:true,fetchedAt,ageMs:age,eventCount:rows.length,retainedMarketCount:record?.retainedMarketCount??null,playerPropLikeMarkets:record?.playerPropLikeMarkets??null,deepMarketFailures:record?.deepMarketFailures??null,source:record?.source||aws?.source||null};
+targetMeta.awsSeed={ok:true,fetchedAt,ageMs:age,eventCount:rows.length,retainedMarketCount:record?.retainedMarketCount??null,playerPropLikeMarkets:record?.playerPropLikeMarkets??null,deepMarketRequests:requested,deepMarketSuccess:successes,deepMarketFailures:failures,source:record?.source||aws?.source||null};
 
 await fs.writeFile(TARGET,JSON.stringify(target));
 await fs.writeFile(TARGET_META,JSON.stringify(targetMeta,null,2));
