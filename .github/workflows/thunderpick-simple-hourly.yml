@@ -20,6 +20,7 @@ on:
       - 'scripts/betway-direct.mjs'
       - 'scripts/pinnacle-direct.mjs'
       - 'scripts/kambi-direct.mjs'
+      - 'scripts/kambi-traditional-direct.mjs'
       - 'scripts/kambi-nfl-direct.mjs'
       - 'scripts/bovada-nfl-direct.mjs'
       - 'scripts/merge-direct-sources.mjs'
@@ -125,8 +126,10 @@ jobs:
         run: node scripts/betway-direct.mjs
       - name: Add Pinnacle independent bookmaker source
         run: node scripts/pinnacle-direct.mjs
-      - name: Add Unibet Kambi deep market and prop source
+      - name: Add Unibet Kambi esports deep market and prop source
         run: node scripts/kambi-direct.mjs
+      - name: Add Unibet Kambi traditional-sports deep markets and props
+        run: node scripts/kambi-traditional-direct.mjs
       - name: Add Unibet Kambi NFL lines and player props
         run: node scripts/kambi-nfl-direct.mjs
       - name: Add Bovada NFL lines and player props
