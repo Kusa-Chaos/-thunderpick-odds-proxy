@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '27 * * * *'
+    - cron: '42 * * * *'
+    - cron: '57 * * * *'
   push:
     branches: [main]
     paths:
@@ -29,13 +31,68 @@ permissions:
 
 concurrency:
   group: thunderpick-simple-hourly
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      run_scan: ${{ steps.decide.outputs.run_scan }}
+      reason: ${{ steps.decide.outputs.reason }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decide whether this tick needs a real scan
+        id: decide
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE_EXPR: ${{ github.event.schedule }}
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const event = process.env.EVENT_NAME || '';
+          const schedule = process.env.SCHEDULE_EXPR || '';
+          let run = true;
+          let reason = `${event || 'unknown'} trigger`;
+
+          // Manual runs and code pushes always execute a real scan.
+          if (event === 'schedule' && schedule !== '27 * * * *') {
+            let generatedAt = null;
+            let ageMin = Infinity;
+            try {
+              const board = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json', 'utf8'));
+              generatedAt = board.generatedAt || null;
+              const ts = Date.parse(generatedAt || '');
+              if (Number.isFinite(ts)) ageMin = (Date.now() - ts) / 60000;
+            } catch (e) {
+              reason = `backup tick could not read board: ${e.message}`;
+            }
+
+            // Backup ticks are recovery opportunities only. A board newer than
+            // 50 minutes proves the primary/current cycle already published.
+            if (Number.isFinite(ageMin) && ageMin <= 50) {
+              run = false;
+              reason = `backup tick skipped; board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`;
+            } else {
+              run = true;
+              reason = `backup tick activated; board is stale (${Number.isFinite(ageMin) ? ageMin.toFixed(1) : 'unknown'} min old, ${generatedAt || 'missing'})`;
+            }
+          } else if (event === 'schedule') {
+            reason = 'primary :27 hourly tick';
+          }
+
+          console.log('SCAN_GATE', { event, schedule, run, reason });
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `run_scan=${run ? 'true' : 'false'}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `reason=${reason.replace(/\n/g,' ')}\n`);
+          NODE
+
   scan:
+    needs: gate
+    if: needs.gate.outputs.run_scan == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 14
     steps:
+      - name: Gate reason
+        run: echo "${{ needs.gate.outputs.reason }}"
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
