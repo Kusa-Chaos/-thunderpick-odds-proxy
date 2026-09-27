@@ -1,0 +1,37 @@
+name: Thunderpick First-Party NFL Detail Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/thunderpick-nfl-detail-probe.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+      - name: Install dependencies
+        run: npm install puppeteer-core@24 --no-save
+      - name: Probe one current NFL event detail
+        env:
+          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: node scripts/thunderpick-nfl-detail-probe.mjs
+      - name: Publish probe result
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/thunderpick-nfl-detail-probe.json
+          git commit -m 'Update Thunderpick NFL detail probe [skip ci]' || exit 0
+          git pull --rebase origin main
+          git push
