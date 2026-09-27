@@ -1,0 +1,26 @@
+name: BetMGM Caesars Prop Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/betmgm-caesars-prop-probe.py'
+      - '.github/workflows/betmgm-caesars-prop-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install TLS client
+        run: pip install --disable-pip-version-check 'curl_cffi==0.16.3'
+      - name: Probe public player-prop groups
+        run: python scripts/betmgm-caesars-prop-probe.py
