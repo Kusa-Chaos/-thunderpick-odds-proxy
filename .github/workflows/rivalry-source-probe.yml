@@ -1,0 +1,26 @@
+name: Rivalry Esports Source Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/rivalry-source-probe.py'
+      - '.github/workflows/rivalry-source-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install TLS client
+        run: pip install --disable-pip-version-check 'curl_cffi==0.16.3'
+      - name: Probe Rivalry public API
+        run: python scripts/rivalry-source-probe.py
