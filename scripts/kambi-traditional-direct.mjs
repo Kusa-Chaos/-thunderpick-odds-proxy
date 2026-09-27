@@ -33,13 +33,16 @@ function handicap(offer,teams){const os=(offer?.outcomes||[]).filter(o=>dec(o.od
 function overUnder(offer,player=null){const os=(offer?.outcomes||[]).filter(o=>dec(o.odds)>1);const over=os.find(o=>/^over$/i.test(String(o.label||o.englishLabel||''))),under=os.find(o=>/^under$/i.test(String(o.label||o.englishLabel||'')));if(!over||!under)return null;const p=point(over.line??under.line);if(p==null)return null;const x=player?{description:player,player}:{};return{line:p,outcomes:[{name:`Over ${p}`,price:dec(over.odds),point:p,...x},{name:`Under ${p}`,price:dec(under.odds),point:p,...x}]}}
 function participantPlayer(offer,teams){const vals=[...new Set((offer?.outcomes||[]).map(o=>String(o.participant||'').trim()).filter(Boolean).filter(v=>!isTeamTarget(v,teams)))];return vals.length===1?vals[0]:null}
 function namedPlayer(raw,teams){const v=stripScopeSuffix(raw);if(!v||/^the\s+player\b/i.test(v)||isTeamTarget(v,teams))return null;return v}
-function marketBase(key,name,title,scope,line,outcomes,extra={}){return{key,name,title,scope,line,last_update:latestDate(outcomes?.map?outcomes:[]),outcomes,...extra}}
 function prop(offer,player,stat,label,scope={map:null,round:null,set:null,period:'full'}){player=String(player||'').trim();if(!player)return null;const q=overUnder(offer,player);if(!q)return null;return{key:`player_${stat}`,name:`Player ${player} ${label}`,title:label,description:player,player,specifiers:`player=${encodeURIComponent(player)}|stat=${stat}|threshold=${q.line}`,scope,line:q.line,last_update:latestDate(offer.outcomes||[]),outcomes:q.outcomes}}
 function teamTotal(offer,target,title,period='full'){const q=overUnder(offer);if(!q)return null;return{key:'totals',name:title,title,team:target,scope:{map:null,round:null,set:null,period},line:q.line,last_update:latestDate(offer.outcomes||[]),outcomes:q.outcomes}}
 function genericOrNamedProp(offer,label,teams,word,stat,scope={map:null,round:null,set:null,period:'full'}){
  const generic=new RegExp(`^(?:Total )?${word} by the Player\\b`,'i');
  if(generic.test(label)){const player=participantPlayer(offer,teams);return player?prop(offer,player,stat,word,scope):null;}
  const named=new RegExp(`^(?:Total )?${word} by (.+)$`,'i');const m=label.match(named);if(!m)return null;const player=namedPlayer(m[1],teams);return player?prop(offer,player,stat,word,scope):null;
+}
+function exactPlayerLabelProp(offer,label,teams,patterns){
+ for(const [rx,stat,title] of patterns){if(!rx.test(label))continue;const player=participantPlayer(offer,teams);if(!player)return null;return prop(offer,player,stat,title);}
+ return null;
 }
 function normalize(offer,e){
  const label=String(offer?.criterion?.englishLabel||offer?.criterion?.label||'').trim();const teams=eventTeams(e);if(!teams)return null;const sport=e.sport;
@@ -49,6 +52,7 @@ function normalize(offer,e){
   if(/^Total Points - Including Overtime$/i.test(label)){const q=overUnder(offer);if(q)return{key:'totals',name:'Total Points (Incl. Overtime)',title:label,scope:{map:null,round:null,set:null,period:'full'},line:q.line,last_update:latestDate(offer.outcomes||[]),outcomes:q.outcomes};}
   let m=label.match(/^Total Points by (.+?) - Including Overtime$/i);if(m&&isTeamTarget(m[1],teams))return teamTotal(offer,stripScopeSuffix(m[1]),label,'full');
   m=label.match(/^Total Points by (.+?) - 1st Half$/i);if(m&&isTeamTarget(m[1],teams))return teamTotal(offer,stripScopeSuffix(m[1]),label,'first_half');
+  const exact=exactPlayerLabelProp(offer,label,teams,[[/^Points scored by the player\b/i,'points','Points'],[/^(?:3|Three)-?point field goals made by the player\b/i,'three_pointers','Three Pointers'],[/^Rebounds by the player\b/i,'rebounds','Rebounds'],[/^Assists by the player\b/i,'assists','Assists'],[/^Steals by the player\b/i,'steals','Steals'],[/^Blocks by the player\b/i,'blocks','Blocks'],[/^Turnovers by the player\b/i,'turnovers','Turnovers']]);if(exact)return exact;
   const stats=[['Points','points'],['Rebounds','rebounds'],['Assists','assists'],['Three Pointers','three_pointers'],['3 Pointers','three_pointers'],['Steals','steals'],['Blocks','blocks'],['Turnovers','turnovers']];
   for(const [word,stat] of stats){const p=genericOrNamedProp(offer,label,teams,word,stat);if(p)return p;}
  }
@@ -57,7 +61,8 @@ function normalize(offer,e){
   if(/^Run Line$/i.test(label)){const outcomes=handicap(offer,teams);if(outcomes)return{key:'spreads',name:'Run Line',title:label,scope:{map:null,round:null,set:null,period:'full'},line:Math.abs(outcomes[0].point),last_update:latestDate(offer.outcomes||[]),outcomes};}
   if(/^Total Runs$/i.test(label)){const q=overUnder(offer);if(q)return{key:'totals',name:'Total Runs',title:label,scope:{map:null,round:null,set:null,period:'full'},line:q.line,last_update:latestDate(offer.outcomes||[]),outcomes:q.outcomes};}
   let m=label.match(/^Total Runs by (.+)$/i);if(m&&isTeamTarget(m[1],teams))return teamTotal(offer,stripScopeSuffix(m[1]),label,'full');
-  const stats=[['Strikeouts','strikeouts'],['Hits','hits'],['Home Runs','home_runs'],['Total Bases','total_bases'],['RBIs','rbi'],['Walks','walks']];
+  const exact=exactPlayerLabelProp(offer,label,teams,[[/^Total Strikeouts thrown by the Player\b/i,'strikeouts','Strikeouts'],[/^Total Bases Recorded by the Player\b/i,'total_bases','Total Bases'],[/^Total RBI by the Player\b/i,'rbi','RBI'],[/^Total Walks by the Player\b/i,'walks','Walks'],[/^Total Hits by the Player\b/i,'hits','Hits'],[/^Total Outs Recorded by the Player\b/i,'outs_recorded','Outs Recorded']]);if(exact)return exact;
+  const stats=[['Strikeouts','strikeouts'],['Hits','hits'],['Home Runs','home_runs'],['Total Bases','total_bases'],['RBI','rbi'],['RBIs','rbi'],['Walks','walks']];
   for(const [word,stat] of stats){const p=genericOrNamedProp(offer,label,teams,word,stat);if(p)return p;}
  }
  if(sport==='TENNIS'){
@@ -89,7 +94,7 @@ try{
  const deep=await mapLimit(selected,8,async x=>{health.deepRequests++;return{...x,offers:(await getJson(`${ROOT}/betoffer/event/${x.e.id}.json?lang=en_GB&market=GB&includeParticipants=true`))?.betOffers||[]}});
  const unknown=new Set();
  for(const x of deep){if(x?.__error){health.errors.push(x.__error);continue}const {e,sport}=x,teams=eventTeams(e);if(!teams)continue;health.bySport[sport].deepEvents++;const markets=[];
-  for(const offer of x.offers||[]){const m=normalize(offer,e);if(m){markets.push(m);health.marketCount++;health.bySport[sport].markets++;if(String(m.key).startsWith('player_')){health.playerPropMarkets++;health.bySport[sport].playerProps++;}}else{const label=String(offer?.criterion?.englishLabel||offer?.criterion?.label||'');if(/player|strikeout|hits|home run|total bases|rebounds|assists|three pointers|aces|double faults|shots on target/i.test(label))unknown.add(`${sport}: ${label}`);}}
+  for(const offer of x.offers||[]){const m=normalize(offer,e);if(m){markets.push(m);health.marketCount++;health.bySport[sport].markets++;if(String(m.key).startsWith('player_')){health.playerPropMarkets++;health.bySport[sport].playerProps++;}}else{const label=String(offer?.criterion?.englishLabel||offer?.criterion?.label||'');if(/player|strikeout|hits|home run|total bases|rebounds|assists|three pointers|3-point|aces|double faults|shots on target/i.test(label))unknown.add(`${sport}: ${label}`);}}
   if(!markets.length)continue;
   const event={id:`unibet-kambi-direct:${e.id}`,home_team:teams[0],away_team:teams[1],commence_time:e.start,live:false,bookmakers:[{key:'unibet-kambi-direct',title:'Unibet/Kambi Direct',markets}]};
   const arr=out.sports[sport].exactV2||=[];const idx=arr.findIndex(v=>String(v.id)===event.id);if(idx>=0)arr[idx]=event;else arr.push(event);health.acceptedEvents++;health.bySport[sport].events++;
