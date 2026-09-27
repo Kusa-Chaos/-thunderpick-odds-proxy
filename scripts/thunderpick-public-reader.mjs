@@ -17,7 +17,7 @@ const isNflEvent=e=>{
 const propLike=name=>/\bplayer\b|passing|rushing|receiving|receptions?|touchdowns?|attempts?|completions?|interceptions?/i.test(String(name||''));
 
 async function fetchText(url){
-  const r=await fetch(READER+url,{headers:{accept:'text/plain','user-agent':'Mozilla/5.0 ThunderpickCloudCollector/1.0'}});
+  const r=await fetch(READER+url,{headers:{accept:'text/plain','user-agent':'Mozilla/5.0 ThunderpickCloudCollector/1.0'},signal:AbortSignal.timeout(30000)});
   const text=await r.text();
   if(!r.ok) throw new Error(`reader HTTP ${r.status} for ${url}`);
   return text;
