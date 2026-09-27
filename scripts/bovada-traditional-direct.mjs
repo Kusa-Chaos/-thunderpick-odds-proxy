@@ -14,12 +14,14 @@ function point(v){const n=Number(v);return Number.isFinite(n)?n:null}
 function iso(ms){const n=Number(ms);return Number.isFinite(n)?new Date(n).toISOString():null}
 function current(v){const t=Number(v);return Number.isFinite(t)&&t>=NOW-5*60e3&&t<=MAX}
 function competitors(e={}){let home=null,away=null;for(const c of e.competitors||[]){if(c?.home)home=c?.name;else away=c?.name}return home&&away?[String(home),String(away)]:null}
+function norm(v=''){return String(v).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\b(?:w|women|basketball|baseball|club|bc|fc)\b/g,'').replace(/[^a-z0-9]/g,'')}
+function isTeam(v,teams=[]){const n=norm(v);return !!n&&teams.some(t=>norm(t)===n)}
 function activeOutcomes(m={}){return(m.outcomes||[]).filter(o=>o?.status==='O'&&dec(o?.price?.american)>1)}
 function ou(m,player=null){const os=activeOutcomes(m),over=os.find(o=>/^over(?:\b|\s*-)/i.test(String(o.description||''))),under=os.find(o=>/^under(?:\b|\s*-)/i.test(String(o.description||'')));if(!over||!under)return null;const p=point(over?.price?.handicap??under?.price?.handicap);if(p==null)return null;const extra=player?{description:player,player}:{};return{line:p,outcomes:[{name:`Over ${p}`,price:dec(over.price.american),point:p,...extra},{name:`Under ${p}`,price:dec(under.price.american),point:p,...extra}]}}
-function twoTeams(m,t){const os=activeOutcomes(m);if(os.length!==2)return null;const norm=x=>String(x||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');const a=os.find(o=>norm(o.description)===norm(t[0])),b=os.find(o=>norm(o.description)===norm(t[1]));if(!a||!b)return null;return[{name:t[0],price:dec(a.price.american)},{name:t[1],price:dec(b.price.american)}]}
-function spread(m,t){const os=activeOutcomes(m);if(os.length!==2)return null;const norm=x=>String(x||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');const a=os.find(o=>norm(o.description)===norm(t[0])),b=os.find(o=>norm(o.description)===norm(t[1]));if(!a||!b)return null;const pa=point(a?.price?.handicap),pb=point(b?.price?.handicap);if(pa==null||pb==null||Math.abs(pa+pb)>.001)return null;return[{name:t[0],price:dec(a.price.american),point:pa},{name:t[1],price:dec(b.price.american),point:pb}]}
+function twoTeams(m,t){const os=activeOutcomes(m);if(os.length!==2)return null;const a=os.find(o=>norm(o.description)===norm(t[0])),b=os.find(o=>norm(o.description)===norm(t[1]));if(!a||!b)return null;return[{name:t[0],price:dec(a.price.american)},{name:t[1],price:dec(b.price.american)}]}
+function spread(m,t){const os=activeOutcomes(m);if(os.length!==2)return null;const a=os.find(o=>norm(o.description)===norm(t[0])),b=os.find(o=>norm(o.description)===norm(t[1]));if(!a||!b)return null;const pa=point(a?.price?.handicap),pb=point(b?.price?.handicap);if(pa==null||pb==null||Math.abs(pa+pb)>.001)return null;return[{name:t[0],price:dec(a.price.american),point:pa},{name:t[1],price:dec(b.price.american),point:pb}]}
 function playerName(desc=''){const raw=String(desc).split(' - ').slice(1).join(' - ').trim();return raw.replace(/\s*\([A-Z0-9]{2,5}\)\s*$/i,'').trim()||null}
-function propMarket(m,key,stat,label){const player=playerName(m.description);if(!player)return null;const q=ou(m,player);if(!q)return null;return{key,name:m.description,title:m.description,description:player,player,specifiers:`player=${encodeURIComponent(player)}|stat=${stat}|threshold=${q.line}`,scope:{map:null,round:null,set:null,period:'full'},line:q.line,last_update:null,outcomes:q.outcomes,statLabel:label}}
+function propMarket(m,key,stat,label,teams){const player=playerName(m.description);if(!player||isTeam(player,teams))return null;const q=ou(m,player);if(!q)return null;return{key,name:m.description,title:m.description,description:player,player,specifiers:`player=${encodeURIComponent(player)}|stat=${stat}|threshold=${q.line}`,scope:{map:null,round:null,set:null,period:'full'},line:q.line,last_update:null,outcomes:q.outcomes,statLabel:label}}
 const BASKETBALL_PROPS=[
  [/^Total Points - /i,'player_points','points','Points'],
  [/^Total Rebounds - /i,'player_rebounds','rebounds','Rebounds'],
@@ -49,7 +51,7 @@ function normalizeMarket(m,t,sport){if(m?.status!=='O')return null;const desc=St
  if(desc==='Point Spread'||desc==='Run Line'){const outcomes=spread(m,t);if(!outcomes)return null;return{key:'spreads',name:desc,title:desc,scope:{map:null,round:null,set:null,period:'full'},line:Math.abs(outcomes[0].point),last_update:null,outcomes};}
  if(desc==='Total'||desc==='Total Points'||desc==='Total Runs'||desc==='Total Games'){const q=ou(m);if(!q)return null;return{key:'totals',name:desc,title:desc,scope:{map:null,round:null,set:null,period:'full'},line:q.line,last_update:null,outcomes:q.outcomes};}
  const dict=sport==='basketball'?BASKETBALL_PROPS:sport==='baseball'?BASEBALL_PROPS:TENNIS_PROPS;
- for(const[rx,key,stat,label]of dict){if(rx.test(desc))return propMarket(m,key,stat,label);}
+ for(const[rx,key,stat,label]of dict){if(rx.test(desc))return propMarket(m,key,stat,label,t);}
  return null;
 }
 let health={ok:false,status:null,rawEvents:0,acceptedEvents:0,marketCount:0,playerPropMarkets:0,bySport:{},errors:[],fetchedAt:new Date().toISOString()};
