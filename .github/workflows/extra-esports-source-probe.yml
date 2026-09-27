@@ -1,0 +1,36 @@
+name: Extra Esports Source Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/extra-esports-source-probe.py'
+      - '.github/workflows/extra-esports-source-probe.yml'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install direct TLS client
+        run: pip install --disable-pip-version-check 'curl_cffi==0.16.3'
+      - name: Probe Rainbet GGBET and 1xBet direct public access
+        run: python scripts/extra-esports-source-probe.py
+      - name: Publish probe diagnostics
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/extra-esports-source-probe-latest.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update extra esports source probe [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
