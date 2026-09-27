@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T00:05:37.226Z",
+  "generatedAt": "2026-09-27T00:34:54.502Z",
   "mode": "simple-discovery-first",
   "rules": {
     "action": "3+ independent exact sources and EV >= 2%, with fresh Thunderpick verification",
@@ -16,30 +16,30 @@
         "pages": 20,
         "acceptedEvents": 0,
         "rejectedStale": 7688,
-        "fetchedAt": "2026-09-27T00:05:02.669Z"
+        "fetchedAt": "2026-09-27T00:34:32.901Z"
       },
       "stake": {
         "ok": true,
         "status": 200,
         "sports": 9,
-        "scheduleFixtures": 247,
-        "detailRequests": 247,
-        "acceptedEvents": 230,
-        "marketCount": 3797,
-        "playerPropMarkets": 507,
+        "scheduleFixtures": 242,
+        "detailRequests": 242,
+        "acceptedEvents": 226,
+        "marketCount": 3547,
+        "playerPropMarkets": 348,
         "errors": [],
-        "fetchedAt": "2026-09-27T00:05:07.293Z"
+        "fetchedAt": "2026-09-27T00:34:36.256Z"
       },
       "kalshi": {
         "ok": true,
         "status": 200,
         "rawMarkets": 60000,
         "pages": 60,
-        "acceptedEvents": 13,
-        "rejectedMulti": 59955,
-        "rejectedNonSports": 28,
-        "rejectedShape": 4,
-        "fetchedAt": "2026-09-27T00:05:16.350Z"
+        "acceptedEvents": 5,
+        "rejectedMulti": 59989,
+        "rejectedNonSports": 3,
+        "rejectedShape": 3,
+        "fetchedAt": "2026-09-27T00:34:38.468Z"
       },
       "betway": {
         "ok": true,
@@ -47,43 +47,59 @@
         "fetchedPages": 6,
         "rawEvents": 100,
         "rawMarkets": 8,
-        "rawOutcomes": 908,
+        "rawOutcomes": 894,
         "acceptedEvents": 6,
         "errors": [],
-        "fetchedAt": "2026-09-27T00:05:25.689Z",
+        "fetchedAt": "2026-09-27T00:34:44.216Z",
         "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
       },
       "pinnacle": {
         "ok": true,
         "status": 200,
         "sports": 63,
-        "leagues": 304,
-        "matchups": 6283,
-        "marketRequests": 268,
-        "acceptedEvents": 92,
-        "acceptedMarkets": 364,
+        "leagues": 305,
+        "matchups": 6132,
+        "marketRequests": 279,
+        "acceptedEvents": 81,
+        "acceptedMarkets": 421,
         "playerPropMarkets": 0,
         "mapWinnerMarkets": 0,
         "errors": [
           "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
         ],
-        "fetchedAt": "2026-09-27T00:05:34.458Z"
+        "fetchedAt": "2026-09-27T00:34:50.409Z"
       },
       "kambi": {
         "ok": true,
         "status": 200,
-        "rawEvents": 851,
-        "acceptedEvents": 92,
-        "marketCount": 531,
-        "deepEventRequests": 16,
+        "rawEvents": 884,
+        "acceptedEvents": 116,
+        "marketCount": 548,
+        "deepEventRequests": 15,
         "playerPropMarkets": 210,
         "playerKillMarkets": 150,
         "playerDeathMarkets": 60,
-        "mapWinnerMarkets": 36,
-        "roundHandicapMarkets": 95,
-        "roundTotalMarkets": 78,
+        "mapWinnerMarkets": 34,
+        "roundHandicapMarkets": 93,
+        "roundTotalMarkets": 76,
         "errors": [],
-        "fetchedAt": "2026-09-27T00:05:35.543Z"
+        "fetchedAt": "2026-09-27T00:34:51.566Z"
+      },
+      "kambiNfl": {
+        "ok": true,
+        "status": 200,
+        "rawEvents": 884,
+        "nflEvents": 15,
+        "deepRequests": 15,
+        "acceptedEvents": 14,
+        "marketCount": 1863,
+        "h2h": 14,
+        "spreads": 665,
+        "totals": 768,
+        "teamTotals": 28,
+        "playerPropMarkets": 416,
+        "errors": [],
+        "fetchedAt": "2026-09-27T00:34:52.162Z"
       }
     },
     "strictSnapshotHealthy": true
@@ -91,8 +107,8 @@
   "counts": {
     "ACTION": 0,
     "WATCH": 4,
-    "SCREENING": 23,
-    "PRICE BOARD": 157,
+    "SCREENING": 21,
+    "PRICE BOARD": 183,
     "INFORMATIONAL": 75
   },
   "rows": [
@@ -113,13 +129,13 @@
         {
           "book": "stake-direct",
           "title": "Stake Direct (Oddin)",
-          "a": 1.3,
-          "b": 3.2,
-          "pA": 0.7111111111111111,
-          "pB": 0.2888888888888889,
+          "a": 1.35,
+          "b": 2.9,
+          "pA": 0.6823529411764706,
+          "pB": 0.31764705882352945,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-26T23:18:07.806Z"
+          "lastUpdate": "2026-09-27T00:18:42.455Z"
         },
         {
           "book": "unibetkambidirect",
@@ -134,7 +150,7 @@
         }
       ],
       "independentSources": 2,
-      "estimatedEV": 0.4287439613526569,
+      "estimatedEV": 0.5006393861892586,
       "startTime": "2026-09-27T01:00:00+00:00",
       "blocker": "2 independent exact Match Winner sources; WATCH pending third source and fresh Thunderpick verification"
     },
@@ -244,7 +260,7 @@
           "pB": 0.2866696388765047,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-27T00:05:17.354Z"
+          "lastUpdate": "2026-09-27T00:34:39.399Z"
         },
         {
           "book": "unibetkambidirect",
@@ -430,41 +446,6 @@
       "estimatedEV": 0.1760683760683759,
       "startTime": "2026-09-27T09:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "dota2",
-      "match": "Team Spirit vs Team Nemesis",
-      "target": "Team Nemesis",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 8,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.14634146341463414,
-          "fairDecimal": 6.833333333333334,
-          "selections": [
-            {
-              "name": "Team Spirit",
-              "odds": 1.08
-            },
-            {
-              "name": "Team Nemesis",
-              "odds": 6.3
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.1707317073170731,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "SCREENING",
@@ -671,9 +652,9 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "dota2",
-      "match": "Team Yandex vs MOUZ",
-      "target": "MOUZ",
+      "sport": "tennis",
+      "match": "Sakura Hosogi vs Hiromi Abe",
+      "target": "Hiromi Abe",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -681,62 +662,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 8.1,
+      "thunderpick": 1.34,
       "outside": [
         {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.1315136476426799,
-          "fairDecimal": 7.603773584905661,
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.7999999999999999,
+          "fairDecimal": 1.25,
           "selections": [
             {
-              "name": "Team Yandex",
-              "odds": 1.06
+              "name": "Sakura Hosogi",
+              "odds": 4.6
             },
             {
-              "name": "MOUZ",
-              "odds": 7
+              "name": "Hiromi Abe",
+              "odds": 1.15
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.06526054590570718,
-      "startTime": "2026-09-30T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "Washington Nationals vs New York Mets",
-      "target": "Washington Nationals",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.11,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.497677011707861,
-          "fairDecimal": 2.0093353248693053,
-          "selections": [
-            {
-              "name": "Washington Nationals",
-              "odds": 1.9615384615384617
-            },
-            {
-              "name": "New York Mets",
-              "odds": 1.9433962264150944
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.05009849470358674,
-      "startTime": "2026-09-26T20:05:00+00:00",
+      "estimatedEV": 0.07200000000000006,
+      "startTime": "2026-09-27T01:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -772,41 +718,6 @@
       "independentSources": 1,
       "estimatedEV": 0.044266666666666676,
       "startTime": "2026-09-26T09:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "Detroit Tigers vs Pittsburgh Pirates",
-      "target": "Pittsburgh Pirates",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.87,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5547708605204574,
-          "fairDecimal": 1.8025460080254603,
-          "selections": [
-            {
-              "name": "Detroit Tigers",
-              "odds": 2.19
-            },
-            {
-              "name": "Pittsburgh Pirates",
-              "odds": 1.7575757575757576
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.037421509173255485,
-      "startTime": "2026-09-26T17:10:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -847,8 +758,8 @@
     {
       "tier": "SCREENING",
       "sport": "baseball",
-      "match": "Seattle Mariners vs Los Angeles Angels",
-      "target": "Los Angeles Angels",
+      "match": "Detroit Tigers vs Pittsburgh Pirates",
+      "target": "Pittsburgh Pirates",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -856,62 +767,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 2.48,
+      "thunderpick": 1.87,
       "outside": [
         {
           "book": "Pinnacle Direct",
-          "fairProbability": 0.41691281964722754,
-          "fairDecimal": 2.3985829959514176,
+          "fairProbability": 0.5528282163459677,
+          "fairDecimal": 1.8088801736816305,
           "selections": [
             {
-              "name": "Seattle Mariners",
-              "odds": 1.6802721088435373
+              "name": "Detroit Tigers",
+              "odds": 2.1799999999999997
             },
             {
-              "name": "Los Angeles Angels",
-              "odds": 2.35
+              "name": "Pittsburgh Pirates",
+              "odds": 1.7633587786259541
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.03394379272512427,
-      "startTime": "2026-09-27T01:40:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Sakura Hosogi vs Hiromi Abe",
-      "target": "Hiromi Abe",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.34,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.7692307692307692,
-          "fairDecimal": 1.3,
-          "selections": [
-            {
-              "name": "Sakura Hosogi",
-              "odds": 4
-            },
-            {
-              "name": "Hiromi Abe",
-              "odds": 1.2
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.03076923076923066,
-      "startTime": "2026-09-27T01:00:00+00:00",
+      "estimatedEV": 0.03378876456695967,
+      "startTime": "2026-09-26T17:10:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -951,6 +827,76 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "Seattle Mariners vs Los Angeles Angels",
+      "target": "Los Angeles Angels",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.48,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.4118616144975288,
+          "fairDecimal": 2.4280000000000004,
+          "selections": [
+            {
+              "name": "Seattle Mariners",
+              "odds": 1.6666666666666665
+            },
+            {
+              "name": "Los Angeles Angels",
+              "odds": 2.38
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.021416803953871355,
+      "startTime": "2026-09-27T01:40:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "Philadelphia Phillies vs Tampa Bay Rays",
+      "target": "Philadelphia Phillies",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.86,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.5440238883060287,
+          "fairDecimal": 1.8381545764723333,
+          "selections": [
+            {
+              "name": "Philadelphia Phillies",
+              "odds": 1.7936507936507935
+            },
+            {
+              "name": "Tampa Bay Rays",
+              "odds": 2.1399999999999997
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.011884432249213317,
+      "startTime": "2026-09-26T23:15:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
       "sport": "lol",
       "match": "Cloud9 vs Team Liquid",
       "target": "Cloud9",
@@ -964,7 +910,7 @@
       "thunderpick": 2.7,
       "outside": [
         {
-          "book": "Unibet/Kambi Direct",
+          "book": "Stake Direct (Oddin)",
           "fairProbability": 0.37185929648241206,
           "fairDecimal": 2.689189189189189,
           "selections": [
@@ -982,6 +928,76 @@
       "independentSources": 1,
       "estimatedEV": 0.004020100502512669,
       "startTime": "2026-09-27T20:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "Milwaukee Brewers vs St. Louis Cardinals",
+      "target": "Milwaukee Brewers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.49,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.6721843886695558,
+          "fairDecimal": 1.4876870347722366,
+          "selections": [
+            {
+              "name": "Milwaukee Brewers",
+              "odds": 1.4484304932735426
+            },
+            {
+              "name": "St. Louis Cardinals",
+              "odds": 2.9699999999999998
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.0015547391176380376,
+      "startTime": "2026-09-26T23:10:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "Athletics vs Houston Astros",
+      "target": "Houston Astros",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.67,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.5984876890388702,
+          "fairDecimal": 1.6708781455570636,
+          "selections": [
+            {
+              "name": "Athletics",
+              "odds": 2.44
+            },
+            {
+              "name": "Houston Astros",
+              "odds": 1.6369426751592355
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0005255593050867979,
+      "startTime": "2026-09-27T01:40:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1414,41 +1430,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "LGD Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.77,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.549597855227882,
-          "fairDecimal": 1.8195121951219515,
-          "selections": [
-            {
-              "name": "LGD Gaming",
-              "odds": 1.68
-            },
-            {
-              "name": "Xtreme Gaming",
-              "odds": 2.05
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.027211796246648934,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "JD Gaming vs FUT Esports",
       "target": "FUT Esports",
@@ -1543,6 +1524,146 @@
       "independentSources": 1,
       "estimatedEV": -0.02915742793791576,
       "startTime": "2026-09-27T08:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Buffalo Bills",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.29,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.7495069033530573,
+          "fairDecimal": 1.3342105263157893,
+          "selections": [
+            {
+              "name": "Buffalo Bills",
+              "odds": 1.27
+            },
+            {
+              "name": "Los Angeles Chargers",
+              "odds": 3.8
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03313609467455614,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Detroit Lions vs New York Jets",
+      "target": "Detroit Lions",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.33,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.7261410788381742,
+          "fairDecimal": 1.3771428571428572,
+          "selections": [
+            {
+              "name": "Detroit Lions",
+              "odds": 1.32
+            },
+            {
+              "name": "New York Jets",
+              "odds": 3.5
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.034232365145228205,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "tennis",
+      "match": "Nishesh Basavareddy vs Dylan Dietrich",
+      "target": "Dylan Dietrich",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.54,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.38,
+          "fairDecimal": 2.6315789473684212,
+          "selections": [
+            {
+              "name": "Nishesh Basavareddy",
+              "odds": 1.52
+            },
+            {
+              "name": "Dylan Dietrich",
+              "odds": 2.48
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03479999999999994,
+      "startTime": "2026-09-26T22:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Tampa Bay Buccaneers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.04,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.47258485639686687,
+          "fairDecimal": 2.116022099447514,
+          "selections": [
+            {
+              "name": "Tampa Bay Buccaneers",
+              "odds": 2.02
+            },
+            {
+              "name": "Minnesota Vikings",
+              "odds": 1.81
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03592689295039153,
+      "startTime": "2026-09-27T20:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1724,6 +1845,76 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Dallas Cowboys",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.42,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.39698492462311563,
+          "fairDecimal": 2.5189873417721516,
+          "selections": [
+            {
+              "name": "Dallas Cowboys",
+              "odds": 2.4
+            },
+            {
+              "name": "Baltimore Ravens",
+              "odds": 1.58
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.039296482412060185,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "San Francisco 49ers vs Arizona Cardinals",
+      "target": "San Francisco 49ers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.23,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.7809694793536804,
+          "fairDecimal": 1.2804597701149425,
+          "selections": [
+            {
+              "name": "San Francisco 49ers",
+              "odds": 1.22
+            },
+            {
+              "name": "Arizona Cardinals",
+              "odds": 4.35
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03940754039497307,
+      "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "dota2",
       "match": "LGD Gaming vs Xtreme",
       "target": "LGD Gaming",
@@ -1843,6 +2034,76 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Washington Commanders vs Seattle Seahawks",
+      "target": "Seattle Seahawks",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.26,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.7604562737642586,
+          "fairDecimal": 1.315,
+          "selections": [
+            {
+              "name": "Washington Commanders",
+              "odds": 4
+            },
+            {
+              "name": "Seattle Seahawks",
+              "odds": 1.26
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.041825095057034134,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Kansas City Chiefs",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.14,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.8403361344537814,
+          "fairDecimal": 1.1900000000000002,
+          "selections": [
+            {
+              "name": "Miami Dolphins",
+              "odds": 6
+            },
+            {
+              "name": "Kansas City Chiefs",
+              "odds": 1.14
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04201680672268926,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "100 Thieves vs T1",
       "target": "100 Thieves",
@@ -1934,9 +2195,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "PariVision vs Level UP",
-      "target": "Level UP",
+      "sport": "american-football",
+      "match": "Jacksonville Jaguars vs New England Patriots",
+      "target": "New England Patriots",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -1944,27 +2205,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 9.3,
+      "thunderpick": 2.31,
       "outside": [
         {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.10269192422731803,
-          "fairDecimal": 9.737864077669904,
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.4141414141414142,
+          "fairDecimal": 2.414634146341463,
           "selections": [
             {
-              "name": "PARIVISION",
-              "odds": 1.03
+              "name": "Jacksonville Jaguars",
+              "odds": 1.64
             },
             {
-              "name": "Level Up",
-              "odds": 9
+              "name": "New England Patriots",
+              "odds": 2.32
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.04496510468594228,
-      "startTime": "2026-09-29T10:00:00+00:00",
+      "estimatedEV": -0.043333333333333224,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2060,9 +2321,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "Aurora Gaming vs GamerLegion",
-      "target": "GamerLegion",
+      "sport": "american-football",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Cincinnati Bengals",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -2070,27 +2331,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 4.13,
+      "thunderpick": 1.51,
       "outside": [
         {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.23076923076923073,
-          "fairDecimal": 4.333333333333334,
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.6310679611650486,
+          "fairDecimal": 1.5846153846153845,
           "selections": [
             {
-              "name": "Aurora Gaming",
-              "odds": 1.2
+              "name": "Pittsburgh Steelers",
+              "odds": 2.6
             },
             {
-              "name": "GamerLegion",
-              "odds": 4
+              "name": "Cincinnati Bengals",
+              "odds": 1.52
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.04692307692307718,
-      "startTime": "2026-09-29T16:00:00+00:00",
+      "estimatedEV": -0.04708737864077661,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2165,6 +2426,76 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Indianapolis Colts vs Houston Texans",
+      "target": "Houston Texans",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.76,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.5390625,
+          "fairDecimal": 1.855072463768116,
+          "selections": [
+            {
+              "name": "Indianapolis Colts",
+              "odds": 2.07
+            },
+            {
+              "name": "Houston Texans",
+              "odds": 1.77
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05125000000000002,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Denver Broncos vs Los Angeles Rams",
+      "target": "Los Angeles Rams",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.76,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.5376623376623377,
+          "fairDecimal": 1.859903381642512,
+          "selections": [
+            {
+              "name": "Denver Broncos",
+              "odds": 2.07
+            },
+            {
+              "name": "Los Angeles Rams",
+              "odds": 1.78
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0537142857142856,
+      "startTime": "2026-09-28T00:20:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Fabian Marozsan vs Kyrian Jacquet",
       "target": "Kyrian Jacquet",
@@ -2225,6 +2556,146 @@
       "estimatedEV": -0.0546215139442231,
       "startTime": "2026-09-28T06:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Cleveland Browns vs Carolina Panthers",
+      "target": "Carolina Panthers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.69,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.5592783505154639,
+          "fairDecimal": 1.7880184331797235,
+          "selections": [
+            {
+              "name": "Cleveland Browns",
+              "odds": 2.17
+            },
+            {
+              "name": "Carolina Panthers",
+              "odds": 1.71
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05481958762886596,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "New York Giants",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.69,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.5592783505154639,
+          "fairDecimal": 1.7880184331797235,
+          "selections": [
+            {
+              "name": "New York Giants",
+              "odds": 1.71
+            },
+            {
+              "name": "Tennessee Titans",
+              "odds": 2.17
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05481958762886596,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New Orleans Saints vs Las Vegas Raiders",
+      "target": "Las Vegas Raiders",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.42,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.39054726368159204,
+          "fairDecimal": 2.5605095541401273,
+          "selections": [
+            {
+              "name": "New Orleans Saints",
+              "odds": 1.57
+            },
+            {
+              "name": "Las Vegas Raiders",
+              "odds": 2.45
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05487562189054729,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New Orleans Saints vs Las Vegas Raiders",
+      "target": "New Orleans Saints",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.55,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.609452736318408,
+          "fairDecimal": 1.6408163265306122,
+          "selections": [
+            {
+              "name": "New Orleans Saints",
+              "odds": 1.57
+            },
+            {
+              "name": "Las Vegas Raiders",
+              "odds": 2.45
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.055348258706467535,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "PRICE BOARD",
@@ -2294,6 +2765,111 @@
       "independentSources": 1,
       "estimatedEV": -0.056134453781512605,
       "startTime": "2026-09-27T16:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Denver Broncos vs Los Angeles Rams",
+      "target": "Denver Broncos",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.04,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.4623376623376624,
+          "fairDecimal": 2.1629213483146064,
+          "selections": [
+            {
+              "name": "Denver Broncos",
+              "odds": 2.07
+            },
+            {
+              "name": "Los Angeles Rams",
+              "odds": 1.78
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05683116883116868,
+      "startTime": "2026-09-28T00:20:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Cleveland Browns vs Carolina Panthers",
+      "target": "Cleveland Browns",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.14,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.44072164948453607,
+          "fairDecimal": 2.2690058479532165,
+          "selections": [
+            {
+              "name": "Cleveland Browns",
+              "odds": 2.17
+            },
+            {
+              "name": "Carolina Panthers",
+              "odds": 1.71
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05685567010309278,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Tennessee Titans",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.14,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.44072164948453607,
+          "fairDecimal": 2.2690058479532165,
+          "selections": [
+            {
+              "name": "New York Giants",
+              "odds": 1.71
+            },
+            {
+              "name": "Tennessee Titans",
+              "odds": 2.17
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05685567010309278,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2718,6 +3294,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Indianapolis Colts vs Houston Texans",
+      "target": "Indianapolis Colts",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.04,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.4609375,
+          "fairDecimal": 2.169491525423729,
+          "selections": [
+            {
+              "name": "Indianapolis Colts",
+              "odds": 2.07
+            },
+            {
+              "name": "Houston Texans",
+              "odds": 1.77
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.059687500000000004,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "baseball",
       "match": "San Diego Padres vs Arizona Diamondbacks",
       "target": "Arizona Diamondbacks",
@@ -2893,6 +3504,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Jacksonville Jaguars vs New England Patriots",
+      "target": "Jacksonville Jaguars",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.6,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.5858585858585859,
+          "fairDecimal": 1.706896551724138,
+          "selections": [
+            {
+              "name": "Jacksonville Jaguars",
+              "odds": 1.64
+            },
+            {
+              "name": "New England Patriots",
+              "odds": 2.32
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06262626262626259,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "lol",
       "match": "Solary vs Movistar KOI Fenix",
       "target": "Solary",
@@ -2946,6 +3592,76 @@
       "estimatedEV": -0.06521197007481305,
       "startTime": "2026-09-27T06:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Baltimore Ravens",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.55,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.6030150753768844,
+          "fairDecimal": 1.6583333333333334,
+          "selections": [
+            {
+              "name": "Dallas Cowboys",
+              "odds": 2.4
+            },
+            {
+              "name": "Baltimore Ravens",
+              "odds": 1.58
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0653266331658292,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Pittsburgh Steelers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.53,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.3689320388349514,
+          "fairDecimal": 2.710526315789474,
+          "selections": [
+            {
+              "name": "Pittsburgh Steelers",
+              "odds": 2.6
+            },
+            {
+              "name": "Cincinnati Bengals",
+              "odds": 1.52
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06660194174757306,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "PRICE BOARD",
@@ -3005,9 +3721,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Nishesh Basavareddy vs Dylan Dietrich",
-      "target": "Nishesh Basavareddy",
+      "sport": "baseball",
+      "match": "TSG Hawks vs Uni Lions",
+      "target": "Uni Lions",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -3015,62 +3731,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 1.45,
+      "thunderpick": 1.73,
       "outside": [
         {
           "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.6430317848410758,
-          "fairDecimal": 1.5551330798479086,
+          "fairProbability": 0.5386666666666667,
+          "fairDecimal": 1.856435643564356,
           "selections": [
             {
-              "name": "Nishesh Basavareddy",
-              "odds": 1.46
+              "name": "TSG Hawks",
+              "odds": 2.02
             },
             {
-              "name": "Dylan Dietrich",
-              "odds": 2.63
+              "name": "Uni-Lions",
+              "odds": 1.73
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.06760391198044013,
-      "startTime": "2026-09-26T22:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "valorant",
-      "match": "100 Thieves vs T1",
-      "target": "T1",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.73,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.3414634146341463,
-          "fairDecimal": 2.928571428571429,
-          "selections": [
-            {
-              "name": "100 Thieves",
-              "odds": 1.4
-            },
-            {
-              "name": "T1 Esports",
-              "odds": 2.7
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.06780487804878055,
-      "startTime": "2026-09-27T09:00:00+00:00",
+      "estimatedEV": -0.06810666666666654,
+      "startTime": "2026-09-26T08:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3106,6 +3787,76 @@
       "independentSources": 1,
       "estimatedEV": -0.06836622342678078,
       "startTime": "2026-09-26T23:10:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Minnesota Vikings",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.76,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.5274151436031332,
+          "fairDecimal": 1.8960396039603957,
+          "selections": [
+            {
+              "name": "Tampa Bay Buccaneers",
+              "odds": 2.02
+            },
+            {
+              "name": "Minnesota Vikings",
+              "odds": 1.81
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07174934725848547,
+      "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "TSG Hawks vs Uni Lions",
+      "target": "TSG Hawks",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.01,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.4613333333333334,
+          "fairDecimal": 2.167630057803468,
+          "selections": [
+            {
+              "name": "TSG Hawks",
+              "odds": 2.02
+            },
+            {
+              "name": "Uni-Lions",
+              "odds": 1.73
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07272,
+      "startTime": "2026-09-26T08:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3943,41 +4694,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "PariVision vs Level UP",
-      "target": "PariVision",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.03,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.8973080757726819,
-          "fairDecimal": 1.1144444444444446,
-          "selections": [
-            {
-              "name": "PARIVISION",
-              "odds": 1.03
-            },
-            {
-              "name": "Level Up",
-              "odds": 9
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07577268195413767,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "cs2",
       "match": "BIG vs fnatic",
       "target": "BIG",
@@ -4479,41 +5195,6 @@
       "estimatedEV": -0.0769230769230771,
       "startTime": "2026-10-05T20:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "Aurora Gaming vs GamerLegion",
-      "target": "Aurora Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.2,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.7692307692307692,
-          "fairDecimal": 1.3,
-          "selections": [
-            {
-              "name": "Aurora Gaming",
-              "odds": 1.2
-            },
-            {
-              "name": "GamerLegion",
-              "odds": 4
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0769230769230771,
-      "startTime": "2026-09-29T16:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "PRICE BOARD",
@@ -5049,9 +5730,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "Team Yandex vs MOUZ",
-      "target": "Team Yandex",
+      "sport": "american-football",
+      "match": "Washington Commanders vs Seattle Seahawks",
+      "target": "Washington Commanders",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -5059,62 +5740,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 1.05,
+      "thunderpick": 3.82,
       "outside": [
         {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.8684863523573201,
-          "fairDecimal": 1.1514285714285715,
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.2395437262357415,
+          "fairDecimal": 4.174603174603174,
           "selections": [
             {
-              "name": "Team Yandex",
-              "odds": 1.06
+              "name": "Washington Commanders",
+              "odds": 4
             },
             {
-              "name": "MOUZ",
-              "odds": 7
+              "name": "Seattle Seahawks",
+              "odds": 1.26
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.0880893300248139,
-      "startTime": "2026-09-30T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "lol",
-      "match": "Cloud9 vs Team Liquid",
-      "target": "Team Liquid",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.42,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.6419753086419754,
-          "fairDecimal": 1.5576923076923075,
-          "selections": [
-            {
-              "name": "Cloud9",
-              "odds": 2.6
-            },
-            {
-              "name": "Team Liquid",
-              "odds": 1.45
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.08839506172839495,
-      "startTime": "2026-09-27T20:00:00+00:00",
+      "estimatedEV": -0.08494296577946758,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5185,41 +5831,6 @@
       "independentSources": 1,
       "estimatedEV": -0.08914728682170536,
       "startTime": "2026-10-01T15:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Nishesh Basavareddy vs Dylan Dietrich",
-      "target": "Dylan Dietrich",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.54,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.35696821515892424,
-          "fairDecimal": 2.8013698630136985,
-          "selections": [
-            {
-              "name": "Nishesh Basavareddy",
-              "odds": 1.46
-            },
-            {
-              "name": "Dylan Dietrich",
-              "odds": 2.63
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09330073349633239,
-      "startTime": "2026-09-26T22:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5329,6 +5940,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "valorant",
+      "match": "100 Thieves vs T1",
+      "target": "T1",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.73,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.3301435406698564,
+          "fairDecimal": 3.0289855072463774,
+          "selections": [
+            {
+              "name": "100 Thieves",
+              "odds": 1.38
+            },
+            {
+              "name": "T1 Esports",
+              "odds": 2.8
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.09870813397129197,
+      "startTime": "2026-09-27T09:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "S. Arends / D. Pel vs P. Nouza / N. Oberleitner",
       "target": "P. Nouza / N. Oberleitner",
@@ -5364,9 +6010,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "Team Spirit vs Team Nemesis",
-      "target": "Team Spirit",
+      "sport": "tennis",
+      "match": "Nishesh Basavareddy vs Dylan Dietrich",
+      "target": "Nishesh Basavareddy",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -5374,27 +6020,62 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 1.05,
+      "thunderpick": 1.45,
       "outside": [
         {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.8536585365853657,
-          "fairDecimal": 1.1714285714285717,
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.62,
+          "fairDecimal": 1.6129032258064517,
           "selections": [
             {
-              "name": "Team Spirit",
-              "odds": 1.08
+              "name": "Nishesh Basavareddy",
+              "odds": 1.52
             },
             {
-              "name": "Team Nemesis",
-              "odds": 6.3
+              "name": "Dylan Dietrich",
+              "odds": 2.48
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.10365853658536595,
-      "startTime": "2026-09-29T10:00:00+00:00",
+      "estimatedEV": -0.10099999999999998,
+      "startTime": "2026-09-26T22:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "San Francisco 49ers vs Arizona Cardinals",
+      "target": "Arizona Cardinals",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 4.09,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.2190305206463196,
+          "fairDecimal": 4.5655737704918025,
+          "selections": [
+            {
+              "name": "San Francisco 49ers",
+              "odds": 1.22
+            },
+            {
+              "name": "Arizona Cardinals",
+              "odds": 4.35
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.10416517055655294,
+      "startTime": "2026-09-27T20:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5504,6 +6185,76 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "lol",
+      "match": "Cloud9 vs Team Liquid",
+      "target": "Team Liquid",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.42,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.6281407035175879,
+          "fairDecimal": 1.592,
+          "selections": [
+            {
+              "name": "Cloud9",
+              "odds": 2.5
+            },
+            {
+              "name": "Team Liquid",
+              "odds": 1.48
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.1080402010050252,
+      "startTime": "2026-09-27T20:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Detroit Lions vs New York Jets",
+      "target": "New York Jets",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.25,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.2738589211618257,
+          "fairDecimal": 3.651515151515152,
+          "selections": [
+            {
+              "name": "Detroit Lions",
+              "odds": 1.32
+            },
+            {
+              "name": "New York Jets",
+              "odds": 3.5
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.10995850622406644,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Adrian Mannarino vs Denis Shapovalov",
       "target": "Adrian Mannarino",
@@ -5539,41 +6290,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Xtreme",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.97,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.450402144772118,
-          "fairDecimal": 2.2202380952380953,
-          "selections": [
-            {
-              "name": "LGD Gaming",
-              "odds": 1.68
-            },
-            {
-              "name": "Xtreme Gaming",
-              "odds": 2.05
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.11270777479892757,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "lol",
       "match": "T1 Academy vs Cupid Esports",
       "target": "Cupid Esports",
@@ -5605,6 +6321,41 @@
       "independentSources": 1,
       "estimatedEV": -0.11304347826086958,
       "startTime": "2026-09-28T06:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Los Angeles Chargers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.54,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.2504930966469428,
+          "fairDecimal": 3.9921259842519685,
+          "selections": [
+            {
+              "name": "Buffalo Bills",
+              "odds": 1.27
+            },
+            {
+              "name": "Los Angeles Chargers",
+              "odds": 3.8
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.11325443786982248,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5714,6 +6465,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Miami Dolphins",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 5.4,
+      "outside": [
+        {
+          "book": "Unibet/Kambi NFL Direct",
+          "fairProbability": 0.15966386554621845,
+          "fairDecimal": 6.263157894736843,
+          "selections": [
+            {
+              "name": "Miami Dolphins",
+              "odds": 6
+            },
+            {
+              "name": "Kansas City Chiefs",
+              "odds": 1.14
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.13781512605042034,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "Karmine Corp vs NRG",
       "target": "NRG",
@@ -5785,6 +6571,76 @@
     {
       "tier": "PRICE BOARD",
       "sport": "baseball",
+      "match": "Philadelphia Phillies vs Tampa Bay Rays",
+      "target": "Tampa Bay Rays",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.86,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.45597611169397145,
+          "fairDecimal": 2.193097345132743,
+          "selections": [
+            {
+              "name": "Philadelphia Phillies",
+              "odds": 1.7936507936507935
+            },
+            {
+              "name": "Tampa Bay Rays",
+              "odds": 2.1399999999999997
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.151884432249213,
+      "startTime": "2026-09-26T23:15:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "Athletics vs Houston Astros",
+      "target": "Athletics",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.11,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.4015123109611298,
+          "fairDecimal": 2.490583657587549,
+          "selections": [
+            {
+              "name": "Athletics",
+              "odds": 2.44
+            },
+            {
+              "name": "Houston Astros",
+              "odds": 1.6369426751592355
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.15280902387201611,
+      "startTime": "2026-09-27T01:40:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
       "match": "WEI Chuan Dragons vs Rakuten Monkeys",
       "target": "WEI Chuan Dragons",
       "market": "Match Winner",
@@ -5820,41 +6676,6 @@
     {
       "tier": "PRICE BOARD",
       "sport": "baseball",
-      "match": "Washington Nationals vs New York Mets",
-      "target": "New York Mets",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.67,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5023229882921391,
-          "fairDecimal": 1.9907510173880871,
-          "selections": [
-            {
-              "name": "Washington Nationals",
-              "odds": 1.9615384615384617
-            },
-            {
-              "name": "New York Mets",
-              "odds": 1.9433962264150944
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.1611206095521278,
-      "startTime": "2026-09-26T20:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "baseball",
       "match": "Detroit Tigers vs Pittsburgh Pirates",
       "target": "Detroit Tigers",
       "market": "Match Winner",
@@ -5868,22 +6689,22 @@
       "outside": [
         {
           "book": "Pinnacle Direct",
-          "fairProbability": 0.44522913947954246,
-          "fairDecimal": 2.246034482758621,
+          "fairProbability": 0.4471717836540323,
+          "fairDecimal": 2.236277056277056,
           "selections": [
             {
               "name": "Detroit Tigers",
-              "odds": 2.19
+              "odds": 2.1799999999999997
             },
             {
               "name": "Pittsburgh Pirates",
-              "odds": 1.7575757575757576
+              "odds": 1.7633587786259541
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.1674215091732556,
+      "estimatedEV": -0.16378876456695957,
       "startTime": "2026-09-26T17:10:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -5920,6 +6741,41 @@
       "independentSources": 1,
       "estimatedEV": -0.18493975903614457,
       "startTime": "2026-09-27T06:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "Milwaukee Brewers vs St. Louis Cardinals",
+      "target": "St. Louis Cardinals",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.48,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.32781561133044423,
+          "fairDecimal": 3.0504953560371515,
+          "selections": [
+            {
+              "name": "Milwaukee Brewers",
+              "odds": 1.4484304932735426
+            },
+            {
+              "name": "St. Louis Cardinals",
+              "odds": 2.9699999999999998
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.18701728390049832,
+      "startTime": "2026-09-26T23:10:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -6078,22 +6934,22 @@
       "outside": [
         {
           "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.23076923076923073,
-          "fairDecimal": 4.333333333333334,
+          "fairProbability": 0.19999999999999998,
+          "fairDecimal": 5,
           "selections": [
             {
               "name": "Sakura Hosogi",
-              "odds": 4
+              "odds": 4.6
             },
             {
               "name": "Hiromi Abe",
-              "odds": 1.2
+              "odds": 1.15
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.3353846153846155,
+      "estimatedEV": -0.42400000000000004,
       "startTime": "2026-09-27T01:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -7019,534 +7875,6 @@
       "independentSources": 0,
       "estimatedEV": null,
       "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "Team Spirit vs Team Nemesis",
-      "target": "SabeRLighT",
-      "market": "Player SabeRLighT - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.46,
-        "under": 2.45
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "Team Spirit vs Team Nemesis",
-      "target": "Yatoro",
-      "market": "Player Yatoro - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 7.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.45,
-        "under": 2.47
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "Team Spirit vs Team Nemesis",
-      "target": "Yatoro",
-      "market": "Player Yatoro - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 7.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.45,
-        "under": 2.47
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "33",
-      "market": "Player 33 - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 3.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.43,
-        "under": 2.53
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "33",
-      "market": "Player 33 - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 3.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.43,
-        "under": 2.53
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "Ari",
-      "market": "Player Ari - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.48,
-        "under": 2.39
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "Ari",
-      "market": "Player Ari - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.48,
-        "under": 2.39
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "bzm",
-      "market": "Player bzm - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.49,
-        "under": 2.36
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "bzm",
-      "market": "Player bzm - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.49,
-        "under": 2.36
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "Daze",
-      "market": "Player Daze - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.51,
-        "under": 2.31
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "Daze",
-      "market": "Player Daze - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.51,
-        "under": 2.31
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "1w vs Natus Vincere",
-      "target": "gotthejuice",
-      "market": "Player gotthejuice - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.45,
-        "under": 2.47
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Ame",
-      "market": "Player Ame - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.62,
-        "under": 2.09
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Ame",
-      "market": "Player Ame - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.62,
-        "under": 2.09
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "BoBoKa",
-      "market": "Player BoBoKa - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.66,
-        "under": 2.03
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "BoBoKa",
-      "market": "Player BoBoKa - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.66,
-        "under": 2.03
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Davai Lama",
-      "market": "Player Davai Lama - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 3.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.58,
-        "under": 2.17
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Davai Lama",
-      "market": "Player Davai Lama - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 3.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.58,
-        "under": 2.17
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Sneyking",
-      "market": "Player Sneyking - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.95,
-        "under": 1.72
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Sneyking",
-      "market": "Player Sneyking - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.95,
-        "under": 1.72
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "SumaiL",
-      "market": "Player SumaiL - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.51,
-        "under": 2.31
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "SumaiL",
-      "market": "Player SumaiL - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.51,
-        "under": 2.31
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Thiolicor",
-      "market": "Player Thiolicor - Total Kills Over/Under - Map 1",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.85,
-        "under": 1.8
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
-    },
-    {
-      "tier": "INFORMATIONAL",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Thiolicor",
-      "market": "Player Thiolicor - Total Kills Over/Under - Map 2",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "thunderpick": {
-        "over": 1.85,
-        "under": 1.8
-      },
-      "outside": [],
-      "independentSources": 0,
-      "estimatedEV": null,
-      "startTime": "2026-09-29T13:00:00+00:00",
       "blocker": "Thunderpick player prop captured; no exact outside contract currently available for fair-value verification"
     }
   ]
