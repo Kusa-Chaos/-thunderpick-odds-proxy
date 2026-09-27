@@ -1,18 +1,22 @@
 import fs from 'node:fs/promises';
+import {canonSport,exactIdentity,exactKey,identityComplete} from './market-identity.mjs';
 
 const readJson=async(path,fallback={})=>{try{return JSON.parse(await fs.readFile(path,'utf8'))}catch{return fallback}};
 const s=await readJson('data/screen-latest.json',{});
 const direct=await readJson('data/simple-direct-discovery-latest.json',{rows:[]});
 const tpMeta=await readJson('data/owls-meta.json',{});
+const tp=await readJson('data/owls-latest.json',{sports:{}});
 const now=new Date().toISOString();
 const rows=[];
-const key=r=>[r.sport,r.eventId||r.match||r.name,r.marketKey,r.marketLabel||r.market,r.scope?.map??'',r.scope?.round??'',r.target||''].join('|');
-const sportAliases={'nfl':'american-football','american_football':'american-football','mlb':'baseball','nba':'basketball'};
-const canonSport=s=>sportAliases[String(s||'').toLowerCase()]||String(s||'').toLowerCase();
+const key=r=>exactKey(r);
 function sourceFamily(v=''){
   const x=String(v||'').toLowerCase();
   if(x.includes('unibet')||x.includes('kambi'))return'unibet-kambi';
   if(x.includes('stake')||x.includes('oddin'))return'stake-oddin';
+  if(x.includes('draftkings'))return'draftkings';
+  if(x.includes('fanduel'))return'fanduel';
+  if(x.includes('caesars'))return'caesars';
+  if(x.includes('betmgm'))return'betmgm';
   if(x.includes('bovada'))return'bovada';
   if(x.includes('pinnacle'))return'pinnacle';
   if(x.includes('betway'))return'betway';
@@ -48,12 +52,13 @@ function sourceSafeRow(row){
   const reported=Number(row.independentSources??0);
   const sources=outside.length||reported;
   let blocker=row.blocker||null;
-  if(outside.length&&reported>outside.length){
-    blocker=`Same-provider duplicate collapsed (${reported} adapters -> ${outside.length} independent source families)`+(blocker?`; ${blocker}`:'');
-  }
+  if(outside.length&&reported>outside.length) blocker=`Same-provider duplicate collapsed (${reported} adapters -> ${outside.length} independent source families)`+(blocker?`; ${blocker}`:'');
   return {...row,outside,independentSources:sources,blocker};
 }
-
+function normalized(row){
+  const identity=exactIdentity(row);
+  return {...row,sport:identity.sport,identity,identityKey:exactKey(row),identityComplete:identityComplete(row)};
+}
 function add(r){
   const evA=Number(r?.screenEV?.a ?? r?.ev?.a);
   const evB=Number(r?.screenEV?.b ?? r?.ev?.b);
@@ -65,29 +70,41 @@ function add(r){
   const reported=Number(r.independentSources??r.verifiedIndependentSources??0);
   const sources=outside.length||reported;
   const duplicateCollapsed=outside.length>0&&reported>outside.length;
-  const actionAllowed=r.actionEligible!==false&&!/stale|fallback/i.test(String(r.blocker||''));
+  let row=normalized({sport:r.sport,eventId:r.eventId,match:r.name||r.match||null,target:target?.name||r.target||r.player||null,side:r.side||target?.name||null,market:r.marketLabel||r.market||r.marketKey||null,marketKey:r.marketKey||null,line:target?.point??r.line??null,scope:r.scope||null,isLive:r.isLive===true,state:r.state||'prematch',settlementScope:r.settlementScope||null,thunderpick:target?.odds??r.thunderpick??null,outside,independentSources:sources,estimatedEV:Number.isFinite(ev)&&ev>-90?ev:null,startTime:r.startTime||null,blocker:r.blocker||null});
+  const duplicateBlock=duplicateCollapsed?`Same-provider duplicate collapsed (${reported} adapters -> ${sources} independent source families)`:null;
+  const exactBlock=!row.identityComplete?'Exact contract identity incomplete; discovery only':null;
+  const actionAllowed=r.actionEligible!==false&&!/stale|fallback/i.test(String(r.blocker||''))&&row.identityComplete;
   let tier='INFORMATIONAL';
   if(sources>=3 && ev>=0.02 && actionAllowed) tier='ACTION';
-  else if(sources>=2 && ev>=0.01) tier='WATCH';
+  else if(sources>=2 && ev>=0.01 && row.identityComplete) tier='WATCH';
   else if(sources>=1 && ev>=0.0025) tier='SCREENING';
   else if(sources>=1) tier='PRICE BOARD';
-  const blocker=duplicateCollapsed?`Same-provider duplicate collapsed (${reported} adapters -> ${sources} independent source families)`+(r.blocker?`; ${r.blocker}`:''):(r.blocker||null);
-  rows.push(staleSafe({tier,sport:r.sport,match:r.name||r.match||null,target:target?.name||r.target||r.player||null,market:r.marketLabel||r.market||r.marketKey||null,marketKey:r.marketKey||null,line:target?.point??r.line??null,scope:r.scope||null,thunderpick:target?.odds??r.thunderpick??null,outside,independentSources:sources,estimatedEV:Number.isFinite(ev)&&ev>-90?ev:null,startTime:r.startTime||null,blocker}));
+  row={...row,tier,blocker:[duplicateBlock,exactBlock,r.blocker].filter(Boolean).join('; ')||null};
+  rows.push(staleSafe(row));
 }
 
 for(const r of s.limitedExactComparisons||[]) add(r);
 for(const r of s.candidates||[]) add(r);
-
-for(const r of direct.rows||[]){const cleaned=sourceSafeRow(r);const tier=cleaned.tier==='SCREENING'?'SCREENING':'PRICE BOARD';rows.push(staleSafe({...cleaned,tier,blocker:cleaned.blocker||'Loose direct discovery; exact verification required before promotion'}));}
-for(const r of s.oneWayPlayerPropScreens||[]) rows.push(staleSafe({tier:'SCREENING',sport:r.sport,match:r.match||null,target:r.player||null,market:r.marketLabel||'Player Prop',marketKey:'player_prop',line:r.line??null,scope:r.scope||null,thunderpick:r.thunderpick??null,outside:dedupeOutside([{book:r.book,price:r.outsidePrice}]),independentSources:1,estimatedEV:null,startTime:r.startTime||null,blocker:r.blocker||'one-way outside quote; discovery only'}));
-for(const r of s.playerPropInventory||[]) rows.push(staleSafe({tier:'INFORMATIONAL',sport:r.sport,match:r.match||null,target:r.player||null,market:r.market||'Player Prop',marketKey:'player_prop',line:r.line??null,scope:r.scope||null,thunderpick:r.thunderpick??null,outside:[],independentSources:0,estimatedEV:null,startTime:r.startTime||null,blocker:r.blocker||'Thunderpick inventory; awaiting outside price'}));
+for(const r of direct.rows||[]){const cleaned=sourceSafeRow(r);let row=normalized({...cleaned,tier:'SCREENING',blocker:cleaned.blocker||'Loose direct discovery; exact verification required before promotion'});rows.push(staleSafe(row));}
+for(const r of s.oneWayPlayerPropScreens||[]) rows.push(staleSafe(normalized({tier:'SCREENING',sport:r.sport,eventId:r.eventId,match:r.match||null,target:r.player||null,side:r.side||null,market:r.marketLabel||'Player Prop',marketKey:'player_prop',line:r.line??null,scope:r.scope||null,isLive:r.isLive===true,state:r.state||'prematch',settlementScope:r.settlementScope||null,thunderpick:r.thunderpick??null,outside:dedupeOutside([{book:r.book,price:r.outsidePrice}]),independentSources:1,estimatedEV:null,startTime:r.startTime||null,blocker:r.blocker||'one-way outside quote; discovery only'})));
+for(const r of s.playerPropInventory||[]) rows.push(staleSafe(normalized({tier:'INFORMATIONAL',sport:r.sport,eventId:r.eventId,match:r.match||null,target:r.player||null,side:r.side||null,market:r.market||'Player Prop',marketKey:'player_prop',line:r.line??null,scope:r.scope||null,isLive:r.isLive===true,state:r.state||'prematch',settlementScope:r.settlementScope||null,thunderpick:r.thunderpick??null,outside:[],independentSources:0,estimatedEV:null,startTime:r.startTime||null,blocker:r.blocker||'Thunderpick inventory; awaiting outside price'})));
 
 const priority={ACTION:0,WATCH:1,SCREENING:2,'PRICE BOARD':3,INFORMATIONAL:4};
 const best=new Map();
 for(const r of rows){const k=key(r),old=best.get(k);if(!old||priority[r.tier]<priority[old.tier]||(priority[r.tier]===priority[old.tier]&&(r.estimatedEV??-99)>(old.estimatedEV??-99)))best.set(k,r)}
 const dedup=[...best.values()].sort((a,b)=>(priority[a.tier]-priority[b.tier])||((b.estimatedEV??-99)-(a.estimatedEV??-99))||(b.independentSources-a.independentSources));
 const tiers=['ACTION','WATCH','SCREENING','PRICE BOARD','INFORMATIONAL'];
-const freshnessBySport=Object.fromEntries(Object.keys(tpMeta?.sports||{}).map(sp=>[sp,tpFreshForSport(sp)]));
-const out={generatedAt:now,mode:'simple-discovery-first',rules:{action:'3+ independent exact source families and EV >= 2%, with fresh Thunderpick verification',watch:'2+ independent exact source families and EV >= 1%, with fresh Thunderpick price',screening:'1+ outside source family and EV >= 0.25%, with fresh Thunderpick price; stale TP never shown as current',informational:'inventory/outside context only; stale Thunderpick price and EV are suppressed'},sourceHealth:{direct:direct.providerHealth||null,strictSnapshotHealthy:s.snapshotHealth?.healthy??s.snapshotHealthy??null,thunderpickFreshBySport:freshnessBySport,thunderpickQuotaExhausted:tpMeta?.quotaExhausted??null,thunderpickQuotaResetMonth:tpMeta?.quotaResetMonth??null},counts:Object.fromEntries(tiers.map(t=>[t,dedup.filter(r=>r.tier===t).length])),rows:dedup.slice(0,250)};
+const sports=['american-football','baseball','basketball','soccer','tennis','cs2','dota2','lol','valorant'];
+const freshnessBySport=Object.fromEntries(sports.map(sp=>[sp,tpFreshForSport(sp)]));
+const coverageAudit={};
+for(const sp of sports){
+  const sr=tp?.sports?.[sp];
+  const events=Array.isArray(sr?.data?.data)?sr.data.data:[];
+  const tpMarkets=events.reduce((n,e)=>n+(Array.isArray(e?.preferredMarkets)?e.preferredMarkets.length:0)+(e?.market?1:0),0);
+  const deepMarkets=events.reduce((n,e)=>n+(e?.deepMarketsFresh===true&&Array.isArray(e?.preferredMarkets)?e.preferredMarkets.length:0),0);
+  const rr=dedup.filter(r=>canonSport(r.sport)===sp);
+  coverageAudit[sp]={events:events.length,tpMarkets,deepMarkets,exact1Source:rr.filter(r=>r.identityComplete&&r.independentSources===1).length,exact2Source:rr.filter(r=>r.identityComplete&&r.independentSources===2).length,exact3Plus:rr.filter(r=>r.identityComplete&&r.independentSources>=3).length,action:rr.filter(r=>r.tier==='ACTION').length,watch:rr.filter(r=>r.tier==='WATCH').length,screening:rr.filter(r=>r.tier==='SCREENING').length,identityIncomplete:rr.filter(r=>!r.identityComplete).length};
+}
+const out={generatedAt:now,mode:'simple-discovery-first-full-board-v2',identitySchema:'sport+event+market family+target+stat+exact line+period/map/round/set+side+prematch/live+settlement scope',rules:{action:'3+ independent exact source families and EV >= 2%, with fresh Thunderpick verification and complete exact-contract identity',watch:'2+ independent exact source families and EV >= 1%, with fresh Thunderpick price and complete exact-contract identity',screening:'1+ outside source family and EV >= 0.25%, or incomplete exactness requiring verification; stale TP never shown as current',informational:'inventory/outside context only; stale Thunderpick price and EV are suppressed'},sourceHealth:{direct:direct.providerHealth||null,strictSnapshotHealthy:s.snapshotHealth?.healthy??s.snapshotHealthy??null,thunderpickFreshBySport:freshnessBySport,thunderpickQuotaExhausted:tpMeta?.quotaExhausted??null,thunderpickQuotaResetMonth:tpMeta?.quotaResetMonth??null},coverageAudit,counts:Object.fromEntries(tiers.map(t=>[t,dedup.filter(r=>r.tier===t).length])),rows:dedup.slice(0,500)};
 await fs.writeFile('data/simple-opportunity-latest.json',JSON.stringify(out,null,2));
-console.log('SIMPLE_BOARD',out.counts,'rows',out.rows.length,'TP_FRESH',freshnessBySport);
+console.log('SIMPLE_BOARD',out.counts,'rows',out.rows.length,'TP_FRESH',freshnessBySport,'COVERAGE',coverageAudit);
