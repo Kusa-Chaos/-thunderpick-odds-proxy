@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T10:23:33.756Z",
+  "generatedAt": "2026-09-27T10:32:10.702Z",
   "mode": "loose-direct-discovery",
   "providerHealth": {
     "polymarket": {
@@ -9,30 +9,33 @@
       "pages": 20,
       "acceptedEvents": 0,
       "rejectedStale": 7694,
-      "fetchedAt": "2026-09-27T10:22:55.812Z"
-    },
-    "stake": {
-      "ok": true,
-      "status": 200,
-      "sports": 9,
-      "scheduleFixtures": 226,
-      "detailRequests": 226,
-      "acceptedEvents": 215,
-      "marketCount": 3421,
-      "playerPropMarkets": 267,
-      "errors": [],
-      "fetchedAt": "2026-09-27T10:23:00.442Z"
+      "fetchedAt": "2026-09-27T10:31:42.369Z"
     },
     "kalshi": {
       "ok": true,
       "status": 200,
       "rawMarkets": 60000,
       "pages": 60,
-      "acceptedEvents": 950,
-      "rejectedMulti": 58947,
-      "rejectedNonSports": 6,
-      "rejectedShape": 97,
-      "fetchedAt": "2026-09-27T10:23:10.219Z"
+      "acceptedEvents": 683,
+      "rejectedMulti": 59296,
+      "rejectedNonSports": 14,
+      "rejectedShape": 7,
+      "fetchedAt": "2026-09-27T10:31:49.015Z"
+    },
+    "stake": {
+      "ok": true,
+      "status": 200,
+      "sports": 9,
+      "scheduleFixtures": 234,
+      "detailRequests": 234,
+      "acceptedEvents": 221,
+      "marketCount": 3481,
+      "playerPropMarkets": 297,
+      "errors": [
+        "46922804-sheffield-sharks-caledonia-gladiators HTTP 504",
+        "46927672-logro-basket-club-cb-clavijo HTTP 504"
+      ],
+      "fetchedAt": "2026-09-27T10:31:55.814Z"
     },
     "betway": {
       "ok": true,
@@ -43,45 +46,45 @@
       "rawOutcomes": 876,
       "acceptedEvents": 3,
       "errors": [],
-      "fetchedAt": "2026-09-27T10:23:19.680Z",
+      "fetchedAt": "2026-09-27T10:32:00.543Z",
       "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
     },
     "pinnacle": {
       "ok": true,
       "status": 200,
       "sports": 63,
-      "leagues": 344,
-      "matchups": 4559,
-      "marketRequests": 287,
-      "acceptedEvents": 76,
-      "acceptedMarkets": 501,
+      "leagues": 343,
+      "matchups": 4890,
+      "marketRequests": 282,
+      "acceptedEvents": 81,
+      "acceptedMarkets": 438,
       "playerPropMarkets": 0,
       "mapWinnerMarkets": 0,
       "errors": [
         "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
       ],
-      "fetchedAt": "2026-09-27T10:23:29.006Z"
+      "fetchedAt": "2026-09-27T10:32:06.637Z"
     },
     "kambi": {
       "ok": true,
       "status": 200,
-      "rawEvents": 1017,
-      "acceptedEvents": 117,
-      "marketCount": 558,
-      "deepEventRequests": 43,
+      "rawEvents": 987,
+      "acceptedEvents": 119,
+      "marketCount": 553,
+      "deepEventRequests": 42,
       "playerPropMarkets": 130,
       "playerKillMarkets": 110,
       "playerDeathMarkets": 20,
-      "mapWinnerMarkets": 64,
-      "roundHandicapMarkets": 112,
-      "roundTotalMarkets": 101,
+      "mapWinnerMarkets": 62,
+      "roundHandicapMarkets": 110,
+      "roundTotalMarkets": 99,
       "errors": [],
-      "fetchedAt": "2026-09-27T10:23:30.657Z"
+      "fetchedAt": "2026-09-27T10:32:08.032Z"
     },
     "kambiNfl": {
       "ok": true,
       "status": 200,
-      "rawEvents": 1017,
+      "rawEvents": 987,
       "nflEvents": 15,
       "deepRequests": 15,
       "acceptedEvents": 14,
@@ -92,7 +95,7 @@
       "teamTotals": 28,
       "playerPropMarkets": 414,
       "errors": [],
-      "fetchedAt": "2026-09-27T10:23:31.494Z"
+      "fetchedAt": "2026-09-27T10:32:08.882Z"
     },
     "bovadaNfl": {
       "ok": true,
@@ -110,15 +113,85 @@
       "playerReceptions": 170,
       "playerPassingTouchdowns": 27,
       "errors": [],
-      "fetchedAt": "2026-09-27T10:23:33.204Z"
+      "fetchedAt": "2026-09-27T10:32:10.197Z"
     }
   },
   "counts": {
-    "rows": 292,
+    "rows": 296,
     "screening": 7,
-    "priceBoard": 285
+    "priceBoard": 289
   },
   "rows": [
+    {
+      "tier": "SCREENING",
+      "sport": "dota2",
+      "match": "Team Spirit vs Team Nemesis",
+      "target": "Team Nemesis",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 8.2,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.14634146341463414,
+          "fairDecimal": 6.833333333333334,
+          "selections": [
+            {
+              "name": "Team Spirit",
+              "odds": 1.08
+            },
+            {
+              "name": "Team Nemesis",
+              "odds": 6.3
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.19999999999999973,
+      "startTime": "2026-09-29T10:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "dota2",
+      "match": "Team Yandex vs MOUZ",
+      "target": "MOUZ",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 8.4,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.1315136476426799,
+          "fairDecimal": 7.603773584905661,
+          "selections": [
+            {
+              "name": "Team Yandex",
+              "odds": 1.06
+            },
+            {
+              "name": "MOUZ",
+              "odds": 7
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.10471464019851107,
+      "startTime": "2026-09-30T10:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
     {
       "tier": "SCREENING",
       "sport": "cs2",
@@ -156,9 +229,9 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "New York Yankees vs Baltimore Orioles",
-      "target": "Baltimore Orioles",
+      "sport": "dota2",
+      "match": "PariVision vs Level UP",
+      "target": "Level UP",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -166,167 +239,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 2.02,
+      "thunderpick": 9.9,
       "outside": [
         {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5539593349939177,
-          "fairDecimal": 1.8051866569068282,
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.10269192422731803,
+          "fairDecimal": 9.737864077669904,
           "selections": [
             {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 1.7633587786259541
+              "name": "PARIVISION",
+              "odds": 1.03
             },
             {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 2.19
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5451883661916846,
-          "fairDecimal": 1.8342284282133903,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 1.7518796992481203
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 2.1
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.4569125481354377,
-          "fairDecimal": 2.188602620087336,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 2.1100000000000003
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 1.7751937984496124
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.4910905203136137,
-          "fairDecimal": 2.036284470246734,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 1.9615384615384617
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 1.8928571428571428
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.45210070933042323,
-          "fairDecimal": 2.2118965517241382,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 2.13
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 1.7575757575757576
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.49331997327989313,
-          "fairDecimal": 2.02708192281652,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 1.9523809523809523
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 1.900900900900901
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.49554764024933207,
-          "fairDecimal": 2.0179694519317164,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 1.9433962264150944
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 1.9090909090909092
-            }
-          ]
-        },
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5954042868614491,
-          "fairDecimal": 1.6795310716879346,
-          "selections": [
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 1",
-              "odds": 1.617283950617284
-            },
-            {
-              "name": "Baltimore Orioles 0, New York Yankees 2",
-              "odds": 2.38
+              "name": "Level Up",
+              "odds": 9
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.031089653287327046,
-      "startTime": "2026-09-27T17:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Alexander Zverev vs Learner Tien",
-      "target": "Alexander Zverev",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.4,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.7263157894736842,
-          "fairDecimal": 1.3768115942028984,
-          "selections": [
-            {
-              "name": "Alexander Zverev",
-              "odds": 1.3
-            },
-            {
-              "name": "Learner Tien",
-              "odds": 3.45
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.01684210526315799,
-      "startTime": "2026-09-27T12:30:00+00:00",
+      "estimatedEV": 0.01665004985044849,
+      "startTime": "2026-09-29T10:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -397,41 +330,6 @@
       "independentSources": 1,
       "estimatedEV": 0.0038177339901479534,
       "startTime": "2026-09-27T11:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "cs2",
-      "match": "aimclub vs Inner Circle Academy",
-      "target": "aimclub",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.4,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.417989417989418,
-          "fairDecimal": 2.392405063291139,
-          "selections": [
-            {
-              "name": "aimclub",
-              "odds": 2.2
-            },
-            {
-              "name": "Inner Circle Academy",
-              "odds": 1.58
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.0031746031746031633,
-      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1066,6 +964,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "tennis",
+      "match": "Alexander Zverev vs Learner Tien",
+      "target": "Alexander Zverev",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.4,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.6984478935698448,
+          "fairDecimal": 1.4317460317460318,
+          "selections": [
+            {
+              "name": "Alexander Zverev",
+              "odds": 1.36
+            },
+            {
+              "name": "Learner Tien",
+              "odds": 3.15
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.022172949002217335,
+      "startTime": "2026-09-27T12:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "Karmine Corp vs NRG",
       "target": "Karmine Corp",
@@ -1167,41 +1100,6 @@
       "independentSources": 1,
       "estimatedEV": -0.02608695652173898,
       "startTime": "2026-09-28T06:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "aimclub vs Inner Circle Academy",
-      "target": "aimclub",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.4,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.40568475452196384,
-          "fairDecimal": 2.4649681528662417,
-          "selections": [
-            {
-              "name": "aimclub",
-              "odds": 2.3
-            },
-            {
-              "name": "Inner Circle Academy",
-              "odds": 1.57
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.02635658914728678,
-      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1412,6 +1310,41 @@
       "independentSources": 1,
       "estimatedEV": -0.0305039787798409,
       "startTime": "2026-09-27T16:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "Aurora Gaming vs GamerLegion",
+      "target": "GamerLegion",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 4.2,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.23076923076923073,
+          "fairDecimal": 4.333333333333334,
+          "selections": [
+            {
+              "name": "Aurora Gaming",
+              "odds": 1.2
+            },
+            {
+              "name": "GamerLegion",
+              "odds": 4
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.030769230769230882,
+      "startTime": "2026-09-29T16:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2081,41 +2014,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "baseball",
-      "match": "Milwaukee Brewers vs St. Louis Cardinals",
-      "target": "Milwaukee Brewers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.41,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.6789306742455842,
-          "fairDecimal": 1.4729044333004726,
-          "selections": [
-            {
-              "name": "Milwaukee Brewers",
-              "odds": 1.432900432900433
-            },
-            {
-              "name": "St. Louis Cardinals",
-              "odds": 3.03
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.04270774931372634,
-      "startTime": "2026-09-27T19:10:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Guilherme Valdoleiros vs Robin Bertrand",
       "target": "Robin Bertrand",
@@ -2356,7 +2254,7 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.04766584766584758,
-      "startTime": "2026-09-27T10:30:00+00:00",
+      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2741,7 +2639,7 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.0514004914004913,
-      "startTime": "2026-09-27T10:30:00+00:00",
+      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3162,41 +3060,6 @@
       "independentSources": 1,
       "estimatedEV": -0.05631081269457727,
       "startTime": "2026-09-27T19:10:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "baseball",
-      "match": "Philadelphia Phillies vs Tampa Bay Rays",
-      "target": "Tampa Bay Rays",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.21,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.42667230861454913,
-          "fairDecimal": 2.343719008264463,
-          "selections": [
-            {
-              "name": "Philadelphia Phillies",
-              "odds": 1.704225352112676
-            },
-            {
-              "name": "Tampa Bay Rays",
-              "odds": 2.29
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.05705419796184641,
-      "startTime": "2026-09-27T19:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3761,6 +3624,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "LGD Gaming vs Xtreme",
+      "target": "LGD Gaming",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.71,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.549597855227882,
+          "fairDecimal": 1.8195121951219515,
+          "selections": [
+            {
+              "name": "LGD Gaming",
+              "odds": 1.68
+            },
+            {
+              "name": "Xtreme Gaming",
+              "odds": 2.05
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0601876675603219,
+      "startTime": "2026-09-29T13:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Rafael Jodar vs Taylor Fritz",
       "target": "Rafael Jodar",
@@ -4317,6 +4215,41 @@
       "independentSources": 1,
       "estimatedEV": -0.06688839615668885,
       "startTime": "2026-09-27T14:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "aimclub vs Inner Circle Academy",
+      "target": "aimclub",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.3,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.40568475452196384,
+          "fairDecimal": 2.4649681528662417,
+          "selections": [
+            {
+              "name": "aimclub",
+              "odds": 2.3
+            },
+            {
+              "name": "Inner Circle Academy",
+              "odds": 1.57
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06692506459948322,
+      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -4951,41 +4884,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "baseball",
-      "match": "Philadelphia Phillies vs Tampa Bay Rays",
-      "target": "Philadelphia Phillies",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.62,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5733276913854508,
-          "fairDecimal": 1.7442032105295528,
-          "selections": [
-            {
-              "name": "Philadelphia Phillies",
-              "odds": 1.704225352112676
-            },
-            {
-              "name": "Tampa Bay Rays",
-              "odds": 2.29
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07120913995556966,
-      "startTime": "2026-09-27T19:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "cs2",
       "match": "Nemiga vs Color",
       "target": "Color",
@@ -5017,6 +4915,41 @@
       "independentSources": 1,
       "estimatedEV": -0.07188264058679694,
       "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "LGD Gaming vs Xtreme",
+      "target": "Xtreme",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.06,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.450402144772118,
+          "fairDecimal": 2.2202380952380953,
+          "selections": [
+            {
+              "name": "LGD Gaming",
+              "odds": 1.68
+            },
+            {
+              "name": "Xtreme Gaming",
+              "odds": 2.05
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07217158176943694,
+      "startTime": "2026-09-29T13:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5367,6 +5300,76 @@
       "independentSources": 1,
       "estimatedEV": -0.074025974025974,
       "startTime": "2026-09-27T11:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "aimclub vs Inner Circle Academy",
+      "target": "aimclub",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.3,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.4025974025974026,
+          "fairDecimal": 2.4838709677419355,
+          "selections": [
+            {
+              "name": "aimclub",
+              "odds": 2.3
+            },
+            {
+              "name": "Inner Circle Academy",
+              "odds": 1.55
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.074025974025974,
+      "startTime": "2026-09-27T11:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "aimclub vs Inner Circle Academy",
+      "target": "Inner Circle Academy",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.55,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.5974025974025974,
+          "fairDecimal": 1.673913043478261,
+          "selections": [
+            {
+              "name": "aimclub",
+              "odds": 2.3
+            },
+            {
+              "name": "Inner Circle Academy",
+              "odds": 1.55
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.074025974025974,
+      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -6491,6 +6494,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "PariVision vs Level UP",
+      "target": "PariVision",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.03,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.8973080757726819,
+          "fairDecimal": 1.1144444444444446,
+          "selections": [
+            {
+              "name": "PARIVISION",
+              "odds": 1.03
+            },
+            {
+              "name": "Level Up",
+              "odds": 9
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07577268195413767,
+      "startTime": "2026-09-29T10:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Paola Lopez vs Leticia Garcia Vidal",
       "target": "Paola Lopez",
@@ -6872,6 +6910,41 @@
       "independentSources": 1,
       "estimatedEV": -0.07692307692307687,
       "startTime": "2026-09-29T16:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "Aurora Gaming vs GamerLegion",
+      "target": "Aurora Gaming",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.2,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.7692307692307692,
+          "fairDecimal": 1.3,
+          "selections": [
+            {
+              "name": "Aurora Gaming",
+              "odds": 1.2
+            },
+            {
+              "name": "GamerLegion",
+              "odds": 4
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0769230769230771,
+      "startTime": "2026-09-29T16:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -7362,6 +7435,41 @@
       "independentSources": 1,
       "estimatedEV": -0.07802083333333332,
       "startTime": "2026-09-27T15:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "aimclub vs Inner Circle Academy",
+      "target": "Inner Circle Academy",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.55,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.5943152454780362,
+          "fairDecimal": 1.682608695652174,
+          "selections": [
+            {
+              "name": "aimclub",
+              "odds": 2.3
+            },
+            {
+              "name": "Inner Circle Academy",
+              "odds": 1.57
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07881136950904388,
+      "startTime": "2026-09-27T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -8591,6 +8699,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "Team Yandex vs MOUZ",
+      "target": "Team Yandex",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.05,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "fairProbability": 0.8684863523573201,
+          "fairDecimal": 1.1514285714285715,
+          "selections": [
+            {
+              "name": "Team Yandex",
+              "odds": 1.06
+            },
+            {
+              "name": "MOUZ",
+              "odds": 7
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0880893300248139,
+      "startTime": "2026-09-30T10:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Gabriel Schenekenberg vs Nicolas Zanellato",
       "target": "Nicolas Zanellato",
@@ -8727,251 +8870,6 @@
       "independentSources": 1,
       "estimatedEV": -0.09031250000000013,
       "startTime": "2026-09-27T14:25:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
-      "target": "Tampa Bay Buccaneers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.9,
-      "outside": [
-        {
-          "book": "Bovada NFL Direct",
-          "fairProbability": 0.4782608695652174,
-          "fairDecimal": 2.090909090909091,
-          "selections": [
-            {
-              "name": "Tampa Bay Buccaneers",
-              "odds": 2
-            },
-            {
-              "name": "Minnesota Vikings",
-              "odds": 1.8333333333333335
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09130434782608698,
-      "startTime": "2026-09-27T20:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Yanis Ghazouani Durand vs Emile Hudd",
-      "target": "Emile Hudd",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.43,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.37373737373737376,
-          "fairDecimal": 2.6756756756756754,
-          "selections": [
-            {
-              "name": "Yanis Ghazouani Durand",
-              "odds": 1.48
-            },
-            {
-              "name": "Emile Hudd",
-              "odds": 2.48
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09181818181818169,
-      "startTime": "2026-09-27T15:55:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Roman Safiullin vs Yunchaokete Bu",
-      "target": "Roman Safiullin",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.82,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.4973684210526315,
-          "fairDecimal": 2.0105820105820107,
-          "selections": [
-            {
-              "name": "Roman Safiullin",
-              "odds": 1.91
-            },
-            {
-              "name": "Yunchaokete Bu",
-              "odds": 1.89
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09478947368421065,
-      "startTime": "2026-09-27T10:45:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "BBL Esports vs SINNERS",
-      "target": "SINNERS",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.75,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.5172413793103448,
-          "fairDecimal": 1.9333333333333336,
-          "selections": [
-            {
-              "name": "BBL Esports",
-              "odds": 1.95
-            },
-            {
-              "name": "Sinners Esports",
-              "odds": 1.82
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09482758620689669,
-      "startTime": "2026-09-27T14:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Detroit Lions vs New York Jets",
-      "target": "New York Jets",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.28,
-      "outside": [
-        {
-          "book": "Bovada NFL Direct",
-          "fairProbability": 0.27586206896551724,
-          "fairDecimal": 3.625,
-          "selections": [
-            {
-              "name": "Detroit Lions",
-              "odds": 1.3333333333333333
-            },
-            {
-              "name": "New York Jets",
-              "odds": 3.5
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09517241379310348,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Ivan Marrero Curbelo vs Luca Potenza",
-      "target": "Ivan Marrero Curbelo",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.37,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.38167938931297707,
-          "fairDecimal": 2.62,
-          "selections": [
-            {
-              "name": "Ivan Marrero Curbelo",
-              "odds": 2.43
-            },
-            {
-              "name": "Luca Potenza",
-              "odds": 1.5
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09541984732824427,
-      "startTime": "2026-09-27T14:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Mateus Alves vs Pedro Sakamoto",
-      "target": "Mateus Alves",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.35,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.6698564593301435,
-          "fairDecimal": 1.4928571428571429,
-          "selections": [
-            {
-              "name": "Mateus Alves",
-              "odds": 1.38
-            },
-            {
-              "name": "Pedro Sakamoto",
-              "odds": 2.8
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.09569377990430628,
-      "startTime": "2026-09-27T14:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ]
