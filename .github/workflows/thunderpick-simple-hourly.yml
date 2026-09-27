@@ -14,6 +14,7 @@ on:
       - 'scripts/betway-direct.mjs'
       - 'scripts/pinnacle-direct.mjs'
       - 'scripts/kambi-direct.mjs'
+      - 'scripts/kambi-nfl-direct.mjs'
       - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
@@ -45,6 +46,8 @@ jobs:
         run: node scripts/pinnacle-direct.mjs
       - name: Add Unibet Kambi deep market and prop source
         run: node scripts/kambi-direct.mjs
+      - name: Add Unibet Kambi NFL lines and player props
+        run: node scripts/kambi-nfl-direct.mjs
       - name: Build loose direct discovery board
         run: node scripts/simple-direct-discovery.mjs
       - name: Merge direct sources into comparison board
