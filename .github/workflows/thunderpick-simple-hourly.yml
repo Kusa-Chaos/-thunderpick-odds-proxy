@@ -7,7 +7,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'scripts/owls-thunderpick.mjs'
+      - 'scripts/thunderpick-firstparty-browser.mjs'
       - 'scripts/simple-opportunity-board.mjs'
       - 'scripts/simple-direct-discovery.mjs'
       - 'scripts/simple-two-source-watch.mjs'
@@ -31,16 +31,16 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 14
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Refresh Thunderpick
-        env:
-          OWLS_API_KEY: ${{ secrets.OWLS_API_KEY }}
-        run: node scripts/owls-thunderpick.mjs
+      - name: Install first-party browser driver
+        run: npm install --no-save puppeteer-core@24.16.0
+      - name: Refresh Thunderpick directly from first-party sportsbook
+        run: node scripts/thunderpick-firstparty-browser.mjs
       - name: Collect quota-free public sources
         run: node scripts/direct-public-sources.mjs
       - name: Add Betway independent bookmaker source
