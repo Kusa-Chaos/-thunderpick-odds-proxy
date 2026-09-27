@@ -1,17 +1,11 @@
-name: Thunderpick Simple Scan Watchdog
+name: Thunderpick Simple Scan Watchdog (Legacy Manual)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '47 * * * *'
 
 permissions:
   actions: write
   contents: read
-
-concurrency:
-  group: thunderpick-simple-scan-watchdog
-  cancel-in-progress: true
 
 jobs:
   freshness:
