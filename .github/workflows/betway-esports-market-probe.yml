@@ -1,0 +1,24 @@
+name: Betway Esports Market Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/betway-esports-market-probe.mjs'
+      - '.github/workflows/betway-esports-market-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe Betway esports market inventory
+        run: node scripts/betway-esports-market-probe.mjs
