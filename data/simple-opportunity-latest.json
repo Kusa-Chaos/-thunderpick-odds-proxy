@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T04:39:06.970Z",
+  "generatedAt": "2026-09-27T04:47:27.582Z",
   "mode": "simple-discovery-first",
   "rules": {
     "action": "3+ independent exact source families and EV >= 2%, with fresh Thunderpick verification",
@@ -15,31 +15,31 @@
         "rawEvents": 2000,
         "pages": 20,
         "acceptedEvents": 0,
-        "rejectedStale": 7693,
-        "fetchedAt": "2026-09-27T04:38:43.036Z"
+        "rejectedStale": 7694,
+        "fetchedAt": "2026-09-27T04:46:46.478Z"
       },
       "stake": {
         "ok": true,
         "status": 200,
         "sports": 9,
-        "scheduleFixtures": 233,
-        "detailRequests": 233,
-        "acceptedEvents": 218,
-        "marketCount": 3811,
-        "playerPropMarkets": 479,
+        "scheduleFixtures": 254,
+        "detailRequests": 254,
+        "acceptedEvents": 237,
+        "marketCount": 4100,
+        "playerPropMarkets": 350,
         "errors": [],
-        "fetchedAt": "2026-09-27T04:38:46.326Z"
+        "fetchedAt": "2026-09-27T04:46:53.238Z"
       },
       "kalshi": {
         "ok": true,
         "status": 200,
         "rawMarkets": 60000,
         "pages": 60,
-        "acceptedEvents": 0,
-        "rejectedMulti": 60000,
-        "rejectedNonSports": 0,
+        "acceptedEvents": 1,
+        "rejectedMulti": 59991,
+        "rejectedNonSports": 8,
         "rejectedShape": 0,
-        "fetchedAt": "2026-09-27T04:38:48.579Z"
+        "fetchedAt": "2026-09-27T04:47:00.598Z"
       },
       "betway": {
         "ok": true,
@@ -50,7 +50,7 @@
         "rawOutcomes": 824,
         "acceptedEvents": 6,
         "errors": [],
-        "fetchedAt": "2026-09-27T04:38:54.414Z",
+        "fetchedAt": "2026-09-27T04:47:09.975Z",
         "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
       },
       "pinnacle": {
@@ -58,21 +58,21 @@
         "status": 200,
         "sports": 63,
         "leagues": 310,
-        "matchups": 5604,
+        "matchups": 5613,
         "marketRequests": 309,
         "acceptedEvents": 51,
-        "acceptedMarkets": 1297,
+        "acceptedMarkets": 1298,
         "playerPropMarkets": 0,
         "mapWinnerMarkets": 0,
         "errors": [
           "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
         ],
-        "fetchedAt": "2026-09-27T04:39:00.572Z"
+        "fetchedAt": "2026-09-27T04:47:19.904Z"
       },
       "kambi": {
         "ok": true,
         "status": 200,
-        "rawEvents": 1039,
+        "rawEvents": 1055,
         "acceptedEvents": 128,
         "marketCount": 723,
         "deepEventRequests": 36,
@@ -83,12 +83,12 @@
         "roundHandicapMarkets": 142,
         "roundTotalMarkets": 125,
         "errors": [],
-        "fetchedAt": "2026-09-27T04:39:02.075Z"
+        "fetchedAt": "2026-09-27T04:47:21.467Z"
       },
       "kambiNfl": {
         "ok": true,
         "status": 200,
-        "rawEvents": 1039,
+        "rawEvents": 1055,
         "nflEvents": 15,
         "deepRequests": 15,
         "acceptedEvents": 14,
@@ -99,7 +99,7 @@
         "teamTotals": 28,
         "playerPropMarkets": 415,
         "errors": [],
-        "fetchedAt": "2026-09-27T04:39:02.901Z"
+        "fetchedAt": "2026-09-27T04:47:22.353Z"
       },
       "bovadaNfl": {
         "ok": true,
@@ -117,7 +117,7 @@
         "playerReceptions": 151,
         "playerPassingTouchdowns": 29,
         "errors": [],
-        "fetchedAt": "2026-09-27T04:39:04.194Z"
+        "fetchedAt": "2026-09-27T04:47:24.268Z"
       }
     },
     "strictSnapshotHealthy": true,
@@ -138,8 +138,8 @@
   "counts": {
     "ACTION": 1,
     "WATCH": 3,
-    "SCREENING": 16,
-    "PRICE BOARD": 284,
+    "SCREENING": 19,
+    "PRICE BOARD": 281,
     "INFORMATIONAL": 200
   },
   "rows": [
@@ -178,7 +178,7 @@
           "pB": 0.2866696388765047,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-27T04:38:49.231Z",
+          "lastUpdate": "2026-09-27T04:47:01.842Z",
           "sourceFamily": "betway"
         },
         {
@@ -310,7 +310,7 @@
           "pB": 0.7766812865497077,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-27T04:38:54.414Z",
+          "lastUpdate": "2026-09-27T04:47:09.975Z",
           "sourceFamily": "betway"
         },
         {
@@ -330,78 +330,6 @@
       "estimatedEV": 0.030310254006517656,
       "startTime": "2026-09-27T07:00:00+00:00",
       "blocker": "2 independent exact Match Winner sources; WATCH pending third source and fresh Thunderpick verification"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "dota2",
-      "match": "Team Spirit vs Team Nemesis",
-      "target": "Team Nemesis",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 8.2,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.14634146341463414,
-          "fairDecimal": 6.833333333333334,
-          "selections": [
-            {
-              "name": "Team Spirit",
-              "odds": 1.08
-            },
-            {
-              "name": "Team Nemesis",
-              "odds": 6.3
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.19999999999999973,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "dota2",
-      "match": "Team Yandex vs MOUZ",
-      "target": "MOUZ",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 8.4,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.1315136476426799,
-          "fairDecimal": 7.603773584905661,
-          "selections": [
-            {
-              "name": "Team Yandex",
-              "odds": 1.06
-            },
-            {
-              "name": "MOUZ",
-              "odds": 7
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.10471464019851107,
-      "startTime": "2026-09-30T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "SCREENING",
@@ -621,6 +549,35 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Over",
+      "market": "Player Gunnar Helm - Total receptions",
+      "marketKey": "player_prop",
+      "line": 2.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.97,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.83,
+          "b": 1.94,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T22:41:13Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.013740053050397716,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "SCREENING",
       "sport": "tennis",
       "match": "Mateus Alves vs Pedro Sakamoto",
       "target": "Pedro Sakamoto",
@@ -653,6 +610,42 @@
       "independentSources": 1,
       "estimatedEV": 0.013540669856459076,
       "startTime": "2026-09-27T14:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Dallas Cowboys",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.55,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.39698492462311563,
+          "fairDecimal": 2.5189873417721516,
+          "selections": [
+            {
+              "name": "Dallas Cowboys",
+              "odds": 2.4
+            },
+            {
+              "name": "Baltimore Ravens",
+              "odds": 1.58
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.012311557788944771,
+      "startTime": "2026-09-27T20:25:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -810,6 +803,108 @@
     {
       "tier": "SCREENING",
       "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Over",
+      "market": "Player Tony Pollard - Total receptions",
+      "marketKey": "player_prop",
+      "line": 1.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.42,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 2.25,
+          "b": 1.606060606060606,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.007937131630648242,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "CeeDee Lamb Under 6.5",
+      "market": "CeeDee Lamb — Receptions 6.5",
+      "marketKey": "player_prop",
+      "line": 6.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.97,
+      "outside": [
+        {
+          "book": "unibet-kambi",
+          "title": "Unibet/Kambi Direct",
+          "a": 1.89,
+          "b": 1.87,
+          "pA": 0.49734042553191493,
+          "pB": 0.502659574468085,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-25T15:56:15Z",
+          "sourceFamily": "unibet-kambi"
+        },
+        {
+          "book": "bovada",
+          "title": "Bovada NFL Direct",
+          "a": 1.9523809523809523,
+          "b": 1.8,
+          "pA": 0.4796954314720812,
+          "pB": 0.5203045685279188,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 2,
+      "estimatedEV": 0.0076196808510637926,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "2 independent exact NFL prop sources; WATCH pending third source and fresh Thunderpick verification"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Under",
+      "market": "Player Jaylen Warren - Total receptions",
+      "marketKey": "player_prop",
+      "line": 4.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.71,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 2.28,
+          "b": 1.6,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T13:12:57Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.004845360824742295,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
       "match": "Detroit Lions vs New York Jets",
       "target": "Under",
       "market": "Player Jared Goff - Total passing touchdowns",
@@ -902,6 +997,42 @@
       "independentSources": 1,
       "estimatedEV": 0.0028571428571431134,
       "startTime": "2026-09-27T08:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "Fukuoka Softbank Hawks vs Orix Buffaloes",
+      "target": "Fukuoka Softbank Hawks",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.33,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.7509881422924901,
+          "fairDecimal": 1.331578947368421,
+          "selections": [
+            {
+              "name": "Fukuoka Softbank Hawks",
+              "odds": 1.26
+            },
+            {
+              "name": "Orix Buffaloes",
+              "odds": 3.8
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0011857707509881354,
+      "startTime": "2026-09-27T05:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1020,6 +1151,42 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New Orleans Saints vs Las Vegas Raiders",
+      "target": "Las Vegas Raiders",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.55,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.39054726368159204,
+          "fairDecimal": 2.5605095541401273,
+          "selections": [
+            {
+              "name": "New Orleans Saints",
+              "odds": 1.57
+            },
+            {
+              "name": "Las Vegas Raiders",
+              "odds": 2.45
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.004104477611940327,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "XLG Esports vs Nongshim RedForce",
       "target": "XLG Esports",
@@ -1095,6 +1262,44 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Under",
+      "market": "Player Justin Jefferson - Total receptions",
+      "marketKey": "player_prop",
+      "line": 5.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.15,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.77,
+          "b": 2,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-27T00:11:47Z",
+          "sourceFamily": "unibet-kambi"
+        },
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.6896551724137931,
+          "b": 2.1,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 2,
+      "estimatedEV": -0.007522794212888928,
+      "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (3 adapters -> 2 independent source families)"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
       "match": "Indianapolis Colts vs Houston Texans",
       "target": "Under",
       "market": "Player Jared Wayne - Total receptions",
@@ -1129,71 +1334,6 @@
       "estimatedEV": -0.008537056928034303,
       "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Same-provider duplicate collapsed (3 adapters -> 2 independent source families)"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Under",
-      "market": "Player Kayshon Boutte - Total receptions",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.97,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.89,
-          "b": 1.87,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T19:09:01Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.009760638297872659,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "baseball",
-      "match": "Yokohama BayStars vs Hiroshima Toyo Carp",
-      "target": "Yokohama BayStars",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.89,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.5237886235955056,
-          "fairDecimal": 1.909167085637674,
-          "selections": [
-            {
-              "name": "Yokohama Bay Stars",
-              "odds": 1.8547008547008548
-            },
-            {
-              "name": "Hiroshima Toyo Carp",
-              "odds": 2.04
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0100395014044945,
-      "startTime": "2026-09-27T05:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "PRICE BOARD",
@@ -1305,9 +1445,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "PariVision vs Level UP",
-      "target": "Level UP",
+      "sport": "baseball",
+      "match": "Yokohama BayStars vs Hiroshima Toyo Carp",
+      "target": "Yokohama BayStars",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -1315,28 +1455,28 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 9.6,
+      "thunderpick": 1.89,
       "outside": [
         {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.10269192422731803,
-          "fairDecimal": 9.737864077669904,
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.5215734916275362,
+          "fairDecimal": 1.9172753524715471,
           "selections": [
             {
-              "name": "PARIVISION",
-              "odds": 1.03
+              "name": "Yokohama Bay Stars",
+              "odds": 1.8620689655172413
             },
             {
-              "name": "Level Up",
-              "odds": 9
+              "name": "Hiroshima Toyo Carp",
+              "odds": 2.0300000000000002
             }
           ],
-          "sourceFamily": "stake-oddin"
+          "sourceFamily": "pinnacle"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.014157527417747007,
-      "startTime": "2026-09-29T10:00:00+00:00",
+      "estimatedEV": -0.0142261008239567,
+      "startTime": "2026-09-27T05:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1521,6 +1661,42 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Tampa Bay Buccaneers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.05,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.4782608695652174,
+          "fairDecimal": 2.090909090909091,
+          "selections": [
+            {
+              "name": "Tampa Bay Buccaneers",
+              "odds": 2
+            },
+            {
+              "name": "Minnesota Vikings",
+              "odds": 1.8333333333333335
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.019565217391304457,
+      "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "baseball",
       "match": "Yomiuri Giants vs Tokyo Yakult Swallows",
       "target": "Tokyo Yakult Swallows",
@@ -1589,42 +1765,6 @@
       "independentSources": 1,
       "estimatedEV": -0.021908614945264082,
       "startTime": "2026-09-28T00:20:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Natus Vincere",
-      "target": "LGD Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.54,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.38461538461538464,
-          "fairDecimal": 2.5999999999999996,
-          "selections": [
-            {
-              "name": "LGD Gaming",
-              "odds": 2.4
-            },
-            {
-              "name": "Natus Vincere",
-              "odds": 1.5
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.023076923076922995,
-      "startTime": "2026-09-27T08:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1698,6 +1838,35 @@
       "estimatedEV": -0.023366336633663387,
       "startTime": "2026-09-27T08:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Over",
+      "market": "Player Darnell Mooney - Total receptions",
+      "marketKey": "player_prop",
+      "line": 1.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.22,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 2.14,
+          "b": 1.68,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T23:08:51Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.023664921465968436,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
@@ -1918,42 +2087,6 @@
     {
       "tier": "PRICE BOARD",
       "sport": "baseball",
-      "match": "Philadelphia Phillies vs Tampa Bay Rays",
-      "target": "Tampa Bay Rays",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.2,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "fairProbability": 0.4413928396272682,
-          "fairDecimal": 2.2655555555555558,
-          "selections": [
-            {
-              "name": "Philadelphia Phillies",
-              "odds": 1.7462686567164178
-            },
-            {
-              "name": "Tampa Bay Rays",
-              "odds": 2.21
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.02893575282000982,
-      "startTime": "2026-09-27T19:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "baseball",
       "match": "Chiba Lotte Marines vs Nippon Ham Fighters",
       "target": "Nippon Ham Fighters",
       "market": "Match Winner",
@@ -2129,78 +2262,6 @@
       "independentSources": 1,
       "estimatedEV": -0.030080862533692687,
       "startTime": "2026-09-27T06:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "baseball",
-      "match": "Fukuoka Softbank Hawks vs Orix Buffaloes",
-      "target": "Fukuoka Softbank Hawks",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.33,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.7291666666666667,
-          "fairDecimal": 1.3714285714285712,
-          "selections": [
-            {
-              "name": "Fukuoka Softbank Hawks",
-              "odds": 1.3
-            },
-            {
-              "name": "Orix Buffaloes",
-              "odds": 3.5
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.03020833333333317,
-      "startTime": "2026-09-27T05:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "Aurora Gaming vs GamerLegion",
-      "target": "GamerLegion",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 4.2,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.23076923076923073,
-          "fairDecimal": 4.333333333333334,
-          "selections": [
-            {
-              "name": "Aurora Gaming",
-              "odds": 1.2
-            },
-            {
-              "name": "GamerLegion",
-              "odds": 4
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.030769230769230882,
-      "startTime": "2026-09-29T16:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2414,35 +2475,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "San Francisco 49ers vs Arizona Cardinals",
-      "target": "Under",
-      "market": "Player Christian McCaffrey - Total receptions",
-      "marketKey": "player_prop",
-      "line": 4.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.97,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.85,
-          "b": 1.92,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-25T20:49:46Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.03328912466843492,
-      "startTime": "2026-09-27T20:05:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Flynn Thomas vs Stefan Seifert",
       "target": "Stefan Seifert",
@@ -2512,6 +2544,35 @@
       "estimatedEV": -0.03491879350348048,
       "startTime": "2026-09-27T09:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player Colston Loveland - Total receptions",
+      "marketKey": "player_prop",
+      "line": 3.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.97,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03493927125506058,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
@@ -2587,35 +2648,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Under",
-      "market": "Player Trevor Lawrence - Total passing touchdowns",
-      "marketKey": "player_prop",
-      "line": 1.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.85,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.96,
-          "b": 1.8,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T19:02:52Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.03563829787234052,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "baseball",
       "match": "NC Dinos vs Kiwoom Heroes",
       "target": "NC Dinos",
@@ -2649,35 +2681,6 @@
       "estimatedEV": -0.036069651741293396,
       "startTime": "2026-09-27T08:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Under",
-      "market": "Player Parker Washington - Total receptions",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.71,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
-          "a": 2.15,
-          "b": 1.6666666666666665,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.03672489082969421,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
@@ -2825,35 +2828,6 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Over",
-      "market": "Player Darius Slayton - Total receptions",
-      "marketKey": "player_prop",
-      "line": 1.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.56,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 2.5,
-          "b": 1.5,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T21:35:08Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.040000000000000036,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "basketball",
       "match": "Decka Pelplin vs AZS Politechnika Opolska",
       "target": "Decka Pelplin",
@@ -2922,6 +2896,42 @@
       "independentSources": 1,
       "estimatedEV": -0.04077979865660819,
       "startTime": "2026-09-27T14:04:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "baseball",
+      "match": "Philadelphia Phillies vs Tampa Bay Rays",
+      "target": "Tampa Bay Rays",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.2,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "fairProbability": 0.43575788776936086,
+          "fairDecimal": 2.2948523206751057,
+          "selections": [
+            {
+              "name": "Philadelphia Phillies",
+              "odds": 1.72992700729927
+            },
+            {
+              "name": "Tampa Bay Rays",
+              "odds": 2.24
+            }
+          ],
+          "sourceFamily": "pinnacle"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04133264690740601,
+      "startTime": "2026-09-27T19:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3214,6 +3224,35 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player Jalen Hurts - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "line": 1.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.25,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 2.2,
+          "b": 1.625,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.044117647058823706,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "lol",
       "match": "T1 Academy vs Cupid Esports",
       "target": "T1 Academy",
@@ -3246,6 +3285,78 @@
       "independentSources": 1,
       "estimatedEV": -0.044247787610619316,
       "startTime": "2026-09-28T06:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Philadelphia Eagles",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.52,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6279373368146214,
+          "fairDecimal": 1.5925155925155925,
+          "selections": [
+            {
+              "name": "Chicago Bears",
+              "odds": 2.6
+            },
+            {
+              "name": "Philadelphia Eagles",
+              "odds": 1.5405405405405406
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.045535248041775445,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New Orleans Saints vs Las Vegas Raiders",
+      "target": "New Orleans Saints",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.52,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6279373368146214,
+          "fairDecimal": 1.5925155925155925,
+          "selections": [
+            {
+              "name": "New Orleans Saints",
+              "odds": 1.5405405405405406
+            },
+            {
+              "name": "Las Vegas Raiders",
+              "odds": 2.6
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.045535248041775445,
+      "startTime": "2026-09-27T20:25:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3353,7 +3464,7 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.045988258317025466,
-      "startTime": "2026-09-27T04:45:00+00:00",
+      "startTime": "2026-09-27T05:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3467,11 +3578,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Over",
-      "market": "Player Josh Downs - Total receiving yards",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Under",
+      "market": "Player Samaje Perine - Total receptions",
       "marketKey": "player_prop",
-      "line": 50.5,
+      "line": 1.5,
       "scope": {
         "map": null,
         "round": null
@@ -3480,8 +3591,8 @@
       "outside": [
         {
           "book": "bovada-nfl-direct",
-          "a": 1.8,
-          "b": 1.9523809523809523,
+          "a": 1.9523809523809523,
+          "b": 1.8,
           "identityVerified": true,
           "identityReason": null,
           "lastUpdate": null,
@@ -3491,6 +3602,35 @@
       "independentSources": 1,
       "estimatedEV": -0.04784263959390844,
       "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Under",
+      "market": "Player Rome Odunze - Total receptions",
+      "marketKey": "player_prop",
+      "line": 2.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9523809523809523,
+          "b": 1.8,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04784263959390844,
+      "startTime": "2026-09-29T00:15:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -3848,6 +3988,78 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "dota2",
+      "match": "LGD Gaming vs Natus Vincere",
+      "target": "LGD Gaming",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.54,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.37373737373737376,
+          "fairDecimal": 2.6756756756756754,
+          "selections": [
+            {
+              "name": "LGD Gaming",
+              "odds": 2.48
+            },
+            {
+              "name": "Natus Vincere",
+              "odds": 1.48
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05070707070707059,
+      "startTime": "2026-09-27T08:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Chicago Bears",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.55,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.37206266318537856,
+          "fairDecimal": 2.6877192982456144,
+          "selections": [
+            {
+              "name": "Chicago Bears",
+              "odds": 2.6
+            },
+            {
+              "name": "Philadelphia Eagles",
+              "odds": 1.5405405405405406
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.051240208877284754,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "american-football",
       "match": "Denver Broncos vs Los Angeles Rams",
       "target": "Denver Broncos",
@@ -3944,35 +4156,6 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.05344827586206902,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Over",
-      "market": "Player Dalton Schultz - Total receptions",
-      "marketKey": "player_prop",
-      "line": 5.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.15,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 2.14,
-          "b": 1.68,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T19:09:01Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0544502617801047,
       "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
@@ -4123,35 +4306,6 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Under",
-      "market": "Player TreVeyon Henderson - Total receptions",
-      "marketKey": "player_prop",
-      "line": 1.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.94,
-          "b": 1.82,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T19:02:52Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.05579787234042555,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
       "match": "Pittsburgh Steelers vs Cincinnati Bengals",
       "target": "Cincinnati Bengals",
       "market": "Match Winner",
@@ -4183,6 +4337,42 @@
       "independentSources": 1,
       "estimatedEV": -0.05591339648173199,
       "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Baltimore Ravens",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.52,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6211096075778079,
+          "fairDecimal": 1.6100217864923747,
+          "selections": [
+            {
+              "name": "Dallas Cowboys",
+              "odds": 2.55
+            },
+            {
+              "name": "Baltimore Ravens",
+              "odds": 1.5555555555555556
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05591339648173199,
+      "startTime": "2026-09-27T20:25:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -4461,6 +4651,64 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Under",
+      "market": "Player Jameis Winston - Total rushing yards",
+      "marketKey": "player_prop",
+      "line": 5.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.94,
+          "b": 1.83,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T22:41:13Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05830238726790471,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Under",
+      "market": "Player Malachi Fields - Total receptions",
+      "marketKey": "player_prop",
+      "line": 2.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.51,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 2.48,
+          "b": 1.5,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T23:08:51Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05909547738693466,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Fabian Marozsan vs Kyrian Jacquet",
       "target": "Fabian Marozsan",
@@ -4513,35 +4761,6 @@
           "book": "bovada-nfl-direct",
           "a": 1.5882352941176472,
           "b": 2.3,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.059470499243570285,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Under",
-      "market": "Player Brenton Strange - Total receptions",
-      "marketKey": "player_prop",
-      "line": 3.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.59,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
-          "a": 2.3,
-          "b": 1.5882352941176472,
           "identityVerified": true,
           "identityReason": null,
           "lastUpdate": null,
@@ -4623,42 +4842,6 @@
       "independentSources": 1,
       "estimatedEV": -0.06010256410256409,
       "startTime": "2026-09-27T13:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "LGD Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.71,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.549597855227882,
-          "fairDecimal": 1.8195121951219515,
-          "selections": [
-            {
-              "name": "LGD Gaming",
-              "odds": 1.68
-            },
-            {
-              "name": "Xtreme Gaming",
-              "odds": 2.05
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0601876675603219,
-      "startTime": "2026-09-29T13:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5039,35 +5222,6 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Under",
-      "market": "Player Jonathan Taylor - Total receptions",
-      "marketKey": "player_prop",
-      "line": 2.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.22,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.63,
-          "b": 2.23,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T21:35:36Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.06253886010362686,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
       "match": "Cleveland Browns vs Carolina Panthers",
       "target": "Cleveland Browns",
       "market": "Match Winner",
@@ -5243,6 +5397,42 @@
       "independentSources": 1,
       "estimatedEV": -0.06375545851528364,
       "startTime": "2026-09-27T08:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Minnesota Vikings",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.77,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "fairProbability": 0.5287958115183247,
+          "fairDecimal": 1.8910891089108908,
+          "selections": [
+            {
+              "name": "Tampa Bay Buccaneers",
+              "odds": 2.02
+            },
+            {
+              "name": "Minnesota Vikings",
+              "odds": 1.8
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06403141361256537,
+      "startTime": "2026-09-27T20:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -5536,11 +5726,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Under",
-      "market": "Player Keenan Allen - Total receptions",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Over",
+      "market": "Player Javonte Williams - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 3.5,
+      "line": 15.5,
       "scope": {
         "map": null,
         "round": null
@@ -5549,17 +5739,17 @@
       "outside": [
         {
           "book": "unibet-kambi-direct",
-          "a": 1.92,
-          "b": 1.84,
+          "a": 1.84,
+          "b": 1.92,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-26T17:16:11Z",
+          "lastUpdate": "2026-09-25T15:56:15Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
       "independentSources": 1,
       "estimatedEV": -0.06553191489361687,
-      "startTime": "2026-09-27T17:00:00+00:00",
+      "startTime": "2026-09-27T20:25:00+00:00",
       "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -5781,11 +5971,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
       "target": "Over",
-      "market": "Player Dawson Knox - Total receiving yards",
+      "market": "Player Chase Brown - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 9.5,
+      "line": 21.5,
       "scope": {
         "map": null,
         "round": null
@@ -5810,11 +6000,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
       "target": "Under",
-      "market": "Player Tre Harris - Total receiving yards",
+      "market": "Player Darnell Washington - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 30.5,
+      "line": 14.5,
       "scope": {
         "map": null,
         "round": null
@@ -5839,11 +6029,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
       "target": "Over",
-      "market": "Player Justin Herbert - Total rushing yards",
+      "market": "Player Jaylen Warren - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 19.5,
+      "line": 26.5,
       "scope": {
         "map": null,
         "round": null
@@ -5868,11 +6058,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Denver Broncos vs Los Angeles Rams",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
       "target": "Under",
-      "market": "Player J.K. Dobbins - Total rushing yards",
+      "market": "Player Pat Freiermuth - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 50.5,
+      "line": 36.5,
       "scope": {
         "map": null,
         "round": null
@@ -5891,7 +6081,36 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.0664777327935222,
-      "startTime": "2026-09-28T00:20:00+00:00",
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Over",
+      "market": "Player Joe Burrow - Total rushing yards",
+      "marketKey": "player_prop",
+      "line": 6.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.8333333333333335,
+          "b": 1.9090909090909092,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -5950,6 +6169,238 @@
       "independentSources": 1,
       "estimatedEV": -0.0664777327935222,
       "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Under",
+      "market": "Player Chris Bell - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 19.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Over",
+      "market": "Player Tyquan Thornton - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 19.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.8333333333333335,
+          "b": 1.9090909090909092,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Denver Broncos vs Los Angeles Rams",
+      "target": "Under",
+      "market": "Player J.K. Dobbins - Total rushing yards",
+      "marketKey": "player_prop",
+      "line": 50.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-28T00:20:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Under",
+      "market": "Player D'Andre Swift - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 10.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Under",
+      "market": "Player Rome Odunze - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 27.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player DeVonta Smith - Total receptions",
+      "marketKey": "player_prop",
+      "line": 5.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.8333333333333335,
+          "b": 1.9090909090909092,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player Makai Lemon - Total receptions",
+      "marketKey": "player_prop",
+      "line": 2.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.8333333333333335,
+          "b": 1.9090909090909092,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Under",
+      "market": "Player Jalen Hurts - Total rushing yards",
+      "marketKey": "player_prop",
+      "line": 24.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-29T00:15:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -6042,9 +6493,38 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
+      "match": "New York Giants vs Tennessee Titans",
       "target": "Under",
-      "market": "Player David Montgomery - Total receiving yards",
+      "market": "Player Tony Pollard - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 6.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 1.9090909090909092,
+          "b": 1.8333333333333335,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0664777327935222,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Over",
+      "market": "Player Dawson Knox - Total receiving yards",
       "marketKey": "player_prop",
       "line": 9.5,
       "scope": {
@@ -6055,35 +6535,6 @@
       "outside": [
         {
           "book": "bovada-nfl-direct",
-          "a": 1.9090909090909092,
-          "b": 1.8333333333333335,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0664777327935222,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Over",
-      "market": "Player Laquon Treadwell - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 18.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
           "a": 1.8333333333333335,
           "b": 1.9090909090909092,
           "identityVerified": true,
@@ -6100,11 +6551,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
       "target": "Under",
-      "market": "Player Woody Marks - Total receiving yards",
+      "market": "Player Tre Harris - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 11.5,
+      "line": 30.5,
       "scope": {
         "map": null,
         "round": null
@@ -6129,125 +6580,9 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
       "target": "Over",
-      "market": "Player Woody Marks - Total rushing yards",
-      "marketKey": "player_prop",
-      "line": 27.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
-          "a": 1.8333333333333335,
-          "b": 1.9090909090909092,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0664777327935222,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Over",
-      "market": "Player Jakobi Meyers - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 35.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
-          "a": 1.8333333333333335,
-          "b": 1.9090909090909092,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0664777327935222,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Under",
-      "market": "Player Rhamondre Stevenson - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 14.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
-          "a": 1.9090909090909092,
-          "b": 1.8333333333333335,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0664777327935222,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Miami Dolphins vs Kansas City Chiefs",
-      "target": "Under",
-      "market": "Player Chris Bell - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 19.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "bovada-nfl-direct",
-          "a": 1.9090909090909092,
-          "b": 1.8333333333333335,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": null,
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.0664777327935222,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Miami Dolphins vs Kansas City Chiefs",
-      "target": "Over",
-      "market": "Player Tyquan Thornton - Total receiving yards",
+      "market": "Player Justin Herbert - Total rushing yards",
       "marketKey": "player_prop",
       "line": 19.5,
       "scope": {
@@ -6994,11 +7329,11 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "San Francisco 49ers vs Arizona Cardinals",
-      "target": "Over",
-      "market": "Player Kaelon Black - Total rushing yards",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Under",
+      "market": "Player Greg Dulcich - Total receiving yards",
       "marketKey": "player_prop",
-      "line": 32.5,
+      "line": 22.5,
       "scope": {
         "map": null,
         "round": null
@@ -7007,17 +7342,17 @@
       "outside": [
         {
           "book": "unibet-kambi-direct",
-          "a": 1.85,
-          "b": 1.91,
+          "a": 1.91,
+          "b": 1.85,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-26T17:20:09Z",
+          "lastUpdate": "2026-09-26T21:49:22Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
       "independentSources": 1,
       "estimatedEV": -0.07039893617021276,
-      "startTime": "2026-09-27T20:05:00+00:00",
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -7052,96 +7387,31 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Indianapolis Colts vs Houston Texans",
-      "target": "Under",
-      "market": "Player Keenan Allen - Total receiving yards",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player Kalif Raymond - Total receptions",
       "marketKey": "player_prop",
-      "line": 32.5,
+      "line": 2.5,
       "scope": {
         "map": null,
         "round": null
       },
-      "thunderpick": 1.83,
+      "thunderpick": 1.59,
       "outside": [
         {
-          "book": "unibet-kambi-direct",
-          "a": 1.91,
-          "b": 1.85,
+          "book": "bovada-nfl-direct",
+          "a": 1.606060606060606,
+          "b": 2.25,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-26T17:16:11Z",
-          "sourceFamily": "unibet-kambi"
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.07039893617021276,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Miami Dolphins vs Kansas City Chiefs",
-      "target": "Under",
-      "market": "Player Greg Dulcich - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 22.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.91,
-          "b": 1.85,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T21:49:22Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07039893617021276,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "LGD Gaming vs Xtreme",
-      "target": "Xtreme",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.06,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.450402144772118,
-          "fairDecimal": 2.2202380952380953,
-          "selections": [
-            {
-              "name": "LGD Gaming",
-              "odds": 1.68
-            },
-            {
-              "name": "Xtreme Gaming",
-              "odds": 2.05
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07217158176943694,
-      "startTime": "2026-09-29T13:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+      "estimatedEV": -0.07223968565815309,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
@@ -7722,118 +7992,60 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Buffalo Bills vs Los Angeles Chargers",
-      "target": "Under",
-      "market": "Player Oronde Gadsden II - Total receiving yards",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player D'Andre Swift - Total receptions",
       "marketKey": "player_prop",
-      "line": 36.5,
+      "line": 1.5,
       "scope": {
         "map": null,
         "round": null
       },
-      "thunderpick": 1.83,
+      "thunderpick": 1.71,
       "outside": [
         {
-          "book": "unibet-kambi-direct",
-          "a": 1.9,
-          "b": 1.86,
+          "book": "bovada-nfl-direct",
+          "a": 1.7407407407407407,
+          "b": 2.05,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-26T21:46:10Z",
-          "sourceFamily": "unibet-kambi"
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.07526595744680842,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+      "estimatedEV": -0.07524670249145093,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
-      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "match": "Chicago Bears vs Philadelphia Eagles",
       "target": "Over",
-      "market": "Player Omarion Hampton - Total rushing yards",
+      "market": "Player Luther Burden III - Total receptions",
       "marketKey": "player_prop",
-      "line": 58.5,
+      "line": 3.5,
       "scope": {
         "map": null,
         "round": null
       },
-      "thunderpick": 1.83,
+      "thunderpick": 1.71,
       "outside": [
         {
-          "book": "unibet-kambi-direct",
-          "a": 1.86,
-          "b": 1.9,
+          "book": "bovada-nfl-direct",
+          "a": 1.7407407407407407,
+          "b": 2.05,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-09-26T21:12:09Z",
-          "sourceFamily": "unibet-kambi"
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.07526595744680842,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Detroit Lions vs New York Jets",
-      "target": "Over",
-      "market": "Player Amon-Ra St. Brown - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 76.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.86,
-          "b": 1.9,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T19:37:08Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07526595744680842,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "american-football",
-      "match": "Jacksonville Jaguars vs New England Patriots",
-      "target": "Over",
-      "market": "Player TreVeyon Henderson - Total receiving yards",
-      "marketKey": "player_prop",
-      "line": 8.5,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.83,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.86,
-          "b": 1.9,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-09-26T19:02:52Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07526595744680842,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+      "estimatedEV": -0.07524670249145093,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
@@ -7914,6 +8126,151 @@
           "identityVerified": true,
           "identityReason": null,
           "lastUpdate": "2026-09-26T21:49:51Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07526595744680842,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Detroit Lions vs New York Jets",
+      "target": "Over",
+      "market": "Player Amon-Ra St. Brown - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 76.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.86,
+          "b": 1.9,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T19:37:08Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07526595744680842,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Under",
+      "market": "Player Calvin Ridley - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 13.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.9,
+          "b": 1.86,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T22:41:13Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07526595744680842,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Under",
+      "market": "Player Malachi Fields - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 23.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.9,
+          "b": 1.86,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T23:08:51Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07526595744680842,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Under",
+      "market": "Player Oronde Gadsden II - Total receiving yards",
+      "marketKey": "player_prop",
+      "line": 36.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.9,
+          "b": 1.86,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T21:46:10Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07526595744680842,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Same-provider duplicate collapsed (2 adapters -> 1 independent source families); fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Over",
+      "market": "Player Omarion Hampton - Total rushing yards",
+      "marketKey": "player_prop",
+      "line": 58.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.83,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.86,
+          "b": 1.9,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-09-26T21:12:09Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
@@ -8137,6 +8494,35 @@
       "estimatedEV": -0.07536231884057965,
       "startTime": "2026-10-06T20:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Over",
+      "market": "Player Dontayvion Wicks - Total receptions",
+      "marketKey": "player_prop",
+      "line": 3.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.22,
+      "outside": [
+        {
+          "book": "bovada-nfl-direct",
+          "a": 2.25,
+          "b": 1.606060606060606,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": null,
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07536345776031439,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
       "tier": "PRICE BOARD",
@@ -8424,438 +8810,6 @@
       "independentSources": 1,
       "estimatedEV": -0.07555555555555549,
       "startTime": "2026-09-29T18:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Etienne Donnet vs Paul Colin",
-      "target": "Paul Colin",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.17,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.42592592592592593,
-          "fairDecimal": 2.3478260869565215,
-          "selections": [
-            {
-              "name": "Etienne Donnet",
-              "odds": 1.61
-            },
-            {
-              "name": "Paul Colin",
-              "odds": 2.17
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07574074074074078,
-      "startTime": "2026-09-27T08:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "dota2",
-      "match": "PariVision vs Level UP",
-      "target": "PariVision",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.03,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.8973080757726819,
-          "fairDecimal": 1.1144444444444446,
-          "selections": [
-            {
-              "name": "PARIVISION",
-              "odds": 1.03
-            },
-            {
-              "name": "Level Up",
-              "odds": 9
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07577268195413767,
-      "startTime": "2026-09-29T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Paola Lopez vs Leticia Garcia Vidal",
-      "target": "Paola Lopez",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.65,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.56,
-          "fairDecimal": 1.7857142857142856,
-          "selections": [
-            {
-              "name": "Paola Lopez",
-              "odds": 1.65
-            },
-            {
-              "name": "Leticia Garcia Vidal",
-              "odds": 2.1
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-27T13:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "HyperSpirit vs ENCE",
-      "target": "HyperSpirit",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.1,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.44,
-          "fairDecimal": 2.272727272727273,
-          "selections": [
-            {
-              "name": "HyperSpirit",
-              "odds": 2.1
-            },
-            {
-              "name": "ENCE",
-              "odds": 1.65
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-29T17:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "HyperSpirit vs ENCE",
-      "target": "ENCE",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.65,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.56,
-          "fairDecimal": 1.7857142857142856,
-          "selections": [
-            {
-              "name": "HyperSpirit",
-              "odds": 2.1
-            },
-            {
-              "name": "ENCE",
-              "odds": 1.65
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-29T17:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "K27 vs SINNERS",
-      "target": "SINNERS",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.1,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.44,
-          "fairDecimal": 2.272727272727273,
-          "selections": [
-            {
-              "name": "K27",
-              "odds": 1.65
-            },
-            {
-              "name": "Sinners Esports",
-              "odds": 2.1
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-27T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "Imperial vs paiN Gaming",
-      "target": "paiN Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.1,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.44,
-          "fairDecimal": 2.272727272727273,
-          "selections": [
-            {
-              "name": "Imperial",
-              "odds": 1.65
-            },
-            {
-              "name": "paiN Gaming",
-              "odds": 2.1
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "lol",
-      "match": "LOUD vs LOS",
-      "target": "LOUD",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.1,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.44,
-          "fairDecimal": 2.272727272727273,
-          "selections": [
-            {
-              "name": "LOUD",
-              "odds": 2.1
-            },
-            {
-              "name": "LOS",
-              "odds": 1.65
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-27T16:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "lol",
-      "match": "LOUD vs LOS",
-      "target": "LOS",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.65,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.56,
-          "fairDecimal": 1.7857142857142856,
-          "selections": [
-            {
-              "name": "LOUD",
-              "odds": 2.1
-            },
-            {
-              "name": "LOS",
-              "odds": 1.65
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07599999999999996,
-      "startTime": "2026-09-27T16:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "Bounty Hunters Esports vs Galorys",
-      "target": "Bounty Hunters Esports",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.15,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.4297082228116711,
-          "fairDecimal": 2.3271604938271606,
-          "selections": [
-            {
-              "name": "Bounty Hunters Esports",
-              "odds": 2.15
-            },
-            {
-              "name": "Galorys",
-              "odds": 1.62
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07612732095490715,
-      "startTime": "2026-09-27T13:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "Ninjas in Pyjamas vs Magic",
-      "target": "Magic",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.78,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.5189189189189188,
-          "fairDecimal": 1.9270833333333337,
-          "selections": [
-            {
-              "name": "Ninjas in Pyjamas",
-              "odds": 1.92
-            },
-            {
-              "name": "Magic",
-              "odds": 1.78
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07632432432432446,
-      "startTime": "2026-09-27T15:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "3DMAX vs GamerLegion",
-      "target": "GamerLegion",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.78,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "fairProbability": 0.5189189189189188,
-          "fairDecimal": 1.9270833333333337,
-          "selections": [
-            {
-              "name": "3DMAX",
-              "odds": 1.92
-            },
-            {
-              "name": "GamerLegion",
-              "odds": 1.78
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.07632432432432446,
-      "startTime": "2026-09-27T09:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ]
