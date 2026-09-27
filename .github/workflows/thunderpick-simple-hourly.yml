@@ -24,6 +24,7 @@ on:
       - 'scripts/kambi-nfl-direct.mjs'
       - 'scripts/bovada-nfl-direct.mjs'
       - 'scripts/bovada-traditional-direct.mjs'
+      - 'scripts/draftkings-nfl-direct.py'
       - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
@@ -56,7 +57,6 @@ jobs:
           let run = true;
           let reason = `${event || 'unknown'} trigger`;
 
-          // Manual runs and code pushes always execute a real scan.
           if (event === 'schedule' && schedule !== '27 * * * *') {
             let generatedAt = null;
             let ageMin = Infinity;
@@ -68,9 +68,6 @@ jobs:
             } catch (e) {
               reason = `backup tick could not read board: ${e.message}`;
             }
-
-            // Backup ticks are recovery opportunities only. A board newer than
-            // 50 minutes proves the primary/current cycle already published.
             if (Number.isFinite(ageMin) && ageMin <= 50) {
               run = false;
               reason = `backup tick skipped; board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`;
@@ -99,6 +96,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Configure read-only AWS collector access
         id: awscreds
         continue-on-error: true
@@ -115,6 +115,8 @@ jobs:
           node scripts/merge-aws-thunderpick.mjs
       - name: Install first-party browser driver
         run: npm install --no-save puppeteer-core@24.16.0
+      - name: Install direct sportsbook TLS client
+        run: pip install --disable-pip-version-check 'curl_cffi==0.16.3'
       - name: Refresh Thunderpick directly from first-party sportsbook
         continue-on-error: true
         run: node scripts/thunderpick-firstparty-browser.mjs
@@ -137,6 +139,9 @@ jobs:
         run: node scripts/bovada-nfl-direct.mjs
       - name: Add Bovada traditional-sports lines and player props
         run: node scripts/bovada-traditional-direct.mjs
+      - name: Add DraftKings NFL exact two-sided player props
+        continue-on-error: true
+        run: python scripts/draftkings-nfl-direct.py
       - name: Build loose direct discovery board
         run: node scripts/simple-direct-discovery.mjs
       - name: Merge direct sources into comparison board
