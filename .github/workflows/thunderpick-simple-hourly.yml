@@ -24,6 +24,7 @@ on:
       - 'scripts/kambi-nfl-direct.mjs'
       - 'scripts/bovada-nfl-direct.mjs'
       - 'scripts/bovada-traditional-direct.mjs'
+      - 'scripts/fanduel-direct.py'
       - 'scripts/draftkings-nfl-direct.py'
       - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
@@ -139,6 +140,9 @@ jobs:
         run: node scripts/bovada-nfl-direct.mjs
       - name: Add Bovada traditional-sports lines and player props
         run: node scripts/bovada-traditional-direct.mjs
+      - name: Add FanDuel NFL NBA MLB game lines
+        continue-on-error: true
+        run: python scripts/fanduel-direct.py
       - name: Add DraftKings NFL exact two-sided player props
         continue-on-error: true
         run: python scripts/draftkings-nfl-direct.py
