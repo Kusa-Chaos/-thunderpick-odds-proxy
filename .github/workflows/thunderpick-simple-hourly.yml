@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/thunderpick-firstparty-browser.mjs'
       - 'scripts/thunderpick-public-reader.mjs'
+      - 'scripts/merge-aws-thunderpick.mjs'
       - 'scripts/simple-opportunity-board.mjs'
       - 'scripts/simple-direct-discovery.mjs'
       - 'scripts/simple-two-source-watch.mjs'
@@ -24,6 +25,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 concurrency:
   group: thunderpick-simple-hourly
@@ -38,12 +40,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Configure read-only AWS collector access
+        id: awscreds
+        continue-on-error: true
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::367398820205:role/ThunderpickGitHubSnapshotReadRole
+          aws-region: us-east-2
+      - name: Seed fresh NFL snapshot from AWS
+        if: steps.awscreds.outcome == 'success'
+        continue-on-error: true
+        run: |
+          aws s3 cp s3://thunderpick-cloud-367398820205-us-east-2/collector/thunderpick-direct-latest.json data/aws-thunderpick-direct-latest.json --no-progress
+          aws s3 cp s3://thunderpick-cloud-367398820205-us-east-2/collector/thunderpick-direct-meta.json data/aws-thunderpick-direct-meta.json --no-progress
+          node scripts/merge-aws-thunderpick.mjs
       - name: Install first-party browser driver
         run: npm install --no-save puppeteer-core@24.16.0
       - name: Refresh Thunderpick directly from first-party sportsbook
         continue-on-error: true
         run: node scripts/thunderpick-firstparty-browser.mjs
       - name: Refresh NFL through free first-party public reader fallback
+        continue-on-error: true
         run: node scripts/thunderpick-public-reader.mjs
       - name: Collect quota-free public sources
         run: node scripts/direct-public-sources.mjs
@@ -81,5 +98,3 @@ jobs:
             sleep $((n*3))
           done
           exit 1
-
-# manual live verification trigger 2026-09-27
