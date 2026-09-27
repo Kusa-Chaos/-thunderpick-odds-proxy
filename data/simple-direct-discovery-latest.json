@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T00:34:52.524Z",
+  "generatedAt": "2026-09-27T00:39:27.705Z",
   "mode": "loose-direct-discovery",
   "providerHealth": {
     "polymarket": {
@@ -9,7 +9,7 @@
       "pages": 20,
       "acceptedEvents": 0,
       "rejectedStale": 7688,
-      "fetchedAt": "2026-09-27T00:34:32.901Z"
+      "fetchedAt": "2026-09-27T00:39:06.722Z"
     },
     "stake": {
       "ok": true,
@@ -17,11 +17,11 @@
       "sports": 9,
       "scheduleFixtures": 242,
       "detailRequests": 242,
-      "acceptedEvents": 226,
-      "marketCount": 3547,
+      "acceptedEvents": 223,
+      "marketCount": 3531,
       "playerPropMarkets": 348,
       "errors": [],
-      "fetchedAt": "2026-09-27T00:34:36.256Z"
+      "fetchedAt": "2026-09-27T00:39:08.843Z"
     },
     "kalshi": {
       "ok": true,
@@ -29,10 +29,10 @@
       "rawMarkets": 60000,
       "pages": 60,
       "acceptedEvents": 5,
-      "rejectedMulti": 59989,
-      "rejectedNonSports": 3,
-      "rejectedShape": 3,
-      "fetchedAt": "2026-09-27T00:34:38.468Z"
+      "rejectedMulti": 59993,
+      "rejectedNonSports": 1,
+      "rejectedShape": 1,
+      "fetchedAt": "2026-09-27T00:39:11.032Z"
     },
     "betway": {
       "ok": true,
@@ -40,32 +40,32 @@
       "fetchedPages": 6,
       "rawEvents": 100,
       "rawMarkets": 8,
-      "rawOutcomes": 894,
+      "rawOutcomes": 908,
       "acceptedEvents": 6,
       "errors": [],
-      "fetchedAt": "2026-09-27T00:34:44.216Z",
+      "fetchedAt": "2026-09-27T00:39:18.821Z",
       "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
     },
     "pinnacle": {
       "ok": true,
       "status": 200,
       "sports": 63,
-      "leagues": 305,
-      "matchups": 6132,
-      "marketRequests": 279,
-      "acceptedEvents": 81,
-      "acceptedMarkets": 421,
+      "leagues": 307,
+      "matchups": 6258,
+      "marketRequests": 271,
+      "acceptedEvents": 89,
+      "acceptedMarkets": 429,
       "playerPropMarkets": 0,
       "mapWinnerMarkets": 0,
       "errors": [
         "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
       ],
-      "fetchedAt": "2026-09-27T00:34:50.409Z"
+      "fetchedAt": "2026-09-27T00:39:24.637Z"
     },
     "kambi": {
       "ok": true,
       "status": 200,
-      "rawEvents": 884,
+      "rawEvents": 889,
       "acceptedEvents": 116,
       "marketCount": 548,
       "deepEventRequests": 15,
@@ -76,12 +76,12 @@
       "roundHandicapMarkets": 93,
       "roundTotalMarkets": 76,
       "errors": [],
-      "fetchedAt": "2026-09-27T00:34:51.566Z"
+      "fetchedAt": "2026-09-27T00:39:25.676Z"
     },
     "kambiNfl": {
       "ok": true,
       "status": 200,
-      "rawEvents": 884,
+      "rawEvents": 889,
       "nflEvents": 15,
       "deepRequests": 15,
       "acceptedEvents": 14,
@@ -92,13 +92,31 @@
       "teamTotals": 28,
       "playerPropMarkets": 416,
       "errors": [],
-      "fetchedAt": "2026-09-27T00:34:52.162Z"
+      "fetchedAt": "2026-09-27T00:39:26.418Z"
+    },
+    "bovadaNfl": {
+      "ok": true,
+      "status": 200,
+      "rawEvents": 17,
+      "acceptedEvents": 15,
+      "marketCount": 486,
+      "h2h": 15,
+      "spreads": 15,
+      "totals": 15,
+      "playerPropMarkets": 441,
+      "playerPassingYards": 28,
+      "playerRushingYards": 80,
+      "playerReceivingYards": 155,
+      "playerReceptions": 151,
+      "playerPassingTouchdowns": 27,
+      "errors": [],
+      "fetchedAt": "2026-09-27T00:39:27.336Z"
     }
   },
   "counts": {
-    "rows": 146,
-    "screening": 14,
-    "priceBoard": 132
+    "rows": 174,
+    "screening": 16,
+    "priceBoard": 158
   },
   "rows": [
     {
@@ -313,6 +331,41 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Chicago Bears",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.83,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.37206266318537856,
+          "fairDecimal": 2.6877192982456144,
+          "selections": [
+            {
+              "name": "Chicago Bears",
+              "odds": 2.6
+            },
+            {
+              "name": "Philadelphia Eagles",
+              "odds": 1.5405405405405406
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.052937336814621316,
+      "startTime": "2026-09-29T00:15:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
       "sport": "baseball",
       "match": "WEI Chuan Dragons vs Rakuten Monkeys",
       "target": "Rakuten Monkeys",
@@ -484,6 +537,41 @@
       "independentSources": 1,
       "estimatedEV": 0.021416803953871355,
       "startTime": "2026-09-27T01:40:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "San Francisco 49ers vs Arizona Cardinals",
+      "target": "Arizona Cardinals",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 4.09,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.24808656637635257,
+          "fairDecimal": 4.030851063829788,
+          "selections": [
+            {
+              "name": "San Francisco 49ers",
+              "odds": 1.2702702702702702
+            },
+            {
+              "name": "Arizona Cardinals",
+              "odds": 3.85
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": 0.014674056479281994,
+      "startTime": "2026-09-27T20:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -838,6 +926,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Cleveland Browns vs Carolina Panthers",
+      "target": "Cleveland Browns",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.14,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.4572564612326044,
+          "fairDecimal": 2.1869565217391305,
+          "selections": [
+            {
+              "name": "Cleveland Browns",
+              "odds": 2.1
+            },
+            {
+              "name": "Carolina Panthers",
+              "odds": 1.7692307692307692
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.02147117296222656,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Kristiana Sidorova vs Meiqi Guo",
       "target": "Kristiana Sidorova",
@@ -869,6 +992,76 @@
       "independentSources": 1,
       "estimatedEV": -0.023091976516634083,
       "startTime": "2026-09-27T03:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Tampa Bay Buccaneers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.04,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.4782608695652174,
+          "fairDecimal": 2.090909090909091,
+          "selections": [
+            {
+              "name": "Tampa Bay Buccaneers",
+              "odds": 2
+            },
+            {
+              "name": "Minnesota Vikings",
+              "odds": 1.8333333333333335
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.024347826086956514,
+      "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Denver Broncos vs Los Angeles Rams",
+      "target": "Los Angeles Rams",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.76,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.552594002855783,
+          "fairDecimal": 1.809646856158484,
+          "selections": [
+            {
+              "name": "Denver Broncos",
+              "odds": 2.15
+            },
+            {
+              "name": "Los Angeles Rams",
+              "odds": 1.7407407407407407
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.027434554973821967,
+      "startTime": "2026-09-28T00:20:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -944,6 +1137,41 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
+      "match": "Jacksonville Jaguars vs New England Patriots",
+      "target": "New England Patriots",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.31,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.4201680672268907,
+          "fairDecimal": 2.3800000000000003,
+          "selections": [
+            {
+              "name": "Jacksonville Jaguars",
+              "odds": 1.6666666666666665
+            },
+            {
+              "name": "New England Patriots",
+              "odds": 2.3
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.02941176470588247,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
       "match": "Buffalo Bills vs Los Angeles Chargers",
       "target": "Buffalo Bills",
       "market": "Match Winner",
@@ -1009,41 +1237,6 @@
       "independentSources": 1,
       "estimatedEV": -0.034232365145228205,
       "startTime": "2026-09-27T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Nishesh Basavareddy vs Dylan Dietrich",
-      "target": "Dylan Dietrich",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.54,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.38,
-          "fairDecimal": 2.6315789473684212,
-          "selections": [
-            {
-              "name": "Nishesh Basavareddy",
-              "odds": 1.52
-            },
-            {
-              "name": "Dylan Dietrich",
-              "odds": 2.48
-            }
-          ]
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.03479999999999994,
-      "startTime": "2026-09-26T22:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1118,6 +1311,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Detroit Lions vs New York Jets",
+      "target": "Detroit Lions",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.33,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.7241379310344829,
+          "fairDecimal": 1.3809523809523807,
+          "selections": [
+            {
+              "name": "Detroit Lions",
+              "odds": 1.3333333333333333
+            },
+            {
+              "name": "New York Jets",
+              "odds": 3.5
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03689655172413775,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Hugo Gaston vs Andrey Rublev",
       "target": "Andrey Rublev",
@@ -1149,6 +1377,76 @@
       "independentSources": 1,
       "estimatedEV": -0.03691520467836251,
       "startTime": "2026-09-27T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Baltimore Ravens",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.55,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6211096075778079,
+          "fairDecimal": 1.6100217864923747,
+          "selections": [
+            {
+              "name": "Dallas Cowboys",
+              "odds": 2.55
+            },
+            {
+              "name": "Baltimore Ravens",
+              "odds": 1.5555555555555556
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03728010825439776,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New Orleans Saints vs Las Vegas Raiders",
+      "target": "New Orleans Saints",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.55,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6211096075778079,
+          "fairDecimal": 1.6100217864923747,
+          "selections": [
+            {
+              "name": "New Orleans Saints",
+              "odds": 1.5555555555555556
+            },
+            {
+              "name": "Las Vegas Raiders",
+              "odds": 2.55
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03728010825439776,
+      "startTime": "2026-09-27T20:25:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1258,6 +1556,76 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Kansas City Chiefs",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.14,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.8411214953271028,
+          "fairDecimal": 1.1888888888888889,
+          "selections": [
+            {
+              "name": "Miami Dolphins",
+              "odds": 6
+            },
+            {
+              "name": "Kansas City Chiefs",
+              "odds": 1.1333333333333333
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04112149532710285,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Pittsburgh Steelers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.53,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.37889039242219225,
+          "fairDecimal": 2.639285714285714,
+          "selections": [
+            {
+              "name": "Pittsburgh Steelers",
+              "odds": 2.55
+            },
+            {
+              "name": "Cincinnati Bengals",
+              "odds": 1.5555555555555556
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0414073071718537,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "tennis",
       "match": "Jenson Brooksby vs Nikoloz Basilashvili",
       "target": "Nikoloz Basilashvili",
@@ -1363,6 +1731,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "Tennessee Titans",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.14,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.447405997144217,
+          "fairDecimal": 2.2351063829787234,
+          "selections": [
+            {
+              "name": "New York Giants",
+              "odds": 1.7407407407407407
+            },
+            {
+              "name": "Tennessee Titans",
+              "odds": 2.15
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04255116611137555,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "100 Thieves vs T1",
       "target": "100 Thieves",
@@ -1433,6 +1836,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Buffalo Bills",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.29,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.7408716136631331,
+          "fairDecimal": 1.3497615262321143,
+          "selections": [
+            {
+              "name": "Buffalo Bills",
+              "odds": 1.2941176470588236
+            },
+            {
+              "name": "Los Angeles Chargers",
+              "odds": 3.7
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04427561837455818,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "G2 Esports vs Paper Rex",
       "target": "G2 Esports",
@@ -1469,6 +1907,41 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
+      "match": "Indianapolis Colts vs Houston Texans",
+      "target": "Indianapolis Colts",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.04,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.4675324675324676,
+          "fairDecimal": 2.138888888888889,
+          "selections": [
+            {
+              "name": "Indianapolis Colts",
+              "odds": 2.05
+            },
+            {
+              "name": "Houston Texans",
+              "odds": 1.8
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04623376623376607,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
       "match": "Pittsburgh Steelers vs Cincinnati Bengals",
       "target": "Cincinnati Bengals",
       "market": "Match Winner",
@@ -1498,6 +1971,41 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.04708737864077661,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Washington Commanders vs Seattle Seahawks",
+      "target": "Seattle Seahawks",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.26,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.7553516819571866,
+          "fairDecimal": 1.3238866396761133,
+          "selections": [
+            {
+              "name": "Washington Commanders",
+              "odds": 3.9
+            },
+            {
+              "name": "Seattle Seahawks",
+              "odds": 1.263157894736842
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.04825688073394485,
       "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -2343,6 +2851,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Pittsburgh Steelers vs Cincinnati Bengals",
+      "target": "Cincinnati Bengals",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.51,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6211096075778079,
+          "fairDecimal": 1.6100217864923747,
+          "selections": [
+            {
+              "name": "Pittsburgh Steelers",
+              "odds": 2.55
+            },
+            {
+              "name": "Cincinnati Bengals",
+              "odds": 1.5555555555555556
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06212449255751007,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "lol",
       "match": "KT Rolster Challengers vs Galions",
       "target": "KT Rolster Challengers",
@@ -2484,6 +3027,41 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
+      "match": "Indianapolis Colts vs Houston Texans",
+      "target": "Houston Texans",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.76,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.5324675324675325,
+          "fairDecimal": 1.8780487804878045,
+          "selections": [
+            {
+              "name": "Indianapolis Colts",
+              "odds": 2.05
+            },
+            {
+              "name": "Houston Texans",
+              "odds": 1.8
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06285714285714272,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
       "match": "Dallas Cowboys vs Baltimore Ravens",
       "target": "Baltimore Ravens",
       "market": "Match Winner",
@@ -2514,6 +3092,76 @@
       "independentSources": 1,
       "estimatedEV": -0.0653266331658292,
       "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Washington Commanders vs Seattle Seahawks",
+      "target": "Washington Commanders",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.82,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.24464831804281348,
+          "fairDecimal": 4.0874999999999995,
+          "selections": [
+            {
+              "name": "Washington Commanders",
+              "odds": 3.9
+            },
+            {
+              "name": "Seattle Seahawks",
+              "odds": 1.263157894736842
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06544342507645251,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New York Giants vs Tennessee Titans",
+      "target": "New York Giants",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.69,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.552594002855783,
+          "fairDecimal": 1.809646856158484,
+          "selections": [
+            {
+              "name": "New York Giants",
+              "odds": 1.7407407407407407
+            },
+            {
+              "name": "Tennessee Titans",
+              "odds": 2.15
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06611613517372683,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2654,6 +3302,41 @@
       "independentSources": 1,
       "estimatedEV": -0.07174934725848547,
       "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Jacksonville Jaguars vs New England Patriots",
+      "target": "Jacksonville Jaguars",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.6,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.5798319327731092,
+          "fairDecimal": 1.7246376811594204,
+          "selections": [
+            {
+              "name": "Jacksonville Jaguars",
+              "odds": 1.6666666666666665
+            },
+            {
+              "name": "New England Patriots",
+              "odds": 2.3
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07226890756302529,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -2969,6 +3652,41 @@
       "independentSources": 1,
       "estimatedEV": -0.074410163339383,
       "startTime": "2026-10-05T20:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "San Francisco 49ers vs Arizona Cardinals",
+      "target": "San Francisco 49ers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.23,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.7519134336236474,
+          "fairDecimal": 1.32994032994033,
+          "selections": [
+            {
+              "name": "San Francisco 49ers",
+              "odds": 1.2702702702702702
+            },
+            {
+              "name": "Arizona Cardinals",
+              "odds": 3.85
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07514647664291374,
+      "startTime": "2026-09-27T20:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3638,6 +4356,41 @@
     },
     {
       "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Tampa Bay Buccaneers vs Minnesota Vikings",
+      "target": "Minnesota Vikings",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.76,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.5217391304347826,
+          "fairDecimal": 1.9166666666666667,
+          "selections": [
+            {
+              "name": "Tampa Bay Buccaneers",
+              "odds": 2
+            },
+            {
+              "name": "Minnesota Vikings",
+              "odds": 1.8333333333333335
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.08173913043478265,
+      "startTime": "2026-09-27T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
       "sport": "valorant",
       "match": "G2 Esports vs Paper Rex",
       "target": "Paper Rex",
@@ -3674,6 +4427,146 @@
     {
       "tier": "PRICE BOARD",
       "sport": "american-football",
+      "match": "Buffalo Bills vs Los Angeles Chargers",
+      "target": "Los Angeles Chargers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.54,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.2591283863368669,
+          "fairDecimal": 3.859090909090909,
+          "selections": [
+            {
+              "name": "Buffalo Bills",
+              "odds": 1.2941176470588236
+            },
+            {
+              "name": "Los Angeles Chargers",
+              "odds": 3.7
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.08268551236749111,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Cleveland Browns vs Carolina Panthers",
+      "target": "Carolina Panthers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.69,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.5427435387673957,
+          "fairDecimal": 1.8424908424908424,
+          "selections": [
+            {
+              "name": "Cleveland Browns",
+              "odds": 2.1
+            },
+            {
+              "name": "Carolina Panthers",
+              "odds": 1.7692307692307692
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.0827634194831014,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Dallas Cowboys vs Baltimore Ravens",
+      "target": "Dallas Cowboys",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.42,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.37889039242219225,
+          "fairDecimal": 2.639285714285714,
+          "selections": [
+            {
+              "name": "Dallas Cowboys",
+              "odds": 2.55
+            },
+            {
+              "name": "Baltimore Ravens",
+              "odds": 1.5555555555555556
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.08308525033829484,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "New Orleans Saints vs Las Vegas Raiders",
+      "target": "Las Vegas Raiders",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.42,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.37889039242219225,
+          "fairDecimal": 2.639285714285714,
+          "selections": [
+            {
+              "name": "New Orleans Saints",
+              "odds": 1.5555555555555556
+            },
+            {
+              "name": "Las Vegas Raiders",
+              "odds": 2.55
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.08308525033829484,
+      "startTime": "2026-09-27T20:25:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
       "match": "Washington Commanders vs Seattle Seahawks",
       "target": "Washington Commanders",
       "market": "Match Winner",
@@ -3704,6 +4597,41 @@
       "independentSources": 1,
       "estimatedEV": -0.08494296577946758,
       "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Denver Broncos vs Los Angeles Rams",
+      "target": "Denver Broncos",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.04,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.447405997144217,
+          "fairDecimal": 2.2351063829787234,
+          "selections": [
+            {
+              "name": "Denver Broncos",
+              "odds": 2.15
+            },
+            {
+              "name": "Los Angeles Rams",
+              "odds": 1.7407407407407407
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.08729176582579723,
+      "startTime": "2026-09-28T00:20:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -3953,9 +4881,9 @@
     },
     {
       "tier": "PRICE BOARD",
-      "sport": "tennis",
-      "match": "Nishesh Basavareddy vs Dylan Dietrich",
-      "target": "Nishesh Basavareddy",
+      "sport": "american-football",
+      "match": "Detroit Lions vs New York Jets",
+      "target": "New York Jets",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -3963,27 +4891,27 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 1.45,
+      "thunderpick": 3.25,
       "outside": [
         {
-          "book": "Unibet/Kambi Direct",
-          "fairProbability": 0.62,
-          "fairDecimal": 1.6129032258064517,
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.27586206896551724,
+          "fairDecimal": 3.625,
           "selections": [
             {
-              "name": "Nishesh Basavareddy",
-              "odds": 1.52
+              "name": "Detroit Lions",
+              "odds": 1.3333333333333333
             },
             {
-              "name": "Dylan Dietrich",
-              "odds": 2.48
+              "name": "New York Jets",
+              "odds": 3.5
             }
           ]
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.10099999999999998,
-      "startTime": "2026-09-26T22:30:00+00:00",
+      "estimatedEV": -0.10344827586206895,
+      "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -4194,6 +5122,41 @@
       "independentSources": 1,
       "estimatedEV": -0.1080402010050252,
       "startTime": "2026-09-27T20:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Chicago Bears vs Philadelphia Eagles",
+      "target": "Philadelphia Eagles",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.42,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.6279373368146214,
+          "fairDecimal": 1.5925155925155925,
+          "selections": [
+            {
+              "name": "Chicago Bears",
+              "odds": 2.6
+            },
+            {
+              "name": "Philadelphia Eagles",
+              "odds": 1.5405405405405406
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.10832898172323768,
+      "startTime": "2026-09-29T00:15:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -4648,6 +5611,41 @@
       ],
       "independentSources": 1,
       "estimatedEV": -0.13781512605042034,
+      "startTime": "2026-09-27T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "american-football",
+      "match": "Miami Dolphins vs Kansas City Chiefs",
+      "target": "Miami Dolphins",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 5.4,
+      "outside": [
+        {
+          "book": "Bovada NFL Direct",
+          "fairProbability": 0.1588785046728972,
+          "fairDecimal": 6.294117647058824,
+          "selections": [
+            {
+              "name": "Miami Dolphins",
+              "odds": 6
+            },
+            {
+              "name": "Kansas City Chiefs",
+              "odds": 1.1333333333333333
+            }
+          ]
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.14205607476635518,
       "startTime": "2026-09-27T17:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
