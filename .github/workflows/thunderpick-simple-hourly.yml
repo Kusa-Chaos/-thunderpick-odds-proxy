@@ -23,6 +23,7 @@ on:
       - 'scripts/kambi-traditional-direct.mjs'
       - 'scripts/kambi-nfl-direct.mjs'
       - 'scripts/bovada-nfl-direct.mjs'
+      - 'scripts/bovada-traditional-direct.mjs'
       - 'scripts/merge-direct-sources.mjs'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
@@ -134,6 +135,8 @@ jobs:
         run: node scripts/kambi-nfl-direct.mjs
       - name: Add Bovada NFL lines and player props
         run: node scripts/bovada-nfl-direct.mjs
+      - name: Add Bovada traditional-sports lines and player props
+        run: node scripts/bovada-traditional-direct.mjs
       - name: Build loose direct discovery board
         run: node scripts/simple-direct-discovery.mjs
       - name: Merge direct sources into comparison board
