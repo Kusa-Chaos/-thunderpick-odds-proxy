@@ -37,8 +37,8 @@ try{
   await page.setExtraHTTPHeaders({'accept-language':'en-US,en;q=0.9'});
   await page.evaluateOnNewDocument(()=>{Object.defineProperty(navigator,'webdriver',{get:()=>undefined});});
 
-  // This route consistently hydrates the sportsbook shell and establishes the
-  // Cloudflare browser cookie even when the final app route resolves to /404.
+  // Establish a normal first-party browser session. The sportsbook API is then
+  // called same-origin from the page, avoiding paid aggregators and stale caches.
   const entries=['https://thunderpick.io/en/esports/lol','https://thunderpick.io/en/sports','https://thunderpick.io/404'];
   for(const entry of entries){
     const nav=await page.goto(entry,{waitUntil:'domcontentloaded',timeout:90000}).catch(()=>null);
@@ -71,6 +71,57 @@ try{
     },gid);
     const rows=result.rows||[];
     const healthy=result.ok&&result.status===200;
+
+    // The top-level /api/matches payload only includes preferred/main markets.
+    // Thunderpick's own match page fetches the full market board from
+    // GET /api/markets/<matchId>. Enrich future NFL events with that same
+    // first-party endpoint so player props are fresh and never inherited from
+    // a stale third-party snapshot.
+    let deepMarketRequests=0,deepMarketSuccess=0,deepMarketFailures=0,deepMarkets=0,playerPropLikeMarkets=0;
+    if(healthy&&sport==='american-football'){
+      const now=Date.now();
+      const nflRows=rows.filter(e=>{
+        const comp=String(e?.competition?.name||e?.competition?.shortName||'').toLowerCase();
+        const start=Date.parse(e?.startTime||'');
+        return e?.id && /\bnfl\b/i.test(comp) && e?.isLive!==true && Number.isFinite(start) && start>now-5*60e3;
+      });
+      for(const e of nflRows){
+        await sleep(1350);
+        deepMarketRequests++;
+        let detail=await page.evaluate(async id=>{
+          try{
+            const r=await fetch('/api/markets/'+encodeURIComponent(String(id)),{headers:{accept:'application/json'}});
+            const text=await r.text();let body=null;try{body=JSON.parse(text)}catch{}
+            const data=body?.data;
+            return {status:r.status,ok:r.ok,markets:Array.isArray(data)?data:[],error:body?.message||body?.error||null};
+          }catch(err){return {status:null,ok:false,markets:[],error:String(err?.message||err)}}
+        },e.id);
+        if(detail.status===429){
+          await sleep(5000);
+          detail=await page.evaluate(async id=>{
+            try{
+              const r=await fetch('/api/markets/'+encodeURIComponent(String(id)),{headers:{accept:'application/json'}});
+              const text=await r.text();let body=null;try{body=JSON.parse(text)}catch{}
+              return {status:r.status,ok:r.ok,markets:Array.isArray(body?.data)?body.data:[],error:body?.message||body?.error||null};
+            }catch(err){return {status:null,ok:false,markets:[],error:String(err?.message||err)}}
+          },e.id);
+        }
+        if(detail.ok&&detail.status===200&&detail.markets.length){
+          deepMarketSuccess++;
+          deepMarkets+=detail.markets.length;
+          playerPropLikeMarkets+=detail.markets.filter(m=>/\bplayer\b|passing|rushing|receiving|receptions|touchdown|attempts|completions|interceptions/i.test(String(m?.name||''))).length;
+          e.preferredMarkets=detail.markets;
+          e.deepMarketsFetchedAt=new Date().toISOString();
+          e.deepMarketsFresh=true;
+        }else{
+          deepMarketFailures++;
+          e.deepMarketsFresh=false;
+          e.deepMarketsError=detail.error||`HTTP ${detail.status}`;
+        }
+      }
+      console.log('THUNDERPICK_NFL_DEEP',JSON.stringify({eligibleEvents:nflRows.length,deepMarketRequests,deepMarketSuccess,deepMarketFailures,deepMarkets,playerPropLikeMarkets}));
+    }
+
     sports[sport]={
       ok:healthy,
       httpOk:healthy,
@@ -79,6 +130,11 @@ try{
       gameId:gid,
       eventCount:rows.length,
       retainedMarketCount:rows.reduce((n,e)=>n+(Array.isArray(e?.preferredMarkets)?e.preferredMarkets.length:0)+(e?.market?1:0),0),
+      deepMarketRequests,
+      deepMarketSuccess,
+      deepMarketFailures,
+      deepMarkets,
+      playerPropLikeMarkets,
       hash:sha(rows),
       changedSincePrevious:null,
       coverageStatus:healthy?'fresh-first-party':'first-party-error',
@@ -86,7 +142,7 @@ try{
       error:healthy?null:(result.error||`HTTP ${result.status}`),
       data:{data:rows},
     };
-    console.log('THUNDERPICK_FIRSTPARTY',sport,JSON.stringify({status:result.status,ok:healthy,events:rows.length,bytes:result.bytes,preferredMarkets:sports[sport].retainedMarketCount}));
+    console.log('THUNDERPICK_FIRSTPARTY',sport,JSON.stringify({status:result.status,ok:healthy,events:rows.length,bytes:result.bytes,preferredMarkets:sports[sport].retainedMarketCount,deepMarketSuccess,deepMarkets,playerPropLikeMarkets}));
     // Be respectful of Thunderpick's observed first-party rate limits.
     await sleep(1350);
   }
@@ -98,16 +154,16 @@ const successfulSports=ORDER.filter(s=>sports[s]?.ok);
 const failedSports=ORDER.filter(s=>!sports[s]?.ok);
 const snapshot={
   generatedAt,
-  source:'Thunderpick first-party /api/matches via unattended cloud browser',
-  format:'first-party-browser-v1',
+  source:'Thunderpick first-party /api/matches + /api/markets/<id> via unattended cloud browser',
+  format:'first-party-browser-v2-deep-nfl',
   sports,
 };
 const meta={
   generatedAt,
-  source:'Thunderpick first-party /api/matches via unattended cloud browser',
-  format:'first-party-browser-v1',
+  source:'Thunderpick first-party /api/matches + /api/markets/<id> via unattended cloud browser',
+  format:'first-party-browser-v2-deep-nfl',
   pageStatus,finalUrl,title,bootstrapOk,bootstrapStatus,
-  requestCountThisRun:ORDER.length+1,
+  requestCountThisRun:ORDER.length+1+ORDER.reduce((n,s)=>n+(sports[s]?.deepMarketRequests||0),0),
   requestedSports:ORDER,
   successfulSports,failedSports,
   coverageAnomalies:failedSports.map(s=>({sport:s,status:sports[s]?.status??null,reason:sports[s]?.error||'first-party fetch failed'})),
@@ -121,5 +177,5 @@ const meta={
 await fs.mkdir('data',{recursive:true});
 await fs.writeFile('data/owls-latest.json',JSON.stringify(snapshot));
 await fs.writeFile('data/owls-meta.json',JSON.stringify(meta,null,2));
-console.log('THUNDERPICK_FIRSTPARTY_COMPLETE',JSON.stringify({successfulSports,failedSports,totalEvents:meta.totalEvents,totalMarkets:meta.totalRetainedMarkets,bootstrapStatus}));
+console.log('THUNDERPICK_FIRSTPARTY_COMPLETE',JSON.stringify({successfulSports,failedSports,totalEvents:meta.totalEvents,totalMarkets:meta.totalRetainedMarkets,bootstrapStatus,nflDeep:{requests:sports['american-football']?.deepMarketRequests||0,success:sports['american-football']?.deepMarketSuccess||0,markets:sports['american-football']?.deepMarkets||0,playerPropLikeMarkets:sports['american-football']?.playerPropLikeMarkets||0}}));
 if(failedSports.length) process.exitCode=2;
