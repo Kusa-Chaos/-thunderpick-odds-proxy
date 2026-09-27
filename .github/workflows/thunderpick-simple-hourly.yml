@@ -90,11 +90,24 @@ jobs:
         run: |
           git config user.name 'thunderpick-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add -A data/
-          git diff --cached --quiet && exit 0
-          git commit -m 'Update simple Thunderpick opportunity board [skip ci]'
+          rm -rf /tmp/thunderpick-data
+          mkdir -p /tmp/thunderpick-data
+          cp -a data/. /tmp/thunderpick-data/
           for n in 1 2 3; do
-            git pull --rebase --autostash origin main && git push origin HEAD:main && exit 0
+            git fetch origin main
+            git reset --hard origin/main
+            rm -rf data
+            mkdir -p data
+            cp -a /tmp/thunderpick-data/. data/
+            git add -A data/
+            if git diff --cached --quiet; then
+              echo 'No data changes to publish.'
+              exit 0
+            fi
+            git commit -m 'Update simple Thunderpick opportunity board [skip ci]'
+            if git push origin HEAD:main; then
+              exit 0
+            fi
             sleep $((n*3))
           done
           exit 1
