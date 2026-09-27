@@ -1,0 +1,26 @@
+name: Major Books Free Source Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/majorbooks-probe.py'
+      - '.github/workflows/majorbooks-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install direct sportsbook client
+        run: pip install --disable-pip-version-check 'git+https://github.com/sjhouston23/oddswrap.git'
+      - name: Probe DraftKings FanDuel Caesars BetMGM
+        run: python scripts/majorbooks-probe.py
