@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/thunderpick-firstparty-browser.mjs'
+      - 'scripts/thunderpick-public-reader.mjs'
       - 'scripts/simple-opportunity-board.mjs'
       - 'scripts/simple-direct-discovery.mjs'
       - 'scripts/simple-two-source-watch.mjs'
@@ -40,7 +41,10 @@ jobs:
       - name: Install first-party browser driver
         run: npm install --no-save puppeteer-core@24.16.0
       - name: Refresh Thunderpick directly from first-party sportsbook
+        continue-on-error: true
         run: node scripts/thunderpick-firstparty-browser.mjs
+      - name: Refresh NFL through free first-party public reader fallback
+        run: node scripts/thunderpick-public-reader.mjs
       - name: Collect quota-free public sources
         run: node scripts/direct-public-sources.mjs
       - name: Add Betway independent bookmaker source
