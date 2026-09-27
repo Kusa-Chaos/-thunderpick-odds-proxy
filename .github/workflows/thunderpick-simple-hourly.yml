@@ -10,6 +10,7 @@ on:
       - 'scripts/simple-opportunity-board.mjs'
       - 'scripts/simple-direct-discovery.mjs'
       - 'scripts/simple-two-source-watch.mjs'
+      - 'scripts/simple-nfl-prop-watch.mjs'
       - 'scripts/direct-public-sources.mjs'
       - 'scripts/betway-direct.mjs'
       - 'scripts/pinnacle-direct.mjs'
@@ -57,6 +58,8 @@ jobs:
         run: node scripts/merge-direct-sources.mjs
       - name: Exact safety screen
         run: node scripts/screen-thunderpick-ev.mjs
+      - name: Verify exact NFL player-prop WATCH rows
+        run: node scripts/simple-nfl-prop-watch.mjs
       - name: Verify exact two-source WATCH rows
         run: node scripts/simple-two-source-watch.mjs
       - name: Build simple discovery-first board
