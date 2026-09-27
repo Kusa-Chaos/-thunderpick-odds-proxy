@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-09-27T22:14:54.291088+00:00",
+  "mode": "direct-public-probe",
+  "policy": {
+    "aggregatorFallback": false,
+    "countOnlyAfterExactOddsParsing": true,
+    "sameProviderCountsOnce": true
+  },
+  "sources": {
+    "rainbet": {
+      "ok": true,
+      "selectedUrl": "https://rainbet.com/sportsbook",
+      "attempts": [
+        {
+          "url": "https://rainbet.com/sportsbook",
+          "status": 200,
+          "bytes": 147021,
+          "contentType": "text/html; charset=utf-8",
+          "disciplines": {
+            "cs2": true,
+            "dota2": true,
+            "lol": true,
+            "valorant": true
+          },
+          "cloudflare": true,
+          "blocked": false
+        }
+      ],
+      "disciplines": {
+        "cs2": true,
+        "dota2": true,
+        "lol": true,
+        "valorant": true
+      },
+      "note": "Public page reachable. This is discovery only; no source-family credit until exact odds contracts are parsed."
+    },
+    "ggbet": {
+      "ok": false,
+      "attempts": [
+        {
+          "url": "https://gg.bet/en/esports",
+          "status": 403,
+          "bytes": 126,
+          "contentType": "text/plain",
+          "disciplines": {
+            "cs2": false,
+            "dota2": false,
+            "lol": false,
+            "valorant": false
+          },
+          "cloudflare": true,
+          "blocked": true
+        },
+        {
+          "url": "https://gg.bet/es/esports",
+          "status": 403,
+          "bytes": 126,
+          "contentType": "text/plain",
+          "disciplines": {
+            "cs2": false,
+            "dota2": false,
+            "lol": false,
+            "valorant": false
+          },
+          "cloudflare": true,
+          "blocked": true
+        }
+      ],
+      "note": "No usable public response from this runner. Keep source disabled; do not count it."
+    },
+    "1xbet": {
+      "ok": false,
+      "attempts": [
+        {
+          "url": "https://1xbet.com/en/esports/real",
+          "status": 203,
+          "bytes": 2599,
+          "contentType": "text/html;charset=utf-8",
+          "disciplines": {
+            "cs2": false,
+            "dota2": false,
+            "lol": false,
+            "valorant": false
+          },
+          "cloudflare": true,
+          "blocked": false
+        }
+      ],
+      "note": "No usable public response from this runner. Keep source disabled; do not count it."
+    }
+  }
+}
