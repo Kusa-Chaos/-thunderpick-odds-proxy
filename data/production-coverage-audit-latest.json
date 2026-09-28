@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-09-28T20:04:50.545Z",
-  "boardGeneratedAt": "2026-09-28T20:04:50.376Z",
-  "status": "OK",
+  "generatedAt": "2026-09-28T21:03:46.961Z",
+  "boardGeneratedAt": "2026-09-28T21:03:46.816Z",
+  "status": "DEGRADED",
   "familyEvidence": {
-    "map_winner": 41,
+    "map_winner": 40,
     "map_handicap": 0,
-    "round_handicap": 36,
-    "round_total": 36,
+    "round_handicap": 38,
+    "round_total": 38,
     "esports_player_kills": 39,
     "esports_player_deaths": 40,
-    "sports_spread_handicap": 82,
-    "sports_total": 99,
+    "sports_spread_handicap": 81,
+    "sports_total": 98,
     "team_total": 2,
-    "player_prop": 1465
+    "player_prop": 1555
   },
   "familyStatus": {
     "map_winner": {
       "status": "OK",
-      "inventory": 41,
+      "inventory": 40,
       "collectors": [
         "kambi"
       ]
@@ -31,14 +31,14 @@
     },
     "round_handicap": {
       "status": "OK",
-      "inventory": 36,
+      "inventory": 38,
       "collectors": [
         "kambi"
       ]
     },
     "round_total": {
       "status": "OK",
-      "inventory": 36,
+      "inventory": 38,
       "collectors": [
         "kambi"
       ]
@@ -59,7 +59,7 @@
     },
     "sports_spread_handicap": {
       "status": "OK",
-      "inventory": 82,
+      "inventory": 81,
       "collectors": [
         "kambiNfl",
         "fanduel"
@@ -67,7 +67,7 @@
     },
     "sports_total": {
       "status": "OK",
-      "inventory": 99,
+      "inventory": 98,
       "collectors": [
         "kambiNfl",
         "fanduel"
@@ -82,7 +82,7 @@
     },
     "player_prop": {
       "status": "OK",
-      "inventory": 1465,
+      "inventory": 1555,
       "collectors": [
         "stake",
         "kambiTraditional",
@@ -96,6 +96,8 @@
     }
   },
   "failures": [],
-  "degraded": [],
+  "degraded": [
+    "collector degraded: kalshi (HTTP 429)"
+  ],
   "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure."
 }
