@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "purpose": "Authoritative market-family coverage contract for the combined Thunderpick sports + esports production scanner.",
+  "sports": ["american-football", "baseball", "basketball", "soccer", "tennis", "cs2", "dota2", "lol", "valorant"],
+  "requiredMarketFamilies": {
+    "h2h": {"aliases": ["moneyline", "match winner", "winner", "h2h"], "required": true},
+    "sports_spread_handicap": {"aliases": ["spread", "handicap", "asian handicap"], "required": true},
+    "sports_total": {"aliases": ["total", "over/under", "game total"], "required": true},
+    "team_total": {"aliases": ["team total"], "required": true},
+    "map_winner": {"aliases": ["map winner", "map moneyline"], "requiredFor": ["cs2", "dota2", "lol", "valorant"]},
+    "map_handicap": {"aliases": ["map handicap", "map spread"], "requiredFor": ["cs2", "dota2", "lol", "valorant"]},
+    "round_handicap": {"aliases": ["round handicap", "round spread"], "requiredFor": ["cs2", "valorant"]},
+    "round_total": {"aliases": ["round total", "rounds over/under"], "requiredFor": ["cs2", "valorant"]},
+    "player_prop": {"aliases": ["player prop"], "required": true, "identity": ["player", "stat", "exactLine", "sideOverUnder", "periodMapRoundSet", "prematchLive", "settlementScope"]},
+    "esports_player_kills": {"aliases": ["kills", "player kills"], "requiredFor": ["cs2", "dota2", "lol", "valorant"]},
+    "esports_player_deaths": {"aliases": ["deaths", "player deaths"], "requiredFor": ["cs2", "dota2", "lol", "valorant"]}
+  },
+  "requiredHourlyAuditFields": ["thunderpickInventory", "outsideComparisonRows", "exactMatchedRows", "exact1Source", "exact2Source", "exact3Plus", "action", "watch", "screening", "coverageStatus", "strongestScreening"],
+  "coverageStatusRules": {
+    "OK": "required family collected and inventory/comparison counts are internally consistent",
+    "NO_MARKETS_AVAILABLE": "collector succeeded and explicitly verified no current markets exist",
+    "DEGRADED": "one or more expected independent sources failed, rate-limited, geo-blocked, or returned anomalously low inventory",
+    "COVERAGE_FAILURE": "required family was not collected, not enumerated, or cannot distinguish zero opportunities from zero collection"
+  },
+  "retryPolicy": {"retryCoverageFailureOnce": true, "retryDegradedSourceOnce": true, "neverConvertCollectionFailureToNoOpportunity": true},
+  "sourceIndependence": {"sameProviderAdaptersCountOnce": true},
+  "freshness": {"maxBoardAgeMinutes": 30, "neverMixLiveThunderpickWithPrematchOutside": true},
+  "tierRules": {"ACTION": {"minIndependentExactSources": 3, "minEVPct": 2}, "WATCH": {"minIndependentExactSources": 2, "minEVPct": 1}, "SCREENING": {"minIndependentOutsideSources": 1, "minEVPct": 0.25}},
+  "hardRequirements": [
+    "Deep-enumerate Thunderpick inventory before outside matching.",
+    "Preserve exact contract identity through normalization.",
+    "Explicitly enumerate map handicap rather than relying only on generic spread normalization.",
+    "Explicitly enumerate esports kills/deaths and other player props with OVER/UNDER identity.",
+    "Report source degradation such as HTTP 429 or geo-blocks.",
+    "Every hourly report must distinguish zero qualifying opportunities from zero markets collected."
+  ]
+}
