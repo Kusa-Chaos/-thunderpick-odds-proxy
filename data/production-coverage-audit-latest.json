@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-28T16:37:01.198Z",
-  "boardGeneratedAt": "2026-09-28T16:37:01.050Z",
-  "status": "OK",
+  "generatedAt": "2026-09-28T17:44:41.039Z",
+  "boardGeneratedAt": "2026-09-28T17:44:40.868Z",
+  "status": "DEGRADED",
   "familyEvidence": {
     "map_winner": 37,
     "map_handicap": 0,
@@ -9,10 +9,10 @@
     "round_total": 32,
     "esports_player_kills": 39,
     "esports_player_deaths": 40,
-    "sports_spread_handicap": 77,
-    "sports_total": 94,
+    "sports_spread_handicap": 79,
+    "sports_total": 96,
     "team_total": 2,
-    "player_prop": 1339
+    "player_prop": 1520
   },
   "familyStatus": {
     "map_winner": {
@@ -59,7 +59,7 @@
     },
     "sports_spread_handicap": {
       "status": "OK",
-      "inventory": 77,
+      "inventory": 79,
       "collectors": [
         "kambiNfl",
         "fanduel"
@@ -67,7 +67,7 @@
     },
     "sports_total": {
       "status": "OK",
-      "inventory": 94,
+      "inventory": 96,
       "collectors": [
         "kambiNfl",
         "fanduel"
@@ -82,7 +82,7 @@
     },
     "player_prop": {
       "status": "OK",
-      "inventory": 1339,
+      "inventory": 1520,
       "collectors": [
         "stake",
         "kambiTraditional",
@@ -96,6 +96,8 @@
     }
   },
   "failures": [],
-  "degraded": [],
+  "degraded": [
+    "collector degraded: kalshi (HTTP 429)"
+  ],
   "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure."
 }
