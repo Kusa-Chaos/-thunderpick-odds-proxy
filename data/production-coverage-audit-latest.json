@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-28T08:45:08.989Z",
-  "boardGeneratedAt": "2026-09-28T08:45:08.847Z",
-  "status": "DEGRADED",
+  "generatedAt": "2026-09-28T08:55:42.225Z",
+  "boardGeneratedAt": "2026-09-28T08:55:42.106Z",
+  "status": "OK",
   "familyEvidence": {
     "map_winner": 20,
     "map_handicap": 0,
@@ -9,10 +9,10 @@
     "round_total": 18,
     "esports_player_kills": 0,
     "esports_player_deaths": 0,
-    "sports_spread_handicap": 47,
-    "sports_total": 54,
+    "sports_spread_handicap": 86,
+    "sports_total": 103,
     "team_total": 2,
-    "player_prop": 551
+    "player_prop": 606
   },
   "familyStatus": {
     "map_winner": {
@@ -59,16 +59,18 @@
     },
     "sports_spread_handicap": {
       "status": "OK",
-      "inventory": 47,
+      "inventory": 86,
       "collectors": [
-        "kambiNfl"
+        "kambiNfl",
+        "fanduel"
       ]
     },
     "sports_total": {
       "status": "OK",
-      "inventory": 54,
+      "inventory": 103,
       "collectors": [
-        "kambiNfl"
+        "kambiNfl",
+        "fanduel"
       ]
     },
     "team_total": {
@@ -80,22 +82,20 @@
     },
     "player_prop": {
       "status": "OK",
-      "inventory": 551,
+      "inventory": 606,
       "collectors": [
         "stake",
         "kambiTraditional",
         "kambiNfl",
         "bovadaNfl",
         "bovadaTraditional",
+        "fanduelProps",
         "draftkingsNfl",
         "draftkingsTraditional"
       ]
     }
   },
   "failures": [],
-  "degraded": [
-    "collector degraded: fanduel",
-    "collector degraded: fanduelProps"
-  ],
+  "degraded": [],
   "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure."
 }
