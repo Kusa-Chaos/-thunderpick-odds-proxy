@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-28T14:48:23.511Z",
-  "boardGeneratedAt": "2026-09-28T14:48:23.350Z",
-  "status": "OK",
+  "generatedAt": "2026-09-28T14:52:33.638Z",
+  "boardGeneratedAt": "2026-09-28T14:52:33.475Z",
+  "status": "DEGRADED",
   "familyEvidence": {
     "map_winner": 23,
     "map_handicap": 0,
@@ -12,7 +12,7 @@
     "sports_spread_handicap": 84,
     "sports_total": 101,
     "team_total": 2,
-    "player_prop": 1059
+    "player_prop": 1073
   },
   "familyStatus": {
     "map_winner": {
@@ -82,7 +82,7 @@
     },
     "player_prop": {
       "status": "OK",
-      "inventory": 1059,
+      "inventory": 1073,
       "collectors": [
         "stake",
         "kambiTraditional",
@@ -96,6 +96,8 @@
     }
   },
   "failures": [],
-  "degraded": [],
+  "degraded": [
+    "collector degraded: kalshi (HTTP 429)"
+  ],
   "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure."
 }
