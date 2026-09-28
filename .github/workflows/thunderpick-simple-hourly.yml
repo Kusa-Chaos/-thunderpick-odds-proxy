@@ -62,7 +62,6 @@ jobs:
           const schedule = process.env.SCHEDULE_EXPR || '';
           let run = true;
           let reason = `${event || 'unknown'} trigger`;
-          // GitHub schedules are only recovery fallbacks. Push/workflow_dispatch always scan.
           if (event === 'schedule') {
             let generatedAt = null;
             let ageMin = Infinity;
@@ -74,7 +73,7 @@ jobs:
             } catch (e) {
               reason = `fallback could not read board: ${e.message}`;
             }
-            if (Number.isFinite(ageMin) && ageMin <= 30) {
+            if (Number.isFinite(ageMin) && ageMin <= 40) {
               run = false;
               reason = `fallback ${schedule} skipped; authoritative board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`;
             } else {
@@ -121,6 +120,10 @@ jobs:
       - name: Install direct sportsbook TLS client
         run: pip install --disable-pip-version-check 'curl_cffi==0.16.3'
       - name: Refresh Thunderpick directly from first-party sportsbook
+        timeout-minutes: 6
+        env:
+          TP_DEEP_CONCURRENCY: '4'
+          TP_REQUEST_GAP_MS: '160'
         run: node scripts/thunderpick-firstparty-browser.mjs
       - name: Refresh NFL through free first-party public reader fallback
         continue-on-error: true
@@ -211,8 +214,6 @@ jobs:
           rm -rf /tmp/thunderpick-data
           mkdir -p /tmp/thunderpick-data
           cp -a data/. /tmp/thunderpick-data/
-          # Keep post-run diagnostics useful without allowing the uncapped raw deep board
-          # to grow past GitHub's repository file limits. Full raw data is only needed in-run.
           node - <<'NODE'
           const fs=require('fs');
           const p='/tmp/thunderpick-data/owls-latest.json';
