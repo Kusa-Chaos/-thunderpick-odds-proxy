@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '40 * * * *'
+    - cron: '50 * * * *'
   push:
     branches: [main]
     paths:
@@ -58,12 +59,31 @@ jobs:
           const fs = require('fs');
           const event = process.env.EVENT_NAME || '';
           const schedule = process.env.SCHEDULE_EXPR || '';
-          const run = true;
-          const reason = event === 'schedule'
-            ? `authoritative hourly production scan ${schedule}; always run`
-            : `${event || 'unknown'} trigger`;
+          let run = true;
+          let reason = `${event || 'unknown'} trigger`;
+
+          if (event === 'schedule' && schedule === '40 * * * *') {
+            run = true;
+            reason = 'authoritative :40 hourly production scan; always run';
+          } else if (event === 'schedule' && schedule === '50 * * * *') {
+            // Self-healing fallback. If the :40 scan already published a board recently,
+            // do not duplicate it. If :40 was missed/delayed/failed to publish, run now.
+            let ageMin = Infinity;
+            let generatedAt = null;
+            try {
+              const b = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8'));
+              generatedAt = b.generatedAt || null;
+              ageMin = (Date.now() - Date.parse(generatedAt || '')) / 60000;
+            } catch (_) {}
+            const fresh = Number.isFinite(ageMin) && ageMin >= 0 && ageMin <= 20;
+            run = !fresh;
+            reason = fresh
+              ? `:50 recovery check: :40 board already fresh (${ageMin.toFixed(1)}m; ${generatedAt}); skip duplicate`
+              : `:50 recovery check: no <=20m authoritative board (${generatedAt || 'missing'}; age=${Number.isFinite(ageMin)?ageMin.toFixed(1):'unknown'}m); run recovery scan`;
+          }
+
           console.log('SCAN_GATE',{event,schedule,run,reason});
-          fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=true\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=${run ? 'true' : 'false'}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`reason=${reason.replace(/\n/g,' ')}\n`);
           NODE
 
