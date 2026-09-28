@@ -8,6 +8,7 @@ const direct = board?.sourceHealth?.direct || {};
 const sportAudit = board?.coverageAudit || {};
 const failures = [];
 const degraded = [];
+const familyStatus = {};
 
 for (const sport of contract.sports) {
   if (board?.sourceHealth?.thunderpickFreshBySport?.[sport] !== true) failures.push(`Thunderpick not fresh: ${sport}`);
@@ -23,6 +24,7 @@ if (direct.kalshi && direct.kalshi.ok !== true) degraded.push(`collector degrade
 
 const familyEvidence = {
   map_winner: Number(direct.kambi?.mapWinnerMarkets || 0),
+  map_handicap: Number(direct.kambi?.mapHandicapMarkets || board?.marketFamilyAudit?.map_handicap?.outsideComparisonRows || 0),
   round_handicap: Number(direct.kambi?.roundHandicapMarkets || 0),
   round_total: Number(direct.kambi?.roundTotalMarkets || 0),
   esports_player_kills: Number(direct.kambi?.playerKillMarkets || 0),
@@ -33,24 +35,36 @@ const familyEvidence = {
   player_prop: ['stake','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduelProps','draftkingsNfl','draftkingsTraditional'].reduce((n,k)=>n+Number(direct[k]?.playerPropMarkets || 0),0)
 };
 
-for (const [family, evidence] of Object.entries(familyEvidence)) {
-  if (evidence === 0) failures.push(`COVERAGE_FAILURE ${family}: zero enumerated markets; cannot treat as zero opportunity`);
+const familyCollectors = {
+  map_winner:['kambi'], map_handicap:['kambi'], round_handicap:['kambi'], round_total:['kambi'],
+  esports_player_kills:['kambi'], esports_player_deaths:['kambi'],
+  sports_spread_handicap:['kambiNfl','fanduel'], sports_total:['kambiNfl','fanduel'], team_total:['kambiNfl'],
+  player_prop:['stake','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduelProps','draftkingsNfl','draftkingsTraditional']
+};
+
+for (const [family,evidence] of Object.entries(familyEvidence)) {
+  const collectors=familyCollectors[family]||[];
+  const present=collectors.filter(k=>direct[k]);
+  const healthy=present.filter(k=>direct[k]?.ok===true);
+  if (evidence>0) familyStatus[family]={status:'OK',inventory:evidence,collectors:healthy};
+  else if (present.length===0) {
+    familyStatus[family]={status:'COVERAGE_FAILURE',inventory:0,collectors:[]};
+    failures.push(`COVERAGE_FAILURE ${family}: no collector enumerated this family`);
+  } else if (healthy.length===0) {
+    familyStatus[family]={status:'COVERAGE_FAILURE',inventory:0,collectors:present};
+    failures.push(`COVERAGE_FAILURE ${family}: collectors present but none healthy`);
+  } else {
+    familyStatus[family]={status:'NO_MARKETS_AVAILABLE',inventory:0,collectors:healthy};
+  }
 }
 
-// Map handicap must have an explicit family counter. Generic spread normalization is not sufficient.
-const explicitMapHandicap = Number(board?.marketFamilyAudit?.map_handicap?.thunderpickInventory || direct.kambi?.mapHandicapMarkets || 0);
-if (explicitMapHandicap === 0) failures.push('COVERAGE_FAILURE map_handicap: no explicit inventory counter');
-
 const result = {
-  generatedAt: new Date().toISOString(),
-  boardGeneratedAt: board.generatedAt || null,
-  status: failures.length ? 'COVERAGE_FAILURE' : degraded.length ? 'DEGRADED' : 'OK',
-  familyEvidence,
-  failures,
-  degraded,
-  rule: 'Zero collected markets is never silently converted to zero opportunities.'
+  generatedAt:new Date().toISOString(), boardGeneratedAt:board.generatedAt||null,
+  status:failures.length?'COVERAGE_FAILURE':degraded.length?'DEGRADED':'OK',
+  familyEvidence, familyStatus, failures, degraded,
+  rule:'Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure.'
 };
-fs.mkdirSync('data', {recursive:true});
-fs.writeFileSync('data/production-coverage-audit-latest.json', JSON.stringify(result, null, 2) + '\n');
-console.log(JSON.stringify(result, null, 2));
-if (failures.length) process.exitCode = 2;
+fs.mkdirSync('data',{recursive:true});
+fs.writeFileSync('data/production-coverage-audit-latest.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify(result,null,2));
+if(failures.length) process.exitCode=2;
