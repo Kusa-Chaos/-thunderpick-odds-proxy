@@ -29,6 +29,8 @@ on:
       - 'scripts/draftkings-nfl-direct.py'
       - 'scripts/draftkings-traditional-direct.py'
       - 'scripts/merge-direct-sources.mjs'
+      - 'scripts/audit-production-coverage.mjs'
+      - 'config/production-coverage-contract.json'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
 permissions:
@@ -59,32 +61,16 @@ jobs:
           const schedule = process.env.SCHEDULE_EXPR || '';
           let run = true;
           let reason = `${event || 'unknown'} trigger`;
-
           if (event === 'schedule' && schedule !== '27 * * * *') {
-            let generatedAt = null;
-            let ageMin = Infinity;
-            try {
-              const board = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json', 'utf8'));
-              generatedAt = board.generatedAt || null;
-              const ts = Date.parse(generatedAt || '');
-              if (Number.isFinite(ts)) ageMin = (Date.now() - ts) / 60000;
-            } catch (e) {
-              reason = `backup tick could not read board: ${e.message}`;
-            }
-            if (Number.isFinite(ageMin) && ageMin <= 50) {
-              run = false;
-              reason = `backup tick skipped; board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`;
-            } else {
-              run = true;
-              reason = `backup tick activated; board is stale (${Number.isFinite(ageMin) ? ageMin.toFixed(1) : 'unknown'} min old, ${generatedAt || 'missing'})`;
-            }
-          } else if (event === 'schedule') {
-            reason = 'primary :27 hourly tick';
-          }
-
-          console.log('SCAN_GATE', { event, schedule, run, reason });
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `run_scan=${run ? 'true' : 'false'}\n`);
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `reason=${reason.replace(/\n/g,' ')}\n`);
+            let generatedAt = null; let ageMin = Infinity;
+            try { const board = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8')); generatedAt=board.generatedAt||null; const ts=Date.parse(generatedAt||''); if(Number.isFinite(ts)) ageMin=(Date.now()-ts)/60000; }
+            catch(e){ reason=`backup tick could not read board: ${e.message}`; }
+            if(Number.isFinite(ageMin)&&ageMin<=50){ run=false; reason=`backup tick skipped; board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`; }
+            else { run=true; reason=`backup tick activated; board is stale (${Number.isFinite(ageMin)?ageMin.toFixed(1):'unknown'} min old, ${generatedAt||'missing'})`; }
+          } else if(event==='schedule') reason='primary :27 hourly tick';
+          console.log('SCAN_GATE',{event,schedule,run,reason});
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=${run?'true':'false'}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`reason=${reason.replace(/\n/g,' ')}\n`);
           NODE
 
   scan:
@@ -166,6 +152,34 @@ jobs:
         run: node scripts/simple-two-source-watch.mjs
       - name: Build simple discovery-first board
         run: node scripts/simple-opportunity-board.mjs
+      - name: Run hard production coverage audit
+        id: coverage_audit
+        continue-on-error: true
+        run: node scripts/audit-production-coverage.mjs
+      - name: Retry degraded/failing collectors once and rebuild
+        if: steps.coverage_audit.outcome == 'failure'
+        run: |
+          echo 'Coverage audit failed; retrying market collectors once before accepting the board.'
+          node scripts/direct-public-sources.mjs
+          node scripts/betway-direct.mjs
+          node scripts/pinnacle-direct.mjs
+          node scripts/kambi-direct.mjs
+          node scripts/kambi-traditional-direct.mjs
+          node scripts/kambi-nfl-direct.mjs
+          node scripts/bovada-nfl-direct.mjs
+          node scripts/bovada-traditional-direct.mjs
+          python scripts/fanduel-direct.py || true
+          python scripts/fanduel-props-direct.py || true
+          python scripts/draftkings-nfl-direct.py || true
+          python scripts/draftkings-traditional-direct.py || true
+          node scripts/simple-direct-discovery.mjs
+          node scripts/merge-direct-sources.mjs
+          node scripts/screen-thunderpick-ev.mjs
+          node scripts/simple-nfl-prop-watch.mjs
+          node scripts/simple-two-source-watch.mjs
+          node scripts/simple-opportunity-board.mjs
+      - name: Enforce production coverage gate
+        run: node scripts/audit-production-coverage.mjs
       - name: Publish simple board
         run: |
           git config user.name 'thunderpick-bot'
@@ -180,14 +194,9 @@ jobs:
             mkdir -p data
             cp -a /tmp/thunderpick-data/. data/
             git add -A data/
-            if git diff --cached --quiet; then
-              echo 'No data changes to publish.'
-              exit 0
-            fi
+            if git diff --cached --quiet; then echo 'No data changes to publish.'; exit 0; fi
             git commit -m 'Update simple Thunderpick opportunity board [skip ci]'
-            if git push origin HEAD:main; then
-              exit 0
-            fi
+            if git push origin HEAD:main; then exit 0; fi
             sleep $((n*3))
           done
           exit 1
