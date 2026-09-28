@@ -2,10 +2,10 @@ name: Thunderpick Simple Hourly Board
 
 on:
   workflow_dispatch:
+  # Fallback only. ChatGPT's :40 Pacific scheduled task is the authoritative clock.
   schedule:
-    - cron: '27 * * * *'
-    - cron: '32 * * * *'
-    - cron: '37 * * * *'
+    - cron: '45 * * * *'
+    - cron: '50 * * * *'
   push:
     branches: [main]
     paths:
@@ -31,6 +31,7 @@ on:
       - 'scripts/merge-direct-sources.mjs'
       - 'scripts/audit-production-coverage.mjs'
       - 'config/production-coverage-contract.json'
+      - 'control/scan-trigger.txt'
       - '.github/workflows/thunderpick-simple-hourly.yml'
 
 permissions:
@@ -49,7 +50,7 @@ jobs:
       reason: ${{ steps.decide.outputs.reason }}
     steps:
       - uses: actions/checkout@v4
-      - name: Decide whether this tick needs a real scan
+      - name: Decide whether this trigger needs a real scan
         id: decide
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -61,13 +62,26 @@ jobs:
           const schedule = process.env.SCHEDULE_EXPR || '';
           let run = true;
           let reason = `${event || 'unknown'} trigger`;
-          if (event === 'schedule' && schedule !== '27 * * * *') {
-            let generatedAt = null; let ageMin = Infinity;
-            try { const board = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8')); generatedAt=board.generatedAt||null; const ts=Date.parse(generatedAt||''); if(Number.isFinite(ts)) ageMin=(Date.now()-ts)/60000; }
-            catch(e){ reason=`backup tick could not read board: ${e.message}`; }
-            if(Number.isFinite(ageMin)&&ageMin<=50){ run=false; reason=`backup tick skipped; board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`; }
-            else { run=true; reason=`backup tick activated; board is stale (${Number.isFinite(ageMin)?ageMin.toFixed(1):'unknown'} min old, ${generatedAt||'missing'})`; }
-          } else if(event==='schedule') reason='primary :27 hourly tick';
+          // GitHub schedules are only recovery fallbacks. Push/workflow_dispatch always scan.
+          if (event === 'schedule') {
+            let generatedAt = null;
+            let ageMin = Infinity;
+            try {
+              const board = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8'));
+              generatedAt = board.generatedAt || null;
+              const ts = Date.parse(generatedAt || '');
+              if (Number.isFinite(ts)) ageMin = (Date.now() - ts) / 60000;
+            } catch (e) {
+              reason = `fallback could not read board: ${e.message}`;
+            }
+            if (Number.isFinite(ageMin) && ageMin <= 30) {
+              run = false;
+              reason = `fallback ${schedule} skipped; authoritative board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`;
+            } else {
+              run = true;
+              reason = `fallback ${schedule} activated; authoritative board is stale (${Number.isFinite(ageMin)?ageMin.toFixed(1):'unknown'} min old, ${generatedAt || 'missing'})`;
+            }
+          }
           console.log('SCAN_GATE',{event,schedule,run,reason});
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=${run?'true':'false'}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`reason=${reason.replace(/\n/g,' ')}\n`);
@@ -107,7 +121,6 @@ jobs:
       - name: Install direct sportsbook TLS client
         run: pip install --disable-pip-version-check 'curl_cffi==0.16.3'
       - name: Refresh Thunderpick directly from first-party sportsbook
-        continue-on-error: true
         run: node scripts/thunderpick-firstparty-browser.mjs
       - name: Refresh NFL through free first-party public reader fallback
         continue-on-error: true
@@ -180,6 +193,17 @@ jobs:
           node scripts/simple-opportunity-board.mjs
       - name: Enforce production coverage gate
         run: node scripts/audit-production-coverage.mjs
+      - name: Validate board freshness before publication
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const b=JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8'));
+          const age=(Date.now()-Date.parse(b.generatedAt||''))/60000;
+          if(!Number.isFinite(age)||age<0||age>10) throw new Error(`generated board is not fresh: ${b.generatedAt}`);
+          const a=JSON.parse(fs.readFileSync('data/production-coverage-audit-latest.json','utf8'));
+          if(a.status==='COVERAGE_FAILURE'||(a.failures||[]).length) throw new Error(`coverage audit failed: ${(a.failures||[]).join('; ')}`);
+          console.log('PRE_PUBLISH_OK',{generatedAt:b.generatedAt,ageMin:age.toFixed(2),counts:b.counts,audit:a.status});
+          NODE
       - name: Publish simple board
         run: |
           git config user.name 'thunderpick-bot'
@@ -187,6 +211,23 @@ jobs:
           rm -rf /tmp/thunderpick-data
           mkdir -p /tmp/thunderpick-data
           cp -a data/. /tmp/thunderpick-data/
+          # Keep post-run diagnostics useful without allowing the uncapped raw deep board
+          # to grow past GitHub's repository file limits. Full raw data is only needed in-run.
+          node - <<'NODE'
+          const fs=require('fs');
+          const p='/tmp/thunderpick-data/owls-latest.json';
+          if(fs.existsSync(p)){
+            const j=JSON.parse(fs.readFileSync(p,'utf8'));
+            for(const [sport,s] of Object.entries(j.sports||{})){
+              const rows=s?.data?.data;
+              if(Array.isArray(rows)){
+                s.data.data=rows.map(e=>({id:e.id,name:e.name,startTime:e.startTime,isLive:e.isLive,market:e.market,deepMarketsFetchedAt:e.deepMarketsFetchedAt,deepMarketsFresh:e.deepMarketsFresh,deepMarketsError:e.deepMarketsError,preferredMarketCount:Array.isArray(e.preferredMarkets)?e.preferredMarkets.length:0}));
+              }
+            }
+            j.publishedDiagnosticSummary=true;
+            fs.writeFileSync(p,JSON.stringify(j));
+          }
+          NODE
           for n in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
@@ -200,3 +241,15 @@ jobs:
             sleep $((n*3))
           done
           exit 1
+      - name: Verify published authoritative board
+        run: |
+          git fetch origin main
+          node - <<'NODE'
+          const fs=require('fs'),cp=require('child_process');
+          const local=JSON.parse(fs.readFileSync('/tmp/thunderpick-data/simple-opportunity-latest.json','utf8'));
+          const remote=JSON.parse(cp.execFileSync('git',['show','origin/main:data/simple-opportunity-latest.json'],{encoding:'utf8'}));
+          if(remote.generatedAt!==local.generatedAt) throw new Error(`published board mismatch local=${local.generatedAt} remote=${remote.generatedAt}`);
+          const age=(Date.now()-Date.parse(remote.generatedAt))/60000;
+          if(!Number.isFinite(age)||age>15) throw new Error(`published board is stale: ${remote.generatedAt}`);
+          console.log('PUBLISH_VERIFIED',{generatedAt:remote.generatedAt,ageMin:age.toFixed(2),counts:remote.counts});
+          NODE
