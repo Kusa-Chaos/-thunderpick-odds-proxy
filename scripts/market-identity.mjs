@@ -12,8 +12,6 @@ export function statType(v=''){
 
 export function marketFamily(v=''){
   const x=clean(v);
-  // Most-specific families must be tested before generic "winner", "handicap", or "total".
-  // Otherwise Map Winner becomes ML and "Player ... Total Kills" becomes a generic total.
   if(/round.*handicap|handicap.*round/.test(x))return'round_handicap';
   if(/round.*total|total.*round/.test(x))return'round_total';
   if(/map.*handicap|handicap.*map/.test(x))return'map_handicap';
@@ -40,12 +38,34 @@ function inferredScope(marketText=''){
   return {map,set,round:numberedRound,period};
 }
 
+function playerNameFrom(r={},marketText=''){
+  const explicit=clean(r.player||'');
+  if(explicit&&explicit!=='over'&&explicit!=='under')return explicit;
+  const text=String(marketText||'').trim();
+  let m=text.match(/^player\s+(.+?)\s*-\s*(?:total\s+)?/i);
+  if(m?.[1])return clean(m[1]);
+  m=text.match(/^(.+?)\s*[—–-]\s*(?:passing|rushing|receiving|receptions?|touchdowns?|attempts?|completions?|interceptions?|points?|rebounds?|assists?|three[- ]?pointers?|3[- ]?pointers?|steals?|blocks?|turnovers?|strikeouts?|total bases|home runs?|rbi|walks?|aces?|double faults?|shots?|cards?|kills?|deaths?|headshots?)/i);
+  if(m?.[1])return clean(m[1]);
+  const rawTarget=String(r.target||r.selection||'').trim();
+  m=rawTarget.match(/^(.+?)\s+(?:over|under)\s+[+-]?\d+(?:\.\d+)?\s*$/i);
+  if(m?.[1])return clean(m[1]);
+  const c=clean(rawTarget);
+  if(c&&c!=='over'&&c!=='under'&&!/^over\b|^under\b/.test(c))return c;
+  return '';
+}
+
+function playerSideFrom(r={},marketText=''){
+  const candidates=[r.selectionSide,r.side,r.target,r.selection,marketText].map(v=>String(v??''));
+  for(const c of candidates){const m=c.match(/\b(over|under)\b/i);if(m)return clean(m[1]);}
+  return '';
+}
+
 export function exactIdentity(r={}){
   const scope=r.scope||{};
   const marketText=r.marketLabel||r.market||r.marketKey||'';
   const family=marketFamily(marketText);
   const inferred=inferredScope(marketText);
-  const target=r.target||r.player||r.selection||r.side||'';
+  const target=family==='player_prop'?playerNameFrom(r,marketText):(r.target||r.player||r.selection||r.side||'');
   const line=r.line??r.point??r.handicap??r.total??'';
   const period=scope.period??r.period??scope.half??r.half??inferred.period??'';
   const map=scope.map??r.map??r.mapNumber??inferred.map??'';
@@ -54,7 +74,8 @@ export function exactIdentity(r={}){
   const live=r.isLive===true||clean(r.state)==='live'?'live':'prematch';
   const settlement=scope.settlement??r.settlementScope??r.settlement??'standard';
   const stat=family==='player_prop'?(r.statType||statType(marketText)||'unknown'):'';
-  return {sport:canonSport(r.sport),event:clean(r.eventId||r.match||r.name),family,target:clean(target),stat,line:num(line),period:clean(period),map:num(map),round:num(round),set:num(set),side:clean(r.side||r.selectionSide||''),state:live,settlement:clean(settlement)};
+  const side=family==='player_prop'?playerSideFrom(r,marketText):clean(r.side||r.selectionSide||'');
+  return {sport:canonSport(r.sport),event:clean(r.eventId||r.match||r.name),family,target:clean(target),stat,line:num(line),period:clean(period),map:num(map),round:num(round),set:num(set),side,state:live,settlement:clean(settlement)};
 }
 
 export function exactKey(r={}){
@@ -66,7 +87,7 @@ export function identityComplete(r={}){
   const i=exactIdentity(r);
   const marketText=clean(r.marketLabel||r.market||r.marketKey||'');
   if(!i.sport||!i.event||!i.family)return false;
-  if(i.family==='player_prop'&&(!i.target||!i.stat||i.stat==='unknown'||i.line===''))return false;
+  if(i.family==='player_prop'&&(!i.target||i.target==='over'||i.target==='under'||!i.stat||i.stat==='unknown'||i.line===''||!['over','under'].includes(i.side)))return false;
   if(['spread','total','map_handicap','round_handicap','round_total'].includes(i.family)&&i.line==='')return false;
   if(/\bmap\s*\d+\b/.test(marketText)&&i.map==='')return false;
   if(/\bset\s*\d+\b/.test(marketText)&&i.set==='')return false;
