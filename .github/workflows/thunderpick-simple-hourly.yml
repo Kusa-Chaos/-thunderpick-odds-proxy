@@ -2,10 +2,8 @@ name: Thunderpick Simple Hourly Board
 
 on:
   workflow_dispatch:
-  # Fallback only. ChatGPT's :40 Pacific scheduled task is the authoritative clock.
   schedule:
-    - cron: '45 * * * *'
-    - cron: '50 * * * *'
+    - cron: '40 * * * *'
   push:
     branches: [main]
     paths:
@@ -60,29 +58,12 @@ jobs:
           const fs = require('fs');
           const event = process.env.EVENT_NAME || '';
           const schedule = process.env.SCHEDULE_EXPR || '';
-          let run = true;
-          let reason = `${event || 'unknown'} trigger`;
-          if (event === 'schedule') {
-            let generatedAt = null;
-            let ageMin = Infinity;
-            try {
-              const board = JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8'));
-              generatedAt = board.generatedAt || null;
-              const ts = Date.parse(generatedAt || '');
-              if (Number.isFinite(ts)) ageMin = (Date.now() - ts) / 60000;
-            } catch (e) {
-              reason = `fallback could not read board: ${e.message}`;
-            }
-            if (Number.isFinite(ageMin) && ageMin <= 40) {
-              run = false;
-              reason = `fallback ${schedule} skipped; authoritative board is fresh (${ageMin.toFixed(1)} min old, ${generatedAt})`;
-            } else {
-              run = true;
-              reason = `fallback ${schedule} activated; authoritative board is stale (${Number.isFinite(ageMin)?ageMin.toFixed(1):'unknown'} min old, ${generatedAt || 'missing'})`;
-            }
-          }
+          const run = true;
+          const reason = event === 'schedule'
+            ? `authoritative hourly production scan ${schedule}; always run`
+            : `${event || 'unknown'} trigger`;
           console.log('SCAN_GATE',{event,schedule,run,reason});
-          fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=${run?'true':'false'}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=true\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`reason=${reason.replace(/\n/g,' ')}\n`);
           NODE
 
