@@ -67,4 +67,10 @@ const result = {
 fs.mkdirSync('data',{recursive:true});
 fs.writeFileSync('data/production-coverage-audit-latest.json',JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result,null,2));
+
+// Always regenerate the compact delivery payload from the same authoritative board.
+// This guarantees every ACTION and WATCH row is published every scan, even if unchanged,
+// and avoids connector truncation of the much larger full-board JSON.
+await import('./build-results-display.mjs');
+
 if(failures.length) process.exitCode=2;
