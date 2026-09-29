@@ -18,7 +18,7 @@ jobs:
   ensure-production-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Ensure a fresh production scan exists
+      - name: Ensure a fresh verified production board exists
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -34,27 +34,41 @@ jobs:
             exit 0
           fi
 
-          latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].updated_at // empty')
-          age=999999
-          if [ -n "$latest_success" ]; then
-            ts=$(date -u -d "$latest_success" +%s)
-            age=$(( (now-ts)/60 ))
+          # Freshness is defined by the published authoritative board itself, not by
+          # workflow updated_at. A recently completed workflow must never make an old
+          # board look fresh.
+          board=$(gh api -H 'Accept: application/vnd.github.raw+json' "repos/$REPO/contents/data/simple-opportunity-latest.json?ref=main" 2>/dev/null || true)
+          generated_at=$(printf '%s' "$board" | jq -r '.generatedAt // empty' 2>/dev/null || true)
+          board_age=999999
+          if [ -n "$generated_at" ]; then
+            board_ts=$(date -u -d "$generated_at" +%s 2>/dev/null || echo 0)
+            if [ "$board_ts" -gt 0 ] && [ "$board_ts" -le "$now" ]; then
+              board_age=$(( (now-board_ts)/60 ))
+            fi
           fi
 
-          # The production workflow owns the normal :40 scan and its :50 recovery.
-          # This separate :45/:55 watchdog exists only to recover when GitHub misses/delays those schedules.
-          if [ "$age" -le 35 ]; then
-            echo "Fresh successful production run exists (${age}m old); watchdog recovery not needed."
+          # Require a successful production workflow as well as a fresh board.
+          latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].id // empty')
+          if [ -n "$latest_success" ] && [ "$board_age" -le 35 ]; then
+            echo "Fresh authoritative board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); watchdog recovery not needed."
             exit 0
           fi
 
-          echo "No fresh successful production run (${age}m); dispatching one watchdog recovery scan."
+          # The production workflow owns the normal :40 scan and :50 recovery.
+          # This :45/:55 watchdog is the final GitHub-side recovery layer.
+          echo "No fresh verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main recovery scan."
+          before_ids=$(echo "$runs" | jq -r '.workflow_runs[].id' | tr '\n' ' ')
           gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
-          sleep 3
-          verify=$(gh api "repos/$REPO/actions/workflows/$TARGET_WORKFLOW/runs?branch=main&per_page=5")
-          accepted=$(echo "$verify" | jq -r '[.workflow_runs[] | select(.event=="workflow_dispatch" and (.status=="queued" or .status=="in_progress"))] | length')
-          if [ "$accepted" -lt 1 ]; then
+
+          accepted_id=''
+          for attempt in 1 2 3 4 5 6; do
+            sleep 3
+            verify=$(gh api "repos/$REPO/actions/workflows/$TARGET_WORKFLOW/runs?branch=main&per_page=10")
+            accepted_id=$(echo "$verify" | jq -r --arg before "$before_ids" '[.workflow_runs[] | select(.event=="workflow_dispatch") | select(($before | split(" ") | index((.id|tostring))) == null) | select(.status=="queued" or .status=="in_progress" or .status=="completed")][0].id // empty')
+            if [ -n "$accepted_id" ]; then break; fi
+          done
+          if [ -z "$accepted_id" ]; then
             echo "ERROR: production workflow dispatch was not observed after watchdog request."
             exit 1
           fi
-          echo "Production workflow dispatch accepted by GitHub."
+          echo "Production workflow dispatch accepted by GitHub: run_id=${accepted_id}."
