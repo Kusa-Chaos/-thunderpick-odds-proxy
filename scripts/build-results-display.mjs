@@ -46,6 +46,8 @@ function displayRow(r) {
     outside,
     bestOutside,
     independentSources: r.independentSources ?? 0,
+    fairProbability: r.fairProbability ?? r.vigFreeFairProbability ?? null,
+    fairDecimal: r.fairDecimal ?? r.vigFreeFairDecimal ?? r.fairOdds ?? null,
     estimatedEV: r.estimatedEV ?? null,
     startTime: r.startTime ?? null,
     blocker: r.blocker ?? null
@@ -55,19 +57,22 @@ function displayRow(r) {
 const identityErrors = rows.filter(r => (r.tier === 'ACTION' || r.tier === 'WATCH') && r.identityComplete !== true).length;
 const priceErrors = rows.filter(r => (r.tier === 'ACTION' || r.tier === 'WATCH' || r.tier === 'SCREENING') && !Number.isFinite(Number(r.thunderpick))).length;
 
+// Keep the small, user-facing rows at the START of this file. GitHub/API readers may
+// truncate large JSON responses, and sourceHealth is much larger than the rows we need
+// to deliver. This ordering guarantees ACTION/WATCH rows are available first.
 const out = {
   generatedAt: board.generatedAt ?? null,
   builtAt: new Date().toISOString(),
-  mode: 'compact-results-delivery-v1',
+  mode: 'compact-results-delivery-v2',
   counts: board.counts ?? {},
   parseErrors: { identity: identityErrors, price: priceErrors },
-  sourceHealth: board.sourceHealth ?? null,
+  actionRows: actions.map(displayRow),
+  watchRows: watches.map(displayRow),
+  screeningRows: screening.map(displayRow),
   coverageAudit: board.coverageAudit ?? {},
   productionCoverageStatus: audit.status ?? null,
   productionCoverageFailures: audit.failures ?? [],
-  actionRows: actions.map(displayRow),
-  watchRows: watches.map(displayRow),
-  screeningRows: screening.map(displayRow)
+  sourceHealth: board.sourceHealth ?? null
 };
 
 await fs.writeFile('data/simple-opportunity-display-latest.json', JSON.stringify(out, null, 2));
