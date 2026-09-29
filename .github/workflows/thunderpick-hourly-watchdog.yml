@@ -49,17 +49,16 @@ jobs:
             fi
           fi
 
-          # Keep the board under 50 minutes old. With the 10-minute watchdog cadence,
-          # a missed :40/:50 production schedule gets another GitHub-side recovery
-          # opportunity before the :05 delivery window, without causing routine
-          # duplicate scans when the normal :40 production cycle succeeds.
+          # The :05 delivery hard-rejects boards older than 40 minutes. Keep the
+          # GitHub-side watchdog SLA at 35 minutes to provide a five-minute safety
+          # margin and recover BEFORE delivery discovers a stale board.
           latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].id // empty')
-          if [ -n "$latest_success" ] && [ "$board_age" -le 50 ]; then
+          if [ -n "$latest_success" ] && [ "$board_age" -le 35 ]; then
             echo "Fresh authoritative board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); watchdog recovery not needed."
             exit 0
           fi
 
-          echo "No fresh verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main recovery scan."
+          echo "No <=35m verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main recovery scan before the :05 delivery SLA can be breached."
           before_ids=$(echo "$runs" | jq -r '.workflow_runs[].id' | tr '\n' ' ')
           gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
 
