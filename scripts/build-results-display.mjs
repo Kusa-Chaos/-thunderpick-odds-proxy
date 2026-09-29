@@ -12,6 +12,7 @@ const screenRows=[...(screen.limitedExactComparisons||[]),...(screen.candidates|
 const norm=v=>String(v??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const sameScope=(a,b)=>Number(a?.map||0)===Number(b?.map||0)&&Number(a?.round||0)===Number(b?.round||0);
 const tpRows=s=>Array.isArray(s?.thunderpick)?s.thunderpick:[];
+const validDecimal=v=>Number.isFinite(Number(v))&&Number(v)>1;
 function screenMatch(r){
   return screenRows.find(s=>{
     const tp=tpRows(s);
@@ -24,10 +25,21 @@ function displayRow(r){
   const raw=Array.isArray(r.outside)?r.outside:[];
   const outside=raw.map(o=>{
     let p=o.price??o.odds??o.decimal??null;
-    if(!Number.isFinite(Number(p))&&idx>=0) p=idx===0?o.a:o.b;
-    return {sourceFamily:o.sourceFamily??null,book:o.book??o.title??o.source??o.provider??o.name??null,price:Number.isFinite(Number(p))?Number(p):null,lastUpdate:o.lastUpdate??o.fetchedAt??null};
+    // Zero is a missing-price sentinel, never valid decimal odds. Recover the exact side from the safety screen.
+    if(!validDecimal(p)&&idx>=0){
+      const sidePrice=idx===0?o.a:o.b;
+      if(validDecimal(sidePrice)) p=sidePrice;
+      else {
+        const smOutside=Array.isArray(sm?.outside)?sm.outside:[];
+        const source=norm(o.sourceFamily??o.book??o.title??o.source??o.provider??o.name);
+        const matched=smOutside.find(x=>norm(x.sourceFamily??x.book??x.title??x.source??x.provider??x.name)===source)||smOutside.find(x=>source&&norm(x.sourceFamily??x.book??x.title??x.source??x.provider??x.name).includes(source));
+        const recovered=idx===0?matched?.a:matched?.b;
+        if(validDecimal(recovered)) p=recovered;
+      }
+    }
+    return {sourceFamily:o.sourceFamily??null,book:o.book??o.title??o.source??o.provider??o.name??null,price:validDecimal(p)?Number(p):null,lastUpdate:o.lastUpdate??o.fetchedAt??null};
   });
-  const bestOutside=outside.reduce((best,o)=>Number.isFinite(o.price)&&(best==null||o.price>best)?o.price:best,null);
+  const bestOutside=outside.reduce((best,o)=>validDecimal(o.price)&&(best==null||o.price>best)?o.price:best,null);
   let fairProbability=r.fairProbability??r.vigFreeFairProbability??null;
   if(fairProbability==null&&sm?.screenFair&&idx>=0) fairProbability=idx===0?sm.screenFair.aProbability:sm.screenFair.bProbability;
   const fairDecimal=Number(fairProbability)>0?1/Number(fairProbability):(r.fairDecimal??r.vigFreeFairDecimal??r.fairOdds??null);
@@ -35,7 +47,7 @@ function displayRow(r){
 }
 const displayed=[...actions,...watches,...screening].map(displayRow);
 const identityErrors=rows.filter(r=>(r.tier==='ACTION'||r.tier==='WATCH')&&r.identityComplete!==true).length;
-const priceErrors=displayed.filter(r=>!Number.isFinite(Number(r.thunderpick))||((r.tier==='ACTION'||r.tier==='WATCH')&&r.outside.some(o=>!Number.isFinite(Number(o.price))))).length;
-const out={generatedAt:board.generatedAt??null,builtAt:new Date().toISOString(),mode:'compact-results-delivery-v3-priced',counts:board.counts??{},parseErrors:{identity:identityErrors,price:priceErrors},actionRows:displayed.slice(0,actions.length),watchRows:displayed.slice(actions.length,actions.length+watches.length),screeningRows:displayed.slice(actions.length+watches.length),coverageAudit:board.coverageAudit??{},productionCoverageStatus:audit.status??null,productionCoverageFailures:audit.failures??[],sourceHealth:board.sourceHealth??null};
+const priceErrors=displayed.filter(r=>!validDecimal(r.thunderpick)||((r.tier==='ACTION'||r.tier==='WATCH')&&r.outside.some(o=>!validDecimal(o.price)))).length;
+const out={generatedAt:board.generatedAt??null,builtAt:new Date().toISOString(),mode:'compact-results-delivery-v4-priced',counts:board.counts??{},parseErrors:{identity:identityErrors,price:priceErrors},actionRows:displayed.slice(0,actions.length),watchRows:displayed.slice(actions.length,actions.length+watches.length),screeningRows:displayed.slice(actions.length+watches.length),coverageAudit:board.coverageAudit??{},productionCoverageStatus:audit.status??null,productionCoverageFailures:audit.failures??[],sourceHealth:board.sourceHealth??null};
 await fs.writeFile('data/simple-opportunity-display-latest.json',JSON.stringify(out,null,2));
 console.log('RESULTS_DISPLAY',{generatedAt:out.generatedAt,action:out.actionRows.length,watch:out.watchRows.length,screening:out.screeningRows.length,parseErrors:out.parseErrors});
