@@ -37,19 +37,32 @@ jobs:
           const fs=require('fs');
           const b=JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8'));
           const d=JSON.parse(fs.readFileSync('data/simple-opportunity-display-latest.json','utf8'));
+          const validDecimal=v=>Number.isFinite(Number(v))&&Number(v)>1;
           if(d.generatedAt!==b.generatedAt) throw new Error(`display/full generatedAt mismatch ${d.generatedAt} != ${b.generatedAt}`);
           if((d.actionRows||[]).length!==(b.counts?.ACTION||0)) throw new Error('ACTION display count mismatch');
           if((d.watchRows||[]).length!==(b.counts?.WATCH||0)) throw new Error('WATCH display count mismatch');
+          for(const [tier,rows] of [['ACTION',d.actionRows||[]],['WATCH',d.watchRows||[]]]) {
+            for(const [i,r] of rows.entries()) {
+              if(!validDecimal(r.thunderpick)) throw new Error(`${tier} row ${i+1} missing TP decimal odds`);
+              if((r.outside||[]).length<Number(r.independentSources||0)) throw new Error(`${tier} row ${i+1} outside count is below independent source count`);
+              const bad=(r.outside||[]).filter(o=>!validDecimal(o.price));
+              if(bad.length) throw new Error(`${tier} row ${i+1} has unparsed outside prices: ${bad.map(o=>o.sourceFamily||o.book||'unknown').join(', ')}`);
+              if(Number(r.independentSources||0)>0&&!validDecimal(r.bestOutside)) throw new Error(`${tier} row ${i+1} missing bestOutside`);
+              if(r.estimatedEV!=null&&(!(Number(r.fairProbability)>0&&Number(r.fairProbability)<1)||!validDecimal(r.fairDecimal))) throw new Error(`${tier} row ${i+1} missing fair probability/decimal`);
+            }
+          }
+          if(Number(d.parseErrors?.identity||0)!==0) throw new Error(`identity parse errors remain: ${d.parseErrors.identity}`);
+          if(Number(d.parseErrors?.price||0)!==0) throw new Error(`price parse errors remain: ${d.parseErrors.price}`);
           const expected=Math.min(10,b.counts?.SCREENING||0);
           if((d.topScreeningRows||[]).length!==expected) throw new Error(`TOP10 SCREENING display count mismatch expected=${expected} actual=${(d.topScreeningRows||[]).length}`);
           for(const [i,r] of (d.topScreeningRows||[]).entries()) {
             if(!(r.target||r.side)) throw new Error(`TOP10 SCREENING row ${i+1} missing target/side`);
-            if(!(Number(r.thunderpick)>1)) throw new Error(`TOP10 SCREENING row ${i+1} missing TP decimal odds`);
+            if(!validDecimal(r.thunderpick)) throw new Error(`TOP10 SCREENING row ${i+1} missing TP decimal odds`);
           }
           const expectedPrice=Math.min(3,b.counts?.['PRICE BOARD']||0);
           if((d.topPriceBoardRows||[]).length!==expectedPrice) throw new Error(`PRICE BOARD top3 mismatch expected=${expectedPrice}`);
           if((b.counts?.INFORMATIONAL||0)>0 && !d.informationalBreakdown) throw new Error('INFORMATIONAL breakdown missing');
-          console.log('DISPLAY_VERIFIED',{generatedAt:d.generatedAt,counts:d.counts,displayed:{action:d.actionRows.length,watch:d.watchRows.length,topScreening:d.topScreeningRows.length,topPriceBoard:d.topPriceBoardRows.length},informationalBreakdown:d.informationalBreakdown,parseErrors:d.parseErrors});
+          console.log('DISPLAY_VERIFIED',{generatedAt:d.generatedAt,mode:d.mode,counts:d.counts,displayed:{action:d.actionRows.length,watch:d.watchRows.length,topScreening:d.topScreeningRows.length,topPriceBoard:d.topPriceBoardRows.length},informationalBreakdown:d.informationalBreakdown,parseErrors:d.parseErrors});
           NODE
       - name: Publish compact results display
         run: |
