@@ -2,7 +2,6 @@ name: Thunderpick Hourly Production Watchdog
 
 on:
   schedule:
-    - cron: '30 * * * *'
     - cron: '45 * * * *'
     - cron: '55 * * * *'
   workflow_dispatch:
@@ -42,18 +41,14 @@ jobs:
             age=$(( (now-ts)/60 ))
           fi
 
-          minute=$(date -u +%M)
-          # :30 is the primary guaranteed attempt. :45/:55 are recovery checks.
-          # Recovery skips when a successful current-hour production run is already fresh.
-          if [ "$minute" = "30" ]; then
-            echo "Primary watchdog trigger: dispatching production scan."
-          elif [ "$age" -le 35 ]; then
-            echo "Fresh successful production run exists (${age}m old); no recovery dispatch needed."
+          # The production workflow owns the normal :40 scan and its :50 recovery.
+          # This separate :45/:55 watchdog exists only to recover when GitHub misses/delays those schedules.
+          if [ "$age" -le 35 ]; then
+            echo "Fresh successful production run exists (${age}m old); watchdog recovery not needed."
             exit 0
-          else
-            echo "No fresh successful production run (${age}m); dispatching one recovery scan."
           fi
 
+          echo "No fresh successful production run (${age}m); dispatching one watchdog recovery scan."
           gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
           sleep 3
           verify=$(gh api "repos/$REPO/actions/workflows/$TARGET_WORKFLOW/runs?branch=main&per_page=5")
