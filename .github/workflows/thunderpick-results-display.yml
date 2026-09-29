@@ -1,0 +1,49 @@
+name: Thunderpick Results Display Builder
+
+on:
+  workflow_run:
+    workflows: ['Thunderpick Simple Hourly Board']
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: thunderpick-results-display
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build compact priced ACTION WATCH SCREENING display
+        run: node scripts/build-results-display.mjs
+      - name: Verify display matches authoritative board and contains screening rows
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const b=JSON.parse(fs.readFileSync('data/simple-opportunity-latest.json','utf8'));
+          const d=JSON.parse(fs.readFileSync('data/simple-opportunity-display-latest.json','utf8'));
+          if(d.generatedAt!==b.generatedAt) throw new Error(`display/full generatedAt mismatch ${d.generatedAt} != ${b.generatedAt}`);
+          if((d.actionRows||[]).length!==(b.counts?.ACTION||0)) throw new Error('ACTION display count mismatch');
+          if((d.watchRows||[]).length!==(b.counts?.WATCH||0)) throw new Error('WATCH display count mismatch');
+          if((b.counts?.SCREENING||0)>0 && !(d.screeningRows||[]).length) throw new Error('SCREENING rows missing');
+          console.log('DISPLAY_VERIFIED',{generatedAt:d.generatedAt,counts:d.counts,displayed:{action:d.actionRows.length,watch:d.watchRows.length,screening:d.screeningRows.length},parseErrors:d.parseErrors});
+          NODE
+      - name: Publish compact results display
+        run: |
+          git config user.name 'thunderpick-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/simple-opportunity-display-latest.json
+          if git diff --cached --quiet; then echo 'Display already current.'; exit 0; fi
+          git commit -m 'Update priced Thunderpick results display [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
