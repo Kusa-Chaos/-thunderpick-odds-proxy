@@ -1,0 +1,65 @@
+name: Thunderpick Hourly Production Watchdog
+
+on:
+  schedule:
+    - cron: '30 * * * *'
+    - cron: '45 * * * *'
+    - cron: '55 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: thunderpick-hourly-watchdog
+  cancel-in-progress: false
+
+jobs:
+  ensure-production-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure a fresh production scan exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TARGET_WORKFLOW: thunderpick-simple-hourly.yml
+        run: |
+          set -euo pipefail
+          now=$(date -u +%s)
+          runs=$(gh api "repos/$REPO/actions/workflows/$TARGET_WORKFLOW/runs?branch=main&per_page=10")
+
+          active=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="queued" or .status=="in_progress")] | length')
+          if [ "$active" -gt 0 ]; then
+            echo "Production run already active; watchdog will not stack a duplicate."
+            exit 0
+          fi
+
+          latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].updated_at // empty')
+          age=999999
+          if [ -n "$latest_success" ]; then
+            ts=$(date -u -d "$latest_success" +%s)
+            age=$(( (now-ts)/60 ))
+          fi
+
+          minute=$(date -u +%M)
+          # :30 is the primary guaranteed attempt. :45/:55 are recovery checks.
+          # Recovery skips when a successful current-hour production run is already fresh.
+          if [ "$minute" = "30" ]; then
+            echo "Primary watchdog trigger: dispatching production scan."
+          elif [ "$age" -le 35 ]; then
+            echo "Fresh successful production run exists (${age}m old); no recovery dispatch needed."
+            exit 0
+          else
+            echo "No fresh successful production run (${age}m); dispatching one recovery scan."
+          fi
+
+          gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
+          sleep 3
+          verify=$(gh api "repos/$REPO/actions/workflows/$TARGET_WORKFLOW/runs?branch=main&per_page=5")
+          accepted=$(echo "$verify" | jq -r '[.workflow_runs[] | select(.event=="workflow_dispatch" and (.status=="queued" or .status=="in_progress"))] | length')
+          if [ "$accepted" -lt 1 ]; then
+            echo "ERROR: production workflow dispatch was not observed after watchdog request."
+            exit 1
+          fi
+          echo "Production workflow dispatch accepted by GitHub."
