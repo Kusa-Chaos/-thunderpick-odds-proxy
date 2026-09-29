@@ -5,6 +5,11 @@ on:
     workflows: ['Thunderpick Simple Hourly Board']
     types: [completed]
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build-results-display.mjs'
+      - '.github/workflows/thunderpick-results-display.yml'
 
 permissions:
   contents: write
@@ -15,7 +20,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
