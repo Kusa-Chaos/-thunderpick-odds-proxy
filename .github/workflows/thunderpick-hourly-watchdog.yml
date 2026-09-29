@@ -2,8 +2,10 @@ name: Thunderpick Hourly Production Watchdog
 
 on:
   schedule:
-    - cron: '45 * * * *'
-    - cron: '55 * * * *'
+    # GitHub scheduled events can be delayed or occasionally skipped under load.
+    # Run the cheap freshness gate every 10 minutes so one missed cron does not
+    # leave the authoritative board stale. The gate below prevents duplicate scans.
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -47,15 +49,16 @@ jobs:
             fi
           fi
 
-          # Require a successful production workflow as well as a fresh board.
+          # Keep the board under 50 minutes old. With the 10-minute watchdog cadence,
+          # a missed :40/:50 production schedule gets another GitHub-side recovery
+          # opportunity before the :05 delivery window, without causing routine
+          # duplicate scans when the normal :40 production cycle succeeds.
           latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].id // empty')
-          if [ -n "$latest_success" ] && [ "$board_age" -le 35 ]; then
+          if [ -n "$latest_success" ] && [ "$board_age" -le 50 ]; then
             echo "Fresh authoritative board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); watchdog recovery not needed."
             exit 0
           fi
 
-          # The production workflow owns the normal :40 scan and :50 recovery.
-          # This :45/:55 watchdog is the final GitHub-side recovery layer.
           echo "No fresh verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main recovery scan."
           before_ids=$(echo "$runs" | jq -r '.workflow_runs[].id' | tr '\n' ' ')
           gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
