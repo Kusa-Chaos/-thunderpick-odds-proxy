@@ -11,12 +11,16 @@ const screening=rows.filter(r=>r.tier==='SCREENING').sort((a,b)=>(b.estimatedEV?
 const screenRows=[...(screen.limitedExactComparisons||[]),...(screen.candidates||[])];
 const norm=v=>String(v??'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const sameScope=(a,b)=>Number(a?.map||0)===Number(b?.map||0)&&Number(a?.round||0)===Number(b?.round||0);
+const tpRows=s=>Array.isArray(s?.thunderpick)?s.thunderpick:[];
 function screenMatch(r){
-  return screenRows.find(s=>String(s.eventId)===String(r.eventId)&&String(s.marketKey||'')===String(r.marketKey||'')&&sameScope(s.scope,r.scope)&&((r.line==null&&((s.thunderpick?.[0]?.point??s.thunderpick?.[1]?.point)==null))||s.thunderpick?.some(t=>Number(t?.point)===Number(r.line)))&&s.thunderpick?.some(t=>norm(t?.name)===norm(r.target||r.side)));
+  return screenRows.find(s=>{
+    const tp=tpRows(s);
+    return String(s.eventId)===String(r.eventId)&&String(s.marketKey||'')===String(r.marketKey||'')&&sameScope(s.scope,r.scope)&&((r.line==null&&((tp[0]?.point??tp[1]?.point)==null))||tp.some(t=>Number(t?.point)===Number(r.line)))&&tp.some(t=>norm(t?.name)===norm(r.target||r.side));
+  });
 }
 function displayRow(r){
   const sm=screenMatch(r); let idx=-1;
-  if(sm) idx=(sm.thunderpick||[]).findIndex(t=>norm(t?.name)===norm(r.target||r.side)&&((r.line==null&&t?.point==null)||Number(t?.point)===Number(r.line)));
+  if(sm) idx=tpRows(sm).findIndex(t=>norm(t?.name)===norm(r.target||r.side)&&((r.line==null&&t?.point==null)||Number(t?.point)===Number(r.line)));
   const raw=Array.isArray(r.outside)?r.outside:[];
   const outside=raw.map(o=>{
     let p=o.price??o.odds??o.decimal??null;
