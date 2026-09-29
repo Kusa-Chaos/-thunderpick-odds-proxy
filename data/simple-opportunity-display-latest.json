@@ -1,19 +1,82 @@
 {
-  "generatedAt": "2026-09-29T16:57:17.520Z",
-  "builtAt": "2026-09-29T16:57:17.703Z",
+  "generatedAt": "2026-09-29T18:20:03.935Z",
+  "builtAt": "2026-09-29T18:20:04.125Z",
   "mode": "compact-results-delivery-v7-source-canonical-price-guard",
   "counts": {
-    "ACTION": 0,
-    "WATCH": 2,
-    "SCREENING": 252,
-    "PRICE BOARD": 78,
+    "ACTION": 1,
+    "WATCH": 1,
+    "SCREENING": 249,
+    "PRICE BOARD": 77,
     "INFORMATIONAL": 200
   },
   "parseErrors": {
     "identity": 0,
     "price": 0
   },
-  "actionRows": [],
+  "actionRows": [
+    {
+      "tier": "ACTION",
+      "sport": "tennis",
+      "eventId": 2738746,
+      "match": "Zhizhen Zhang vs Arthur Gea",
+      "target": "Zhizhen Zhang",
+      "side": "Zhizhen Zhang",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "tennis",
+        "event": "2738746",
+        "family": "ml",
+        "target": "zhizhen zhang",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "zhizhen zhang",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|2738746|ml|zhizhen zhang|||||||zhizhen zhang|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 3.84,
+      "outside": [
+        {
+          "sourceFamily": "betway",
+          "book": "betway-direct",
+          "price": 3.75,
+          "lastUpdate": "2026-09-29T18:19:26.261Z"
+        },
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibetkambidirect",
+          "price": 3.3,
+          "lastUpdate": "2026-09-29T13:34:40Z"
+        },
+        {
+          "sourceFamily": "bovada",
+          "book": "bovadatraditionaldirect",
+          "price": 3.6,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 3.75,
+      "independentSources": 3,
+      "fairProbability": 0.2696920325413659,
+      "fairDecimal": 3.707933047101115,
+      "estimatedEV": 0.035617404958845134,
+      "startTime": "2026-09-30T09:00:00+00:00",
+      "blocker": null
+    }
+  ],
   "watchRows": [
     {
       "tier": "WATCH",
@@ -48,7 +111,7 @@
       },
       "identityKey": "tennis|2733467|ml|jan-lennard struff|||||||jan-lennard struff|prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.45,
+      "thunderpick": 2.44,
       "outside": [
         {
           "sourceFamily": "bovada",
@@ -73,118 +136,12 @@
       "independentSources": 3,
       "fairProbability": 0.41735331945682314,
       "fairDecimal": 2.3960513871112363,
-      "estimatedEV": 0.022515632669216856,
+      "estimatedEV": 0.018342099474648377,
       "startTime": "2026-09-30T05:00:00+00:00",
-      "blocker": "ACTION blocked by upstream freshness/verification gate"
-    },
-    {
-      "tier": "WATCH",
-      "sport": "tennis",
-      "eventId": 2736057,
-      "match": "Nahia Berecoechea vs Lea Boskovic",
-      "target": "Lea Boskovic",
-      "side": "Lea Boskovic",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "tennis",
-        "event": "2736057",
-        "family": "ml",
-        "target": "lea boskovic",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "lea boskovic",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|2736057|ml|lea boskovic|||||||lea boskovic|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 1.7,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibetkambidirect",
-          "price": 1.55,
-          "lastUpdate": "2026-09-29T02:52:30Z"
-        },
-        {
-          "sourceFamily": "bovada",
-          "book": "bovadatraditionaldirect",
-          "price": 1.5405405405405406,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 1.55,
-      "independentSources": 2,
-      "fairProbability": 0.5970871467340876,
-      "fairDecimal": 1.6747973984530427,
-      "estimatedEV": 0.015048149447948855,
-      "startTime": "2026-09-29T17:00:00+00:00",
-      "blocker": "2 independent exact Match Winner sources; WATCH pending third source and fresh Thunderpick verification"
+      "blocker": null
     }
   ],
   "topScreeningRows": [
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "eventId": null,
-      "match": "Denver Nuggets vs Dallas Mavericks",
-      "target": "Dallas Mavericks",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "denver nuggets vs dallas mavericks",
-        "family": "ml",
-        "target": "dallas mavericks",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|denver nuggets vs dallas mavericks|ml|dallas mavericks||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 4.09,
-      "outside": [
-        {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": null,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": null,
-      "independentSources": 1,
-      "fairProbability": null,
-      "fairDecimal": null,
-      "estimatedEV": 1.0837677725118482,
-      "startTime": "2026-11-25T03:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
     {
       "tier": "SCREENING",
       "sport": "valorant",
@@ -383,6 +340,56 @@
       "fairDecimal": 3.3308270676691727,
       "estimatedEV": 0.5911963882618512,
       "startTime": "2026-09-30T09:00:00+00:00",
+      "blocker": "Period-scoped Round Handicap outside half/period is not explicitly proven by the current comparator; SCREENING ONLY; fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "valorant",
+      "eventId": 2728535,
+      "match": "100 Thieves vs FUT Esports",
+      "target": "100 Thieves",
+      "side": "100 Thieves",
+      "market": "1st Half - Round Handicap - Map 1",
+      "marketKey": "round_handicap",
+      "line": -4.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "valorant",
+        "event": "2728535",
+        "family": "round_handicap",
+        "target": "100 thieves",
+        "stat": "",
+        "line": "-4.5",
+        "period": "1h",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "100 thieves",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "valorant|2728535|round_handicap|100 thieves||-4.5|1h|1|||100 thieves|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 4.34,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibet-kambi-direct",
+          "price": 2.55,
+          "lastUpdate": "2026-09-28T23:47:19Z"
+        }
+      ],
+      "bestOutside": 2.55,
+      "independentSources": 1,
+      "fairProbability": 0.3640897755610973,
+      "fairDecimal": 2.746575342465753,
+      "estimatedEV": 0.5801496259351622,
+      "startTime": "2026-09-30T12:00:00+00:00",
       "blocker": "Period-scoped Round Handicap outside half/period is not explicitly proven by the current comparator; SCREENING ONLY; fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -639,56 +646,6 @@
   "screeningRows": [
     {
       "tier": "SCREENING",
-      "sport": "basketball",
-      "eventId": null,
-      "match": "Denver Nuggets vs Dallas Mavericks",
-      "target": "Dallas Mavericks",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "denver nuggets vs dallas mavericks",
-        "family": "ml",
-        "target": "dallas mavericks",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|denver nuggets vs dallas mavericks|ml|dallas mavericks||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 4.09,
-      "outside": [
-        {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": null,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": null,
-      "independentSources": 1,
-      "fairProbability": null,
-      "fairDecimal": null,
-      "estimatedEV": 1.0837677725118482,
-      "startTime": "2026-11-25T03:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
       "sport": "valorant",
       "eventId": 2723451,
       "match": "Team Vitality vs LOUD",
@@ -885,6 +842,56 @@
       "fairDecimal": 3.3308270676691727,
       "estimatedEV": 0.5911963882618512,
       "startTime": "2026-09-30T09:00:00+00:00",
+      "blocker": "Period-scoped Round Handicap outside half/period is not explicitly proven by the current comparator; SCREENING ONLY; fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "valorant",
+      "eventId": 2728535,
+      "match": "100 Thieves vs FUT Esports",
+      "target": "100 Thieves",
+      "side": "100 Thieves",
+      "market": "1st Half - Round Handicap - Map 1",
+      "marketKey": "round_handicap",
+      "line": -4.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "valorant",
+        "event": "2728535",
+        "family": "round_handicap",
+        "target": "100 thieves",
+        "stat": "",
+        "line": "-4.5",
+        "period": "1h",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "100 thieves",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "valorant|2728535|round_handicap|100 thieves||-4.5|1h|1|||100 thieves|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 4.34,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibet-kambi-direct",
+          "price": 2.55,
+          "lastUpdate": "2026-09-28T23:47:19Z"
+        }
+      ],
+      "bestOutside": 2.55,
+      "independentSources": 1,
+      "fairProbability": 0.3640897755610973,
+      "fairDecimal": 2.746575342465753,
+      "estimatedEV": 0.5801496259351622,
+      "startTime": "2026-09-30T12:00:00+00:00",
       "blocker": "Period-scoped Round Handicap outside half/period is not explicitly proven by the current comparator; SCREENING ONLY; fewer than 3 independent exact-scope sources; SCREENING ONLY"
     },
     {
@@ -1141,124 +1148,6 @@
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
-      "sport": "baseball",
-      "eventId": 2740064,
-      "match": "SSG Landers vs LG Twins",
-      "target": "SSG Landers",
-      "side": "SSG Landers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "baseball",
-        "event": "2740064",
-        "family": "ml",
-        "target": "ssg landers",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "ssg landers",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "baseball|2740064|ml|ssg landers|||||||ssg landers|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.22,
-      "outside": [
-        {
-          "sourceFamily": "pinnacle",
-          "book": "pinnacle-direct",
-          "price": 2.13,
-          "lastUpdate": "2026-09-29T09:30:00+00:00"
-        },
-        {
-          "sourceFamily": "bovada",
-          "book": "bovada-traditional-direct",
-          "price": 2.1,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibet-kambi-direct",
-          "price": 2.05,
-          "lastUpdate": "2026-09-28T18:36:48Z"
-        }
-      ],
-      "bestOutside": 2.13,
-      "independentSources": 3,
-      "fairProbability": 0.4515207606312919,
-      "fairDecimal": 2.2147375872636603,
-      "estimatedEV": 0.002376088601468096,
-      "startTime": "2026-09-30T09:30:00+00:00",
-      "blocker": null
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "lol",
-      "eventId": 2737989,
-      "match": "TLN Pirates vs Anubis Gaming",
-      "target": "Anubis Gaming",
-      "side": "Anubis Gaming",
-      "market": "Map 1 Winner",
-      "marketKey": "map_winner",
-      "line": null,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "lol",
-        "event": "2737989",
-        "family": "map_winner",
-        "target": "anubis gaming",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "1",
-        "round": "",
-        "set": "",
-        "side": "anubis gaming",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "lol|2737989|map_winner|anubis gaming||||1|||anubis gaming|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.69,
-      "outside": [
-        {
-          "sourceFamily": "stake-oddin",
-          "book": "stake-direct",
-          "price": 2.4,
-          "lastUpdate": "2026-09-29T08:43:09.182Z"
-        },
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibet-kambi-direct",
-          "price": 2.65,
-          "lastUpdate": "2026-09-29T12:33:55Z"
-        }
-      ],
-      "bestOutside": 2.65,
-      "independentSources": 2,
-      "fairProbability": 0.367552790346908,
-      "fairDecimal": 2.7206976147730186,
-      "estimatedEV": -0.011282993966817423,
-      "startTime": "2026-09-29T18:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
       "sport": "cs2",
       "eventId": 2737698,
       "match": "LAG vs Marsborne",
@@ -1306,63 +1195,163 @@
       "estimatedEV": -0.01892950391644921,
       "startTime": "2026-09-30T01:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "eventId": 2737698,
+      "match": "LAG vs Marsborne",
+      "target": "LAG",
+      "side": "LAG",
+      "market": "Round Handicap (Incl. Overtime) - Map 2",
+      "marketKey": "round_handicap",
+      "line": 2.5,
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "cs2",
+        "event": "2737698",
+        "family": "round_handicap",
+        "target": "lag",
+        "stat": "",
+        "line": "2.5",
+        "period": "",
+        "map": "2",
+        "round": "",
+        "set": "",
+        "side": "lag",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2737698|round_handicap|lag||2.5||2|||lag|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 1.93,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibet-kambi-direct",
+          "price": 1.83,
+          "lastUpdate": "2026-09-29T07:02:24Z"
+        }
+      ],
+      "bestOutside": 1.83,
+      "independentSources": 1,
+      "fairProbability": 0.5067385444743935,
+      "fairDecimal": 1.973404255319149,
+      "estimatedEV": -0.021994609164420642,
+      "startTime": "2026-09-30T01:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "valorant",
+      "eventId": 2723451,
+      "match": "Team Vitality vs LOUD",
+      "target": "Over",
+      "side": "Over",
+      "market": "Player DaviH - Total Kills Over/Under (Incl. Overtime) - Map 1",
+      "marketKey": "player_prop",
+      "line": 12.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "valorant",
+        "event": "2723451",
+        "family": "player_prop",
+        "target": "davih",
+        "stat": "kills",
+        "line": "12.5",
+        "period": "",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "over",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "valorant|2723451|player_prop|davih|kills|12.5||1|||over|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.02,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibet-kambi-direct",
+          "price": 1.91,
+          "lastUpdate": "2026-09-29T01:36:54Z"
+        }
+      ],
+      "bestOutside": 1.91,
+      "independentSources": 1,
+      "fairProbability": 0.4837837837837838,
+      "fairDecimal": 2.0670391061452515,
+      "estimatedEV": -0.022756756756756702,
+      "startTime": "2026-09-30T09:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     }
   ],
   "informationalBreakdown": {
-    "player_prop": 168
+    "player_prop": 172
   },
   "coverageAudit": {
     "american-football": {
       "events": 80,
-      "tpMarkets": 1701,
-      "deepMarkets": 1432,
+      "tpMarkets": 1740,
+      "deepMarkets": 1474,
       "deepSelectedEvents": 3,
       "deepSuccessfulEvents": 3,
       "deepFailedEvents": 0,
-      "exact1Source": 19,
+      "exact1Source": 21,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 19,
+      "screening": 21,
       "identityIncomplete": 0
     },
     "baseball": {
-      "events": 13,
-      "tpMarkets": 303,
-      "deepMarkets": 290,
-      "deepSelectedEvents": 13,
-      "deepSuccessfulEvents": 13,
+      "events": 12,
+      "tpMarkets": 259,
+      "deepMarkets": 247,
+      "deepSelectedEvents": 12,
+      "deepSuccessfulEvents": 12,
       "deepFailedEvents": 0,
-      "exact1Source": 8,
-      "exact2Source": 0,
-      "exact3Plus": 1,
-      "action": 0,
-      "watch": 0,
-      "screening": 8,
-      "identityIncomplete": 0
-    },
-    "basketball": {
-      "events": 199,
-      "tpMarkets": 12741,
-      "deepMarkets": 12335,
-      "deepSelectedEvents": 125,
-      "deepSuccessfulEvents": 125,
-      "deepFailedEvents": 0,
-      "exact1Source": 46,
+      "exact1Source": 7,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 46,
+      "screening": 7,
+      "identityIncomplete": 0
+    },
+    "basketball": {
+      "events": 180,
+      "tpMarkets": 9781,
+      "deepMarkets": 9412,
+      "deepSelectedEvents": 112,
+      "deepSuccessfulEvents": 112,
+      "deepFailedEvents": 0,
+      "exact1Source": 38,
+      "exact2Source": 0,
+      "exact3Plus": 0,
+      "action": 0,
+      "watch": 0,
+      "screening": 38,
       "identityIncomplete": 0
     },
     "soccer": {
-      "events": 752,
-      "tpMarkets": 26625,
-      "deepMarkets": 23993,
-      "deepSelectedEvents": 125,
-      "deepSuccessfulEvents": 125,
+      "events": 748,
+      "tpMarkets": 26130,
+      "deepMarkets": 23505,
+      "deepSelectedEvents": 122,
+      "deepSuccessfulEvents": 122,
       "deepFailedEvents": 0,
       "exact1Source": 0,
       "exact2Source": 0,
@@ -1373,28 +1362,43 @@
       "identityIncomplete": 0
     },
     "tennis": {
-      "events": 394,
-      "tpMarkets": 10712,
-      "deepMarkets": 10322,
-      "deepSelectedEvents": 394,
-      "deepSuccessfulEvents": 394,
+      "events": 383,
+      "tpMarkets": 10674,
+      "deepMarkets": 10296,
+      "deepSelectedEvents": 383,
+      "deepSuccessfulEvents": 383,
       "deepFailedEvents": 0,
-      "exact1Source": 133,
-      "exact2Source": 1,
-      "exact3Plus": 6,
-      "action": 0,
-      "watch": 2,
-      "screening": 138,
+      "exact1Source": 140,
+      "exact2Source": 0,
+      "exact3Plus": 7,
+      "action": 1,
+      "watch": 1,
+      "screening": 145,
       "identityIncomplete": 0
     },
     "cs2": {
-      "events": 56,
-      "tpMarkets": 2248,
-      "deepMarkets": 2161,
-      "deepSelectedEvents": 41,
-      "deepSuccessfulEvents": 41,
+      "events": 54,
+      "tpMarkets": 2013,
+      "deepMarkets": 1928,
+      "deepSelectedEvents": 39,
+      "deepSuccessfulEvents": 39,
       "deepFailedEvents": 0,
-      "exact1Source": 27,
+      "exact1Source": 20,
+      "exact2Source": 2,
+      "exact3Plus": 0,
+      "action": 0,
+      "watch": 0,
+      "screening": 2,
+      "identityIncomplete": 0
+    },
+    "dota2": {
+      "events": 7,
+      "tpMarkets": 1773,
+      "deepMarkets": 1766,
+      "deepSelectedEvents": 7,
+      "deepSuccessfulEvents": 7,
+      "deepFailedEvents": 0,
+      "exact1Source": 8,
       "exact2Source": 2,
       "exact3Plus": 0,
       "action": 0,
@@ -1402,34 +1406,19 @@
       "screening": 3,
       "identityIncomplete": 0
     },
-    "dota2": {
-      "events": 6,
-      "tpMarkets": 1517,
-      "deepMarkets": 1511,
-      "deepSelectedEvents": 6,
-      "deepSuccessfulEvents": 6,
-      "deepFailedEvents": 0,
-      "exact1Source": 3,
-      "exact2Source": 2,
-      "exact3Plus": 0,
-      "action": 0,
-      "watch": 0,
-      "screening": 0,
-      "identityIncomplete": 0
-    },
     "lol": {
-      "events": 20,
-      "tpMarkets": 818,
-      "deepMarkets": 784,
-      "deepSelectedEvents": 10,
-      "deepSuccessfulEvents": 10,
+      "events": 13,
+      "tpMarkets": 324,
+      "deepMarkets": 297,
+      "deepSelectedEvents": 3,
+      "deepSuccessfulEvents": 3,
       "deepFailedEvents": 0,
-      "exact1Source": 13,
-      "exact2Source": 12,
+      "exact1Source": 4,
+      "exact2Source": 6,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 13,
+      "screening": 4,
       "identityIncomplete": 0
     },
     "valorant": {
@@ -1439,12 +1428,12 @@
       "deepSelectedEvents": 6,
       "deepSuccessfulEvents": 6,
       "deepFailedEvents": 0,
-      "exact1Source": 55,
+      "exact1Source": 69,
       "exact2Source": 4,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 25,
+      "screening": 29,
       "identityIncomplete": 0
     }
   },
@@ -1459,128 +1448,119 @@
         "pages": 20,
         "acceptedEvents": 0,
         "rejectedStale": 7433,
-        "fetchedAt": "2026-09-29T16:56:20.906Z"
+        "fetchedAt": "2026-09-29T18:19:08.715Z"
       },
       "stake": {
         "ok": true,
         "status": 200,
         "sports": 9,
-        "scheduleFixtures": 213,
-        "detailRequests": 213,
-        "acceptedEvents": 203,
-        "marketCount": 2820,
-        "playerPropMarkets": 562,
+        "scheduleFixtures": 222,
+        "detailRequests": 222,
+        "acceptedEvents": 198,
+        "marketCount": 3045,
+        "playerPropMarkets": 775,
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:22.650Z"
+        "fetchedAt": "2026-09-29T18:19:12.397Z"
       },
       "kalshi": {
         "ok": true,
         "status": 200,
         "rawMarkets": 60000,
         "pages": 60,
-        "acceptedEvents": 2,
-        "rejectedMulti": 59994,
-        "rejectedNonSports": 0,
-        "rejectedShape": 4,
-        "fetchedAt": "2026-09-29T16:56:26.341Z"
+        "acceptedEvents": 0,
+        "rejectedMulti": 59996,
+        "rejectedNonSports": 4,
+        "rejectedShape": 0,
+        "fetchedAt": "2026-09-29T18:19:18.263Z"
       },
       "betway": {
         "ok": true,
         "status": 200,
         "fetchedPages": 6,
-        "rawEvents": 105,
+        "rawEvents": 127,
         "rawMarkets": 18,
-        "rawOutcomes": 768,
+        "rawOutcomes": 752,
         "acceptedEvents": 16,
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:37.383Z",
+        "fetchedAt": "2026-09-29T18:19:26.261Z",
         "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
       },
       "pinnacle": {
         "ok": true,
         "status": 200,
         "sports": 63,
-        "leagues": 232,
-        "matchups": 5549,
+        "leagues": 224,
+        "matchups": 5322,
         "marketRequests": 357,
-        "acceptedEvents": 5,
-        "acceptedMarkets": 73,
+        "acceptedEvents": 4,
+        "acceptedMarkets": 72,
         "playerPropMarkets": 0,
         "mapWinnerMarkets": 0,
         "errors": [
           "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
         ],
-        "fetchedAt": "2026-09-29T16:56:47.474Z"
+        "fetchedAt": "2026-09-29T18:19:34.871Z"
       },
       "kambi": {
         "ok": true,
         "status": 200,
-        "rawEvents": 850,
-        "acceptedEvents": 239,
-        "marketCount": 454,
-        "deepEventRequests": 27,
-        "playerPropMarkets": 100,
-        "playerKillMarkets": 60,
+        "rawEvents": 820,
+        "acceptedEvents": 215,
+        "marketCount": 388,
+        "deepEventRequests": 15,
+        "playerPropMarkets": 80,
+        "playerKillMarkets": 40,
         "playerDeathMarkets": 40,
-        "mapWinnerMarkets": 39,
+        "mapWinnerMarkets": 25,
         "mapHandicapMarkets": 0,
-        "roundHandicapMarkets": 38,
-        "roundTotalMarkets": 38,
+        "roundHandicapMarkets": 34,
+        "roundTotalMarkets": 34,
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:48.733Z"
+        "fetchedAt": "2026-09-29T18:19:35.846Z"
       },
       "kambiTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 850,
-        "eligibleEvents": 80,
-        "deepRequests": 80,
-        "acceptedEvents": 76,
-        "marketCount": 1333,
-        "playerPropMarkets": 320,
+        "rawEvents": 820,
+        "eligibleEvents": 70,
+        "deepRequests": 70,
+        "acceptedEvents": 64,
+        "marketCount": 1148,
+        "playerPropMarkets": 291,
         "bySport": {
           "baseball": {
-            "eligible": 8,
-            "deepEvents": 8,
+            "eligible": 7,
+            "deepEvents": 7,
             "events": 4,
-            "markets": 293,
-            "playerProps": 191
+            "markets": 238,
+            "playerProps": 147
           },
           "basketball": {
-            "eligible": 24,
-            "deepEvents": 24,
-            "events": 24,
-            "markets": 772,
+            "eligible": 15,
+            "deepEvents": 15,
+            "events": 15,
+            "markets": 567,
             "playerProps": 105
           },
           "soccer": {
             "eligible": 24,
             "deepEvents": 24,
             "events": 24,
-            "markets": 146,
+            "markets": 161,
             "playerProps": 0
           },
           "tennis": {
             "eligible": 24,
             "deepEvents": 24,
-            "events": 24,
-            "markets": 122,
-            "playerProps": 24
+            "events": 21,
+            "markets": 182,
+            "playerProps": 39
           }
         },
         "unknownPropLikeLabels": [
-          "baseball: 2+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 1+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 3+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 5+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 4+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: Total Stolen Bases by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: Player to hit 2 or more Home Runs - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: Player to Hit a Home Run - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 7+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 1+ Doubles by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 1+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 2+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 2+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 1+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 2+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
@@ -1589,37 +1569,46 @@
           "baseball: 3+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 3+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 3+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 10+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 6+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 9+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 8+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: Most Hits",
-          "baseball: Total Hits by Philadelphia Phillies",
           "baseball: Total Hits",
           "baseball: Total Hits by Atlanta Braves",
           "baseball: Total Hits - Inning 1",
+          "baseball: Total Hits by Philadelphia Phillies",
           "baseball: Most Hits - Inning 1",
+          "baseball: 2+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 4+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 3+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 5+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: Total Stolen Bases by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 2+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 4+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 7+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 9+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 10+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 8+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 6+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 5+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 4+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "basketball: 2+ Three-Point Field Goals Made By The Player - Including Overtime",
-          "basketball: 2+ Rebounds By The Player - Including Overtime",
-          "basketball: 6+ Rebounds By The Player - Including Overtime",
-          "basketball: 8+ Rebounds By The Player - Including Overtime",
-          "basketball: 3+ Three-Point Field Goals Made By The Player - Including Overtime",
-          "basketball: 10+ Points Scored By The Player - Including Overtime",
-          "basketball: 4+ Rebounds By The Player - Including Overtime",
           "basketball: 2+ Assists By The Player - Including Overtime",
           "basketball: 4+ Assists By The Player - Including Overtime",
-          "basketball: 12+ Rebounds By The Player - Including Overtime",
-          "basketball: 20+ Points Scored By The Player - Including Overtime",
-          "basketball: 10+ Rebounds By The Player - Including Overtime",
           "basketball: 4+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 3+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 4+ Rebounds By The Player - Including Overtime",
+          "basketball: 6+ Rebounds By The Player - Including Overtime",
+          "basketball: 2+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 20+ Points Scored By The Player - Including Overtime",
+          "basketball: 2+ Rebounds By The Player - Including Overtime",
           "basketball: 15+ Points Scored By The Player - Including Overtime",
-          "basketball: 5+ Points Scored By The Player - Including Overtime",
+          "basketball: 10+ Points Scored By The Player - Including Overtime",
           "basketball: 6+ Assists By The Player - Including Overtime",
-          "basketball: 8+ Assists By The Player - Including Overtime",
+          "basketball: 8+ Rebounds By The Player - Including Overtime",
+          "basketball: 5+ Points Scored By The Player - Including Overtime",
+          "basketball: 10+ Rebounds By The Player - Including Overtime",
           "basketball: 10+ Assists By The Player - Including Overtime",
+          "basketball: 5+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 8+ Assists By The Player - Including Overtime",
           "basketball: 25+ Points Scored By The Player - Including Overtime",
           "basketball: Indiana Fever (W) Assists - Including Overtime",
           "basketball: Points & Rebounds by the player - Including Overtime",
@@ -1627,16 +1616,16 @@
           "basketball: Points, rebounds & assists by the player - Including Overtime",
           "basketball: 30+ Points & Rebounds By The Player - Including Overtime",
           "basketball: 35+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 5+ Three-Point Field Goals Made By The Player - Including Overtime",
-          "basketball: 35+ Points Scored By The Player - Including Overtime"
+          "basketball: 35+ Points Scored By The Player - Including Overtime",
+          "basketball: 25+ Points & Rebounds By The Player - Including Overtime"
         ],
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:50.568Z"
+        "fetchedAt": "2026-09-29T18:19:37.241Z"
       },
       "kambiNfl": {
         "ok": true,
         "status": 200,
-        "rawEvents": 850,
+        "rawEvents": 820,
         "nflEvents": 0,
         "deepRequests": 0,
         "acceptedEvents": 0,
@@ -1647,7 +1636,7 @@
         "teamTotals": 0,
         "playerPropMarkets": 0,
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:51.378Z"
+        "fetchedAt": "2026-09-29T18:19:37.740Z"
       },
       "bovadaNfl": {
         "ok": true,
@@ -1665,57 +1654,57 @@
         "playerReceptions": 12,
         "playerPassingTouchdowns": 2,
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:52.309Z"
+        "fetchedAt": "2026-09-29T18:19:38.742Z"
       },
       "bovadaTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 408,
-        "acceptedEvents": 212,
-        "marketCount": 946,
-        "playerPropMarkets": 238,
+        "rawEvents": 394,
+        "acceptedEvents": 174,
+        "marketCount": 792,
+        "playerPropMarkets": 232,
         "bySport": {
           "basketball": {
-            "rawEvents": 189,
-            "acceptedEvents": 65,
-            "markets": 572,
+            "rawEvents": 178,
+            "acceptedEvents": 42,
+            "markets": 454,
             "playerProps": 217
           },
           "baseball": {
             "rawEvents": 38,
-            "acceptedEvents": 18,
-            "markets": 64,
-            "playerProps": 21
+            "acceptedEvents": 16,
+            "markets": 54,
+            "playerProps": 15
           },
           "tennis": {
-            "rawEvents": 181,
-            "acceptedEvents": 129,
-            "markets": 310,
+            "rawEvents": 178,
+            "acceptedEvents": 116,
+            "markets": 284,
             "playerProps": 0
           }
         },
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:53.583Z"
+        "fetchedAt": "2026-09-29T18:19:40.125Z"
       },
       "fanduel": {
         "ok": true,
         "status": 200,
-        "acceptedEvents": 41,
-        "marketCount": 113,
+        "acceptedEvents": 62,
+        "marketCount": 176,
         "bySport": {
           "american-football": {
-            "events": 16,
-            "markets": 48,
-            "h2h": 16,
-            "spreads": 16,
-            "totals": 16
+            "events": 31,
+            "markets": 93,
+            "h2h": 31,
+            "spreads": 31,
+            "totals": 31
           },
           "basketball": {
-            "events": 21,
-            "markets": 53,
-            "h2h": 21,
-            "spreads": 11,
-            "totals": 21
+            "events": 27,
+            "markets": 71,
+            "h2h": 27,
+            "spreads": 17,
+            "totals": 27
           },
           "baseball": {
             "events": 4,
@@ -1726,35 +1715,35 @@
           }
         },
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:54.261845+00:00"
+        "fetchedAt": "2026-09-29T18:19:40.621883+00:00"
       },
       "fanduelProps": {
         "ok": true,
         "status": 200,
-        "acceptedEvents": 10,
-        "eventPageRequests": 26,
+        "acceptedEvents": 9,
+        "eventPageRequests": 32,
         "eventPageErrors": 0,
-        "marketCount": 118,
-        "playerPropMarkets": 118,
+        "marketCount": 117,
+        "playerPropMarkets": 117,
         "bySport": {
           "american-football": {
-            "boardEvents": 19,
+            "boardEvents": 34,
             "eligibleEvents": 16,
             "eventPages": 16,
             "eventsWithProps": 7,
             "playerProps": 113,
             "byStat": {
-              "rushing_yards": 19,
               "receptions": 33,
+              "receiving_yards": 33,
+              "rushing_yards": 19,
               "passing_yards": 14,
-              "passing_touchdowns": 14,
-              "receiving_yards": 33
+              "passing_touchdowns": 14
             }
           },
           "basketball": {
-            "boardEvents": 23,
-            "eligibleEvents": 6,
-            "eventPages": 6,
+            "boardEvents": 29,
+            "eligibleEvents": 12,
+            "eventPages": 12,
             "eventsWithProps": 0,
             "playerProps": 0,
             "byStat": {}
@@ -1763,23 +1752,23 @@
             "boardEvents": 5,
             "eligibleEvents": 4,
             "eventPages": 4,
-            "eventsWithProps": 3,
-            "playerProps": 5,
+            "eventsWithProps": 2,
+            "playerProps": 4,
             "byStat": {
-              "strikeouts": 5
+              "strikeouts": 4
             }
           }
         },
         "byStat": {
-          "rushing_yards": 19,
           "receptions": 33,
+          "receiving_yards": 33,
+          "rushing_yards": 19,
           "passing_yards": 14,
           "passing_touchdowns": 14,
-          "receiving_yards": 33,
-          "strikeouts": 5
+          "strikeouts": 4
         },
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:55.602587+00:00"
+        "fetchedAt": "2026-09-29T18:19:41.999186+00:00"
       },
       "draftkingsNfl": {
         "ok": true,
@@ -1795,14 +1784,14 @@
           "passing_touchdowns": 12
         },
         "errors": [],
-        "fetchedAt": "2026-09-29T16:56:57.030144+00:00"
+        "fetchedAt": "2026-09-29T18:19:43.344135+00:00"
       },
       "draftkingsTraditional": {
         "ok": true,
         "status": 200,
         "acceptedEvents": 6,
-        "marketCount": 356,
-        "playerPropMarkets": 356,
+        "marketCount": 346,
+        "playerPropMarkets": 346,
         "bySport": {
           "basketball": {
             "categories": 117,
@@ -1815,22 +1804,22 @@
             }
           },
           "baseball": {
-            "categories": 191,
-            "selectedSubcategories": 63,
-            "requests": 63,
+            "categories": 273,
+            "selectedSubcategories": 94,
+            "requests": 94,
             "events": 4,
-            "markets": 354,
+            "markets": 344,
             "byStat": {
-              "walks": 82,
-              "strikeouts": 14,
-              "hits": 94,
-              "total_bases": 22,
+              "walks": 81,
+              "strikeouts": 12,
+              "hits": 89,
+              "total_bases": 20,
               "rbi": 142
             }
           }
         },
         "errors": [],
-        "fetchedAt": "2026-09-29T16:57:10.955831+00:00"
+        "fetchedAt": "2026-09-29T18:19:57.878137+00:00"
       }
     },
     "strictSnapshotHealthy": true,
