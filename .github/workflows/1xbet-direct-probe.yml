@@ -1,0 +1,24 @@
+name: 1xBet Direct Public Access Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ggbet-integration]
+    paths:
+      - 'scripts/1xbet-direct-probe.mjs'
+      - '.github/workflows/1xbet-direct-probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test normal public 1xBet access
+        run: node scripts/1xbet-direct-probe.mjs
