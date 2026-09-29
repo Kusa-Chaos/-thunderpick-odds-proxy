@@ -16,6 +16,7 @@ on:
       - 'scripts/simple-two-source-watch.mjs'
       - 'scripts/simple-nfl-prop-watch.mjs'
       - 'scripts/direct-public-sources.mjs'
+      - 'scripts/kalshi-rate-limited.mjs'
       - 'scripts/betway-direct.mjs'
       - 'scripts/pinnacle-direct.mjs'
       - 'scripts/kambi-direct.mjs'
@@ -61,13 +62,10 @@ jobs:
           const schedule = process.env.SCHEDULE_EXPR || '';
           let run = true;
           let reason = `${event || 'unknown'} trigger`;
-
           if (event === 'schedule' && schedule === '40 * * * *') {
             run = true;
             reason = 'authoritative :40 hourly production scan; always run';
           } else if (event === 'schedule' && schedule === '50 * * * *') {
-            // Self-healing fallback. If the :40 scan already published a board recently,
-            // do not duplicate it. If :40 was missed/delayed/failed to publish, run now.
             let ageMin = Infinity;
             let generatedAt = null;
             try {
@@ -81,7 +79,6 @@ jobs:
               ? `:50 recovery check: :40 board already fresh (${ageMin.toFixed(1)}m; ${generatedAt}); skip duplicate`
               : `:50 recovery check: no <=20m authoritative board (${generatedAt || 'missing'}; age=${Number.isFinite(ageMin)?ageMin.toFixed(1):'unknown'}m); run recovery scan`;
           }
-
           console.log('SCAN_GATE',{event,schedule,run,reason});
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`run_scan=${run ? 'true' : 'false'}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`reason=${reason.replace(/\n/g,' ')}\n`);
@@ -131,6 +128,8 @@ jobs:
         run: node scripts/thunderpick-public-reader.mjs
       - name: Collect quota-free public sources
         run: node scripts/direct-public-sources.mjs
+      - name: Recover Kalshi safely after rate limiting
+        run: node scripts/kalshi-rate-limited.mjs
       - name: Add Betway independent bookmaker source
         run: node scripts/betway-direct.mjs
       - name: Add Pinnacle independent bookmaker source
@@ -178,6 +177,7 @@ jobs:
         run: |
           echo 'Coverage audit failed; retrying market collectors once before accepting the board.'
           node scripts/direct-public-sources.mjs
+          node scripts/kalshi-rate-limited.mjs
           node scripts/betway-direct.mjs
           node scripts/pinnacle-direct.mjs
           node scripts/kambi-direct.mjs
