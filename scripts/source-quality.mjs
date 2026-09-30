@@ -27,6 +27,17 @@ function decimal(v) {
   return null;
 }
 
+function withTwoWayProbabilities(q = {}) {
+  const haveA = Number(q.pA) > 0 && Number(q.pA) < 1;
+  const haveB = Number(q.pB) > 0 && Number(q.pB) < 1;
+  if (haveA && haveB) return q;
+  const a = decimal(q.a), b = decimal(q.b);
+  if (!(a > 1 && b > 1)) return q;
+  const ia = 1 / a, ib = 1 / b, z = ia + ib;
+  if (!(z > 0)) return q;
+  return { ...q, a, b, pA: ia / z, pB: ib / z };
+}
+
 export function safeQuoteTimestamp(quote = {}, providerFallback = null) {
   // Deliberately exclude event/market cutoff times. cutoffAt is when betting closes,
   // not when the price was observed, and may legitimately be in the future.
@@ -101,7 +112,7 @@ export function filterFreshConsensusQuotes(quotes = [], options = {}) {
     const fam = sourceFamily(q0?.sourceFamily || q0?.book || q0?.title || q0?.source || q0?.provider || q0?.name || '');
     if (!fam || seen.has(fam)) continue;
     seen.add(fam);
-    const q = { ...q0, sourceFamily: fam };
+    const q = withTwoWayProbabilities({ ...q0, sourceFamily: fam });
     const fallback = providerFetchedAt?.[fam] ?? null;
     const ts = safeQuoteTimestamp(q, fallback);
     if (ts == null) {
