@@ -2,10 +2,9 @@ name: Thunderpick Hourly Production Watchdog
 
 on:
   schedule:
-    # GitHub scheduled events can be delayed or occasionally skipped under load.
-    # Run the cheap freshness gate every 10 minutes so one missed cron does not
-    # leave the authoritative board stale. The gate below prevents duplicate scans.
-    - cron: '*/10 * * * *'
+    # Cheap proactive freshness controller. The production workflow's own
+    # concurrency group remains authoritative and prevents scan stacking.
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -36,9 +35,8 @@ jobs:
             exit 0
           fi
 
-          # Freshness is defined by the published authoritative board itself, not by
-          # workflow updated_at. A recently completed workflow must never make an old
-          # board look fresh.
+          # Freshness is defined by the published authoritative board itself, not
+          # workflow updated_at. A recent workflow must never make an old board fresh.
           board=$(gh api -H 'Accept: application/vnd.github.raw+json' "repos/$REPO/contents/data/simple-opportunity-latest.json?ref=main" 2>/dev/null || true)
           generated_at=$(printf '%s' "$board" | jq -r '.generatedAt // empty' 2>/dev/null || true)
           board_age=999999
@@ -49,16 +47,15 @@ jobs:
             fi
           fi
 
-          # The :05 delivery hard-rejects boards older than 40 minutes. Keep the
-          # GitHub-side watchdog SLA at 35 minutes to provide a five-minute safety
-          # margin and recover BEFORE delivery discovers a stale board.
+          # Refresh proactively at 25 minutes. Delivery may accept <=40 minutes,
+          # leaving enough time for a normal 5-10 minute scan and one recovery path.
           latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].id // empty')
-          if [ -n "$latest_success" ] && [ "$board_age" -le 35 ]; then
-            echo "Fresh authoritative board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); watchdog recovery not needed."
+          if [ -n "$latest_success" ] && [ "$board_age" -le 25 ]; then
+            echo "Fresh authoritative board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); watchdog refresh not needed."
             exit 0
           fi
 
-          echo "No <=35m verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main recovery scan before the :05 delivery SLA can be breached."
+          echo "No <=25m verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main refresh."
           before_ids=$(echo "$runs" | jq -r '.workflow_runs[].id' | tr '\n' ' ')
           gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
 
