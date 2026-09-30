@@ -18,6 +18,15 @@ function sourceFamily(v='') {
   return x.replace(/[^a-z0-9]/g, '') || 'unknown';
 }
 
+function decimal(v) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return null;
+  if (n > 1 && n < 100) return n;
+  if (n >= 100) return 1 + n / 100;
+  if (n <= -100) return 1 + 100 / Math.abs(n);
+  return null;
+}
+
 export function safeQuoteTimestamp(quote = {}, providerFallback = null) {
   // Deliberately exclude event/market cutoff times. cutoffAt is when betting closes,
   // not when the price was observed, and may legitimately be in the future.
@@ -39,7 +48,7 @@ export function orientNamedTwoWayPrices(prices = [], participants = [], pair = {
   const rows = [];
 
   for (const p of prices) {
-    const price = Number(p?.price ?? p?.odds ?? p?.decimalOdds);
+    const price = decimal(p?.price ?? p?.odds ?? p?.decimalOdds);
     if (!(price > 1 && Number.isFinite(price))) return null;
     const participantId = p?.participantId ?? p?.participant?.id;
     let name = participantId != null ? byId.get(String(participantId)) : null;
