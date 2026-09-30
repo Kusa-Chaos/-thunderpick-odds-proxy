@@ -17,10 +17,12 @@ for (const sport of contract.sports) {
 
 const expectedCollectors = ['stake','pinnacle','kambi','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduel','fanduelProps','draftkingsNfl','draftkingsTraditional'];
 for (const name of expectedCollectors) {
-  if (!direct[name]) degraded.push(`collector missing from sourceHealth: ${name}`);
-  else if (direct[name].ok !== true) degraded.push(`collector degraded: ${name}`);
+  const h=direct[name];
+  if (!h) degraded.push(`collector missing from sourceHealth: ${name}`);
+  else if (h.ok !== true) degraded.push(`collector degraded: ${name}`);
+  else if (Array.isArray(h.errors) && h.errors.length) degraded.push(`collector degraded: ${name} (${String(h.errors[0]).slice(0,120)})`);
 }
-if (direct.kalshi && direct.kalshi.ok !== true) degraded.push(`collector degraded: kalshi (${direct.kalshi.error || 'unknown'})`);
+if (direct.kalshi && (direct.kalshi.ok !== true || (Array.isArray(direct.kalshi.errors) && direct.kalshi.errors.length))) degraded.push(`collector degraded: kalshi (${direct.kalshi.error || direct.kalshi.errors?.[0] || 'unknown'})`);
 
 const familyEvidence = {
   map_winner: Number(direct.kambi?.mapWinnerMarkets || 0),
@@ -42,19 +44,25 @@ const familyCollectors = {
   player_prop:['stake','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduelProps','draftkingsNfl','draftkingsTraditional']
 };
 
+function collectorExplicitlyEnumerated(name,family){
+  const h=direct[name];
+  if (!h || h.ok!==true || (Array.isArray(h.errors)&&h.errors.length)) return false;
+  if (family==='team_total') return Number(h.nflEvents||0)>0 && Number(h.deepRequests||0)>0 && Object.hasOwn(h,'teamTotals');
+  if (family==='map_handicap') return Number(h.deepEventRequests||0)>0 && Object.hasOwn(h,'mapHandicapMarkets');
+  return true;
+}
+
 for (const [family,evidence] of Object.entries(familyEvidence)) {
   const collectors=familyCollectors[family]||[];
   const present=collectors.filter(k=>direct[k]);
-  const healthy=present.filter(k=>direct[k]?.ok===true);
-  if (evidence>0) familyStatus[family]={status:'OK',inventory:evidence,collectors:healthy};
-  else if (present.length===0) {
-    familyStatus[family]={status:'COVERAGE_FAILURE',inventory:0,collectors:[]};
-    failures.push(`COVERAGE_FAILURE ${family}: no collector enumerated this family`);
-  } else if (healthy.length===0) {
-    familyStatus[family]={status:'COVERAGE_FAILURE',inventory:0,collectors:present};
-    failures.push(`COVERAGE_FAILURE ${family}: collectors present but none healthy`);
+  const healthy=present.filter(k=>direct[k]?.ok===true && !(Array.isArray(direct[k]?.errors)&&direct[k].errors.length));
+  const enumerated=healthy.some(k=>collectorExplicitlyEnumerated(k,family));
+  if (evidence>0) familyStatus[family]={status:'OK',inventory:evidence,collectors:healthy,enumerated:true};
+  else if (present.length===0 || healthy.length===0 || !enumerated) {
+    familyStatus[family]={status:'COVERAGE_FAILURE',inventory:0,collectors:healthy,enumerated:false};
+    failures.push(`COVERAGE_FAILURE ${family}: zero inventory was not explicitly enumerated by a healthy collector`);
   } else {
-    familyStatus[family]={status:'NO_MARKETS_AVAILABLE',inventory:0,collectors:healthy};
+    familyStatus[family]={status:'NO_MARKETS_AVAILABLE',inventory:0,collectors:healthy,enumerated:true};
   }
 }
 
@@ -62,15 +70,10 @@ const result = {
   generatedAt:new Date().toISOString(), boardGeneratedAt:board.generatedAt||null,
   status:failures.length?'COVERAGE_FAILURE':degraded.length?'DEGRADED':'OK',
   familyEvidence, familyStatus, failures, degraded,
-  rule:'Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure.'
+  rule:'Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Collector error arrays count as degradation even when ok=true.'
 };
 fs.mkdirSync('data',{recursive:true});
 fs.writeFileSync('data/production-coverage-audit-latest.json',JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result,null,2));
-
-// Always regenerate the compact delivery payload from the same authoritative board.
-// This guarantees every ACTION and WATCH row is published every scan, even if unchanged,
-// and avoids connector truncation of the much larger full-board JSON.
 await import('./build-results-display.mjs');
-
 if(failures.length) process.exitCode=2;
