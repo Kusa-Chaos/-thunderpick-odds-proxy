@@ -17,7 +17,11 @@ export function validatePublication({ full, compact, audit, nowMs = Date.now(), 
   }
   if ((compact?.actionRows ?? []).length !== Number(full?.counts?.ACTION ?? 0)) errors.push('DISPLAY BOARD ERROR: ACTION rows missing');
   if ((compact?.watchRows ?? []).length !== Number(full?.counts?.WATCH ?? 0)) errors.push('DISPLAY BOARD ERROR: WATCH rows missing');
-  if (audit?.status !== 'OK' || (audit?.failures ?? []).length) errors.push('PRODUCTION COVERAGE FAILURE');
+  if (audit?.status === 'DEGRADED' || (audit?.degraded ?? []).length) errors.push('PRODUCTION COVERAGE DEGRADED');
+  if (audit?.status === 'COVERAGE_FAILURE' || (audit?.failures ?? []).length) errors.push('PRODUCTION COVERAGE FAILURE');
+  for (const [family,status] of Object.entries(audit?.familyStatus ?? {})) {
+    if (status?.status === 'NO_MARKETS_AVAILABLE' && status?.enumerated !== true) errors.push(`COVERAGE FAILURE: ${family} zero inventory not explicitly enumerated`);
+  }
   const coverage = full?.coverageAudit ?? full?.coverage ?? {};
   for (const sport of REQUIRED_SPORTS) {
     const c = coverage?.[sport];
