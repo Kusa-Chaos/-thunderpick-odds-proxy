@@ -53,6 +53,26 @@ test('provider fetchedAt may supply freshness when quote update time is absent',
   assert.equal(out.rejected.length, 0);
 });
 
+test('two-way decimal prices derive vig-free probabilities before WATCH freshness filtering', () => {
+  const quotes = [
+    { sourceFamily: 'pinnacle', a: 1.77, b: 2.19, lastUpdate: '2026-10-01T02:00:00Z' },
+    { sourceFamily: 'bovada', a: 1.78, b: 2.07 },
+    { sourceFamily: 'fanduel', a: 1.79, b: 2.08 },
+  ];
+  const out = filterFreshConsensusQuotes(quotes, {
+    side: 'b',
+    now: NOW,
+    providerFetchedAt: {
+      pinnacle: '2026-09-30T19:39:00Z',
+      bovada: '2026-09-30T19:39:00Z',
+      fanduel: '2026-09-30T19:39:00Z',
+    },
+  });
+  assert.deepEqual(out.accepted.map(x => x.sourceFamily).sort(), ['bovada', 'fanduel']);
+  assert.equal(out.rejected.find(x => x.quote.sourceFamily === 'pinnacle')?.reason, 'future-timestamp');
+  assert.ok(out.accepted.every(x => x.pA > 0 && x.pA < 1 && x.pB > 0 && x.pB < 1));
+});
+
 test('large three-source probability outlier is quarantined before ACTION promotion', () => {
   const quotes = [
     { sourceFamily: 'pinnacle', pB: 0.686, lastUpdate: '2026-09-30T19:39:00Z' },
