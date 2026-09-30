@@ -1,10 +1,9 @@
 name: Thunderpick Hourly Production Watchdog
 
+# AWS EC2/systemd is the primary production scheduler. Keep this GitHub workflow
+# manual-only so it can be used as a fallback without creating duplicate scans or
+# misleading scheduled failures when the AWS board is healthy.
 on:
-  schedule:
-    # Cheap proactive freshness controller. The production workflow's own
-    # concurrency group remains authoritative and prevents scan stacking.
-    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -35,8 +34,6 @@ jobs:
             exit 0
           fi
 
-          # Freshness is defined by the published authoritative board itself, not
-          # workflow updated_at. A recent workflow must never make an old board fresh.
           board=$(gh api -H 'Accept: application/vnd.github.raw+json' "repos/$REPO/contents/data/simple-opportunity-latest.json?ref=main" 2>/dev/null || true)
           generated_at=$(printf '%s' "$board" | jq -r '.generatedAt // empty' 2>/dev/null || true)
           board_age=999999
@@ -47,15 +44,13 @@ jobs:
             fi
           fi
 
-          # Refresh proactively at 25 minutes. Delivery may accept <=40 minutes,
-          # leaving enough time for a normal 5-10 minute scan and one recovery path.
           latest_success=$(echo "$runs" | jq -r '[.workflow_runs[] | select(.status=="completed" and .conclusion=="success")][0].id // empty')
           if [ -n "$latest_success" ] && [ "$board_age" -le 25 ]; then
-            echo "Fresh authoritative board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); watchdog refresh not needed."
+            echo "Fresh authoritative GitHub board exists (${board_age}m old; generatedAt=${generated_at}; successful run=${latest_success}); fallback refresh not needed."
             exit 0
           fi
 
-          echo "No <=25m verified authoritative board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main refresh."
+          echo "No <=25m verified GitHub fallback board (generatedAt=${generated_at:-missing}; age=${board_age}m; latest_success=${latest_success:-none}); dispatching one current-main refresh."
           before_ids=$(echo "$runs" | jq -r '.workflow_runs[].id' | tr '\n' ' ')
           gh workflow run "$TARGET_WORKFLOW" --repo "$REPO" --ref main
 
@@ -63,7 +58,7 @@ jobs:
           for attempt in 1 2 3 4 5 6; do
             sleep 3
             verify=$(gh api "repos/$REPO/actions/workflows/$TARGET_WORKFLOW/runs?branch=main&per_page=10")
-            accepted_id=$(echo "$verify" | jq -r --arg before "$before_ids" '[.workflow_runs[] | select(.event=="workflow_dispatch") | select(($before | split(" ") | index((.id|tostring))) == null) | select(.status=="queued" or .status=="in_progress" or .status=="completed")][0].id // empty')
+            accepted_id=$(echo "$verify" | jq -r --arg before "$before_ids" '[.workflow_runs[] | . as $run | select(.event=="workflow_dispatch") | select(($before | split(" ") | index(($run.id|tostring))) == null) | select(.status=="queued" or .status=="in_progress" or .status=="completed")][0].id // empty')
             if [ -n "$accepted_id" ]; then break; fi
           done
           if [ -z "$accepted_id" ]; then
