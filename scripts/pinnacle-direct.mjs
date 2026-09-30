@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import {orientNamedTwoWayPrices,safeQuoteTimestamp} from './source-quality.mjs';
+import {orientNamedTwoWayPrices} from './source-quality.mjs';
 
 const FILE='data/direct-sources-latest.json';
 const out=JSON.parse(await fs.readFile(FILE,'utf8'));
@@ -35,7 +35,7 @@ try{
   health.matchups=matches.length;
   const sampled=matches.slice(0,180);
   const marketGroups=await mapLimit(sampled,8,async q=>{let last='';for(const path of [`${root}/${ver}/matchups/${q.m.id}/markets/straight`,`${root}/${ver}/matchups/${q.m.id}/markets/related/straight`]){health.marketRequests++;try{return{...q,markets:await getJson(path,headers)}}catch(e){last=String(e?.message||e)}}return{...q,__error:last};});
-  for(const g of marketGroups){if(g?.__error){health.errors.push(g.__error);continue}const markets=Array.isArray(g.markets)?g.markets:(g.markets?.markets||g.markets?.data||[]);const normalized=[];for(const m of markets){const kind=marketKind(m);if(!kind)continue;const outcomes=orientPrices(m,g.m,g.pair);if(!outcomes){health.rejectedUnorientableMarkets++;continue;}if(kind==='player_prop')health.playerPropMarkets++;if(kind==='map_winner')health.mapWinnerMarkets++;let scope={map:null,round:null};const txt=String([m.name,m.description,m.period?.description,m.period].filter(Boolean).join(' '));const mm=txt.match(/\bmap\s*(\d+)\b/i);if(mm)scope.map=Number(mm[1]);const quoteTs=safeQuoteTimestamp({updatedAt:m.updatedAt,lastUpdate:m.lastUpdate,last_update:m.last_update});normalized.push({key:kind,name:m.name||m.description||kind,title:m.name||m.description||kind,scope,line:null,last_update:quoteTs?new Date(quoteTs).toISOString():null,outcomes});}
+  for(const g of marketGroups){if(g?.__error){health.errors.push(g.__error);continue}const markets=Array.isArray(g.markets)?g.markets:(g.markets?.markets||g.markets?.data||[]);const normalized=[];for(const m of markets){const kind=marketKind(m);if(!kind)continue;const outcomes=orientPrices(m,g.m,g.pair);if(!outcomes){health.rejectedUnorientableMarkets++;continue;}if(kind==='player_prop')health.playerPropMarkets++;if(kind==='map_winner')health.mapWinnerMarkets++;let scope={map:null,round:null};const txt=String([m.name,m.description,m.period?.description,m.period].filter(Boolean).join(' '));const mm=txt.match(/\bmap\s*(\d+)\b/i);if(mm)scope.map=Number(mm[1]);normalized.push({key:kind,name:m.name||m.description||kind,title:m.name||m.description||kind,scope,line:null,last_update:null,outcomes});}
     if(!normalized.length)continue;out.sports[g.sport].exactV2.push({id:`pinnacle-direct:${g.m.id}`,home_team:g.pair.home.name,away_team:g.pair.away.name,commence_time:g.m.startTime,live:false,bookmakers:[{key:'pinnacle-direct',title:'Pinnacle Direct',markets:normalized}]});health.acceptedEvents++;health.acceptedMarkets+=normalized.length;}
   health.ok=true;health.status=200;
 }catch(e){health.errors.push(String(e?.message||e));health.status=health.status||500;}
