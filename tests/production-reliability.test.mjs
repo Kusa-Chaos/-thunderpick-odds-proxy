@@ -25,3 +25,17 @@ test('stale board blocks publication', () => {
   const r=validatePublication({full,compact,audit,nowMs:Date.parse('2026-09-30T02:06:00Z')});
   assert.equal(r.ok,false); assert.ok(r.errors.includes('BOARD TOO OLD FOR PUBLICATION'));
 });
+
+test('collector errors block publication even when collector says ok', () => {
+  const badAudit={status:'OK',failures:[],degraded:['collector degraded: pinnacle (HTTP 403)']};
+  const r=validatePublication({full,compact,audit:badAudit,nowMs:now});
+  assert.equal(r.ok,false);
+  assert.ok(r.errors.includes('PRODUCTION COVERAGE DEGRADED'));
+});
+
+test('required zero-inventory family cannot be treated healthy without explicit enumeration proof', () => {
+  const badAudit={status:'OK',failures:[],degraded:[],familyStatus:{team_total:{status:'NO_MARKETS_AVAILABLE',inventory:0,enumerated:false}}};
+  const r=validatePublication({full,compact,audit:badAudit,nowMs:now});
+  assert.equal(r.ok,false);
+  assert.ok(r.errors.some(e=>e.includes('team_total')));
+});
