@@ -1,6 +1,7 @@
 export const DIRECT_EVENT_PREFIXES = [
   'stake-direct:',
   'betway-direct:',
+  'cloudbet-direct:',
   'pinnacle-direct:',
   'unibet-kambi-direct:',
   'bovada-nfl-direct:',
