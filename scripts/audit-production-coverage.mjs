@@ -8,6 +8,7 @@ const direct = board?.sourceHealth?.direct || {};
 const sportAudit = board?.coverageAudit || {};
 const failures = [];
 const degraded = [];
+const optionalDegraded = [];
 const familyStatus = {};
 
 for (const sport of contract.sports) {
@@ -18,9 +19,18 @@ for (const sport of contract.sports) {
 const expectedCollectors = ['stake','pinnacle','kambi','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduel','fanduelProps','draftkingsNfl','draftkingsTraditional'];
 for (const name of expectedCollectors) {
   const h=direct[name];
+  const errors=Array.isArray(h?.errors)?h.errors:[];
+  // Pinnacle's public guest API can geo-deny GitHub-hosted runners with HTTP 403.
+  // It is an additive source, so a pure 403 must not invalidate a board whose
+  // Thunderpick baseline and other independent collectors are healthy.
+  const optionalPinnacle403=name==='pinnacle' && errors.length>0 && errors.every(e=>/HTTP\s+403\b/i.test(String(e)));
+  if (optionalPinnacle403) {
+    optionalDegraded.push(`optional collector unavailable: pinnacle (${String(errors[0]).slice(0,120)})`);
+    continue;
+  }
   if (!h) degraded.push(`collector missing from sourceHealth: ${name}`);
   else if (h.ok !== true) degraded.push(`collector degraded: ${name}`);
-  else if (Array.isArray(h.errors) && h.errors.length) degraded.push(`collector degraded: ${name} (${String(h.errors[0]).slice(0,120)})`);
+  else if (errors.length) degraded.push(`collector degraded: ${name} (${String(errors[0]).slice(0,120)})`);
 }
 if (direct.kalshi && (direct.kalshi.ok !== true || (Array.isArray(direct.kalshi.errors) && direct.kalshi.errors.length))) degraded.push(`collector degraded: kalshi (${direct.kalshi.error || direct.kalshi.errors?.[0] || 'unknown'})`);
 
@@ -69,8 +79,8 @@ for (const [family,evidence] of Object.entries(familyEvidence)) {
 const result = {
   generatedAt:new Date().toISOString(), boardGeneratedAt:board.generatedAt||null,
   status:failures.length?'COVERAGE_FAILURE':degraded.length?'DEGRADED':'OK',
-  familyEvidence, familyStatus, failures, degraded,
-  rule:'Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Collector error arrays count as degradation even when ok=true.'
+  familyEvidence, familyStatus, failures, degraded, optionalDegraded,
+  rule:'Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy required enumeration = COVERAGE_FAILURE. Required collector error arrays count as degradation even when ok=true. A pure Pinnacle HTTP 403 is recorded as optional degradation and does not block publication because Pinnacle is additive and not the sole required collector for any coverage family.'
 };
 fs.mkdirSync('data',{recursive:true});
 fs.writeFileSync('data/production-coverage-audit-latest.json',JSON.stringify(result,null,2)+'\n');
