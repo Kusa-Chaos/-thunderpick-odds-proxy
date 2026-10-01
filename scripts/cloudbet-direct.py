@@ -1,4 +1,4 @@
-import json, os, subprocess, urllib.request
+import json, os, urllib.request
 from datetime import datetime, timezone
 
 FILE='data/direct-sources-latest.json'
@@ -8,13 +8,28 @@ MARKET='Match Winner'
 HEADER='X-API-Key'
 BASE='https://sports-api.cloudbet.com/pub/v2/odds'
 SECRET='thunderpick/cloudbet-api-key'
+REGION='us-east-2'
 
 def load_key():
     key=os.environ.get('CLOUDBET_API_KEY','').strip()
     if key:
         return key
-    p=subprocess.run(['aws','secretsmanager','get-secret-value','--region','us-east-2','--secret-id',SECRET,'--query','SecretString','--output','text'],check=True,capture_output=True,text=True)
-    return p.stdout.strip()
+    try:
+        import boto3
+    except ImportError as e:
+        raise RuntimeError('BOTO3_MISSING') from e
+    value=boto3.client('secretsmanager',region_name=REGION).get_secret_value(SecretId=SECRET).get('SecretString','').strip()
+    if not value:
+        raise RuntimeError('SECRET_LOAD_FAILED')
+    try:
+        parsed=json.loads(value)
+        if isinstance(parsed,dict):
+            value=str(parsed.get('CLOUDBET_API_KEY') or parsed.get('apiKey') or parsed.get('key') or '').strip()
+    except Exception:
+        pass
+    if not value:
+        raise RuntimeError('SECRET_LOAD_FAILED')
+    return value
 
 def request_json(path,key):
     req=urllib.request.Request(BASE+path,headers={'Accept':'application/json',HEADER:key})
