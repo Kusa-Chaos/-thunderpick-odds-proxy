@@ -1,88 +1,97 @@
 {
-  "generatedAt": "2026-09-30T22:03:33.981Z",
-  "boardGeneratedAt": "2026-09-30T22:03:33.781Z",
+  "generatedAt": "2026-10-01T07:14:29.057Z",
+  "boardGeneratedAt": "2026-10-01T07:14:28.876Z",
   "status": "OK",
   "familyEvidence": {
-    "map_winner": 30,
+    "map_winner": 46,
     "map_handicap": 0,
-    "round_handicap": 72,
-    "round_total": 72,
+    "round_handicap": 78,
+    "round_total": 78,
     "esports_player_kills": 519,
     "esports_player_deaths": 40,
-    "sports_spread_handicap": 52,
-    "sports_total": 62,
-    "team_total": 0,
-    "player_prop": 1859
+    "sports_spread_handicap": 99,
+    "sports_total": 114,
+    "team_total": 2,
+    "player_prop": 1878
   },
   "familyStatus": {
     "map_winner": {
       "status": "OK",
-      "inventory": 30,
+      "inventory": 46,
       "collectors": [
         "kambi"
-      ]
+      ],
+      "enumerated": true
     },
     "map_handicap": {
       "status": "NO_MARKETS_AVAILABLE",
       "inventory": 0,
       "collectors": [
         "kambi"
-      ]
+      ],
+      "enumerated": true
     },
     "round_handicap": {
       "status": "OK",
-      "inventory": 72,
+      "inventory": 78,
       "collectors": [
         "kambi"
-      ]
+      ],
+      "enumerated": true
     },
     "round_total": {
       "status": "OK",
-      "inventory": 72,
+      "inventory": 78,
       "collectors": [
         "kambi"
-      ]
+      ],
+      "enumerated": true
     },
     "esports_player_kills": {
       "status": "OK",
       "inventory": 519,
       "collectors": [
         "kambi"
-      ]
+      ],
+      "enumerated": true
     },
     "esports_player_deaths": {
       "status": "OK",
       "inventory": 40,
       "collectors": [
         "kambi"
-      ]
+      ],
+      "enumerated": true
     },
     "sports_spread_handicap": {
       "status": "OK",
-      "inventory": 52,
+      "inventory": 99,
       "collectors": [
         "kambiNfl",
         "fanduel"
-      ]
+      ],
+      "enumerated": true
     },
     "sports_total": {
       "status": "OK",
-      "inventory": 62,
+      "inventory": 114,
       "collectors": [
         "kambiNfl",
         "fanduel"
-      ]
+      ],
+      "enumerated": true
     },
     "team_total": {
-      "status": "NO_MARKETS_AVAILABLE",
-      "inventory": 0,
+      "status": "OK",
+      "inventory": 2,
       "collectors": [
         "kambiNfl"
-      ]
+      ],
+      "enumerated": true
     },
     "player_prop": {
       "status": "OK",
-      "inventory": 1859,
+      "inventory": 1878,
       "collectors": [
         "stake",
         "kambiTraditional",
@@ -92,10 +101,14 @@
         "fanduelProps",
         "draftkingsNfl",
         "draftkingsTraditional"
-      ]
+      ],
+      "enumerated": true
     }
   },
   "failures": [],
   "degraded": [],
-  "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy enumeration = COVERAGE_FAILURE. Zero opportunities are never inferred from collection failure."
+  "optionalDegraded": [
+    "optional collector unavailable: pinnacle (HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"B)"
+  ],
+  "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy required enumeration = COVERAGE_FAILURE. Required collector error arrays count as degradation even when ok=true. A pure Pinnacle HTTP 403 is recorded as optional degradation and does not block publication because Pinnacle is additive and not the sole required collector for any coverage family."
 }
