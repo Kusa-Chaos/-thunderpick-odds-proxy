@@ -23,6 +23,12 @@ export function marketFamily(v=''){
   return x.replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')||'unknown';
 }
 
+function familyFromMarketKey(v=''){
+  const x=clean(v).replace(/[- ]+/g,'_');
+  const known={ml:'ml',h2h:'ml',moneyline:'ml',match_winner:'ml',spread:'spread',spreads:'spread',handicap:'spread',total:'total',totals:'total',team_total:'total',player_prop:'player_prop',map_winner:'map_winner',map_handicap:'map_handicap',round_handicap:'round_handicap',round_total:'round_total',round_totals:'round_total'};
+  return known[x]||null;
+}
+
 function inferredScope(marketText=''){
   const x=clean(marketText);
   const map=x.match(/\bmap\s*(\d+)\b/i)?.[1]||'';
@@ -59,13 +65,26 @@ function playerSideFrom(r={},marketText=''){
   for(const c of candidates){const m=c.match(/\b(over|under)\b/i);if(m)return clean(m[1]);}
   return '';
 }
+function totalSideFrom(r={}){
+  const candidates=[r.selectionSide,r.side,r.target,r.selection].map(v=>String(v??''));
+  for(const c of candidates){const m=c.match(/\b(over|under)\b/i);if(m)return clean(m[1]);}
+  return clean(r.side||r.selectionSide||'');
+}
+function totalContractTarget(r={},marketText=''){
+  const explicit=clean(r.contractTarget||r.team||r.team_name||r.teamName||'');
+  if(explicit)return explicit;
+  const text=clean(marketText),match=String(r.match||r.name||'');
+  const teams=match.split(/\s+(?:vs\.?|v\.?|versus)\s+/i).map(x=>x.trim()).filter(Boolean);
+  for(const team of teams){const t=clean(team);if(t&&text.includes(t))return t;}
+  return '';
+}
 
 export function exactIdentity(r={}){
   const scope=r.scope||{};
   const marketText=r.marketLabel||r.market||r.marketKey||'';
-  const family=marketFamily(marketText);
+  const family=familyFromMarketKey(r.marketKey)||marketFamily(marketText);
   const inferred=inferredScope(marketText);
-  const target=family==='player_prop'?playerNameFrom(r,marketText):(r.target||r.player||r.selection||r.side||'');
+  const target=family==='player_prop'?playerNameFrom(r,marketText):family==='total'?totalContractTarget(r,marketText):(r.target||r.player||r.selection||r.side||'');
   const line=r.line??r.point??r.handicap??r.total??'';
   const period=scope.period??r.period??scope.half??r.half??inferred.period??'';
   const map=scope.map??r.map??r.mapNumber??inferred.map??'';
@@ -74,18 +93,12 @@ export function exactIdentity(r={}){
   const live=r.isLive===true||clean(r.state)==='live'?'live':'prematch';
   const settlement=scope.settlement??r.settlementScope??r.settlement??'standard';
   const stat=family==='player_prop'?(r.statType||statType(marketText)||'unknown'):'';
-  const side=family==='player_prop'?playerSideFrom(r,marketText):clean(r.side||r.selectionSide||'');
+  const side=family==='player_prop'?playerSideFrom(r,marketText):family==='total'?totalSideFrom(r):clean(r.side||r.selectionSide||'');
   return {sport:canonSport(r.sport),event:clean(r.eventId||r.match||r.name),family,target:clean(target),stat,line:num(line),period:clean(period),map:num(map),round:num(round),set:num(set),side,state:live,settlement:clean(settlement)};
 }
-
-export function exactKey(r={}){
-  const i=exactIdentity(r);
-  return [i.sport,i.event,i.family,i.target,i.stat,i.line,i.period,i.map,i.round,i.set,i.side,i.state,i.settlement].join('|');
-}
-
+export function exactKey(r={}){const i=exactIdentity(r);return [i.sport,i.event,i.family,i.target,i.stat,i.line,i.period,i.map,i.round,i.set,i.side,i.state,i.settlement].join('|');}
 export function identityComplete(r={}){
-  const i=exactIdentity(r);
-  const marketText=clean(r.marketLabel||r.market||r.marketKey||'');
+  const i=exactIdentity(r),marketText=clean(r.marketLabel||r.market||r.marketKey||'');
   if(!i.sport||!i.event||!i.family)return false;
   if(i.family==='player_prop'&&(!i.target||i.target==='over'||i.target==='under'||!i.stat||i.stat==='unknown'||i.line===''||!['over','under'].includes(i.side)))return false;
   if(['spread','total','map_handicap','round_handicap','round_total'].includes(i.family)&&i.line==='')return false;
