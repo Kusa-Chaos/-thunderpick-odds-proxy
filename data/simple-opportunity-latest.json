@@ -718,7 +718,10 @@
     "WATCH": 1,
     "SCREENING": 227,
     "PRICE BOARD": 92,
-    "INFORMATIONAL": 185
+    "INFORMATIONAL": 185,
+    "ARB FOUND": 0,
+    "ARB WATCH": 3,
+    "ARB SCREENING": 1
   },
   "rows": [
     {
@@ -26832,5 +26835,189 @@
       "identityKey": "cs2|2723397|player_prop|kyousuke|kills|9.5||1|||over|prematch|standard",
       "identityComplete": true
     }
-  ]
+  ],
+  "strictSnapshotHealthy": true,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-02T18:53:45.035Z",
+    "marketsTested": 1679,
+    "screensEvaluated": 4,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2750674,
+        "match": "Alexander Zverev vs Juncheng Shang",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T11:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9797160243407709,
+        "arbROI": 0.020703933747411973,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T18:52:48.153Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.16
+          },
+          {
+            "outcome": "Juncheng Shang",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 8.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2755651,
+        "match": "Daniil Medvedev vs Jan-Lennard Struff",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:00:00+00:00",
+        "exactContractKey": "tennis|daniilmedvedev|janlennardstruff|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9882697947214076,
+        "arbROI": 0.011869436201780381,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T18:52:48.153Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.24
+          },
+          {
+            "outcome": "Jan-Lennard Struff",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 5.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2751565,
+        "match": "Francisco Cerundolo vs Jakub Mensik",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:00:00+00:00",
+        "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0005790387955993,
+        "arbROI": -0.0005787037037037202,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T18:52:48.153Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Jakub Mensik",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.57
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 2.75
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2702569,
+        "match": "Minnesota Vikings vs Miami Dolphins",
+        "market": "Player T.J. Hockenson - Total receptions",
+        "marketKey": "player_prop",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-04T20:05:00+00:00",
+        "exactContractKey": "american-football|miamidolphins|minnesotavikings|player_prop|player=T.J. Hockenson|stat=receptions|map=|round=|points=4.5/4.5|pregame",
+        "reciprocalSum": 1.0203817367207935,
+        "arbROI": -0.01997461928934008,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "draftkings"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Under",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.83
+          },
+          {
+            "outcome": "Over",
+            "book": "draftkings-direct",
+            "sourceFamily": "draftkings",
+            "price": 2.1100000000000003
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 3,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  }
 }
