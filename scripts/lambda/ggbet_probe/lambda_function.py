@@ -16,9 +16,13 @@ def fetch(url):
 
 
 def lambda_handler(event, context):
-    url = (event or {}).get("url") or "https://gg.bet/esports/match/lgd-gaming-vs-gamerlegion-03-10"
+    event = event or {}
+    url = event.get("url") or "https://gg.bet/esports/match/lgd-gaming-vs-gamerlegion-03-10"
     try:
         status, body = fetch(url)
+        if event.get("mode") == "raw":
+            limit = max(1, min(int(event.get("limit") or 100000), 250000))
+            return {"status": status, "bytes": len(body), "body": body[:limit]}
         scripts = re.findall(r'<script[^>]+src=["\']([^"\']+)', body, re.I)
         links = re.findall(r'(?:href|src)=["\']([^"\']+)', body, re.I)
         absolute = [urllib.parse.urljoin(url, value) for value in links + scripts]
