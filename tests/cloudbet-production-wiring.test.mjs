@@ -28,9 +28,11 @@ test('Cloudbet collector uses the current sport and upcoming-events query contra
   }
 });
 
-test('Cloudbet health distinguishes raw API inventory from usable normalized events', () => {
+test('Cloudbet health distinguishes filtered, unfiltered, and usable inventory', () => {
   assert.match(cloudbet, /rawEventsBySport/);
   assert.match(cloudbet, /rawEvents/);
+  assert.match(cloudbet, /unfilteredRawEventsBySport/);
+  assert.match(cloudbet, /unfilteredRawEvents/);
   assert.match(cloudbet, /normalizedRejectedBySport/);
 });
 
