@@ -1,16 +1,16 @@
 {
   "generatedAt": "2026-10-02T06:16:28.477Z",
-  "builtAt": "2026-10-02T06:16:28.615Z",
+  "builtAt": "2026-10-02T06:16:47.144Z",
   "mode": "compact-aws-delivery-v11-persisted-arbitrage",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
     "SCREENING": 228,
     "PRICE BOARD": 91,
     "INFORMATIONAL": 165,
-    "ARB FOUND": 2,
-    "ARB WATCH": 0
+    "ARB FOUND": 0,
+    "ARB WATCH": 3
   },
   "parseErrors": {
     "identity": 0,
@@ -1100,52 +1100,270 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
-  "arbFoundRows": [
+  "arbFoundRows": [],
+  "arbWatchRows": [
     {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2751795|round_handicap|||-5.5||2|||prematch|standard",
-      "inverseSum": 0.5035577449370553,
-      "arbMargin": 0.9858695652173912,
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2750674,
+      "match": "Alexander Zverev vs Juncheng Shang",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T02:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9695652173913044,
+      "arbROI": 0.03139013452914785,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T06:15:42.202Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
       "legs": [
         {
-          "target": "fnatic",
-          "sourceFamily": "thunderpick",
+          "outcome": "Alexander Zverev",
           "book": "Thunderpick",
-          "price": 6.3
+          "sourceFamily": "thunderpick",
+          "price": 1.15
         },
         {
-          "target": "b8",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 2.9
+          "outcome": "Juncheng Shang",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 10
         }
-      ],
-      "independentSourceFamilies": 1
+      ]
     },
     {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2751795|round_handicap|||-2.5||1|||prematch|standard",
-      "inverseSum": 0.8966861598440545,
-      "arbMargin": 0.11521739130434794,
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2749677,
+      "match": "Alex de Minaur vs Quentin Halys",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T02:00:00+00:00",
+      "exactContractKey": "tennis|alexdeminaur|quentinhalys|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9949341438703141,
+      "arbROI": 0.005091649694501044,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T06:15:42.202Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
       "legs": [
         {
-          "target": "fnatic",
-          "sourceFamily": "thunderpick",
+          "outcome": "Alex de Minaur",
           "book": "Thunderpick",
-          "price": 2.7
+          "sourceFamily": "thunderpick",
+          "price": 1.41
         },
         {
-          "target": "b8",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 1.9
+          "outcome": "Quentin Halys",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 3.5
         }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2751565,
+      "match": "Francisco Cerundolo vs Jakub Mensik",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T02:00:00+00:00",
+      "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0005790387955993,
+      "arbROI": -0.0005787037037037202,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
       ],
-      "independentSourceFamilies": 1
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T06:15:42.202Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Jakub Mensik",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.57
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 2.75
+        }
+      ]
     }
   ],
-  "arbWatchRows": [],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-02T06:16:25.770Z",
+    "marketsTested": 1110,
+    "screensEvaluated": 3,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2750674,
+        "match": "Alexander Zverev vs Juncheng Shang",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T02:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9695652173913044,
+        "arbROI": 0.03139013452914785,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T06:15:42.202Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.15
+          },
+          {
+            "outcome": "Juncheng Shang",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 10
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2749677,
+        "match": "Alex de Minaur vs Quentin Halys",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T02:00:00+00:00",
+        "exactContractKey": "tennis|alexdeminaur|quentinhalys|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9949341438703141,
+        "arbROI": 0.005091649694501044,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T06:15:42.202Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alex de Minaur",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.41
+          },
+          {
+            "outcome": "Quentin Halys",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 3.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2751565,
+        "match": "Francisco Cerundolo vs Jakub Mensik",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T02:00:00+00:00",
+        "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0005790387955993,
+        "arbROI": -0.0005787037037037202,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T06:15:42.202Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Jakub Mensik",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.57
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 2.75
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 3
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
