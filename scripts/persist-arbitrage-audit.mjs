@@ -41,11 +41,9 @@ function requiresExplicitScope(screen={}){
 function normalize(screen={}){
   const arb=screen.arbScreen||{};
   const reciprocalSum=Number(arb.arbSum);
-  if(!Number.isFinite(reciprocalSum)||reciprocalSum<=0||reciprocalSum>1.01) return null;
+  if(!Number.isFinite(reciprocalSum)||reciprocalSum<=0||reciprocalSum>1.03) return null;
   const scope=explicitScope(screen);
   const req=requiresExplicitScope(screen);
-  // A parsed label is not enough to prove the outside quote was actually scoped.
-  // For promotion to ARB FOUND, the upstream comparison must have persisted the scope itself.
   const originalScope=screen.scope||{};
   const scopeComplete=(!req.set||originalScope.set!=null)&&(!req.map||originalScope.map!=null)&&(!req.round||originalScope.round!=null);
   const identityVerified=screen.identityVerified===true&&arb.identityVerified===true&&scopeComplete;
@@ -57,7 +55,7 @@ function normalize(screen={}){
   const outsideFamily=familyFromBook(outsideBook);
   const outsideQuote=(screen.outside||[]).find(o=>String(o.book||'')===outsideBook)||{};
   const blocker=!scopeComplete?'Exact settlement scope not explicitly persisted by upstream comparator':(!identityVerified?'Exact identity verification incomplete':null);
-  const tier=reciprocalSum<1&&identityVerified?'ARB FOUND':'ARB WATCH';
+  const tier=reciprocalSum>1.01?'ARB SCREENING':(reciprocalSum<1&&identityVerified?'ARB FOUND':'ARB WATCH');
   return {
     tier,
     sport:screen.sport||null,
@@ -86,10 +84,28 @@ function normalize(screen={}){
 const screen=await readJson('data/screen-latest.json',{});
 const board=await readJson('data/simple-opportunity-latest.json',{});
 if(!board.generatedAt) throw new Error('authoritative board missing generatedAt');
-const rawScreens=Array.isArray(screen.arbScreens)?screen.arbScreens:[];
+
+// Persist both the dedicated arb list and the strongest non-WATCH arb screens.
+// `screen.candidates` contains the same exact-contract rows with arbScreen math,
+// so it also lets us retain the user's 1.01-1.03 ARB SCREENING band without
+// weakening ARB FOUND/WATCH identity rules.
+const dedicated=Array.isArray(screen.arbScreens)?screen.arbScreens:[];
+const candidateArbs=(Array.isArray(screen.candidates)?screen.candidates:[]).filter(x=>{
+  const sum=Number(x?.arbScreen?.arbSum);
+  return Number.isFinite(sum)&&sum>0&&sum<=1.03;
+});
+const rawByKey=new Map();
+for(const row of [...dedicated,...candidateArbs]){
+  const a=row?.arbScreen||{};
+  const k=[row.sport,row.eventId,row.marketKey,row.marketLabel,JSON.stringify(row.scope||{}),a.thunderpickSide,a.outsideSide,a.outsideBook].join('|');
+  const prev=rawByKey.get(k);
+  if(!prev||Number(a.arbSum)<Number(prev?.arbScreen?.arbSum)) rawByKey.set(k,row);
+}
+const rawScreens=[...rawByKey.values()];
 const normalized=rawScreens.map(normalize).filter(Boolean);
 const found=normalized.filter(x=>x.tier==='ARB FOUND');
 const watch=normalized.filter(x=>x.tier==='ARB WATCH');
+const screening=normalized.filter(x=>x.tier==='ARB SCREENING');
 const rejectedIncomplete=normalized.filter(x=>x.blocker).length;
 board.strictSnapshotHealthy=board?.sourceHealth?.strictSnapshotHealthy===true;
 board.arbitrageAudit={
@@ -98,8 +114,10 @@ board.arbitrageAudit={
   screensEvaluated:rawScreens.length,
   found,
   watch,
+  screening,
   rejectedIncomplete,
+  rules:{watch:'reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification',screening:'reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable'},
 };
-board.counts={...(board.counts||{}),'ARB FOUND':found.length,'ARB WATCH':watch.length};
+board.counts={...(board.counts||{}),'ARB FOUND':found.length,'ARB WATCH':watch.length,'ARB SCREENING':screening.length};
 await fs.writeFile('data/simple-opportunity-latest.json',JSON.stringify(board,null,2));
-console.log('ARBITRAGE_AUDIT_PERSISTED',{marketsTested:board.arbitrageAudit.marketsTested,screensEvaluated:rawScreens.length,found:found.length,watch:watch.length,rejectedIncomplete,strictSnapshotHealthy:board.strictSnapshotHealthy});
+console.log('ARBITRAGE_AUDIT_PERSISTED',{marketsTested:board.arbitrageAudit.marketsTested,screensEvaluated:rawScreens.length,found:found.length,watch:watch.length,screening:screening.length,rejectedIncomplete,strictSnapshotHealthy:board.strictSnapshotHealthy});
