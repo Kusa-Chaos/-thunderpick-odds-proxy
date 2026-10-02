@@ -23,6 +23,16 @@ def lambda_handler(event, context):
         if event.get("mode") == "raw":
             limit = max(1, min(int(event.get("limit") or 100000), 250000))
             return {"status": status, "bytes": len(body), "body": body[:limit]}
+        if event.get("mode") == "search":
+            tokens = [str(x) for x in (event.get("tokens") or [])][:30]
+            width = max(100, min(int(event.get("width") or 4000), 20000))
+            hits = {}
+            lower = body.lower()
+            for token in tokens:
+                pos = lower.find(token.lower())
+                if pos >= 0:
+                    hits[token] = body[max(0, pos - width // 4): pos + width]
+            return {"status": status, "bytes": len(body), "hits": hits}
         scripts = re.findall(r'<script[^>]+src=["\']([^"\']+)', body, re.I)
         links = re.findall(r'(?:href|src)=["\']([^"\']+)', body, re.I)
         absolute = [urllib.parse.urljoin(url, value) for value in links + scripts]
