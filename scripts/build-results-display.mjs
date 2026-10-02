@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { detectArbitrage } from './arbitrage.mjs';
 
 const readJson=async(path,fallback={})=>{try{return JSON.parse(await fs.readFile(path,'utf8'))}catch{return fallback}};
 const board=await readJson('data/simple-opportunity-latest.json',{});
@@ -11,14 +12,18 @@ const actionRows=rows.filter(r=>r.tier==='ACTION').sort(rank).map(compact);
 const watchRows=rows.filter(r=>r.tier==='WATCH').sort(rank).map(compact);
 const screeningRows=rows.filter(r=>r.tier==='SCREENING').sort(rank).slice(0,12).map(compact);
 const topPriceBoardRows=rows.filter(r=>r.tier==='PRICE BOARD').sort(rank).slice(0,12).map(compact);
+const arbitrage=detectArbitrage(rows);
+const arbFoundRows=arbitrage.filter(r=>r.tier==='ARB FOUND');
+const arbWatchRows=arbitrage.filter(r=>r.tier==='ARB WATCH').slice(0,12);
 const info=rows.filter(r=>r.tier==='INFORMATIONAL');
 const familyOf=r=>r.marketKey||r.market||r.identity?.family||'unknown';
 const informationalBreakdown=info.reduce((a,r)=>{const k=familyOf(r);a[k]=(a[k]||0)+1;return a;},{});
 const priced=[...actionRows,...watchRows,...screeningRows];
 const parseErrors={identity:[...actionRows,...watchRows].filter(r=>!r.identityComplete).length,price:priced.filter(r=>!valid(r.thunderpick)||(r.tier!=='SCREENING'&&r.outside.some(o=>!valid(o.price)))).length};
-const out={generatedAt:board.generatedAt??null,builtAt:new Date().toISOString(),mode:'compact-aws-delivery-v8',strictSnapshotHealthy:board.strictSnapshotHealthy===true,counts:board.counts??{},parseErrors,actionRows,watchRows,screeningRows,topPriceBoardRows,informationalBreakdown,coverageAudit:board.coverageAudit??{},productionCoverageStatus:audit.status??null,productionCoverageFailures:audit.failures??[],sourceHealth:board.sourceHealth??null};
+const counts={...(board.counts??{}),'ARB FOUND':arbFoundRows.length,'ARB WATCH':arbWatchRows.length};
+const out={generatedAt:board.generatedAt??null,builtAt:new Date().toISOString(),mode:'compact-aws-delivery-v9-arbitrage',strictSnapshotHealthy:board.strictSnapshotHealthy===true,counts,parseErrors,actionRows,watchRows,screeningRows,arbFoundRows,arbWatchRows,topPriceBoardRows,informationalBreakdown,coverageAudit:board.coverageAudit??{},productionCoverageStatus:audit.status??null,productionCoverageFailures:audit.failures??[],sourceHealth:board.sourceHealth??null};
 if(!out.generatedAt) throw new Error('delivery missing generatedAt');
 if(!out.coverageAudit||typeof out.coverageAudit!=='object') throw new Error('delivery missing coverageAudit');
 await fs.writeFile('data/simple-opportunity-display-latest.json',JSON.stringify(out,null,2));
 await fs.writeFile('data/delivery-latest.json',JSON.stringify(out,null,2));
-console.log('DELIVERY_ARTIFACT',{generatedAt:out.generatedAt,strictSnapshotHealthy:out.strictSnapshotHealthy,counts:out.counts,action:actionRows.length,watch:watchRows.length,screening:screeningRows.length,priceBoard:topPriceBoardRows.length,parseErrors});
+console.log('DELIVERY_ARTIFACT',{generatedAt:out.generatedAt,strictSnapshotHealthy:out.strictSnapshotHealthy,counts:out.counts,action:actionRows.length,watch:watchRows.length,screening:screeningRows.length,arbFound:arbFoundRows.length,arbWatch:arbWatchRows.length,priceBoard:topPriceBoardRows.length,parseErrors});
