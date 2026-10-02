@@ -16,6 +16,10 @@ test('workflow installs the Cloudbet secret-loading dependency', () => {
   assert.match(workflow, /pip install[^\n]*boto3/);
 });
 
+test('Cloudbet failure cannot abort the whole production scan', () => {
+  assert.match(workflow, /name: Add Cloudbet independent bookmaker source[\s\S]{0,180}continue-on-error: true/);
+});
+
 test('Cloudbet provider health is propagated to the published board', () => {
   assert.match(cloudbet, /providerHealth.*cloudbet/);
   assert.match(boardBuilder, /sourceHealth:\{direct:direct\.providerHealth\|\|null/);
