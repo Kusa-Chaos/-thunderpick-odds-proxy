@@ -1,4 +1,4 @@
-import json, os, re, subprocess, urllib.error, urllib.parse, urllib.request
+import json, os, re, subprocess, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone
 
 FILE='data/direct-sources-latest.json'
@@ -9,17 +9,18 @@ HEADER='X-API-Key'
 BASE='https://sports-api.cloudbet.com/pub/v2/odds'
 SECRET='thunderpick/cloudbet-api-key'
 REGION='us-east-2'
+WINDOW_DAYS=30
 JWT_RE=re.compile(r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+')
-SPORT_KEYS={
-    'american-football':'american-football',
-    'baseball':'baseball',
-    'basketball':'basketball',
-    'soccer':'soccer',
-    'tennis':'tennis',
-    'cs2':'counter-strike',
-    'dota2':'dota-2',
-    'lol':'league-of-legends',
-    'valorant':'valorant',
+SPORT_CONFIG={
+    'american-football':{'sport':'american_football','markets':['american_football.moneyline']},
+    'baseball':{'sport':'baseball','markets':['baseball.moneyline']},
+    'basketball':{'sport':'basketball','markets':['basketball.moneyline']},
+    'soccer':{'sport':'soccer','markets':['soccer.match_odds']},
+    'tennis':{'sport':'tennis','markets':['tennis.winner']},
+    'cs2':{'sport':'counter_strike','markets':['counter_strike.winner','counter_strike.match_odds']},
+    'dota2':{'sport':'dota_2','markets':['dota_2.winner']},
+    'lol':{'sport':'league_of_legends','markets':['league_of_legends.winner']},
+    'valorant':{'sport':'esport_valorant','markets':['esport_valorant.winner']},
 }
 
 def utcnow(): return datetime.now(timezone.utc).isoformat()
@@ -49,8 +50,18 @@ def load_key():
         p=subprocess.run(['aws','secretsmanager','get-secret-value','--region',REGION,'--secret-id',SECRET,'--query','SecretString','--output','text'],check=True,capture_output=True,text=True,timeout=20)
         return extract_key(p.stdout)
 
-def request_events(sport_key,key):
-    qs=urllib.parse.urlencode({'sport':sport_key,'live':'false','players':'false','limit':'1000'})
+def request_events(config,key):
+    now=int(time.time())
+    params=[
+        ('sport',config['sport']),
+        ('live','false'),
+        ('players','false'),
+        ('limit','10000'),
+        ('from',str(now)),
+        ('to',str(now+WINDOW_DAYS*86400)),
+    ]
+    params.extend(('markets',m) for m in config.get('markets',[]))
+    qs=urllib.parse.urlencode(params)
     req=urllib.request.Request(f'{BASE}/events?{qs}',headers={'Accept':'application/json',HEADER:key,'User-Agent':'thunderpick-cloudbet/1.0'})
     try:
         with urllib.request.urlopen(req,timeout=30) as r:
@@ -137,19 +148,19 @@ def sanitize_error(e):
 
 def main():
     out=read_out(); sports=out.setdefault('sports',{}); health=out.setdefault('providerHealth',{})
-    for canon in SPORT_KEYS:
+    for canon in SPORT_CONFIG:
         bucket=sports.setdefault(canon,{'exactV2':[]})
         existing=bucket.setdefault('exactV2',[])
         bucket['exactV2']=[e for e in existing if not str(e.get('id','')).startswith(EVENT_PREFIX)]
     try:
         key=load_key()
     except Exception as e:
-        health['cloudbet']={'ok':False,'source':SOURCE,'events':0,'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
+        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
         write_out(out); print(json.dumps(health['cloudbet'])); return
     counts={}; errors=[]; fetched=0; total=0
-    for canon,cloudbet_sport in SPORT_KEYS.items():
+    for canon,config in SPORT_CONFIG.items():
         try:
-            events=request_events(cloudbet_sport,key); fetched+=1; added=0
+            events=request_events(config,key); fetched+=1; added=0
             for event in events:
                 row=normalize_event(event,canon)
                 if row:
@@ -157,8 +168,9 @@ def main():
             counts[canon]=added
         except Exception as e:
             counts[canon]=0; errors.append(f'{canon}:{sanitize_error(e)}')
-    ok=fetched>0
-    health['cloudbet']={'ok':ok,'source':SOURCE,'events':total,'sportsFetched':fetched,'bySport':counts,'errors':errors[:9],'fetchedAt':utcnow()}
+    connected=fetched>0
+    usable=total>0
+    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'source':SOURCE,'events':total,'sportsFetched':fetched,'bySport':counts,'errors':errors[:9],'windowDays':WINDOW_DAYS,'fetchedAt':utcnow()}
     write_out(out); print(json.dumps(health['cloudbet']))
 
 if __name__=='__main__': main()
