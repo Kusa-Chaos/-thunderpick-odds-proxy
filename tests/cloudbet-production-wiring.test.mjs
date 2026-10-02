@@ -28,6 +28,12 @@ test('Cloudbet collector uses the current sport and upcoming-events query contra
   }
 });
 
+test('Cloudbet health distinguishes raw API inventory from usable normalized events', () => {
+  assert.match(cloudbet, /rawEventsBySport/);
+  assert.match(cloudbet, /rawEvents/);
+  assert.match(cloudbet, /normalizedRejectedBySport/);
+});
+
 test('Cloudbet collector writes the exactV2 schema consumed by production merge', () => {
   assert.match(cloudbet, /['\"]sports['\"]/);
   assert.match(cloudbet, /['\"]exactV2['\"]/);
