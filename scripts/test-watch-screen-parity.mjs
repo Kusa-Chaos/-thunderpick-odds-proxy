@@ -5,8 +5,8 @@ const screen=await read('data/screen-latest.json');
 const board=await read('data/simple-opportunity-latest.json');
 const display=await read('data/simple-opportunity-display-latest.json');
 
-if(!Array.isArray(screen.arbScreeningCandidates)) throw new Error('screen missing arbScreeningCandidates');
 if(!board.arbitrageAudit||!Array.isArray(board.arbitrageAudit.screening)) throw new Error('board missing arbitrageAudit.screening');
+if(Number(board.arbitrageAudit.marketsTested||0)!==Number(screen.arbitrageMarketsTested||0)) throw new Error('arb markets-tested count not persisted');
 if(!Array.isArray(display.arbWatchRows)) throw new Error('display missing arbWatchRows');
 if(!Array.isArray(display.arbScreeningRows)) throw new Error('display missing arbScreeningRows');
 if(!Array.isArray(display.watchBoardRows)) throw new Error('display missing first-class watchBoardRows');
