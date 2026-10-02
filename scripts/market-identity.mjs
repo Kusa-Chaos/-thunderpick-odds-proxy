@@ -23,9 +23,14 @@ export function marketFamily(v=''){
   return x.replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')||'unknown';
 }
 
+const OBJECTIVE_FAMILIES=new Set(['race_to_kills','total_kills','team_kills','total_towers','team_towers','first_tower','first_blood','first_baron','first_dragon','first_roshan','first_barracks','total_barons','total_dragons','total_roshans','total_barracks']);
+const OBJECTIVE_TOTAL_FAMILIES=new Set(['total_kills','team_kills','total_towers','team_towers','total_barons','total_dragons','total_roshans','total_barracks']);
+const OBJECTIVE_LINE_FAMILIES=new Set([...OBJECTIVE_TOTAL_FAMILIES,'race_to_kills']);
+const OBJECTIVE_TARGET_FAMILIES=new Set(['team_kills','team_towers']);
+
 function familyFromMarketKey(v=''){
   const x=clean(v).replace(/[- ]+/g,'_');
-  const known={ml:'ml',h2h:'ml',moneyline:'ml',match_winner:'ml',spread:'spread',spreads:'spread',handicap:'spread',total:'total',totals:'total',team_total:'total',player_prop:'player_prop',map_winner:'map_winner',map_handicap:'map_handicap',round_handicap:'round_handicap',round_total:'round_total',round_totals:'round_total'};
+  const known={ml:'ml',h2h:'ml',moneyline:'ml',match_winner:'ml',spread:'spread',spreads:'spread',handicap:'spread',total:'total',totals:'total',team_total:'total',player_prop:'player_prop',map_winner:'map_winner',map_handicap:'map_handicap',round_handicap:'round_handicap',round_total:'round_total',round_totals:'round_total',race_to_kills:'race_to_kills',total_kills:'total_kills',team_kills:'team_kills',total_towers:'total_towers',team_towers:'team_towers',first_tower:'first_tower',first_blood:'first_blood',first_baron:'first_baron',first_dragon:'first_dragon',first_roshan:'first_roshan',first_barracks:'first_barracks',total_barons:'total_barons',total_dragons:'total_dragons',total_roshans:'total_roshans',total_barracks:'total_barracks'};
   return known[x]||null;
 }
 
@@ -84,7 +89,12 @@ export function exactIdentity(r={}){
   const marketText=r.marketLabel||r.market||r.marketKey||'';
   const family=familyFromMarketKey(r.marketKey)||marketFamily(marketText);
   const inferred=inferredScope(marketText);
-  const target=family==='player_prop'?playerNameFrom(r,marketText):family==='total'?totalContractTarget(r,marketText):(r.target||r.player||r.selection||r.side||'');
+  let target='';
+  if(family==='player_prop')target=playerNameFrom(r,marketText);
+  else if(family==='total')target=totalContractTarget(r,marketText);
+  else if(OBJECTIVE_TARGET_FAMILIES.has(family))target=clean(r.target||r.contractTarget||r.team||r.team_name||r.teamName||'');
+  else if(OBJECTIVE_FAMILIES.has(family))target=clean(r.target||'');
+  else target=r.target||r.player||r.selection||r.side||'';
   const line=r.line??r.point??r.handicap??r.total??'';
   const period=scope.period??r.period??scope.half??r.half??inferred.period??'';
   const map=scope.map??r.map??r.mapNumber??inferred.map??'';
@@ -93,7 +103,7 @@ export function exactIdentity(r={}){
   const live=r.isLive===true||clean(r.state)==='live'?'live':'prematch';
   const settlement=scope.settlement??r.settlementScope??r.settlement??'standard';
   const stat=family==='player_prop'?(r.statType||statType(marketText)||'unknown'):'';
-  const side=family==='player_prop'?playerSideFrom(r,marketText):family==='total'?totalSideFrom(r):clean(r.side||r.selectionSide||'');
+  const side=family==='player_prop'?playerSideFrom(r,marketText):(family==='total'||OBJECTIVE_TOTAL_FAMILIES.has(family))?totalSideFrom(r):clean(r.side||r.selectionSide||'');
   return {sport:canonSport(r.sport),event:clean(r.eventId||r.match||r.name),family,target:clean(target),stat,line:num(line),period:clean(period),map:num(map),round:num(round),set:num(set),side,state:live,settlement:clean(settlement)};
 }
 export function exactKey(r={}){const i=exactIdentity(r);return [i.sport,i.event,i.family,i.target,i.stat,i.line,i.period,i.map,i.round,i.set,i.side,i.state,i.settlement].join('|');}
@@ -102,6 +112,10 @@ export function identityComplete(r={}){
   if(!i.sport||!i.event||!i.family)return false;
   if(i.family==='player_prop'&&(!i.target||i.target==='over'||i.target==='under'||!i.stat||i.stat==='unknown'||i.line===''||!['over','under'].includes(i.side)))return false;
   if(['spread','total','map_handicap','round_handicap','round_total'].includes(i.family)&&i.line==='')return false;
+  if(OBJECTIVE_LINE_FAMILIES.has(i.family)&&i.line==='')return false;
+  if(OBJECTIVE_TARGET_FAMILIES.has(i.family)&&!i.target)return false;
+  if(OBJECTIVE_FAMILIES.has(i.family)&&!i.side)return false;
+  if(OBJECTIVE_TOTAL_FAMILIES.has(i.family)&&!['over','under'].includes(i.side))return false;
   if(/\bmap\s*\d+\b/.test(marketText)&&i.map==='')return false;
   if(/\bset\s*\d+\b/.test(marketText)&&i.set==='')return false;
   if(/\b(?:1st|first|2nd|second)\s+half\b/.test(marketText)&&i.period==='')return false;
