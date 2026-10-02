@@ -11,7 +11,7 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   const discoveryExecutions = [...workflow.matchAll(/node scripts\/simple-direct-discovery\.mjs/g)].length;
   assert.ok(discoveryExecutions >= 2, `expected discovery in normal and retry paths, found ${discoveryExecutions}`);
   const invoke = discovery.indexOf('cloudbet-direct.py');
-  const readDirect = discovery.indexOf('data/direct-sources-latest.json');
+  const readDirect = discovery.indexOf('await read(directPath)');
   assert.ok(invoke >= 0, 'Cloudbet collector must be invoked by discovery');
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
