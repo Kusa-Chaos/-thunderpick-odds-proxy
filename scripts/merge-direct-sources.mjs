@@ -1,8 +1,20 @@
 import fs from 'node:fs/promises';
+import {spawnSync} from 'node:child_process';
 import {replaceDirectSnapshot} from './direct-merge.mjs';
 
 const comparisonPath='data/owls-comparison-latest.json';
 const directPath='data/direct-sources-latest.json';
+const redact=s=>String(s||'').replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g,'[REDACTED]').slice(0,240);
+const cloudbet=spawnSync('python',['scripts/cloudbet-direct.py'],{encoding:'utf8',env:process.env,timeout:120000});
+if(cloudbet.status!==0){
+ const failed=JSON.parse(await fs.readFile(directPath,'utf8'));
+ failed.providerHealth ||= {};
+ failed.providerHealth.cloudbet={ok:false,source:'cloudbet-direct',events:0,state:'COLLECTOR_PROCESS_FAILED',error:redact(cloudbet.stderr||cloudbet.error?.message),fetchedAt:new Date().toISOString()};
+ failed.generatedAt=new Date().toISOString();
+ await fs.writeFile(directPath,JSON.stringify(failed,null,2));
+ console.warn('CLOUDBET_DIRECT_FAILED',failed.providerHealth.cloudbet);
+}else if(cloudbet.stdout?.trim()) console.log('CLOUDBET_DIRECT',cloudbet.stdout.trim());
+
 const c=JSON.parse(await fs.readFile(comparisonPath,'utf8'));
 const d=JSON.parse(await fs.readFile(directPath,'utf8'));
 c.sports ||= {};
