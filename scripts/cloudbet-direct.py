@@ -1,4 +1,4 @@
-import json, os, re, subprocess, urllib.parse, urllib.request
+import json, os, re, subprocess, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone
 
 FILE='data/direct-sources-latest.json'
@@ -52,8 +52,13 @@ def load_key():
 def request_events(sport_key,key):
     qs=urllib.parse.urlencode({'sport':sport_key,'live':'false','players':'false','limit':'1000'})
     req=urllib.request.Request(f'{BASE}/events?{qs}',headers={'Accept':'application/json',HEADER:key,'User-Agent':'thunderpick-cloudbet/1.0'})
-    with urllib.request.urlopen(req,timeout=30) as r:
-        body=json.load(r)
+    try:
+        with urllib.request.urlopen(req,timeout=30) as r:
+            body=json.load(r)
+    except urllib.error.HTTPError as e:
+        try: detail=e.read().decode('utf-8','replace')
+        except Exception: detail=''
+        raise RuntimeError(f'CLOUDBET_HTTP_{e.code}:{sanitize_error(detail)}') from e
     if isinstance(body,list): return body
     if isinstance(body,dict):
         events=body.get('events') or body.get('data') or []
