@@ -19,7 +19,7 @@ SPORT_KEYS={
     'cs2':'counter-strike',
     'dota2':'dota-2',
     'lol':'league-of-legends',
-    'valorant':'valorant',
+    'valorant':'esport-valorant',
 }
 PRIMARY_MARKETS={
     'american-football':['american_football.moneyline'],
