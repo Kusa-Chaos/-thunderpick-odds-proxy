@@ -33,6 +33,7 @@ test('Cloudbet failure cannot abort the whole production scan', () => {
 });
 
 test('Cloudbet provider health is propagated to the published board', () => {
-  assert.match(cloudbet, /providerHealth.*cloudbet/);
+  assert.match(cloudbet, /out\.setdefault\(['\"]providerHealth['\"]/);
+  assert.match(cloudbet, /health\[['\"]cloudbet['\"]\]/);
   assert.match(boardBuilder, /sourceHealth:\{direct:direct\.providerHealth\|\|null/);
 });
