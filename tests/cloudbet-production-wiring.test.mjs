@@ -16,6 +16,10 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
 
+test('AWS production discovery launches Cloudbet with python3', () => {
+  assert.match(discovery, /spawnSync\(['\"]python3['\"],\s*\[['\"]scripts\/cloudbet-direct\.py['\"]\]/);
+});
+
 test('Cloudbet discovers sport slugs then ingests odds by active competition', () => {
   assert.match(cloudbet, /request_sports/);
   assert.match(cloudbet, /\/sports\//);
