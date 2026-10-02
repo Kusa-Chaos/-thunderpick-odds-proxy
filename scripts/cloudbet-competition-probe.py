@@ -19,10 +19,10 @@ def competition_rows(body):
         if comp['key'] not in seen: seen.add(comp['key']); dedup.append(comp)
     return dedup
 
-def event_from_comp(body):
-    if not isinstance(body,dict): return None
+def events_from_comp(body):
+    if not isinstance(body,dict): return []
     events=body.get('events') or (body.get('competition') or {}).get('events') or []
-    return events[0] if isinstance(events,list) and events else None
+    return events if isinstance(events,list) else []
 
 results=[]
 for canon,config in cb.SPORT_CONFIG.items():
@@ -34,23 +34,18 @@ for canon,config in cb.SPORT_CONFIG.items():
         if not comps:
             row['state']='NO_COMPETITIONS'; results.append(row); continue
         comp=comps[0]; row['competitionKey']=comp.get('key'); row['competitionEventCount']=comp.get('eventCount')
-        comp_body=cb.request_json(f"{cb.BASE}/competitions/{urllib.parse.quote(str(comp.get('key')),safe='-')}",key)
-        event=event_from_comp(comp_body)
-        if not event or not event.get('id'):
-            row['state']='NO_EVENT_IN_COMPETITION'; results.append(row); continue
-        row['eventId']=event.get('id')
-        detail=cb.request_json(f"{cb.BASE}/events/{event.get('id')}",key)
-        event_detail=detail.get('event') if isinstance(detail,dict) and isinstance(detail.get('event'),dict) else detail
-        markets=(event_detail or {}).get('markets') or {}
-        row['marketKeys']=list(markets.keys())[:20]
-        enabled=0
-        for market in markets.values():
-            for sub in ((market or {}).get('submarkets') or {}).values():
-                for sel in ((sub or {}).get('selections') or []):
-                    try: price=float(sel.get('price'))
-                    except Exception: price=0
-                    if str(sel.get('status') or '').upper()=='SELECTION_ENABLED' and price>1: enabled+=1
-        row['enabledPricedSelections']=enabled; row['state']='OK'
+        params=[]
+        for market in config.get('markets',[]): params.append(('markets',market))
+        qs=urllib.parse.urlencode(params)
+        url=f"{cb.BASE}/competitions/{urllib.parse.quote(str(comp.get('key')),safe='-')}" + (f'?{qs}' if qs else '')
+        comp_body=cb.request_json(url,key); events=events_from_comp(comp_body)
+        row['bulkRawEvents']=len(events); normalized=[]
+        for event in events:
+            n=cb.normalize_event(event,canon)
+            if n: normalized.append(n)
+        row['bulkUsableMatchWinner']=len(normalized)
+        row['bulkMarketKeys']=list(((events[0] if events else {}).get('markets') or {}).keys())[:12]
+        row['state']='OK'
     except Exception as e:
         row['state']='ERROR'; row['error']=cb.sanitize_error(e)
     results.append(row)
