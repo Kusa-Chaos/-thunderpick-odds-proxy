@@ -16,10 +16,10 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
 
-test('Cloudbet collector uses the current sport and upcoming-events query contract', () => {
-  for (const key of ['american_football','baseball','basketball','soccer','tennis','counter_strike','dota_2','league_of_legends','esport_valorant']) {
-    assert.ok(cloudbet.includes(`'${key}'`) || cloudbet.includes(`\"${key}\"`), `missing Cloudbet sport key ${key}`);
-  }
+test('Cloudbet discovers API sport slugs separately from market-key prefixes', () => {
+  assert.match(cloudbet, /request_sports/);
+  assert.match(cloudbet, /\/sports/);
+  assert.match(cloudbet, /sportApiKey/);
   assert.match(cloudbet, /['\"]from['\"]/);
   assert.match(cloudbet, /['\"]to['\"]/);
   assert.match(cloudbet, /['\"]markets['\"]/);
