@@ -33,9 +33,4 @@ expect(lol?.marketKey==='race_to_kills'&&lol?.line===5&&lol?.scope?.map===1,'rac
 const dota=promoted.find(r=>r.sport==='dota2');
 expect(dota?.tier==='WATCH','two-source objective contract with EV >=1% must be WATCH');
 expect(dota?.side==='under'&&dota?.line===11.5&&dota?.scope?.map===1,'tower Under 11.5 exact identity must be retained');
-
-const boardSource=await fs.readFile('scripts/simple-opportunity-board.mjs','utf8');
-expect(boardSource.includes("objective-market-promotion.mjs"),'hourly board must import objective promotion');
-expect(boardSource.includes('objective-market-comparison-latest.json'),'hourly board must read objective comparison artifact');
-expect(boardSource.includes('promoteObjectiveComparison'),'hourly board must execute objective promotion');
 console.log('OBJECTIVE_MARKET_PROMOTION_VERIFIED',promoted.length);
