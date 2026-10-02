@@ -21,3 +21,12 @@ test('does not mix different exact scopes', () => {
   ];
   assert.equal(detectArbitrage(rows).length,0);
 });
+
+test('does not treat two same-side player-prop prices as opposing arb legs', () => {
+  const identity={sport:'cs2',event:'2723397',family:'player_prop',target:'jee',stat:'kills',line:'14.5',period:'',map:'2',round:'',set:'',side:'over',state:'prematch',settlement:'standard'};
+  const rows=[
+    {sport:'cs2',match:'Falcons vs TYLOO',target:'Over',side:'Over',market:'Player Jee - Total Kills Over/Under (Incl. Overtime) - Map 2',marketKey:'player_prop',line:14.5,scope:{map:2},state:'prematch',thunderpick:2.3,identity,identityComplete:true},
+    {sport:'cs2',match:'Falcons vs TYLOO',target:'Over',side:'Over',market:'Player Jee - Total Kills Over/Under (Incl. Overtime) - Map 2',marketKey:'player_prop',line:14.5,scope:{map:2},state:'prematch',thunderpick:2.15,identity,identityComplete:true}
+  ];
+  assert.equal(detectArbitrage(rows).length,0);
+});
