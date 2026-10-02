@@ -13,22 +13,31 @@ function mapFromText(v=''){
   const w=(s.match(/\b(first|second|third|fourth|fifth)\s+map\b/i)||[])[1];
   return ({first:1,second:2,third:3,fourth:4,fifth:5})[String(w||'').toLowerCase()]??null;
 }
-function normalizeOutcomes(market={}){
-  const raw=Array.isArray(market.outcomes)?market.outcomes:Object.values(market.outcomes||{});
+function normalizeOutcomes(market={},meta={}){
   const out=[];
-  const walk=v=>{
-    if(Array.isArray(v)){for(const x of v)walk(x);return;}
-    if(!v||typeof v!=='object')return;
-    const price=num(v.price??v.odds??v.decimalOdds??v.decimal_odds);
-    const name=text(v.name??v.outcomeName??v.label??v.selectionName??v.selection);
-    if(name&&price>1){
-      const point=num(v.point??v.handicap??v.line??v.total??market.handicap??market.line??market.total);
-      out.push({name,price,point});
-      return;
-    }
-    if(v.players&&typeof v.players==='object')walk(Object.values(v.players));
+  const metaOutcomes=Array.isArray(meta?.outcomes)?meta.outcomes:[];
+  const push=(name,price,point)=>{
+    const p=num(price);const n=text(name);if(!n||!(p>1))return;
+    out.push({name:n,price:p,point:num(point)});
   };
-  walk(raw);
+  if(market?.outcomes&&typeof market.outcomes==='object'&&!Array.isArray(market.outcomes)){
+    for(const [oid,od] of Object.entries(market.outcomes)){
+      const om=metaOutcomes.find(x=>String(x?.outcomeId??x?.id)===String(oid))||{};
+      const semantic=text(om?.outcomeName??om?.name??om?.label??od?.outcomeName??od?.name??od?.label);
+      const basePoint=od?.point??od?.handicap??od?.line??od?.total??om?.handicap??om?.line??om?.total??market?.handicap??market?.line??market?.total??meta?.handicap??meta?.line??meta?.total;
+      if(od?.players&&typeof od.players==='object'){
+        for(const pv of Object.values(od.players))push(semantic,pv?.price??pv?.odds??pv?.decimalOdds??pv?.decimal_odds,pv?.point??pv?.handicap??pv?.line??pv?.total??basePoint);
+      }else push(semantic,od?.price??od?.odds??od?.decimalOdds??od?.decimal_odds,basePoint);
+    }
+  }else{
+    const raw=Array.isArray(market.outcomes)?market.outcomes:[];
+    for(const v of raw){
+      const price=v?.price??v?.odds??v?.decimalOdds??v?.decimal_odds;
+      const name=v?.name??v?.outcomeName??v?.label??v?.selectionName??v?.selection;
+      const point=v?.point??v?.handicap??v?.line??v?.total??market?.handicap??market?.line??market?.total??meta?.handicap??meta?.line??meta?.total;
+      push(name,price,point);
+    }
+  }
   const seen=new Set();
   return out.filter(o=>{const k=`${o.name}|${o.point??''}|${o.price}`;if(seen.has(k))return false;seen.add(k);return true;});
 }
@@ -66,7 +75,8 @@ export function parseRoobetOddsPapiFixture({sport='',fixture={},marketMeta=null}
       if(!name)continue;
       const period=text(raw?.period??raw?.periodName??meta?.period);
       const map=num(raw?.scope?.map??raw?.map??raw?.mapNumber)??mapFromText(`${name} ${period}`);
-      const outcomes=normalizeOutcomes({...raw,handicap:raw?.handicap??meta?.handicap,line:raw?.line??meta?.line,total:raw?.total??meta?.total});
+      const enriched={...raw,handicap:raw?.handicap??meta?.handicap,line:raw?.line??meta?.line,total:raw?.total??meta?.total};
+      const outcomes=normalizeOutcomes(enriched,meta);
       if(outcomes.length<2)continue;
       const market={
         ...raw,
