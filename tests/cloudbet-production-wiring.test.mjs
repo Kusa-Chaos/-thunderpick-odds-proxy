@@ -16,6 +16,12 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
 
+test('Cloudbet collector follows official sport -> competition -> events flow', () => {
+  assert.match(cloudbet, /\/sports\/\{sport_key\}/);
+  assert.match(cloudbet, /\/competitions\/\{competition_key\}/);
+  assert.doesNotMatch(cloudbet, /\/events\?\{qs\}/);
+});
+
 test('Cloudbet collector writes the exactV2 schema consumed by production merge', () => {
   assert.match(cloudbet, /['\"]sports['\"]/);
   assert.match(cloudbet, /['\"]exactV2['\"]/);
