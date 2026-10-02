@@ -1,0 +1,20 @@
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+function expect(cond,msg){if(!cond)throw new Error(msg);}
+const dir=await fs.mkdtemp(path.join(os.tmpdir(),'ggbet-compare-'));
+const tp=path.join(dir,'tp.json'), direct=path.join(dir,'direct.json'), gg=path.join(dir,'gg.json'), out=path.join(dir,'out.json');
+const tpEvent={name:'Alpha vs Beta',home_team:'Alpha',away_team:'Beta',preferredMarkets:[{name:'Map 1 - First to Reach Kills',baseLine:5,mapNumber:1,outcomes:[{name:'Alpha',price:2.05},{name:'Beta',price:1.72}]}]};
+const stakeEvent={name:'Alpha vs Beta',home_team:'Alpha',away_team:'Beta',bookmakers:[{key:'stake-oddin',markets:[{name:'Map 1 - Race to 5 Kills',baseLine:5,mapNumber:1,outcomes:[{name:'Alpha',price:1.85},{name:'Beta',price:1.90}]}]}]};
+const ggEvent={name:'Alpha vs Beta',home_team:'Alpha',away_team:'Beta',bookmakers:[{key:'ggbet',markets:[{name:'Map 1 - Race to kills',baseLine:5,mapNumber:1,outcomes:[{name:'Alpha',price:1.88},{name:'Beta',price:1.87}]}]}]};
+await fs.writeFile(tp,JSON.stringify({sports:{lol:{data:{data:[tpEvent]}}}}));
+await fs.writeFile(direct,JSON.stringify({sports:{lol:{exactV2:[stakeEvent]},dota2:{exactV2:[]}}}));
+await fs.writeFile(gg,JSON.stringify({sports:{lol:{exactV2:[ggEvent]},dota2:{exactV2:[]}}}));
+const r=spawnSync(process.execPath,['scripts/objective-market-comparison.mjs'],{cwd:process.cwd(),env:{...process.env,TP_FILE:tp,DIRECT_FILE:direct,GGBET_FILE:gg,OUT_FILE:out},encoding:'utf8'});
+expect(r.status===0,`comparison script failed: ${r.stderr}`);
+const result=JSON.parse(await fs.readFile(out,'utf8'));
+const row=result.sports.lol.rows[0];
+expect(row?.independentOutsideSources===2,'GG.BET must count as a second independent exact source');
+expect(row?.outsideQuotes?.some(q=>q.source==='ggbet'),'GG.BET quote must be present in exact comparison');
+console.log('GGBET_COMPARISON_INTEGRATION_VERIFIED',row.independentOutsideSources);
