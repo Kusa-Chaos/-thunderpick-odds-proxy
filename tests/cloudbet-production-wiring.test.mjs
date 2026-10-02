@@ -16,27 +16,25 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
 
-test('Cloudbet discovers API sport slugs separately from market-key prefixes', () => {
+test('Cloudbet discovers sport slugs then ingests odds by active competition', () => {
   assert.match(cloudbet, /request_sports/);
-  assert.match(cloudbet, /\/sports/);
-  assert.match(cloudbet, /sportApiKey/);
-  assert.match(cloudbet, /['\"]from['\"]/);
-  assert.match(cloudbet, /['\"]to['\"]/);
-  assert.match(cloudbet, /['\"]markets['\"]/);
+  assert.match(cloudbet, /\/sports\//);
+  assert.match(cloudbet, /\/competitions\//);
+  assert.match(cloudbet, /ThreadPoolExecutor/);
+  assert.match(cloudbet, /competitionStats/);
+  assert.match(cloudbet, /WINDOW_DAYS/);
   for (const market of ['american_football.moneyline','baseball.moneyline','basketball.moneyline','soccer.match_odds','tennis.winner','counter_strike.winner','dota_2.winner','league_of_legends.winner','esport_valorant.winner']) {
     assert.ok(cloudbet.includes(market), `missing Cloudbet market key ${market}`);
   }
 });
 
-test('Cloudbet health distinguishes sports catalog, filtered, unfiltered, and usable inventory', () => {
+test('Cloudbet health distinguishes catalog inventory and usable normalized events', () => {
   assert.match(cloudbet, /sportInventory/);
   assert.match(cloudbet, /eventCount/);
   assert.match(cloudbet, /competitionCount/);
-  assert.match(cloudbet, /rawEventsBySport/);
-  assert.match(cloudbet, /rawEvents/);
-  assert.match(cloudbet, /unfilteredRawEventsBySport/);
-  assert.match(cloudbet, /unfilteredRawEvents/);
-  assert.match(cloudbet, /normalizedRejectedBySport/);
+  assert.match(cloudbet, /bySport/);
+  assert.match(cloudbet, /events/);
+  assert.match(cloudbet, /usable/);
 });
 
 test('Cloudbet collector writes the exactV2 schema consumed by production merge', () => {
