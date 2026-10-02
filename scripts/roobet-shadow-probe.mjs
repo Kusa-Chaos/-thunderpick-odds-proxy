@@ -1,0 +1,112 @@
+import fs from 'node:fs/promises';
+import {parseRoobetOddsPapiFixture} from './roobet-shadow-parser.mjs';
+
+const KEY=(process.env.ODDSPAPI_API_KEY||'').trim();
+const BASE='https://api.oddspapi.io/v4';
+const OUT=process.env.ROOBET_SHADOW_OUT||'data/roobet-shadow-latest.json';
+const out={
+  generatedAt:new Date().toISOString(),
+  mode:'roobet-shadow-v1',
+  health:{configured:Boolean(KEY),connected:false,usable:false,state:KEY?'PROBING':'UNCONFIGURED',bookmaker:'roobet',errors:[]},
+  sports:{lol:{exactV2:[]},dota2:{exactV2:[]}},
+  marketCatalog:{lol:[],dota2:[]}
+};
+
+async function persist(){
+  await fs.mkdir(new URL('../data/',import.meta.url),{recursive:true}).catch(()=>{});
+  await fs.writeFile(OUT,JSON.stringify(out,null,2));
+}
+if(!KEY){await persist();console.log('ROOBET_SHADOW',JSON.stringify({configured:false,state:'UNCONFIGURED'}));process.exit(0);}
+
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function get(path,params={}){
+  const u=new URL(BASE+path);u.searchParams.set('apiKey',KEY);
+  for(const [k,v] of Object.entries(params))if(v!==null&&v!==undefined&&v!=='')u.searchParams.set(k,String(v));
+  try{
+    const r=await fetch(u,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(60000)});
+    const text=await r.text();let body;try{body=JSON.parse(text)}catch{body={raw:text.slice(0,500)}};
+    await sleep(1050);
+    return {ok:r.ok,status:r.status,body};
+  }catch(e){await sleep(1050);return {ok:false,status:null,error:String(e?.message||e),body:null};}
+}
+function list(v){return Array.isArray(v)?v:(Array.isArray(v?.data)?v.data:Array.isArray(v?.fixtures)?v.fixtures:[]);}
+function walk(v,outArr=[],depth=0){
+  if(depth>5||v==null)return outArr;
+  if(Array.isArray(v)){for(const x of v.slice(0,200))walk(x,outArr,depth+1);return outArr;}
+  if(typeof v==='object'){outArr.push(v);for(const x of Object.values(v))if(x&&typeof x==='object')walk(x,outArr,depth+1);}
+  return outArr;
+}
+function firstNumber(v,names){for(const o of walk(v))for(const n of names){const x=Number(o?.[n]);if(Number.isFinite(x))return x;}return null;}
+function sportKind(s={}){
+  const t=String(s.sportName||s.name||s.slug||s.sportSlug||'').toLowerCase();
+  if(/league of legends|\blol\b/.test(t))return 'lol';
+  if(/dota/.test(t))return 'dota2';
+  return null;
+}
+const objective=/first.*(kill|blood|tower|turret|baron|dragon|roshan|barracks|inhibitor)|race.*kill|total.*(kill|tower|turret|baron|dragon|roshan|barracks)|team.*(kill|tower|turret)/i;
+
+const acct=await get('/account');
+out.health.accountOk=acct.ok;
+out.health.requestLimit=firstNumber(acct.body,['request_limit','requestLimit']);
+out.health.requestCount=firstNumber(acct.body,['request_count','requestCount']);
+if(!acct.ok)out.health.errors.push(`account:${acct.status??'network'}`);
+
+const br=await get('/bookmakers');
+const books=list(br.body);
+const rb=books.find(b=>String(b.slug||b.bookmakerSlug||'').toLowerCase()==='roobet'||/^roobet$/i.test(String(b.bookmakerName||b.name||'')));
+out.health.bookmakerListed=Boolean(rb);
+out.health.cloneOf=rb?.cloneOf??null;
+out.health.liveOdds=rb?.liveOdds??null;
+if(!br.ok)out.health.errors.push(`bookmakers:${br.status??'network'}`);
+else if(!rb)out.health.errors.push('bookmaker:roobet-not-listed');
+
+const sr=await get('/sports');
+const sports=list(sr.body);
+const wanted={};
+for(const s of sports){const k=sportKind(s);if(k&&!wanted[k])wanted[k]={id:Number(s.sportId??s.id),name:s.sportName??s.name??s.slug};}
+out.health.sportIds={lol:wanted.lol?.id??null,dota2:wanted.dota2?.id??null};
+if(!sr.ok)out.health.errors.push(`sports:${sr.status??'network'}`);
+for(const k of ['lol','dota2'])if(!Number.isFinite(wanted[k]?.id))out.health.errors.push(`sport:${k}-not-found`);
+
+const mr=await get('/markets',{language:'en'});
+const markets=list(mr.body);
+const meta=new Map(markets.map(m=>[String(m.marketId??m.id),m]));
+for(const k of ['lol','dota2']){
+  const sid=wanted[k]?.id;
+  out.marketCatalog[k]=markets.filter(m=>Number(m.sportId)===sid&&objective.test(String(m.marketName||m.name||''))).map(m=>({marketId:m.marketId??m.id,marketName:m.marketName??m.name,period:m.period??null,handicap:m.handicap??null,marketType:m.marketType??null,playerProp:m.playerProp??false})).slice(0,500);
+}
+if(!mr.ok)out.health.errors.push(`markets:${mr.status??'network'}`);
+
+const now=Date.now();
+const from=new Date(now).toISOString();
+const to=new Date(now+47*3600e3).toISOString();
+for(const k of ['lol','dota2']){
+  const sid=wanted[k]?.id;if(!Number.isFinite(sid))continue;
+  const fr=await get('/fixtures',{sportId:sid,from,to,statusId:0,hasOdds:true,bookmakers:'roobet',language:'en'});
+  const fixtures=list(fr.body);
+  out.sports[k].fixtureCount=fixtures.length;
+  if(!fr.ok){out.health.errors.push(`fixtures:${k}:${fr.status??'network'}`);continue;}
+  const exact=[];
+  for(const f of fixtures.slice(0,12)){
+    const id=f.fixtureId??f.id;if(!id)continue;
+    const or=await get('/odds',{fixtureId:id,bookmakers:'roobet',oddsFormat:'decimal',language:'en',verbosity:3});
+    if(!or.ok){out.health.errors.push(`odds:${k}:${id}:${or.status??'network'}`);continue;}
+    const body=or.body?.data??or.body??{};
+    const merged={...f,...body,participant1Name:body?.participant1Name??f?.participant1Name,participant2Name:body?.participant2Name??f?.participant2Name,bookmakerOdds:body?.bookmakerOdds??body?.bookmakers??body?.odds??{}};
+    exact.push(...parseRoobetOddsPapiFixture({sport:k,fixture:merged,marketMeta:meta}));
+  }
+  out.sports[k].exactV2=exact;
+  out.sports[k].events=exact.length;
+  out.sports[k].markets=exact.reduce((n,e)=>n+(e.bookmakers||[]).reduce((m,b)=>m+(b.markets||[]).length,0),0);
+  const fam={};for(const e of exact)for(const b of e.bookmakers||[])for(const m of b.markets||[])fam[m.family]=(fam[m.family]||0)+1;
+  out.sports[k].families=fam;
+}
+
+out.health.connected=Boolean(acct.ok&&br.ok&&sr.ok&&mr.ok&&rb);
+out.health.events=(out.sports.lol.events||0)+(out.sports.dota2.events||0);
+out.health.markets=(out.sports.lol.markets||0)+(out.sports.dota2.markets||0);
+out.health.usable=out.health.connected&&out.health.markets>0;
+out.health.state=out.health.usable?'CONNECTED_USABLE':out.health.connected?'CONNECTED_NO_OBJECTIVE_MARKETS':'UNAVAILABLE';
+out.generatedAt=new Date().toISOString();
+await persist();
+console.log('ROOBET_SHADOW',JSON.stringify({generatedAt:out.generatedAt,state:out.health.state,bookmakerListed:out.health.bookmakerListed,cloneOf:out.health.cloneOf,sportIds:out.health.sportIds,events:out.health.events,markets:out.health.markets,errors:out.health.errors.slice(0,10),lol:{fixtures:out.sports.lol.fixtureCount||0,events:out.sports.lol.events||0,markets:out.sports.lol.markets||0,families:out.sports.lol.families||{}},dota2:{fixtures:out.sports.dota2.fixtureCount||0,events:out.sports.dota2.events||0,markets:out.sports.dota2.markets||0,families:out.sports.dota2.families||{}}}));
