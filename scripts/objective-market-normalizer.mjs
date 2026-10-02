@@ -63,6 +63,11 @@ export function normalizeObjectiveMarket({sport='',source='',event={},market={}}
   const target=targetTeam(name,event);
   let family=null;
 
+  // Fail closed on lookalikes that are distinct settlement contracts.
+  if(/\bhandicap\b/i.test(name)) return null;
+  if(/\bodd\s*\/\s*even\b|\bodd\s+even\b/i.test(name)) return null;
+  if(/\b(?:map winner|win map|winner)\b.*\btotal kills\b|\btotal kills\b.*\b(?:map winner|win map|winner)\b/i.test(name)) return null;
+
   if(/first to reach kills|race to\s*\d*\s*kills?|first to\s*\d+\s*kills?/i.test(name)) family='race_to_kills';
   else if(/first blood/i.test(name)) family='first_blood';
   else if(/(?:first|1st).*tower|tower.*(?:first|1st)/i.test(name)) family='first_tower';
