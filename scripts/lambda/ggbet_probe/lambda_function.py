@@ -1,6 +1,7 @@
 import html
 import json
 import re
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -32,12 +33,22 @@ def next_env(body):
     return None
 
 
+def resolve_endpoint(raw, page_url):
+    host = urllib.parse.urlparse(page_url).netloc
+    value = str(raw or "").replace("{host}", host)
+    if value.startswith("//"):
+        value = "https:" + value
+    elif value.startswith("/"):
+        value = urllib.parse.urljoin(page_url, value)
+    return value
+
+
 def gql(page_url, slug, query):
     _, page = fetch(page_url)
     env = next_env(page)
     if not env:
         return {"ok": False, "error": "public-env-not-found"}
-    endpoint = env["PUBLIC_PLATFORM_GQL_CLIENT_ENDPOINT"]
+    endpoint = resolve_endpoint(env["PUBLIC_PLATFORM_GQL_CLIENT_ENDPOINT"], page_url)
     payload = json.dumps({"query": query, "variables": {"slug": slug}}).encode()
     headers = {
         "User-Agent": UA,
@@ -105,6 +116,7 @@ def lambda_handler(event, context):
             return {
                 "ok": result.get("ok"), "status": result.get("status"), "endpoint": result.get("endpoint"),
                 "errors": data.get("errors") if isinstance(data, dict) else None,
+                "errorBody": result.get("errorBody"),
                 "match": {"id": (match or {}).get("id"), "slug": (match or {}).get("slug"), "fixture": (match or {}).get("fixture")},
                 "marketCount": len(markets), "objectiveCount": len(objective), "objective": objective[:100],
             }
@@ -126,7 +138,7 @@ def lambda_handler(event, context):
         return {
             "status": status, "bytes": len(body),
             "blocked": "not accepting visitors from your region" in body.lower(),
-            "gqlEndpoint": (env or {}).get("PUBLIC_PLATFORM_GQL_CLIENT_ENDPOINT"),
+            "gqlEndpoint": resolve_endpoint((env or {}).get("PUBLIC_PLATFORM_GQL_CLIENT_ENDPOINT"), url) if env else None,
             "hasAppId": bool((env or {}).get("BETTING_APP_ID_HEADER")),
             "hasAccessToken": bool((env or {}).get("BETTING_ACCESS_TOKEN")),
         }
