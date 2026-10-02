@@ -21,8 +21,23 @@ SPORT_KEYS={
     'lol':'league-of-legends',
     'valorant':'valorant',
 }
+PRIMARY_MARKETS={
+    'american-football':['american_football.moneyline'],
+    'baseball':['baseball.moneyline'],
+    'basketball':['basketball.moneyline'],
+    'soccer':['soccer.matchOdds'],
+    'tennis':['tennis.winner'],
+    'cs2':['counter_strike.winner'],
+    'dota2':['dota_2.winner'],
+    'lol':['league_of_legends.winner'],
+    'valorant':['esport_valorant.winner'],
+}
 
 def utcnow(): return datetime.now(timezone.utc).isoformat()
+
+def number(v):
+    try: return float(v)
+    except Exception: return 0.0
 
 def extract_key(value):
     value=str(value or '').strip()
@@ -52,7 +67,7 @@ def load_key():
 def request_json(path,key):
     last=None
     for mode in ('x-api-key','bearer'):
-        headers={'Accept':'application/json','Content-Type':'application/json','User-Agent':'thunderpick-cloudbet/1.1'}
+        headers={'Accept':'application/json','Content-Type':'application/json','User-Agent':'thunderpick-cloudbet/1.2'}
         if mode=='x-api-key': headers['X-API-Key']=key
         else: headers['Authorization']=f'Bearer {key}'
         req=urllib.request.Request(BASE+path,headers=headers)
@@ -70,11 +85,9 @@ def request_json(path,key):
 def sport_payload(sport_key,key):
     return request_json(f'/sports/{urllib.parse.quote(sport_key,safe="")}',key)
 
-def competition_payload(competition_key,key):
-    return request_json(f'/competitions/{urllib.parse.quote(competition_key,safe="")}',key)
-
-def event_payload(event_id,key):
-    return request_json(f'/events/{urllib.parse.quote(str(event_id),safe="")}',key)
+def competition_payload(competition_key,markets,key):
+    query=urllib.parse.urlencode([('markets',m) for m in markets])
+    return request_json(f'/competitions/{urllib.parse.quote(competition_key,safe="")}?{query}',key)
 
 def competitions_from_sport(body):
     out=[]
@@ -82,7 +95,7 @@ def competitions_from_sport(body):
     for category in body.get('categories') or []:
         if not isinstance(category,dict): continue
         for comp in category.get('competitions') or []:
-            if isinstance(comp,dict) and comp.get('key'):
+            if isinstance(comp,dict) and comp.get('key') and number(comp.get('eventCount'))>0:
                 out.append(comp)
     return out
 
@@ -97,53 +110,13 @@ def is_prematch_event(event):
     status=str((event or {}).get('status') or '').upper()
     return 'LIVE' not in status and status not in {'RESULTED','ENDED','CANCELLED'}
 
-def request_sport_events(sport_key,key):
-    body=sport_payload(sport_key,key)
-    direct_events=events_from_payload(body)
-    if direct_events:
-        return direct_events,0
-    comps=competitions_from_sport(body)
-    events=[]
-    requests=0
-    for comp in comps:
-        if Number(comp.get('eventCount') or 0)==0:
-            continue
-        payload=competition_payload(comp['key'],key); requests+=1
-        events.extend(events_from_payload(payload))
-    return events,requests
-
-def Number(v):
-    try: return float(v)
-    except Exception: return 0.0
-
-def hydrate_missing_markets(events,key):
-    pending=[e for e in events if isinstance(e,dict) and is_prematch_event(e) and not isinstance(e.get('markets'),dict) or (isinstance(e,dict) and is_prematch_event(e) and not e.get('markets'))]
-    ids=[]; seen=set()
-    for e in pending:
-        eid=e.get('id') or e.get('key')
-        if eid is not None and str(eid) not in seen:
-            seen.add(str(eid)); ids.append(eid)
-    details={}
-    def load(eid):
-        try: return str(eid),event_payload(eid,key),None
-        except Exception as ex: return str(eid),None,str(ex)
-    if ids:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
-            for eid,payload,error in pool.map(load,ids):
-                if payload: details[eid]=payload
-    hydrated=[]
-    for e in events:
-        if not isinstance(e,dict): continue
-        eid=str(e.get('id') or e.get('key') or '')
-        hydrated.append(details.get(eid,e))
-    return hydrated,len(ids)
-
 def market_priority(key):
     k=str(key or '').lower()
-    if re.search(r'\.moneyline$',k): return 0
-    if re.search(r'\.winner$',k): return 1
-    if re.search(r'\.match_odds$',k): return 2
-    if re.search(r'\.1x2$',k): return 3
+    compact=k.replace('_','')
+    if k.endswith('.moneyline'): return 0
+    if k.endswith('.winner'): return 1
+    if compact.endswith('.matchodds'): return 2
+    if k.endswith('.1x2'): return 3
     return 99
 
 def fulltime_scope(subkey):
@@ -216,21 +189,56 @@ def main():
     except Exception as e:
         health['cloudbet']={'ok':False,'source':SOURCE,'events':0,'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
         write_out(out); print(json.dumps(health['cloudbet'])); return
-    counts={}; errors=[]; fetched=0; total=0; competition_requests=0; event_detail_requests=0
-    for canon,cloudbet_sport in SPORT_KEYS.items():
+
+    jobs=[]; errors=[]; sports_fetched=0
+    for canon,sport_key in SPORT_KEYS.items():
         try:
-            events,comp_requests=request_sport_events(cloudbet_sport,key); competition_requests+=comp_requests
-            events,detail_requests=hydrate_missing_markets(events,key); event_detail_requests+=detail_requests
-            fetched+=1; added=0
+            body=sport_payload(sport_key,key); sports_fetched+=1
+            for comp in competitions_from_sport(body):
+                jobs.append((canon,comp['key']))
+        except Exception as e:
+            errors.append(f'{canon}:sport:{sanitize_error(e)}')
+
+    def fetch_job(job):
+        canon,comp_key=job
+        try:
+            payload=competition_payload(comp_key,PRIMARY_MARKETS[canon],key)
+            events=events_from_payload(payload)
+            rows=[]
             for event in events:
                 row=normalize_event(event,canon)
-                if row:
-                    sports[canon]['exactV2'].append(row); added+=1; total+=1
-            counts[canon]=added
+                if row: rows.append(row)
+            return canon,comp_key,len(events),rows,None
         except Exception as e:
-            counts[canon]=0; errors.append(f'{canon}:{sanitize_error(e)}')
-    ok=fetched>0 and total>0
-    health['cloudbet']={'ok':ok,'source':SOURCE,'events':total,'sportsFetched':fetched,'competitionRequests':competition_requests,'eventDetailRequests':event_detail_requests,'bySport':counts,'errors':errors[:9],'fetchedAt':utcnow()}
+            return canon,comp_key,0,[],sanitize_error(e)
+
+    counts={canon:0 for canon in SPORT_KEYS}; raw_events=0; competition_successes=0
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:
+        for canon,comp_key,event_count,rows,error in pool.map(fetch_job,jobs):
+            raw_events+=event_count
+            if error:
+                errors.append(f'{canon}:{comp_key}:{error}')
+                continue
+            competition_successes+=1
+            for row in rows:
+                sports[canon]['exactV2'].append(row)
+            counts[canon]+=len(rows)
+
+    total=sum(counts.values())
+    ok=sports_fetched>0 and competition_successes>0 and total>0
+    health['cloudbet']={
+        'ok':ok,
+        'source':SOURCE,
+        'events':total,
+        'sportsFetched':sports_fetched,
+        'competitionRequests':len(jobs),
+        'competitionSuccesses':competition_successes,
+        'rawEvents':raw_events,
+        'bySport':counts,
+        'marketFilters':PRIMARY_MARKETS,
+        'errors':errors[:20],
+        'fetchedAt':utcnow(),
+    }
     write_out(out); print(json.dumps(health['cloudbet']))
 
 if __name__=='__main__': main()
