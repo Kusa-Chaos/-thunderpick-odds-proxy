@@ -63,31 +63,20 @@ def request_json(url,key):
 def request_sports(key):
     body=request_json(f'{BASE}/sports',key)
     if isinstance(body,dict):
-        sports=body.get('sports') or body.get('data') or []
-        return sports if isinstance(sports,list) else []
+        rows=body.get('sports') or body.get('data') or []
+        return rows if isinstance(rows,list) else []
     return body if isinstance(body,list) else []
 
 def resolve_sport_api_keys(key):
     rows=request_sports(key)
-    by_name={norm_name(row.get('name')):str(row.get('key')) for row in rows if isinstance(row,dict) and row.get('name') and row.get('key')}
-    resolved={}
+    by_name={norm_name(row.get('name')):row for row in rows if isinstance(row,dict) and row.get('name') and row.get('key')}
+    resolved={}; inventory={}
     for canon,config in SPORT_CONFIG.items():
-        resolved[canon]=by_name.get(norm_name(config.get('sportName'))) or config.get('fallbackSport')
-    return resolved, len(rows)
-
-def request_events(config,sportApiKey,key,include_markets=True):
-    now=int(time.time())
-    params=[
-        ('sport',sportApiKey),
-        ('live','false'),
-        ('players','false'),
-        ('limit','10000'),
-        ('from',str(now)),
-        ('to',str(now+WINDOW_DAYS*86400)),
-    ]
-    if include_markets:
-        params.extend(('markets',m) for m in config.get('markets',[]))
-    return request_json(f'{BASE}/events?{urllib.parse.urlencode(params)}',key) if False else extract_events(request_json(f'{BASE}/events?{urllib.parse.urlencode(params)}',key))
+        row=by_name.get(norm_name(config.get('sportName'))) or {}
+        sportApiKey=str(row.get('key') or config.get('fallbackSport'))
+        resolved[canon]=sportApiKey
+        inventory[canon]={'name':row.get('name') or config.get('sportName'),'key':sportApiKey,'eventCount':row.get('eventCount'),'competitionCount':row.get('competitionCount')}
+    return resolved, len(rows), inventory
 
 def extract_events(body):
     if isinstance(body,list): return body
@@ -95,6 +84,12 @@ def extract_events(body):
         events=body.get('events') or body.get('data') or []
         return events if isinstance(events,list) else []
     return []
+
+def request_events(config,sportApiKey,key,include_markets=True):
+    now=int(time.time())
+    params=[('sport',sportApiKey),('live','false'),('players','false'),('limit','10000'),('from',str(now)),('to',str(now+WINDOW_DAYS*86400))]
+    if include_markets: params.extend(('markets',m) for m in config.get('markets',[]))
+    return extract_events(request_json(f'{BASE}/events?{urllib.parse.urlencode(params)}',key))
 
 def market_priority(key):
     k=str(key or '').lower()
@@ -117,21 +112,18 @@ def normalize_event(event,canon_sport):
     if not isinstance(event,dict): return None
     status=str(event.get('status') or '').upper()
     if 'LIVE' in status or status in {'RESULTED','ENDED','CANCELLED'}: return None
-    eid=event.get('id') or event.get('key')
-    home=team_name(event.get('home')); away=team_name(event.get('away'))
+    eid=event.get('id') or event.get('key'); home=team_name(event.get('home')); away=team_name(event.get('away'))
     if not eid or not home or not away: return None
     markets=event.get('markets') or {}
     if not isinstance(markets,dict): return None
     for market_key in sorted(markets.keys(),key=market_priority):
         if market_priority(market_key)>=99: continue
-        market=markets.get(market_key) or {}
-        submarkets=market.get('submarkets') or {}
+        submarkets=(markets.get(market_key) or {}).get('submarkets') or {}
         if not isinstance(submarkets,dict): continue
         for subkey,sub in submarkets.items():
             if not fulltime_scope(subkey): continue
-            selections=(sub or {}).get('selections') or []
             outcomes=[]; seen=set()
-            for sel in selections:
+            for sel in (sub or {}).get('selections') or []:
                 if not isinstance(sel,dict): continue
                 if str(sel.get('status') or '').upper() not in ('','SELECTION_ENABLED'): continue
                 if str(sel.get('side') or 'BACK').upper()!='BACK': continue
@@ -151,8 +143,7 @@ def read_out():
 def write_out(out):
     out['generatedAt']=utcnow()
     with open(FILE,'w') as f: json.dump(out,f,indent=2)
-def sanitize_error(e):
-    return JWT_RE.sub('[REDACTED]',str(e or ''))[:240]
+def sanitize_error(e): return JWT_RE.sub('[REDACTED]',str(e or ''))[:240]
 
 def main():
     out=read_out(); sports=out.setdefault('sports',{}); health=out.setdefault('providerHealth',{})
@@ -161,12 +152,12 @@ def main():
         bucket['exactV2']=[e for e in existing if not str(e.get('id','')).startswith(EVENT_PREFIX)]
     try: key=load_key()
     except Exception as e:
-        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'rawEvents':0,'unfilteredRawEvents':0,'rawEventsBySport':{},'unfilteredRawEventsBySport':{},'normalizedRejectedBySport':{},'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
+        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'rawEvents':0,'unfilteredRawEvents':0,'sportInventory':{},'rawEventsBySport':{},'unfilteredRawEventsBySport':{},'normalizedRejectedBySport':{},'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
         write_out(out); print(json.dumps(health['cloudbet'])); return
     errors=[]
-    try: sport_api_keys,sports_discovered=resolve_sport_api_keys(key)
+    try: sport_api_keys,sports_discovered,sport_inventory=resolve_sport_api_keys(key)
     except Exception as e:
-        sport_api_keys={canon:config.get('fallbackSport') for canon,config in SPORT_CONFIG.items()}; sports_discovered=0; errors.append(f'sports:{sanitize_error(e)}')
+        sport_api_keys={canon:config.get('fallbackSport') for canon,config in SPORT_CONFIG.items()}; sports_discovered=0; sport_inventory={}; errors.append(f'sports:{sanitize_error(e)}')
     counts={}; raw_counts={}; unfiltered_counts={}; rejected_counts={}; fetched=0; total=0
     for canon,config in SPORT_CONFIG.items():
         sportApiKey=sport_api_keys.get(canon) or config.get('fallbackSport')
@@ -182,8 +173,8 @@ def main():
             else: unfiltered_counts[canon]=len(events)
         except Exception as e:
             counts[canon]=0; raw_counts[canon]=0; unfiltered_counts[canon]=0; rejected_counts[canon]=0; errors.append(f'{canon}:{sanitize_error(e)}')
-    connected=fetched>0; usable=total>0; raw_total=sum(raw_counts.values()); unfiltered_total=sum(unfiltered_counts.values())
-    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'source':SOURCE,'events':total,'rawEvents':raw_total,'unfilteredRawEvents':unfiltered_total,'sportsFetched':fetched,'sportsDiscovered':sports_discovered,'sportApiKeys':sport_api_keys,'bySport':counts,'rawEventsBySport':raw_counts,'unfilteredRawEventsBySport':unfiltered_counts,'normalizedRejectedBySport':rejected_counts,'errors':errors[:18],'windowDays':WINDOW_DAYS,'fetchedAt':utcnow()}
+    connected=fetched>0; usable=total>0
+    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'source':SOURCE,'events':total,'rawEvents':sum(raw_counts.values()),'unfilteredRawEvents':sum(unfiltered_counts.values()),'sportsFetched':fetched,'sportsDiscovered':sports_discovered,'sportApiKeys':sport_api_keys,'sportInventory':sport_inventory,'bySport':counts,'rawEventsBySport':raw_counts,'unfilteredRawEventsBySport':unfiltered_counts,'normalizedRejectedBySport':rejected_counts,'errors':errors[:18],'windowDays':WINDOW_DAYS,'fetchedAt':utcnow()}
     write_out(out); print(json.dumps(health['cloudbet']))
 
 if __name__=='__main__': main()
