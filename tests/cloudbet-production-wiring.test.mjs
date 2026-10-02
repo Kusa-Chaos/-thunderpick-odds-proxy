@@ -16,11 +16,18 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
 
-test('Cloudbet collector follows official sport -> competition -> events flow', () => {
+test('Cloudbet collector follows official sport -> competition flow', () => {
   assert.match(cloudbet, /request_json\(f['"]\/sports\//);
   assert.match(cloudbet, /request_json\(f['"]\/competitions\//);
-  assert.match(cloudbet, /request_json\(f['"]\/events\//);
   assert.doesNotMatch(cloudbet, /\/events\?\{qs\}/);
+});
+
+test('Cloudbet uses filtered primary-market competition requests instead of per-event hydration', () => {
+  assert.match(cloudbet, /PRIMARY_MARKETS/);
+  assert.match(cloudbet, /markets=/);
+  assert.match(cloudbet, /ThreadPoolExecutor\(max_workers=16\)/);
+  assert.doesNotMatch(cloudbet, /def event_payload\(/);
+  assert.doesNotMatch(cloudbet, /hydrate_missing_markets/);
 });
 
 test('Cloudbet collector writes the exactV2 schema consumed by production merge', () => {
