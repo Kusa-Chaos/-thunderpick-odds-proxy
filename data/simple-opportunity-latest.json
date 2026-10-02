@@ -720,7 +720,10 @@
     "WATCH": 0,
     "SCREENING": 226,
     "PRICE BOARD": 93,
-    "INFORMATIONAL": 189
+    "INFORMATIONAL": 189,
+    "ARB FOUND": 0,
+    "ARB WATCH": 3,
+    "ARB SCREENING": 1
   },
   "rows": [
     {
@@ -26629,5 +26632,189 @@
       "identityKey": "cs2|2723397|player_prop|karrigan|kills|4.5||2|||over|prematch|standard",
       "identityComplete": true
     }
-  ]
+  ],
+  "strictSnapshotHealthy": true,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-02T23:21:41.784Z",
+    "marketsTested": 1967,
+    "screensEvaluated": 4,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2750674,
+        "match": "Alexander Zverev vs Juncheng Shang",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T11:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9763546798029558,
+        "arbROI": 0.02421796165489387,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.16
+          },
+          {
+            "outcome": "Juncheng Shang",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 8.75
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2755651,
+        "match": "Daniil Medvedev vs Jan-Lennard Struff",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:00:00+00:00",
+        "exactContractKey": "tennis|daniilmedvedev|janlennardstruff|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9818181818181819,
+        "arbROI": 0.01851851851851838,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T23:20:50.063Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.25
+          },
+          {
+            "outcome": "Jan-Lennard Struff",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 5.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2751565,
+        "match": "Francisco Cerundolo vs Jakub Mensik",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:00:00+00:00",
+        "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0046620046620047,
+        "arbROI": -0.004640371229698403,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T14:44:14Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Jakub Mensik",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.56
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 2.75
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2757293,
+        "match": "Katarina Zavatska vs Kristiana Sidorova",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T05:00:00+00:00",
+        "exactContractKey": "tennis|katarinazavatska|kristianasidorova|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0197210197210196,
+        "arbROI": -0.019339622641509346,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Kristiana Sidorova",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.54
+          },
+          {
+            "outcome": "Katarina Zavatska",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 2.7
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 4,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  }
 }
