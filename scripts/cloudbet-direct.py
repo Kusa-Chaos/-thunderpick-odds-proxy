@@ -1,5 +1,5 @@
-import json, os, re, subprocess, time, urllib.error, urllib.parse, urllib.request
-from datetime import datetime, timezone
+import concurrent.futures, json, os, re, subprocess, time, urllib.error, urllib.parse, urllib.request
+from datetime import datetime, timezone, timedelta
 
 FILE='data/direct-sources-latest.json'
 SOURCE='cloudbet-direct'
@@ -10,6 +10,7 @@ BASE='https://sports-api.cloudbet.com/pub/v2/odds'
 SECRET='thunderpick/cloudbet-api-key'
 REGION='us-east-2'
 WINDOW_DAYS=30
+MAX_WORKERS=max(1,min(16,int(os.environ.get('CLOUDBET_CONCURRENCY','12'))))
 JWT_RE=re.compile(r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+')
 SPORT_CONFIG={
     'american-football':{'sportName':'American Football','fallbackSport':'american-football','markets':['american_football.moneyline']},
@@ -25,6 +26,7 @@ SPORT_CONFIG={
 
 def utcnow(): return datetime.now(timezone.utc).isoformat()
 def norm_name(v): return re.sub(r'[^a-z0-9]','',str(v or '').lower())
+def sanitize_error(e): return JWT_RE.sub('[REDACTED]',str(e or ''))[:300]
 
 def extract_key(value):
     value=str(value or '').strip()
@@ -52,13 +54,24 @@ def load_key():
         return extract_key(p.stdout)
 
 def request_json(url,key):
-    req=urllib.request.Request(url,headers={'Accept':'application/json','Content-Type':'application/json',HEADER:key,'User-Agent':'thunderpick-cloudbet/1.0'})
-    try:
-        with urllib.request.urlopen(req,timeout=30) as r: return json.load(r)
-    except urllib.error.HTTPError as e:
-        try: detail=e.read().decode('utf-8','replace')
-        except Exception: detail=''
-        raise RuntimeError(f'CLOUDBET_HTTP_{e.code}:{sanitize_error(detail)}') from e
+    headers={'Accept':'application/json','Content-Type':'application/json',HEADER:key,'User-Agent':'thunderpick-cloudbet/1.0'}
+    last=None
+    for attempt in range(3):
+        req=urllib.request.Request(url,headers=headers)
+        try:
+            with urllib.request.urlopen(req,timeout=30) as r: return json.load(r)
+        except urllib.error.HTTPError as e:
+            try: detail=e.read().decode('utf-8','replace')
+            except Exception: detail=''
+            last=RuntimeError(f'CLOUDBET_HTTP_{e.code}:{sanitize_error(detail)}')
+            if e.code in (429,500,502,503,504) and attempt<2:
+                time.sleep(0.75*(attempt+1)); continue
+            raise last from e
+        except Exception as e:
+            last=e
+            if attempt<2: time.sleep(0.5*(attempt+1)); continue
+            raise
+    raise last or RuntimeError('CLOUDBET_REQUEST_FAILED')
 
 def request_sports(key):
     body=request_json(f'{BASE}/sports',key)
@@ -78,25 +91,57 @@ def resolve_sport_api_keys(key):
         inventory[canon]={'name':row.get('name') or config.get('sportName'),'key':sportApiKey,'eventCount':row.get('eventCount'),'competitionCount':row.get('competitionCount')}
     return resolved, len(rows), inventory
 
+def competition_rows(body):
+    if not isinstance(body,dict): return []
+    root=body.get('sport') if isinstance(body.get('sport'),dict) else body
+    out=[]
+    for cat in root.get('categories',[]) or []:
+        for comp in (cat or {}).get('competitions',[]) or []:
+            if isinstance(comp,dict) and comp.get('key') and int(comp.get('eventCount') or 0)>0: out.append(comp)
+    for comp in root.get('competitions',[]) or []:
+        if isinstance(comp,dict) and comp.get('key') and int(comp.get('eventCount') or 0)>0: out.append(comp)
+    seen=set(); result=[]
+    for comp in out:
+        k=str(comp.get('key'))
+        if k not in seen: seen.add(k); result.append(comp)
+    return result
+
+def request_competitions_for_sport(sportApiKey,key):
+    body=request_json(f"{BASE}/sports/{urllib.parse.quote(str(sportApiKey),safe='-')}",key)
+    return competition_rows(body)
+
 def extract_events(body):
     if isinstance(body,list): return body
     if isinstance(body,dict):
-        events=body.get('events') or body.get('data') or []
+        events=body.get('events') or (body.get('competition') or {}).get('events') or body.get('data') or []
         return events if isinstance(events,list) else []
     return []
 
-def request_events(config,sportApiKey,key,include_markets=True):
-    now=int(time.time())
-    params=[('sport',sportApiKey),('live','false'),('players','false'),('limit','10000'),('from',str(now)),('to',str(now+WINDOW_DAYS*86400))]
-    if include_markets: params.extend(('markets',m) for m in config.get('markets',[]))
-    return extract_events(request_json(f'{BASE}/events?{urllib.parse.urlencode(params)}',key))
+def request_competition(comp_key,markets,key):
+    params=[]
+    for market in markets or []: params.append(('markets',market))
+    qs=urllib.parse.urlencode(params)
+    url=f"{BASE}/competitions/{urllib.parse.quote(str(comp_key),safe='-')}"+(f'?{qs}' if qs else '')
+    return extract_events(request_json(url,key))
+
+def parse_time(v):
+    if not v: return None
+    try: return datetime.fromisoformat(str(v).replace('Z','+00:00')).astimezone(timezone.utc)
+    except Exception: return None
+
+def within_horizon(event):
+    t=parse_time(event.get('cutoffTime') or event.get('startTime')) if isinstance(event,dict) else None
+    if not t: return False
+    now=datetime.now(timezone.utc)
+    return now-timedelta(minutes=15) <= t <= now+timedelta(days=WINDOW_DAYS)
 
 def market_priority(key):
     k=str(key or '').lower()
     if re.search(r'\.moneyline$',k): return 0
     if re.search(r'\.winner$',k): return 1
     if re.search(r'\.match_odds$',k): return 2
-    if re.search(r'\.1x2$',k): return 3
+    if re.search(r'\.matchodds$',k): return 3
+    if re.search(r'\.1x2$',k): return 4
     return 99
 
 def fulltime_scope(subkey):
@@ -109,7 +154,7 @@ def team_name(value):
     return value
 
 def normalize_event(event,canon_sport):
-    if not isinstance(event,dict): return None
+    if not isinstance(event,dict) or not within_horizon(event): return None
     status=str(event.get('status') or '').upper()
     if 'LIVE' in status or status in {'RESULTED','ENDED','CANCELLED'}: return None
     eid=event.get('id') or event.get('key'); home=team_name(event.get('home')); away=team_name(event.get('away'))
@@ -143,7 +188,30 @@ def read_out():
 def write_out(out):
     out['generatedAt']=utcnow()
     with open(FILE,'w') as f: json.dump(out,f,indent=2)
-def sanitize_error(e): return JWT_RE.sub('[REDACTED]',str(e or ''))[:240]
+
+def collect_sport(canon,config,sportApiKey,key):
+    comps=request_competitions_for_sport(sportApiKey,key)
+    stats={'selected':len(comps),'fetched':0,'failed':0,'rawEvents':0,'usableEvents':0}
+    errors=[]; event_map={}
+    def fetch(comp):
+        return str(comp.get('key')),request_competition(comp.get('key'),config.get('markets',[]),key)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
+        future_map={pool.submit(fetch,comp):comp for comp in comps}
+        for fut in concurrent.futures.as_completed(future_map):
+            comp=future_map[fut]
+            try:
+                comp_key,events=fut.result(); stats['fetched']+=1; stats['rawEvents']+=len(events)
+                for event in events:
+                    eid=str(event.get('id') or event.get('key') or '')
+                    if eid: event_map[eid]=event
+            except Exception as e:
+                stats['failed']+=1; errors.append(f"{comp.get('key')}:{sanitize_error(e)}")
+    rows=[]
+    for event in event_map.values():
+        row=normalize_event(event,canon)
+        if row: rows.append(row)
+    stats['usableEvents']=len(rows); stats['uniqueEvents']=len(event_map)
+    return rows,stats,errors
 
 def main():
     out=read_out(); sports=out.setdefault('sports',{}); health=out.setdefault('providerHealth',{})
@@ -152,29 +220,23 @@ def main():
         bucket['exactV2']=[e for e in existing if not str(e.get('id','')).startswith(EVENT_PREFIX)]
     try: key=load_key()
     except Exception as e:
-        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'rawEvents':0,'unfilteredRawEvents':0,'sportInventory':{},'rawEventsBySport':{},'unfilteredRawEventsBySport':{},'normalizedRejectedBySport':{},'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
+        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'sportInventory':{},'competitionStats':{},'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
         write_out(out); print(json.dumps(health['cloudbet'])); return
     errors=[]
     try: sport_api_keys,sports_discovered,sport_inventory=resolve_sport_api_keys(key)
     except Exception as e:
         sport_api_keys={canon:config.get('fallbackSport') for canon,config in SPORT_CONFIG.items()}; sports_discovered=0; sport_inventory={}; errors.append(f'sports:{sanitize_error(e)}')
-    counts={}; raw_counts={}; unfiltered_counts={}; rejected_counts={}; fetched=0; total=0
+    counts={}; competition_stats={}; total=0; sports_ok=0
     for canon,config in SPORT_CONFIG.items():
         sportApiKey=sport_api_keys.get(canon) or config.get('fallbackSport')
         try:
-            events=request_events(config,sportApiKey,key,True); fetched+=1; raw_counts[canon]=len(events); added=0
-            for event in events:
-                row=normalize_event(event,canon)
-                if row: sports[canon]['exactV2'].append(row); added+=1; total+=1
-            counts[canon]=added; rejected_counts[canon]=max(0,len(events)-added)
-            if len(events)==0:
-                try: unfiltered_counts[canon]=len(request_events(config,sportApiKey,key,False))
-                except Exception as e: unfiltered_counts[canon]=0; errors.append(f'{canon}-unfiltered:{sanitize_error(e)}')
-            else: unfiltered_counts[canon]=len(events)
+            rows,stats,sport_errors=collect_sport(canon,config,sportApiKey,key); sports_ok+=1
+            sports[canon]['exactV2'].extend(rows); counts[canon]=len(rows); total+=len(rows); competition_stats[canon]=stats
+            errors.extend(f'{canon}:{e}' for e in sport_errors)
         except Exception as e:
-            counts[canon]=0; raw_counts[canon]=0; unfiltered_counts[canon]=0; rejected_counts[canon]=0; errors.append(f'{canon}:{sanitize_error(e)}')
-    connected=fetched>0; usable=total>0
-    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'source':SOURCE,'events':total,'rawEvents':sum(raw_counts.values()),'unfilteredRawEvents':sum(unfiltered_counts.values()),'sportsFetched':fetched,'sportsDiscovered':sports_discovered,'sportApiKeys':sport_api_keys,'sportInventory':sport_inventory,'bySport':counts,'rawEventsBySport':raw_counts,'unfilteredRawEventsBySport':unfiltered_counts,'normalizedRejectedBySport':rejected_counts,'errors':errors[:18],'windowDays':WINDOW_DAYS,'fetchedAt':utcnow()}
+            counts[canon]=0; competition_stats[canon]={'selected':0,'fetched':0,'failed':1,'rawEvents':0,'usableEvents':0}; errors.append(f'{canon}:{sanitize_error(e)}')
+    connected=sports_ok>0; usable=total>0
+    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'state':'CONNECTED_USABLE' if usable else 'CONNECTED_NO_USABLE_PRICES' if connected else 'UNAVAILABLE','source':SOURCE,'apiMode':'competition-batch','events':total,'sportsFetched':sports_ok,'sportsDiscovered':sports_discovered,'sportApiKeys':sport_api_keys,'sportInventory':sport_inventory,'competitionStats':competition_stats,'bySport':counts,'errors':errors[:30],'windowDays':WINDOW_DAYS,'concurrency':MAX_WORKERS,'fetchedAt':utcnow()}
     write_out(out); print(json.dumps(health['cloudbet']))
 
 if __name__=='__main__': main()
