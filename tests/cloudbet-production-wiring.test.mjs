@@ -17,8 +17,9 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
 });
 
 test('Cloudbet collector follows official sport -> competition -> events flow', () => {
-  assert.match(cloudbet, /\/sports\/\{sport_key\}/);
-  assert.match(cloudbet, /\/competitions\/\{competition_key\}/);
+  assert.match(cloudbet, /request_json\(f['"]\/sports\//);
+  assert.match(cloudbet, /request_json\(f['"]\/competitions\//);
+  assert.match(cloudbet, /request_json\(f['"]\/events\//);
   assert.doesNotMatch(cloudbet, /\/events\?\{qs\}/);
 });
 
