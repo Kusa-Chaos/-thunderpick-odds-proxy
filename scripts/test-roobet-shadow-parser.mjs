@@ -39,4 +39,39 @@ expect(towers?.line===11.5,'tower total must retain exact 11.5 line');
 const wrong=markets.find(m=>m.family==='total_towers'&&m.scope?.map===2);
 expect(wrong?.line===11.5,'Map 2 tower total must remain distinct from Map 1');
 expect(markets.every(m=>m.state==='prematch'),'shadow parser must persist prematch state');
-console.log('ROOBET_SHADOW_PARSER_VERIFIED',markets.length);
+
+const nativeFixture={
+  fixtureId:88,
+  participant1Name:'Team Spirit',
+  participant2Name:'Team Yandex',
+  bookmakerOdds:{
+    roobet:{markets:{
+      '9001':{
+        outcomes:{
+          '101':{players:{'0':{price:1.62}}},
+          '102':{players:{'0':{price:2.15}}}
+        }
+      }
+    }}
+  }
+};
+const nativeMeta=new Map([['9001',{
+  marketId:9001,
+  marketName:'Total Towers Destroyed',
+  sportId:16,
+  handicap:11.5,
+  period:'Map 1',
+  marketType:'totals',
+  outcomes:[
+    {outcomeId:101,outcomeName:'Over'},
+    {outcomeId:102,outcomeName:'Under'}
+  ]
+}]]);
+const nativeRows=parseRoobetOddsPapiFixture({sport:'dota2',fixture:nativeFixture,marketMeta:nativeMeta});
+expect(nativeRows.length===1,'native OddsPapi nested Roobet fixture must parse');
+const nativeMarket=nativeRows[0].bookmakers[0].markets[0];
+expect(nativeMarket?.family==='total_towers','native nested market must normalize to total_towers');
+expect(nativeMarket?.scope?.map===1&&nativeMarket?.line===11.5,'native nested market must retain Map 1 and 11.5');
+expect(nativeMarket?.outcomes?.some(o=>o.name==='Under'&&o.price===2.15),'native nested market must attach catalog outcome name to executable price');
+
+console.log('ROOBET_SHADOW_PARSER_VERIFIED',markets.length+1);
