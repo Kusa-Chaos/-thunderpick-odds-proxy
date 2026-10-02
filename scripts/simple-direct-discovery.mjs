@@ -4,7 +4,7 @@ import {spawnSync} from 'node:child_process';
 const read=async p=>{try{return JSON.parse(await fs.readFile(p,'utf8'));}catch{return null;}};
 const directPath='data/direct-sources-latest.json';
 const redact=s=>String(s||'').replace(/eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g,'[REDACTED]').slice(0,240);
-const cloudbet=spawnSync('python',['scripts/cloudbet-direct.py'],{encoding:'utf8',env:process.env,timeout:120000});
+const cloudbet=spawnSync('python3',['scripts/cloudbet-direct.py'],{encoding:'utf8',env:process.env,timeout:120000});
 if(cloudbet.status!==0){
   const failed=await read(directPath)||{sports:{},providerHealth:{}};
   failed.providerHealth ||= {};
