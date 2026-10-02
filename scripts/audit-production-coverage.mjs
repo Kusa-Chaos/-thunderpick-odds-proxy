@@ -43,21 +43,25 @@ const familyEvidence = {
   esports_player_deaths: Number(direct.kambi?.playerDeathMarkets || 0),
   sports_spread_handicap: Number(direct.kambiNfl?.spreads || 0) + Number(direct.fanduel?.bySport?.['american-football']?.spreads || 0) + Number(direct.fanduel?.bySport?.basketball?.spreads || 0) + Number(direct.fanduel?.bySport?.baseball?.spreads || 0),
   sports_total: Number(direct.kambiNfl?.totals || 0) + Number(direct.fanduel?.bySport?.['american-football']?.totals || 0) + Number(direct.fanduel?.bySport?.basketball?.totals || 0) + Number(direct.fanduel?.bySport?.baseball?.totals || 0),
-  team_total: Number(direct.kambiNfl?.teamTotals || 0),
+  team_total: Number(direct.kambiNfl?.teamTotals || 0) + Number(direct.bovadaNfl?.teamTotals || 0),
   player_prop: ['stake','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduelProps','draftkingsNfl','draftkingsTraditional'].reduce((n,k)=>n+Number(direct[k]?.playerPropMarkets || 0),0)
 };
 
 const familyCollectors = {
   map_winner:['kambi'], map_handicap:['kambi'], round_handicap:['kambi'], round_total:['kambi'],
   esports_player_kills:['kambi'], esports_player_deaths:['kambi'],
-  sports_spread_handicap:['kambiNfl','fanduel'], sports_total:['kambiNfl','fanduel'], team_total:['kambiNfl'],
+  sports_spread_handicap:['kambiNfl','fanduel'], sports_total:['kambiNfl','fanduel'], team_total:['kambiNfl','bovadaNfl'],
   player_prop:['stake','kambiTraditional','kambiNfl','bovadaNfl','bovadaTraditional','fanduelProps','draftkingsNfl','draftkingsTraditional']
 };
 
 function collectorExplicitlyEnumerated(name,family){
   const h=direct[name];
   if (!h || h.ok!==true || (Array.isArray(h.errors)&&h.errors.length)) return false;
-  if (family==='team_total') return Number(h.nflEvents||0)>0 && Number(h.deepRequests||0)>0 && Object.hasOwn(h,'teamTotals');
+  if (family==='team_total') {
+    if (name==='kambiNfl') return Number(h.nflEvents||0)>0 && Number(h.deepRequests||0)>0 && Object.hasOwn(h,'teamTotals');
+    if (name==='bovadaNfl') return Number(h.rawEvents||0)>0 && Object.hasOwn(h,'teamTotals');
+    return false;
+  }
   if (family==='map_handicap') return Number(h.deepEventRequests||0)>0 && Object.hasOwn(h,'mapHandicapMarkets');
   return true;
 }
