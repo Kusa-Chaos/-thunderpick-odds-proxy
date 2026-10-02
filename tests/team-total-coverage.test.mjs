@@ -8,7 +8,8 @@ const audit = fs.readFileSync('scripts/audit-production-coverage.mjs','utf8');
 test('Bovada NFL collector explicitly parses full-game team point totals', () => {
   assert.match(bovada, /Total Points -/);
   assert.match(bovada, /teamTotals/);
-  assert.match(bovada, /team_total/);
+  assert.match(bovada, /key:'totals'.*team/);
+  assert.match(bovada, /m\.key==='totals'&&m\.team/);
 });
 
 test('coverage gate accepts healthy Bovada NFL as explicit team-total enumerator', () => {
