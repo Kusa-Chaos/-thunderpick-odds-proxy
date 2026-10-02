@@ -44,6 +44,24 @@ const firstBlood=normalizeObjectiveMarket({
 expect(firstBlood?.family==='first_blood','First Blood must have its own family');
 expect(firstBlood?.line===null,'First Blood must not invent a numeric line');
 
+const towerHandicap=normalizeObjectiveMarket({
+  sport:'dota2',source:'thunderpick',event:{home:'Team Spirit',away:'Team Yandex'},
+  market:{name:'Total Towers Destroyed Handicap - Map 1',period:{type:'map',number:1},selections:[{name:'Team Spirit',handicap:3.5,odds:1.8},{name:'Team Yandex',handicap:-3.5,odds:1.9}]}
+});
+expect(towerHandicap===null,'Tower handicap must not be normalized as tower Over/Under');
+
+const oddEvenKills=normalizeObjectiveMarket({
+  sport:'lol',source:'thunderpick',event:{home:'Cloud9',away:'LYON'},
+  market:{name:'Total Kills Odd/Even - Map 1',period:{type:'map',number:1},selections:[{name:'Even',odds:1.9},{name:'Odd',odds:1.9}]}
+});
+expect(oddEvenKills===null,'Odd/Even kills must not be normalized as kill totals');
+
+const compoundKills=normalizeObjectiveMarket({
+  sport:'dota2',source:'thunderpick',event:{home:'Team Spirit',away:'Team Yandex'},
+  market:{name:'Team Spirit Win Map and Total Kills Over/Under - Map 1',baseLine:'25.5',period:{type:'map',number:1},selections:[{name:'Over',odds:2.2},{name:'Under',odds:1.6}]}
+});
+expect(compoundKills===null,'Win Map + Total Kills compound must not normalize as team_kills');
+
 const base={sport:'dota2',event:'Team Spirit|Team Yandex',target:'',side:'under',state:'prematch',settlement:'standard'};
 const towerM1=objectiveContractKey({...base,family:'total_towers',map:1,line:11.5});
 const towerM2=objectiveContractKey({...base,family:'total_towers',map:2,line:11.5});
@@ -54,4 +72,4 @@ expect(towerM1!==towerM2,'Map 1 and Map 2 tower totals must never collide');
 expect(towerM1!==teamTower,'game total towers and team towers must never collide');
 expect(race5!==race10,'First to 5 and First to 10 kills must never collide');
 
-console.log('OBJECTIVE_MARKET_NORMALIZER_VERIFIED',7);
+console.log('OBJECTIVE_MARKET_NORMALIZER_VERIFIED',10);
