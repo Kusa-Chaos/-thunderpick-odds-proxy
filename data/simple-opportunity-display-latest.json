@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-02T02:29:43.580Z",
-  "builtAt": "2026-10-02T05:39:06.502Z",
+  "builtAt": "2026-10-02T05:44:43.989Z",
   "mode": "compact-aws-delivery-v11-persisted-arbitrage",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 1,
@@ -10,7 +10,7 @@
     "PRICE BOARD": 100,
     "INFORMATIONAL": 129,
     "ARB FOUND": 0,
-    "ARB WATCH": 0
+    "ARB WATCH": 1
   },
   "parseErrors": {
     "identity": 0,
@@ -1157,8 +1157,101 @@
     }
   ],
   "arbFoundRows": [],
-  "arbWatchRows": [],
-  "arbitrageAudit": null,
+  "arbWatchRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2749681,
+      "match": "Alex Molcan vs Karen Khachanov",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-02T05:00:00+00:00",
+      "exactContractKey": "tennis|alexmolcan|karenkhachanov|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9788267962513015,
+      "arbROI": 0.02163120567375887,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-01T15:56:48Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Karen Khachanov",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.34
+        },
+        {
+          "outcome": "Alex Molcan",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 4.3
+        }
+      ]
+    }
+  ],
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-02T02:29:41.558Z",
+    "marketsTested": 1257,
+    "screensEvaluated": 1,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2749681,
+        "match": "Alex Molcan vs Karen Khachanov",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-02T05:00:00+00:00",
+        "exactContractKey": "tennis|alexmolcan|karenkhachanov|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9788267962513015,
+        "arbROI": 0.02163120567375887,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-01T15:56:48Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Karen Khachanov",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.34
+          },
+          {
+            "outcome": "Alex Molcan",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 4.3
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 1
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
