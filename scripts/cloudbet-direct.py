@@ -155,22 +155,23 @@ def main():
     try:
         key=load_key()
     except Exception as e:
-        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
+        health['cloudbet']={'ok':False,'connected':False,'usable':False,'source':SOURCE,'events':0,'rawEvents':0,'rawEventsBySport':{},'normalizedRejectedBySport':{},'state':'SECRET_UNAVAILABLE','error':sanitize_error(e),'fetchedAt':utcnow()}
         write_out(out); print(json.dumps(health['cloudbet'])); return
-    counts={}; errors=[]; fetched=0; total=0
+    counts={}; raw_counts={}; rejected_counts={}; errors=[]; fetched=0; total=0
     for canon,config in SPORT_CONFIG.items():
         try:
-            events=request_events(config,key); fetched+=1; added=0
+            events=request_events(config,key); fetched+=1; raw_counts[canon]=len(events); added=0
             for event in events:
                 row=normalize_event(event,canon)
                 if row:
                     sports[canon]['exactV2'].append(row); added+=1; total+=1
-            counts[canon]=added
+            counts[canon]=added; rejected_counts[canon]=max(0,len(events)-added)
         except Exception as e:
-            counts[canon]=0; errors.append(f'{canon}:{sanitize_error(e)}')
+            counts[canon]=0; raw_counts[canon]=0; rejected_counts[canon]=0; errors.append(f'{canon}:{sanitize_error(e)}')
     connected=fetched>0
     usable=total>0
-    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'source':SOURCE,'events':total,'sportsFetched':fetched,'bySport':counts,'errors':errors[:9],'windowDays':WINDOW_DAYS,'fetchedAt':utcnow()}
+    raw_total=sum(raw_counts.values())
+    health['cloudbet']={'ok':connected,'connected':connected,'usable':usable,'source':SOURCE,'events':total,'rawEvents':raw_total,'sportsFetched':fetched,'bySport':counts,'rawEventsBySport':raw_counts,'normalizedRejectedBySport':rejected_counts,'errors':errors[:9],'windowDays':WINDOW_DAYS,'fetchedAt':utcnow()}
     write_out(out); print(json.dumps(health['cloudbet']))
 
 if __name__=='__main__': main()
