@@ -35,6 +35,12 @@ test('Cloudbet failure cannot abort the whole production scan', () => {
   assert.match(discovery, /providerHealth\.cloudbet/);
 });
 
+test('Cloudbet HTTP failures retain a sanitized response body for diagnosis', () => {
+  assert.match(cloudbet, /HTTPError/);
+  assert.match(cloudbet, /\.read\(\)/);
+  assert.match(cloudbet, /sanitize_error/);
+});
+
 test('Cloudbet provider health is propagated to the published board', () => {
   assert.match(cloudbet, /out\.setdefault\(['\"]providerHealth['\"]/);
   assert.match(cloudbet, /health\[['\"]cloudbet['\"]\]/);
