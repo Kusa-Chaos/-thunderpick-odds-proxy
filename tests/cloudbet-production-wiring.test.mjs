@@ -16,6 +16,18 @@ test('Cloudbet is collected before each normal and retry discovery snapshot', ()
   assert.ok(readDirect >= 0 && invoke < readDirect, 'Cloudbet must run before discovery reads the direct-source snapshot');
 });
 
+test('Cloudbet collector uses the current sport and upcoming-events query contract', () => {
+  for (const key of ['american_football','baseball','basketball','soccer','tennis','counter_strike','dota_2','league_of_legends','esport_valorant']) {
+    assert.ok(cloudbet.includes(`'${key}'`) || cloudbet.includes(`\"${key}\"`), `missing Cloudbet sport key ${key}`);
+  }
+  assert.match(cloudbet, /['\"]from['\"]/);
+  assert.match(cloudbet, /['\"]to['\"]/);
+  assert.match(cloudbet, /['\"]markets['\"]/);
+  for (const market of ['american_football.moneyline','baseball.moneyline','basketball.moneyline','soccer.match_odds','tennis.winner','counter_strike.winner','dota_2.winner','league_of_legends.winner','esport_valorant.winner']) {
+    assert.ok(cloudbet.includes(market), `missing Cloudbet market key ${market}`);
+  }
+});
+
 test('Cloudbet collector writes the exactV2 schema consumed by production merge', () => {
   assert.match(cloudbet, /['\"]sports['\"]/);
   assert.match(cloudbet, /['\"]exactV2['\"]/);
