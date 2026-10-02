@@ -1,16 +1,16 @@
 {
   "generatedAt": "2026-10-02T18:47:39.248Z",
-  "builtAt": "2026-10-02T18:47:39.454Z",
+  "builtAt": "2026-10-02T18:48:01.475Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 1,
     "SCREENING": 228,
     "PRICE BOARD": 91,
     "INFORMATIONAL": 185,
-    "ARB FOUND": 2,
-    "ARB WATCH": 0,
+    "ARB FOUND": 0,
+    "ARB WATCH": 3,
     "ARB SCREENING": 0
   },
   "parseErrors": {
@@ -1157,51 +1157,135 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
-  "arbFoundRows": [
+  "arbFoundRows": [],
+  "arbWatchRows": [
     {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2723396|round_handicap|||-3.5||1|||prematch|standard",
-      "inverseSum": 0.763888888888889,
-      "arbMargin": 0.3090909090909091,
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2750674,
+      "match": "Alexander Zverev vs Juncheng Shang",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T11:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9797160243407709,
+      "arbROI": 0.020703933747411973,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
       "legs": [
         {
-          "target": "m80",
-          "sourceFamily": "thunderpick",
+          "outcome": "Alexander Zverev",
           "book": "Thunderpick",
-          "price": 4.8
+          "sourceFamily": "thunderpick",
+          "price": 1.16
         },
         {
-          "target": "mouz",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 1.8
+          "outcome": "Juncheng Shang",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 8.5
         }
-      ],
-      "independentSourceFamilies": 1
+      ]
     },
     {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2723396|round_handicap|||-3.5||2|||prematch|standard",
-      "inverseSum": 0.7896977437207322,
-      "arbMargin": 0.2663072776280324,
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2755651,
+      "match": "Daniil Medvedev vs Jan-Lennard Struff",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T09:00:00+00:00",
+      "exactContractKey": "tennis|daniilmedvedev|janlennardstruff|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9882697947214076,
+      "arbROI": 0.011869436201780381,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
       "legs": [
         {
-          "target": "m80",
-          "sourceFamily": "thunderpick",
+          "outcome": "Daniil Medvedev",
           "book": "Thunderpick",
-          "price": 5.8
+          "sourceFamily": "thunderpick",
+          "price": 1.24
         },
         {
-          "target": "mouz",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 1.62
+          "outcome": "Jan-Lennard Struff",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 5.5
         }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2751565,
+      "match": "Francisco Cerundolo vs Jakub Mensik",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T09:00:00+00:00",
+      "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0005790387955993,
+      "arbROI": -0.0005787037037037202,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
       ],
-      "independentSourceFamilies": 1
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Jakub Mensik",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.57
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 2.75
+        }
+      ]
     }
   ],
-  "arbWatchRows": [],
   "arbScreeningRows": [],
   "watchBoardRows": [
     {
@@ -1259,6 +1343,135 @@
       "startTime": "2026-10-02T22:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
       "watchType": "+EV WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2750674,
+      "match": "Alexander Zverev vs Juncheng Shang",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T11:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9797160243407709,
+      "arbROI": 0.020703933747411973,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alexander Zverev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.16
+        },
+        {
+          "outcome": "Juncheng Shang",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 8.5
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2755651,
+      "match": "Daniil Medvedev vs Jan-Lennard Struff",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T09:00:00+00:00",
+      "exactContractKey": "tennis|daniilmedvedev|janlennardstruff|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9882697947214076,
+      "arbROI": 0.011869436201780381,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.24
+        },
+        {
+          "outcome": "Jan-Lennard Struff",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 5.5
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2751565,
+      "match": "Francisco Cerundolo vs Jakub Mensik",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-03T09:00:00+00:00",
+      "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0005790387955993,
+      "arbROI": -0.0005787037037037202,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Jakub Mensik",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.57
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 2.75
+        }
+      ],
+      "watchType": "ARB WATCH"
     }
   ],
   "screeningBoardRows": [
@@ -1863,7 +2076,146 @@
       "screenType": "+EV SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-02T18:47:35.727Z",
+    "marketsTested": 1682,
+    "screensEvaluated": 3,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2750674,
+        "match": "Alexander Zverev vs Juncheng Shang",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T11:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|junchengshang|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9797160243407709,
+        "arbROI": 0.020703933747411973,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.16
+          },
+          {
+            "outcome": "Juncheng Shang",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 8.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2755651,
+        "match": "Daniil Medvedev vs Jan-Lennard Struff",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:00:00+00:00",
+        "exactContractKey": "tennis|daniilmedvedev|janlennardstruff|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9882697947214076,
+        "arbROI": 0.011869436201780381,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.24
+          },
+          {
+            "outcome": "Jan-Lennard Struff",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 5.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2751565,
+        "match": "Francisco Cerundolo vs Jakub Mensik",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:00:00+00:00",
+        "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0005790387955993,
+        "arbROI": -0.0005787037037037202,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-02T18:46:32.604Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Jakub Mensik",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.57
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 2.75
+          }
+        ]
+      }
+    ],
+    "screening": [],
+    "rejectedIncomplete": 3,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
