@@ -22,6 +22,10 @@ test('Cloudbet collector follows official sport -> competition flow', () => {
   assert.doesNotMatch(cloudbet, /\/events\?\{qs\}/);
 });
 
+test('Cloudbet uses the current Valorant sport key', () => {
+  assert.match(cloudbet, /['\"]valorant['\"]\s*:\s*['\"]esport-valorant['\"]/);
+});
+
 test('Cloudbet uses filtered primary-market competition requests instead of per-event hydration', () => {
   assert.match(cloudbet, /PRIMARY_MARKETS/);
   assert.match(cloudbet, /markets=/);
