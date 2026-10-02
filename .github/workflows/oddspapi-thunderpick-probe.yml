@@ -6,6 +6,10 @@ on:
     branches: [main]
     paths:
       - 'scripts/oddspapi-thunderpick-probe.mjs'
+      - 'scripts/roobet-shadow-parser.mjs'
+      - 'scripts/roobet-shadow-probe.mjs'
+      - 'scripts/test-roobet-shadow-parser.mjs'
+      - 'scripts/test-roobet-shadow-probe.mjs'
       - '.github/workflows/oddspapi-thunderpick-probe.yml'
 
 permissions:
@@ -14,13 +18,29 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify Roobet shadow parser
+        run: |
+          node scripts/test-roobet-shadow-parser.mjs
+          node scripts/test-roobet-shadow-probe.mjs
       - name: Check existing OddsPapi Thunderpick access
         env:
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
         run: node scripts/oddspapi-thunderpick-probe.mjs
+      - name: Probe Roobet objective markets in shadow mode
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: node scripts/roobet-shadow-probe.mjs
+      - name: Upload Roobet shadow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: roobet-shadow
+          path: data/roobet-shadow-latest.json
+          if-no-files-found: warn
+          retention-days: 3
