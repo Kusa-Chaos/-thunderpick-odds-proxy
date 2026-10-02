@@ -28,7 +28,10 @@ test('Cloudbet discovers API sport slugs separately from market-key prefixes', (
   }
 });
 
-test('Cloudbet health distinguishes filtered, unfiltered, and usable inventory', () => {
+test('Cloudbet health distinguishes sports catalog, filtered, unfiltered, and usable inventory', () => {
+  assert.match(cloudbet, /sportInventory/);
+  assert.match(cloudbet, /eventCount/);
+  assert.match(cloudbet, /competitionCount/);
   assert.match(cloudbet, /rawEventsBySport/);
   assert.match(cloudbet, /rawEvents/);
   assert.match(cloudbet, /unfilteredRawEventsBySport/);
