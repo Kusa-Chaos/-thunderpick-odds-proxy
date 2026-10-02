@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import {classifyArbTier} from './arb-tier.mjs';
 
 const readJson=async(path,fallback={})=>{try{return JSON.parse(await fs.readFile(path,'utf8'))}catch{return fallback}};
 const valid=v=>Number.isFinite(Number(v))&&Number(v)>1;
@@ -55,7 +56,8 @@ function normalize(screen={}){
   const outsideFamily=familyFromBook(outsideBook);
   const outsideQuote=(screen.outside||[]).find(o=>String(o.book||'')===outsideBook)||{};
   const blocker=!scopeComplete?'Exact settlement scope not explicitly persisted by upstream comparator':(!identityVerified?'Exact identity verification incomplete':null);
-  const tier=reciprocalSum>1.01?'ARB SCREENING':(reciprocalSum<1&&identityVerified?'ARB FOUND':'ARB WATCH');
+  const tier=classifyArbTier(reciprocalSum,identityVerified);
+  if(!tier) return null;
   return {
     tier,
     sport:screen.sport||null,
@@ -85,10 +87,6 @@ const screen=await readJson('data/screen-latest.json',{});
 const board=await readJson('data/simple-opportunity-latest.json',{});
 if(!board.generatedAt) throw new Error('authoritative board missing generatedAt');
 
-// Persist both the dedicated arb list and the strongest non-WATCH arb screens.
-// `screen.candidates` contains the same exact-contract rows with arbScreen math,
-// so it also lets us retain the user's 1.01-1.03 ARB SCREENING band without
-// weakening ARB FOUND/WATCH identity rules.
 const dedicated=Array.isArray(screen.arbScreens)?screen.arbScreens:[];
 const candidateArbs=(Array.isArray(screen.candidates)?screen.candidates:[]).filter(x=>{
   const sum=Number(x?.arbScreen?.arbSum);
