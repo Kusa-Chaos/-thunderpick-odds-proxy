@@ -710,7 +710,10 @@
     "WATCH": 2,
     "SCREENING": 228,
     "PRICE BOARD": 86,
-    "INFORMATIONAL": 171
+    "INFORMATIONAL": 171,
+    "ARB FOUND": 0,
+    "ARB WATCH": 2,
+    "ARB SCREENING": 0
   },
   "rows": [
     {
@@ -25655,5 +25658,104 @@
       "identityKey": "cs2|2758909|player_prop|jottaaa|kills|10.5||1|||over|prematch|standard",
       "identityComplete": true
     }
-  ]
+  ],
+  "strictSnapshotHealthy": true,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-03T08:39:54.790Z",
+    "marketsTested": 2037,
+    "screensEvaluated": 2,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2755651,
+        "match": "Daniil Medvedev vs Jan-Lennard Struff",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T09:30:00+00:00",
+        "exactContractKey": "tennis|daniilmedvedev|janlennardstruff|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9818181818181819,
+        "arbROI": 0.01851851851851838,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-03T08:39:00.009Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.25
+          },
+          {
+            "outcome": "Jan-Lennard Struff",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 5.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2751565,
+        "match": "Francisco Cerundolo vs Jakub Mensik",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-03T10:45:00+00:00",
+        "exactContractKey": "tennis|franciscocerundolo|jakubmensik|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0005790387955993,
+        "arbROI": -0.0005787037037037202,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-03T08:39:00.009Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Jakub Mensik",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.57
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 2.75
+          }
+        ]
+      }
+    ],
+    "screening": [],
+    "rejectedIncomplete": 2,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  }
 }
