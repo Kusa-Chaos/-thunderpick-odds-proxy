@@ -1,5 +1,12 @@
 import assert from 'node:assert/strict';
-import {buildGgBetObjectiveArtifact} from './ggbet-objective-artifact.mjs';
+import fs from 'node:fs/promises';
+
+const output='data/ggbet-objective-latest.json';
+await fs.rm(output,{force:true});
+const {buildGgBetObjectiveArtifact}=await import('./ggbet-objective-artifact.mjs');
+let importWroteFile=true;
+try{await fs.access(output);}catch{importWroteFile=false;}
+assert.equal(importWroteFile,false,'importing the library from a test must not execute the CLI or write scanner data');
 
 const raw={
   generatedAt:'2026-10-03T04:04:30.000Z',connected:true,errors:[],
