@@ -690,7 +690,10 @@
     "WATCH": 0,
     "SCREENING": 224,
     "PRICE BOARD": 94,
-    "INFORMATIONAL": 151
+    "INFORMATIONAL": 151,
+    "ARB FOUND": 0,
+    "ARB WATCH": 0,
+    "ARB SCREENING": 0
   },
   "rows": [
     {
@@ -24812,5 +24815,19 @@
       "identityKey": "cs2|2723398|player_prop|hunter|kills|7.5||2|||over|prematch|standard",
       "identityComplete": true
     }
-  ]
+  ],
+  "strictSnapshotHealthy": true,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-03T14:02:34.409Z",
+    "marketsTested": 1119,
+    "screensEvaluated": 0,
+    "found": [],
+    "watch": [],
+    "screening": [],
+    "rejectedIncomplete": 0,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  }
 }

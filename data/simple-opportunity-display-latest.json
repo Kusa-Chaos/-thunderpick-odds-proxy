@@ -1,15 +1,15 @@
 {
   "generatedAt": "2026-10-03T14:02:37.707Z",
-  "builtAt": "2026-10-03T14:02:37.920Z",
+  "builtAt": "2026-10-03T14:02:59.902Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
     "SCREENING": 224,
     "PRICE BOARD": 94,
     "INFORMATIONAL": 151,
-    "ARB FOUND": 3,
+    "ARB FOUND": 0,
     "ARB WATCH": 0,
     "ARB SCREENING": 0
   },
@@ -1101,71 +1101,7 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
-  "arbFoundRows": [
-    {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2723398|round_handicap|||-6.5||1|||prematch|standard",
-      "inverseSum": 0.37735849056603776,
-      "arbMargin": 1.65,
-      "legs": [
-        {
-          "target": "g2",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 5.3
-        },
-        {
-          "target": "natus vincere",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 5.3
-        }
-      ],
-      "independentSourceFamilies": 1
-    },
-    {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2723398|round_handicap|||-5.5||2|||prematch|standard",
-      "inverseSum": 0.4631578947368421,
-      "arbMargin": 1.1590909090909092,
-      "legs": [
-        {
-          "target": "natus vincere",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 5
-        },
-        {
-          "target": "g2",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 3.8
-        }
-      ],
-      "independentSourceFamilies": 1
-    },
-    {
-      "tier": "ARB FOUND",
-      "identityGroup": "cs2|2723398|round_handicap|||-3.5||1|||prematch|standard",
-      "inverseSum": 0.7275132275132274,
-      "arbMargin": 0.37454545454545474,
-      "legs": [
-        {
-          "target": "g2",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 2.8
-        },
-        {
-          "target": "natus vincere",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 2.7
-        }
-      ],
-      "independentSourceFamilies": 1
-    }
-  ],
+  "arbFoundRows": [],
   "arbWatchRows": [],
   "arbScreeningRows": [],
   "watchBoardRows": [],
@@ -1771,7 +1707,19 @@
       "screenType": "+EV SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-03T14:02:34.409Z",
+    "marketsTested": 1119,
+    "screensEvaluated": 0,
+    "found": [],
+    "watch": [],
+    "screening": [],
+    "rejectedIncomplete": 0,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
