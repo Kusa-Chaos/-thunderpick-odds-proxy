@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import json
 from pathlib import Path
 
 p=Path('scripts/lambda/ggbet_objective_collector/lambda_function.py')
@@ -39,4 +40,33 @@ assert headers['X-Requested-With']=='XMLHttpRequest'
 assert headers['X-App-Id']=='22'
 assert headers['X-App-Access-Token']=='public-app-token'
 assert headers['X-Auth-Token']=='betting-token'
+
+class FakeResponse:
+    def __init__(self, body):
+        self.status=200
+        self._body=body.encode()
+    def __enter__(self): return self
+    def __exit__(self,*args): return False
+    def read(self): return self._body
+
+class FakeOpener:
+    def __init__(self, bodies):
+        self.bodies=list(bodies)
+        self.requests=[]
+    def open(self, req, timeout=None):
+        self.requests.append(req)
+        return FakeResponse(self.bodies.pop(0))
+
+fake=FakeOpener([
+    '[{"errors":[{"message":"PersistedQueryNotFound","extensions":{"code":"PERSISTED_QUERY_NOT_FOUND"}}],"data":null}]',
+    '[{"data":{"sportEventBySlug":{"id":"event-1"}}}]',
+])
+status,data=mod._post_persisted_json(fake,'https://example/graphql',headers,'Test',query,{'slug':'demo'})
+assert status==200
+assert data=={'data':{'sportEventBySlug':{'id':'event-1'}}}
+assert len(fake.requests)==2
+first=json.loads(fake.requests[0].data.decode())
+second=json.loads(fake.requests[1].data.decode())
+assert isinstance(first,list) and 'query' not in first[0]
+assert second[0]['query']==query
 print('GGBET_COLLECTOR_CORE_VERIFIED')
