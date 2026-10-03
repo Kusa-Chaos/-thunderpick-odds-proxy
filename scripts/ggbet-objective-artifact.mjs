@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import path from 'node:path';
 import {normalizeGGBetEvent} from './ggbet-objective-normalizer.mjs';
 
 export function buildGgBetObjectiveArtifact(raw={}){
@@ -28,7 +29,7 @@ export function buildGgBetObjectiveArtifact(raw={}){
   };
 }
 
-if(process.argv[1]?.endsWith('ggbet-objective-artifact.mjs')){
+if(path.basename(process.argv[1]||'')==='ggbet-objective-artifact.mjs'){
   const input=process.env.GGBET_RAW_FILE||'data/ggbet-objective-raw-latest.json';
   const output=process.env.GGBET_ARTIFACT_FILE||'data/ggbet-objective-latest.json';
   let raw={connected:false,errors:['raw artifact unavailable']};
