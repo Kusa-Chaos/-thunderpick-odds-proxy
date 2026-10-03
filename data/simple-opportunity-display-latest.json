@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-03T21:50:40.326Z",
-  "builtAt": "2026-10-03T21:50:40.527Z",
+  "builtAt": "2026-10-03T21:51:03.221Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
@@ -10,7 +10,7 @@
     "PRICE BOARD": 100,
     "INFORMATIONAL": 129,
     "ARB FOUND": 0,
-    "ARB WATCH": 0,
+    "ARB WATCH": 2,
     "ARB SCREENING": 0
   },
   "parseErrors": {
@@ -1102,9 +1102,181 @@
     }
   ],
   "arbFoundRows": [],
-  "arbWatchRows": [],
+  "arbWatchRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762356,
+      "match": "Alexander Zverev vs Novak Djokovic",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T11:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|novakdjokovic|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9809908401457699,
+      "arbROI": 0.019377510040160528,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T15:33:04Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alexander Zverev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.43
+        },
+        {
+          "outcome": "Novak Djokovic",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.55
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762686,
+      "match": "Daniil Medvedev vs Francisco Cerundolo",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T08:30:00+00:00",
+      "exactContractKey": "tennis|daniilmedvedev|franciscocerundolo|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9881756756756757,
+      "arbROI": 0.011965811965811923,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T21:49:31.817Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.48
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 3.2
+        }
+      ]
+    }
+  ],
   "arbScreeningRows": [],
-  "watchBoardRows": [],
+  "watchBoardRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762356,
+      "match": "Alexander Zverev vs Novak Djokovic",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T11:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|novakdjokovic|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9809908401457699,
+      "arbROI": 0.019377510040160528,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T15:33:04Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alexander Zverev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.43
+        },
+        {
+          "outcome": "Novak Djokovic",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.55
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762686,
+      "match": "Daniil Medvedev vs Francisco Cerundolo",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T08:30:00+00:00",
+      "exactContractKey": "tennis|daniilmedvedev|franciscocerundolo|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9881756756756757,
+      "arbROI": 0.011965811965811923,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T21:49:31.817Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.48
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 3.2
+        }
+      ],
+      "watchType": "ARB WATCH"
+    }
+  ],
   "screeningBoardRows": [
     {
       "tier": "SCREENING",
@@ -1707,7 +1879,104 @@
       "screenType": "+EV SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-03T21:50:37.598Z",
+    "marketsTested": 1637,
+    "screensEvaluated": 2,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2762356,
+        "match": "Alexander Zverev vs Novak Djokovic",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-04T11:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|novakdjokovic|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9809908401457699,
+        "arbROI": 0.019377510040160528,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-03T15:33:04Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.43
+          },
+          {
+            "outcome": "Novak Djokovic",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 3.55
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2762686,
+        "match": "Daniil Medvedev vs Francisco Cerundolo",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-04T08:30:00+00:00",
+        "exactContractKey": "tennis|daniilmedvedev|franciscocerundolo|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9881756756756757,
+        "arbROI": 0.011965811965811923,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-03T21:49:31.817Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.48
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 3.2
+          }
+        ]
+      }
+    ],
+    "screening": [],
+    "rejectedIncomplete": 2,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
