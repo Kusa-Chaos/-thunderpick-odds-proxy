@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-03T12:52:25.163Z",
-  "builtAt": "2026-10-03T12:52:25.395Z",
+  "builtAt": "2026-10-03T12:52:43.368Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
@@ -1707,7 +1707,19 @@
       "screenType": "+EV SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-03T12:52:21.826Z",
+    "marketsTested": 1264,
+    "screensEvaluated": 0,
+    "found": [],
+    "watch": [],
+    "screening": [],
+    "rejectedIncomplete": 0,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
