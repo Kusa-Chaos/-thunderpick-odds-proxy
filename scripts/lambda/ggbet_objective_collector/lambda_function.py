@@ -1,3 +1,4 @@
+import hashlib
 import html
 import json
 import re
@@ -66,6 +67,22 @@ def sport_key(value):
     return None
 
 
+def _persisted_payload(operation_name, query, variables=None, include_query=False):
+    item = {
+        'operationName': operation_name,
+        'variables': variables or {},
+        'extensions': {
+            'persistedQuery': {
+                'version': 1,
+                'sha256Hash': hashlib.sha256(query.encode()).hexdigest(),
+            }
+        },
+    }
+    if include_query:
+        item['query'] = query
+    return [item]
+
+
 def _new_opener():
     jar = http.cookiejar.CookieJar()
     return urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar)), jar
@@ -121,7 +138,7 @@ def _post_json(opener, url, headers, query, variables=None):
         raise RuntimeError(f'HTTP {exc.code} {url} {body[:300]}') from exc
 
 
-def _client_headers(env, referer, auth_token=None):
+def _client_headers(env, referer, auth_token=None, batching=False):
     headers = {
         'User-Agent': UA,
         'Accept': 'application/json',
@@ -129,11 +146,14 @@ def _client_headers(env, referer, auth_token=None):
         'Origin': 'https://gg.bet',
         'Referer': referer,
         'X-Gc-Locale': 'en',
+        'X-Requested-With': 'XMLHttpRequest',
         'X-App-Id': str(env.get('BETTING_APP_ID_HEADER') or ''),
         'X-App-Access-Token': str(env.get('BETTING_ACCESS_TOKEN') or ''),
     }
     if auth_token:
         headers['X-Auth-Token'] = auth_token
+    if batching:
+        headers['X-Batching'] = 'true'
     return headers
 
 
