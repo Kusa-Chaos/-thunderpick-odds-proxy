@@ -138,6 +138,33 @@ def _post_json(opener, url, headers, query, variables=None):
         raise RuntimeError(f'HTTP {exc.code} {url} {body[:300]}') from exc
 
 
+def _post_persisted_json(opener, url, headers, operation_name, query, variables=None):
+    def send(include_query):
+        payload = json.dumps(_persisted_payload(operation_name, query, variables, include_query=include_query)).encode()
+        req = urllib.request.Request(url, data=payload, headers=headers, method='POST')
+        try:
+            with opener.open(req, timeout=35) as response:
+                text = response.read().decode('utf-8', 'replace')
+                decoded = json.loads(text)
+                if not isinstance(decoded, list) or not decoded:
+                    raise RuntimeError('GG.BET batched GraphQL response was not a non-empty array')
+                return response.status, decoded[0]
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode('utf-8', 'replace')
+            raise RuntimeError(f'HTTP {exc.code} {url} {body[:300]}') from exc
+
+    status, payload = send(False)
+    errors = payload.get('errors') or [] if isinstance(payload, dict) else []
+    persisted_missing = any(
+        str((e.get('extensions') or {}).get('code') or '').upper() == 'PERSISTED_QUERY_NOT_FOUND'
+        or str(e.get('message') or '').replace(' ', '').lower() == 'persistedquerynotfound'
+        for e in errors if isinstance(e, dict)
+    )
+    if persisted_missing:
+        return send(True)
+    return status, payload
+
+
 def _client_headers(env, referer, auth_token=None, batching=False):
     headers = {
         'User-Agent': UA,
@@ -169,10 +196,11 @@ def _bootstrap(opener, env, page_url):
 
 
 def _fetch_event(opener, betting_url, token, env, slug):
-    status, payload = _post_json(
+    status, payload = _post_persisted_json(
         opener,
         betting_url,
-        _client_headers(env, f'https://gg.bet/esports/match/{slug}', token),
+        _client_headers(env, f'https://gg.bet/esports/match/{slug}', token, batching=True),
+        'GGObjectiveMatch',
         EVENT_QUERY,
         {'slug': slug},
     )
