@@ -27,6 +27,7 @@ expect(out.name==='LGD Gaming vs GamerLegion','event name must survive');
 expect(out.bookmakers[0].markets.length===6,'must retain six active plain objective markets and reject compound/deactivated lookalikes');
 const byName=Object.fromEntries(out.bookmakers[0].markets.map(m=>[m.name,m]));
 expect(byName['Map 1 - Race to kills']?.mapNumber===1 && byName['Map 1 - Race to kills']?.baseLine===5,'Race to 5 must retain map and threshold');
+expect(byName['Map 1 - Race to kills']?.outcomes?.[0]?.name==='LGD Gaming' && byName['Map 1 - Race to kills']?.outcomes?.[1]?.name==='GamerLegion','Race to kills outcomes must normalize to exact team names so exact matching works');
 expect(byName['Map 1 - Total kills']?.baseLine===52.5,'Total Kills must retain exact total');
 expect(byName['Map 1 - LGD Gaming total kills']?.baseLine===28.5,'Team Total Kills must retain exact line');
 expect(byName['Map 1 - Destroy first tower']?.mapNumber===1,'First Tower must retain map');
