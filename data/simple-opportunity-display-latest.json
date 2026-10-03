@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-03T19:38:33.073Z",
-  "builtAt": "2026-10-03T19:38:33.201Z",
+  "builtAt": "2026-10-03T19:38:51.483Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 1,
@@ -10,8 +10,8 @@
     "PRICE BOARD": 102,
     "INFORMATIONAL": 130,
     "ARB FOUND": 0,
-    "ARB WATCH": 0,
-    "ARB SCREENING": 0
+    "ARB WATCH": 2,
+    "ARB SCREENING": 2
   },
   "parseErrors": {
     "identity": 0,
@@ -1158,8 +1158,178 @@
     }
   ],
   "arbFoundRows": [],
-  "arbWatchRows": [],
-  "arbScreeningRows": [],
+  "arbWatchRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762356,
+      "match": "Alexander Zverev vs Novak Djokovic",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T11:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|novakdjokovic|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9809908401457699,
+      "arbROI": 0.019377510040160528,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T15:33:04Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alexander Zverev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.43
+        },
+        {
+          "outcome": "Novak Djokovic",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.55
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762686,
+      "match": "Daniil Medvedev vs Francisco Cerundolo",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T08:30:00+00:00",
+      "exactContractKey": "tennis|daniilmedvedev|franciscocerundolo|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.989247311827957,
+      "arbROI": 0.010869565217391353,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T15:32:08Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.5
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.1
+        }
+      ]
+    }
+  ],
+  "arbScreeningRows": [
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2702542,
+      "match": "Chicago Bears vs New York Jets",
+      "market": "Player Isaiah Davis - Total receptions",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-04T17:00:00+00:00",
+      "exactContractKey": "american-football|chicagobears|newyorkjets|player_prop|player=Isaiah Davis|stat=receptions|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.018146200639241,
+      "arbROI": -0.017822784810126446,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "draftkings"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Under",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.83
+        },
+        {
+          "outcome": "Over",
+          "book": "draftkings-direct",
+          "sourceFamily": "draftkings",
+          "price": 2.12
+        }
+      ]
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2702595,
+      "match": "Seattle Seahawks vs Los Angeles Chargers",
+      "market": "Player Sam Darnold - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-04T20:25:00+00:00",
+      "exactContractKey": "american-football|losangeleschargers|seattleseahawks|player_prop|player=Sam Darnold|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.028345418589321,
+      "arbROI": -0.027564102564102577,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Over",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.85
+        },
+        {
+          "outcome": "Under",
+          "book": "bovada-nfl-direct",
+          "sourceFamily": "bovada",
+          "price": 2.05
+        }
+      ]
+    }
+  ],
   "watchBoardRows": [
     {
       "tier": "WATCH",
@@ -1216,6 +1386,92 @@
       "startTime": "2026-10-04T09:00:00+00:00",
       "blocker": "2 independent exact Match Winner sources; WATCH pending a third fresh consensus source",
       "watchType": "+EV WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762356,
+      "match": "Alexander Zverev vs Novak Djokovic",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T11:00:00+00:00",
+      "exactContractKey": "tennis|alexanderzverev|novakdjokovic|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9809908401457699,
+      "arbROI": 0.019377510040160528,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T15:33:04Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alexander Zverev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.43
+        },
+        {
+          "outcome": "Novak Djokovic",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.55
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2762686,
+      "match": "Daniil Medvedev vs Francisco Cerundolo",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-04T08:30:00+00:00",
+      "exactContractKey": "tennis|daniilmedvedev|franciscocerundolo|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.989247311827957,
+      "arbROI": 0.010869565217391353,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-03T15:32:08Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.5
+        },
+        {
+          "outcome": "Francisco Cerundolo",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.1
+        }
+      ],
+      "watchType": "ARB WATCH"
     }
   ],
   "screeningBoardRows": [
@@ -1818,9 +2074,277 @@
       "startTime": "2026-10-04T07:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2702542,
+      "match": "Chicago Bears vs New York Jets",
+      "market": "Player Isaiah Davis - Total receptions",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-04T17:00:00+00:00",
+      "exactContractKey": "american-football|chicagobears|newyorkjets|player_prop|player=Isaiah Davis|stat=receptions|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.018146200639241,
+      "arbROI": -0.017822784810126446,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "draftkings"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Under",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.83
+        },
+        {
+          "outcome": "Over",
+          "book": "draftkings-direct",
+          "sourceFamily": "draftkings",
+          "price": 2.12
+        }
+      ],
+      "screenType": "ARB SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2702595,
+      "match": "Seattle Seahawks vs Los Angeles Chargers",
+      "market": "Player Sam Darnold - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-04T20:25:00+00:00",
+      "exactContractKey": "american-football|losangeleschargers|seattleseahawks|player_prop|player=Sam Darnold|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.028345418589321,
+      "arbROI": -0.027564102564102577,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Over",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.85
+        },
+        {
+          "outcome": "Under",
+          "book": "bovada-nfl-direct",
+          "sourceFamily": "bovada",
+          "price": 2.05
+        }
+      ],
+      "screenType": "ARB SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-03T19:38:31.123Z",
+    "marketsTested": 1256,
+    "screensEvaluated": 4,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2762356,
+        "match": "Alexander Zverev vs Novak Djokovic",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-04T11:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|novakdjokovic|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9809908401457699,
+        "arbROI": 0.019377510040160528,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-03T15:33:04Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.43
+          },
+          {
+            "outcome": "Novak Djokovic",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 3.55
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2762686,
+        "match": "Daniil Medvedev vs Francisco Cerundolo",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-04T08:30:00+00:00",
+        "exactContractKey": "tennis|daniilmedvedev|franciscocerundolo|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.989247311827957,
+        "arbROI": 0.010869565217391353,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-03T15:32:08Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.5
+          },
+          {
+            "outcome": "Francisco Cerundolo",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 3.1
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2702542,
+        "match": "Chicago Bears vs New York Jets",
+        "market": "Player Isaiah Davis - Total receptions",
+        "marketKey": "player_prop",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-04T17:00:00+00:00",
+        "exactContractKey": "american-football|chicagobears|newyorkjets|player_prop|player=Isaiah Davis|stat=receptions|map=|round=|points=1.5/1.5|pregame",
+        "reciprocalSum": 1.018146200639241,
+        "arbROI": -0.017822784810126446,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "draftkings"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Under",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.83
+          },
+          {
+            "outcome": "Over",
+            "book": "draftkings-direct",
+            "sourceFamily": "draftkings",
+            "price": 2.12
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2702595,
+        "match": "Seattle Seahawks vs Los Angeles Chargers",
+        "market": "Player Sam Darnold - Total passing touchdowns",
+        "marketKey": "player_prop",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-04T20:25:00+00:00",
+        "exactContractKey": "american-football|losangeleschargers|seattleseahawks|player_prop|player=Sam Darnold|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+        "reciprocalSum": 1.028345418589321,
+        "arbROI": -0.027564102564102577,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Over",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.85
+          },
+          {
+            "outcome": "Under",
+            "book": "bovada-nfl-direct",
+            "sourceFamily": "bovada",
+            "price": 2.05
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 2,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
