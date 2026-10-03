@@ -7,8 +7,17 @@ function objectiveName(name=''){
 }
 function marketLine(m={}){const s=specs(m);for(const k of ['xth','total']){const x=n(s[k]);if(x!==null)return x;}return null;}
 function mapNumber(m={}){const x=n(specs(m).mapnr);return x;}
-function outcomes(m={}){
-  return (m.odds||[]).filter(o=>String(o.status||'').toUpperCase()!=='CANCELLED').map(o=>({name:String(o.name||'').trim(),price:n(o.value),odds:n(o.value),type:/^over\b/i.test(o.name||'')?'over':/^under\b/i.test(o.name||'')?'under':null,competitorIds:o.competitorIds||[]})).filter(o=>o.price>1);
+function outcomes(m={},competitors=[]){
+  const byId=new Map();
+  for(const c of competitors||[])for(const id of [c?.id,c?.masterId])if(id!=null&&c?.name)byId.set(String(id),String(c.name));
+  const race=/race to kills/i.test(String(m.name||''));
+  return (m.odds||[]).filter(o=>String(o.status||'').toUpperCase()!=='CANCELLED').map(o=>{
+    let name=String(o.name||'').trim();
+    const cid=(o.competitorIds||[]).map(String).find(id=>byId.has(id));
+    if(cid)name=byId.get(cid);
+    else if(race)name=name.replace(/\s+\d+(?:\.\d+)?\s*$/,'').trim();
+    return {name,price:n(o.value),odds:n(o.value),type:/^over\b/i.test(name)?'over':/^under\b/i.test(name)?'under':null,competitorIds:o.competitorIds||[]};
+  }).filter(o=>o.price>1);
 }
 export function normalizeGGBetEvent(event={},sport=''){
   const f=event.fixture||{};
@@ -22,7 +31,7 @@ export function normalizeGGBetEvent(event={},sport=''){
     mapNumber:mapNumber(m),
     baseLine:marketLine(m),
     line:marketLine(m),
-    outcomes:outcomes(m),
+    outcomes:outcomes(m,f.competitors||[]),
     settlementScope:'standard'
   })).filter(m=>m.outcomes.length>=2);
   return {
