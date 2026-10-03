@@ -11,6 +11,8 @@ assert mod.extract_slugs(html)==['lgd-vs-flyquest-03-10','t1-vs-gen-g-03-10']
 assert mod.is_objective_market('Map 1 - Race to kills')
 assert mod.is_objective_market('Map 2 - First Blood')
 assert mod.is_objective_market('Map 1 - Destroy first tower')
+assert mod.is_objective_market('Map 1 - First Dragon')
+assert mod.is_objective_market('Map 1 - First Baron')
 assert mod.is_objective_market('Map 1 - Total kills')
 assert not mod.is_objective_market('Map 1 - Win map + Total kills')
 assert not mod.is_objective_market('Map 1 - Kill maker')
