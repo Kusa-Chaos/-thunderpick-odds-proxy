@@ -46,7 +46,7 @@ function parseOvInPlay(payload) {
   }
   const seen = new Set();
   state.events = state.events.filter(x => {
-    const k = x.id || sportId + "|" + x.name;
+    const k = x.id || x.sportId + "|" + x.name;
     if (seen.has(k)) return false;
     seen.add(k);
     return true;
