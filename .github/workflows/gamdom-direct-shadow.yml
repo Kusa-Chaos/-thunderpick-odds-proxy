@@ -1,0 +1,40 @@
+name: Gamdom Direct Shadow Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['shadow/gamdom-direct']
+    paths:
+      - 'scripts/gamdom-direct-shadow.mjs'
+      - '.github/workflows/gamdom-direct-shadow.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gamdom-direct-shadow
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Probe Gamdom sportsbook in isolated shadow mode
+        run: node scripts/gamdom-direct-shadow.mjs
+      - name: Upload Gamdom shadow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamdom-direct-shadow
+          path: data/gamdom-direct-shadow.json
+          if-no-files-found: warn
+          retention-days: 3
