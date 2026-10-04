@@ -3,8 +3,10 @@ import { chromium } from 'playwright';
 
 const OUT='data/roobet-direct-network-probe.json';
 const target='https://roobet.com/sports/league-of-legends-110';
+const graphql='https://roobet.com/_api/graphql';
+const gameIdentifier='slotegrator:sportsbook-1';
 const keep=/api|sports|odds|bet|event|offering|kambi|abios|sportsbook|league|market/i;
-const out={generatedAt:new Date().toISOString(),mode:'roobet-direct-shadow-v2',target,health:{connected:false,usable:false,state:'STARTING',errors:[]},requests:[],responses:[],jsonSamples:[],sportsbookBundleFindings:[],scripts:[],page:{url:null,title:null,textSample:null}};
+const out={generatedAt:new Date().toISOString(),mode:'roobet-direct-shadow-v3',target,health:{connected:false,usable:false,state:'STARTING',errors:[]},guestInit:{configStatus:null,brandId:null,startStatus:null,startGameOk:false,tokenPresent:false,startUrlHost:null,startUrlParams:[],fair:null,partnerId:null,supportedCurrencies:[],errors:[]},requests:[],responses:[],jsonSamples:[],sportsbookBundleFindings:[],scripts:[],page:{url:null,title:null,textSample:null}};
 
 function findingsFrom(text,url){
   const terms=/graphql|_api|sportsbook|sportsbetting|market|odds|event|offering|kambi|abios|league|fixture/ig;
@@ -19,6 +21,40 @@ function findingsFrom(text,url){
     ...(text.match(/\/_api\/[A-Za-z0-9_?=&/.,:{}\[\]-]+/g)||[])
   ])].slice(0,200);
   return {url,urls,findings:found};
+}
+function firstGraphql(body){
+  const root=Array.isArray(body)?body[0]:body;
+  return root&&typeof root==='object'?root:{};
+}
+function sanitizeStart(data){
+  const s=data?.tpGameStartGame||null;
+  if(!s)return null;
+  let host=null,params=[];
+  try{
+    const u=new URL(s.url);
+    host=u.hostname;
+    params=[...new Set([...u.searchParams.keys()])];
+  }catch{}
+  return {
+    tokenPresent:Boolean(s.token),
+    startUrlHost:host,
+    startUrlParams:params,
+    fair:s.fair??null,
+    partnerId:s.partnerId??null,
+    supportedCurrencies:Array.isArray(s.supportedCurrencies)?s.supportedCurrencies:[]
+  };
+}
+async function gql(operation){
+  const headers={'accept':'application/json','content-type':'application/json','accept-language':'en'};
+  let r=await context.request.post(graphql,{headers,data:[operation],timeout:30000});
+  let text=await r.text();
+  let parsed;try{parsed=JSON.parse(text)}catch{parsed={raw:text.slice(0,1000)}}
+  if(r.status()===400 || r.status()===415){
+    r=await context.request.post(graphql,{headers,data:operation,timeout:30000});
+    text=await r.text();
+    try{parsed=JSON.parse(text)}catch{parsed={raw:text.slice(0,1000)}}
+  }
+  return {status:r.status(),body:parsed};
 }
 
 const browser=await chromium.launch({headless:true});
@@ -47,33 +83,71 @@ page.on('response',async res=>{
     try{
       const txt=await res.text();
       out.jsonSamples.push({status:res.status(),url:u,body:txt.slice(0,8000)});
-    }catch(e){}
+    }catch{}
   }
   if(/SportsbettingRoute|sportsbook/i.test(u) && /javascript/i.test(ct) && out.sportsbookBundleFindings.length<10){
     try{
       const txt=await res.text();
       out.sportsbookBundleFindings.push(findingsFrom(txt,u));
-    }catch(e){}
+    }catch{}
   }
 });
 try{
   await page.goto(target,{waitUntil:'domcontentloaded',timeout:45000});
-  await page.waitForTimeout(12000);
+  await page.waitForTimeout(8000);
   out.page.url=page.url();
   out.page.title=await page.title().catch(()=>null);
   out.page.textSample=(await page.locator('body').innerText().catch(()=>'' )).slice(0,8000);
   out.scripts=await page.locator('script[src]').evaluateAll(els=>els.map(e=>e.src)).catch(()=>[]);
+
+  const configOp={operationName:'GetSportsbookConfig',variables:{},query:'query GetSportsbookConfig { getSportsbookConfig { brandId } }'};
+  const config=await gql(configOp);
+  out.guestInit.configStatus=config.status;
+  const configRoot=firstGraphql(config.body);
+  out.guestInit.brandId=configRoot?.data?.getSportsbookConfig?.brandId??null;
+  if(configRoot?.errors) out.guestInit.errors.push(...configRoot.errors.map(e=>String(e?.message||e)).slice(0,5));
+
+  const startOp={
+    operationName:'StartGame',
+    variables:{gameIdentifier,gameCurrency:'USD'},
+    query:'mutation StartGame($gameIdentifier: GameIdentifier!, $mode: GameMode, $gameCurrency: String, $betId: String) { tpGameStartGame(gameIdentifier: $gameIdentifier, mode: $mode, gameCurrency: $gameCurrency, betId: $betId) { url fair token key partnerId supportedCurrencies } }'
+  };
+  const start=await gql(startOp);
+  out.guestInit.startStatus=start.status;
+  const startRoot=firstGraphql(start.body);
+  const safe=sanitizeStart(startRoot?.data);
+  if(safe) Object.assign(out.guestInit,safe,{startGameOk:true});
+  if(startRoot?.errors) out.guestInit.errors.push(...startRoot.errors.map(e=>String(e?.message||e)).slice(0,5));
+
   const blocked=/unexpected error|access is forbidden|regret any inconvenience|not available in your location/i.test(out.page.textSample||'');
   out.health.connected=!blocked;
-  out.health.usable=out.jsonSamples.some(x=>/odds|market|event|bet/i.test(x.body||''))||out.sportsbookBundleFindings.length>0;
-  out.health.state=blocked?'BLOCKED_PUBLIC_PAGE':out.health.usable?'CONNECTED_PUBLIC_DATA':'PAGE_LOADED_NO_DATA';
-  if(blocked) out.health.errors.push('Roobet public sportsbook page blocked or errored in GitHub runner region');
+  out.health.usable=Boolean(out.guestInit.brandId&&out.guestInit.startGameOk);
+  out.health.state=out.health.usable?'GUEST_INIT_USABLE':blocked?'BLOCKED_PUBLIC_PAGE':'PAGE_LOADED_NO_GUEST_INIT';
+  if(blocked) out.health.errors.push('Roobet public sportsbook renderer is geo-blocked in GitHub runner region');
 }catch(e){
-  out.health.state='NAVIGATION_ERROR';
+  out.health.state='NAVIGATION_OR_GUEST_INIT_ERROR';
   out.health.errors.push(String(e?.message||e));
 }
 out.generatedAt=new Date().toISOString();
 await fs.mkdir('data',{recursive:true});
 await fs.writeFile(OUT,JSON.stringify(out,null,2));
 await browser.close();
-console.log('ROOBET_DIRECT_SHADOW',JSON.stringify({state:out.health.state,requestCount:out.requests.length,responseCount:out.responses.length,jsonSamples:out.jsonSamples.length,bundleFindings:out.sportsbookBundleFindings.length,graphqlPosts:out.requests.filter(x=>/graphql/i.test(x.url)&&x.postData).length,errors:out.health.errors}));
+console.log('ROOBET_DIRECT_SHADOW',JSON.stringify({
+  state:out.health.state,
+  guestInit:{
+    configStatus:out.guestInit.configStatus,
+    brandId:out.guestInit.brandId,
+    startStatus:out.guestInit.startStatus,
+    startGameOk:out.guestInit.startGameOk,
+    tokenPresent:out.guestInit.tokenPresent,
+    startUrlHost:out.guestInit.startUrlHost,
+    startUrlParams:out.guestInit.startUrlParams,
+    fair:out.guestInit.fair,
+    partnerId:out.guestInit.partnerId,
+    supportedCurrencies:out.guestInit.supportedCurrencies,
+    errors:out.guestInit.errors
+  },
+  requestCount:out.requests.length,
+  responseCount:out.responses.length,
+  errors:out.health.errors
+}));
