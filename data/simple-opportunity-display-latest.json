@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-04T08:57:10.956Z",
-  "builtAt": "2026-10-04T08:57:11.166Z",
+  "builtAt": "2026-10-04T08:57:28.446Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 9,
@@ -11,7 +11,7 @@
     "INFORMATIONAL": 191,
     "ARB FOUND": 0,
     "ARB WATCH": 0,
-    "ARB SCREENING": 0
+    "ARB SCREENING": 1
   },
   "parseErrors": {
     "identity": 0,
@@ -1599,7 +1599,50 @@
   ],
   "arbFoundRows": [],
   "arbWatchRows": [],
-  "arbScreeningRows": [],
+  "arbScreeningRows": [
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2702542,
+      "match": "Chicago Bears vs New York Jets",
+      "market": "Player Isaiah Davis - Total receptions",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-04T17:00:00+00:00",
+      "exactContractKey": "american-football|chicagobears|newyorkjets|player_prop|player=Isaiah Davis|stat=receptions|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.02263856362217,
+      "arbROI": -0.022137404580152453,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Under",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.83
+        },
+        {
+          "outcome": "Over",
+          "book": "bovada-nfl-direct",
+          "sourceFamily": "bovada",
+          "price": 2.1
+        }
+      ]
+    }
+  ],
   "watchBoardRows": [
     {
       "tier": "WATCH",
@@ -2706,9 +2749,107 @@
       "startTime": "2026-10-04T13:50:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2702542,
+      "match": "Chicago Bears vs New York Jets",
+      "market": "Player Isaiah Davis - Total receptions",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-04T17:00:00+00:00",
+      "exactContractKey": "american-football|chicagobears|newyorkjets|player_prop|player=Isaiah Davis|stat=receptions|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.02263856362217,
+      "arbROI": -0.022137404580152453,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Under",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.83
+        },
+        {
+          "outcome": "Over",
+          "book": "bovada-nfl-direct",
+          "sourceFamily": "bovada",
+          "price": 2.1
+        }
+      ],
+      "screenType": "ARB SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-04T08:57:08.069Z",
+    "marketsTested": 1956,
+    "screensEvaluated": 1,
+    "found": [],
+    "watch": [],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2702542,
+        "match": "Chicago Bears vs New York Jets",
+        "market": "Player Isaiah Davis - Total receptions",
+        "marketKey": "player_prop",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-04T17:00:00+00:00",
+        "exactContractKey": "american-football|chicagobears|newyorkjets|player_prop|player=Isaiah Davis|stat=receptions|map=|round=|points=1.5/1.5|pregame",
+        "reciprocalSum": 1.02263856362217,
+        "arbROI": -0.022137404580152453,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Under",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.83
+          },
+          {
+            "outcome": "Over",
+            "book": "bovada-nfl-direct",
+            "sourceFamily": "bovada",
+            "price": 2.1
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 0,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [
     {
       "tier": "PRICE BOARD",
