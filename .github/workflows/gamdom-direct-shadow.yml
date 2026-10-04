@@ -7,6 +7,7 @@ on:
     paths:
       - 'scripts/gamdom-direct-shadow.mjs'
       - 'scripts/gamdom-betby-guest-probe.mjs'
+      - 'scripts/gamdom-betby-renderer-probe.mjs'
       - '.github/workflows/gamdom-direct-shadow.yml'
 
 permissions:
@@ -33,6 +34,8 @@ jobs:
         run: node scripts/gamdom-direct-shadow.mjs
       - name: Probe Gamdom BetBy guest configuration
         run: node scripts/gamdom-betby-guest-probe.mjs
+      - name: Probe Gamdom BetBy guest renderer
+        run: node scripts/gamdom-betby-renderer-probe.mjs
       - name: Upload Gamdom shadow artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -41,5 +44,6 @@ jobs:
           path: |
             data/gamdom-direct-shadow.json
             data/gamdom-betby-guest-latest.json
+            data/gamdom-betby-renderer-shadow.json
           if-no-files-found: warn
           retention-days: 3
