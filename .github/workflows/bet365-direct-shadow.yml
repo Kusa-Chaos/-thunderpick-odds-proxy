@@ -1,0 +1,40 @@
+name: Bet365 Direct Shadow Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['shadow/bet365-direct']
+    paths:
+      - 'scripts/bet365-direct-shadow.mjs'
+      - '.github/workflows/bet365-direct-shadow.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bet365-direct-shadow
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Probe Bet365 NJ guest sportsbook in isolated shadow mode
+        run: node scripts/bet365-direct-shadow.mjs
+      - name: Upload Bet365 shadow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bet365-direct-shadow
+          path: data/bet365-direct-shadow.json
+          if-no-files-found: warn
+          retention-days: 3
