@@ -16,17 +16,22 @@ const payload={
     wallet_type:'DEFAULT'
   }
 };
-const out={generatedAt:new Date().toISOString(),mode:'gamdom-betby-guest-v1',endpoint,payload:{...payload,walletInfo:{...payload.walletInfo}},status:null,ok:false,state:'STARTING',config:{},errors:[]};
+const out={generatedAt:new Date().toISOString(),mode:'gamdom-betby-guest-v2',endpoint,payload:{...payload,walletInfo:{...payload.walletInfo}},status:null,ok:false,state:'STARTING',config:{},errors:[]};
 
-function sanitize(j){
-  if(!j||typeof j!=='object') return {type:typeof j};
-  let parsed=j;
-  if(typeof j==='string'){
-    try{parsed=JSON.parse(j)}catch{return {raw:j.slice(0,1000)}}
+function parseMaybeJson(v){
+  let x=v;
+  for(let i=0;i<3&&typeof x==='string';i++){
+    try{x=JSON.parse(x);}catch{return x;}
   }
-  const cfg=parsed&&typeof parsed==='object'?parsed:{};
-  let rendererHost=null;
+  return x;
+}
+function sanitize(j){
+  const parsed=parseMaybeJson(j);
+  if(!parsed||typeof parsed!=='object') return {type:typeof parsed,preview:String(parsed??'').slice(0,500)};
+  const cfg=parsed;
+  let rendererHost=null,urlHost=null;
   try{if(cfg.btRendererUrl)rendererHost=new URL(cfg.btRendererUrl).hostname;}catch{}
+  try{if(cfg.url)urlHost=new URL(cfg.url).hostname;}catch{}
   return {
     keys:Object.keys(cfg),
     brandId:cfg.brandId??cfg.brand_id??null,
@@ -35,8 +40,10 @@ function sanitize(j){
     btRendererUrlPresent:Boolean(cfg.btRendererUrl),
     btRendererHost:rendererHost,
     urlPresent:Boolean(cfg.url),
+    urlHost,
     fair:cfg.fair??null,
     partnerId:cfg.partnerId??null,
+    supportedCurrencies:Array.isArray(cfg.supportedCurrencies)?cfg.supportedCurrencies:[],
     error:cfg.error??cfg.message??null
   };
 }
@@ -51,9 +58,7 @@ try{
   });
   out.status=r.status();
   const text=await r.text();
-  let body=text;
-  try{body=JSON.parse(text)}catch{}
-  out.config=sanitize(body);
+  out.config=sanitize(text);
   out.ok=r.ok()&&Boolean(out.config.brandId)&&out.config.btRendererUrlPresent;
   out.state=out.ok?'GUEST_CONFIG_USABLE':r.ok()?'GUEST_CONFIG_RESPONSE_NO_USABLE_CONFIG':'GUEST_CONFIG_BLOCKED_OR_ERROR';
 }catch(e){
