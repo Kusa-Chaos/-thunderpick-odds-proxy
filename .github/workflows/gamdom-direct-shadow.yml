@@ -6,6 +6,7 @@ on:
     branches: ['shadow/gamdom-direct']
     paths:
       - 'scripts/gamdom-direct-shadow.mjs'
+      - 'scripts/gamdom-betby-guest-probe.mjs'
       - '.github/workflows/gamdom-direct-shadow.yml'
 
 permissions:
@@ -30,11 +31,15 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Probe Gamdom sportsbook in isolated shadow mode
         run: node scripts/gamdom-direct-shadow.mjs
-      - name: Upload Gamdom shadow artifact
+      - name: Probe Gamdom BetBy guest configuration
+        run: node scripts/gamdom-betby-guest-probe.mjs
+      - name: Upload Gamdom shadow artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: gamdom-direct-shadow
-          path: data/gamdom-direct-shadow.json
+          path: |
+            data/gamdom-direct-shadow.json
+            data/gamdom-betby-guest-latest.json
           if-no-files-found: warn
           retention-days: 3
