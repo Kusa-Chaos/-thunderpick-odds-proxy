@@ -6,6 +6,7 @@ on:
     branches: ['shadow/bet365-direct']
     paths:
       - 'scripts/bet365-direct-shadow.mjs'
+      - 'scripts/pulsescore-bet365-esports-probe.mjs'
       - '.github/workflows/bet365-direct-shadow.yml'
 
 permissions:
@@ -30,11 +31,17 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Probe Bet365 NJ guest sportsbook in isolated shadow mode
         run: node scripts/bet365-direct-shadow.mjs
-      - name: Upload Bet365 shadow artifact
+      - name: Probe PulseScore Bet365 esports API
+        env:
+          PULSESCORE_API_KEY: ${{ secrets.PULSESCORE_API_KEY }}
+        run: node scripts/pulsescore-bet365-esports-probe.mjs
+      - name: Upload Bet365 shadow artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bet365-direct-shadow
-          path: data/bet365-direct-shadow.json
+          path: |
+            data/bet365-direct-shadow.json
+            data/pulsescore-bet365-esports-latest.json
           if-no-files-found: warn
           retention-days: 3
