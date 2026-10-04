@@ -1,0 +1,40 @@
+name: Roobet Direct Shadow Probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['shadow/roobet-direct']
+    paths:
+      - 'scripts/roobet-direct-network-probe.mjs'
+      - '.github/workflows/roobet-direct-shadow.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: roobet-direct-shadow
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Probe Roobet public sportsbook network in shadow mode
+        run: node scripts/roobet-direct-network-probe.mjs
+      - name: Upload shadow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: roobet-direct-shadow
+          path: data/roobet-direct-network-probe.json
+          if-no-files-found: warn
+          retention-days: 3
