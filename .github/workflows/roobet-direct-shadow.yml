@@ -6,6 +6,7 @@ on:
     branches: ['shadow/roobet-direct']
     paths:
       - 'scripts/roobet-direct-network-probe.mjs'
+      - 'scripts/roobet-betby-guest-probe.mjs'
       - '.github/workflows/roobet-direct-shadow.yml'
 
 permissions:
@@ -30,11 +31,15 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Probe Roobet public sportsbook network in shadow mode
         run: node scripts/roobet-direct-network-probe.mjs
-      - name: Upload shadow artifact
+      - name: Probe BetBy guest mode with Roobet brand
+        run: node scripts/roobet-betby-guest-probe.mjs
+      - name: Upload shadow artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: roobet-direct-shadow
-          path: data/roobet-direct-network-probe.json
+          path: |
+            data/roobet-direct-network-probe.json
+            data/roobet-betby-guest-probe.json
           if-no-files-found: warn
           retention-days: 3
