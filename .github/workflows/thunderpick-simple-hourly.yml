@@ -20,6 +20,7 @@ on:
       - 'scripts/kalshi-rate-limited.mjs'
       - 'scripts/betway-direct.mjs'
       - 'scripts/pinnacle-direct.mjs'
+      - 'scripts/pinnwire-direct.mjs'
       - 'scripts/kambi-direct.mjs'
       - 'scripts/kambi-traditional-direct.mjs'
       - 'scripts/kambi-nfl-direct.mjs'
@@ -118,6 +119,9 @@ jobs:
         run: node scripts/betway-direct.mjs
       - name: Add Pinnacle independent bookmaker source
         run: node scripts/pinnacle-direct.mjs
+      - name: Add PinnWire Pinnacle esports depth
+        continue-on-error: true
+        run: node scripts/pinnwire-direct.mjs
       - name: Add Unibet Kambi esports deep market and prop source
         run: node scripts/kambi-direct.mjs
       - name: Add Unibet Kambi traditional-sports deep markets and props
@@ -163,6 +167,7 @@ jobs:
           node scripts/kalshi-rate-limited.mjs
           node scripts/betway-direct.mjs
           node scripts/pinnacle-direct.mjs
+          node scripts/pinnwire-direct.mjs || true
           node scripts/kambi-direct.mjs
           node scripts/kambi-traditional-direct.mjs
           node scripts/kambi-nfl-direct.mjs
