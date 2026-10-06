@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-06T17:29:27.022Z",
-  "builtAt": "2026-10-06T17:29:27.255Z",
+  "generatedAt": "2026-10-06T20:30:20.278Z",
+  "builtAt": "2026-10-06T20:30:20.489Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
   "strictSnapshotHealthy": false,
   "counts": {
     "ACTION": 0,
-    "WATCH": 1,
-    "SCREENING": 232,
-    "PRICE BOARD": 92,
-    "INFORMATIONAL": 195,
-    "ARB FOUND": 0,
+    "WATCH": 0,
+    "SCREENING": 225,
+    "PRICE BOARD": 98,
+    "INFORMATIONAL": 200,
+    "ARB FOUND": 2,
     "ARB WATCH": 0,
     "ARB SCREENING": 0
   },
@@ -18,13 +18,14 @@
     "price": 0
   },
   "actionRows": [],
-  "watchRows": [
+  "watchRows": [],
+  "screeningRows": [
     {
-      "tier": "WATCH",
+      "tier": "SCREENING",
       "sport": "baseball",
-      "match": "Atlanta Braves vs Los Angeles Dodgers",
-      "target": "Los Angeles Dodgers",
-      "side": "Los Angeles Dodgers",
+      "match": "San Diego Padres vs Milwaukee Brewers",
+      "target": "Milwaukee Brewers",
+      "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -32,56 +33,91 @@
         "map": null,
         "round": null
       },
-      "state": "prematch",
+      "state": null,
       "settlementScope": null,
       "identity": {
         "sport": "baseball",
-        "event": "2771015",
+        "event": "san diego padres vs milwaukee brewers",
         "family": "ml",
-        "target": "los angeles dodgers",
+        "target": "milwaukee brewers",
         "stat": "",
         "line": "",
         "period": "",
         "map": "",
         "round": "",
         "set": "",
-        "side": "los angeles dodgers",
+        "side": "",
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "baseball|2771015|ml|los angeles dodgers|||||||los angeles dodgers|prematch|standard",
+      "identityKey": "baseball|san diego padres vs milwaukee brewers|ml|milwaukee brewers||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.88,
+      "thunderpick": 2.13,
       "outside": [
         {
           "sourceFamily": "pinnacle",
-          "book": "pinnacle",
-          "price": 1.5882352941176472,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "bovada",
-          "book": "bovada",
-          "price": 1.8849557522123894,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "fanduel",
-          "book": "fanduel",
-          "price": 1.9090909090909092,
+          "book": "Pinnacle Direct",
+          "price": 1.0957854406130267,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.9090909090909092,
-      "independentSources": 3,
-      "fairProbability": 0.5388908987444213,
-      "fairDecimal": 1.8556631821578935,
-      "estimatedEV": 0.013114889639511906,
-      "startTime": "2026-10-06T22:00:00+00:00",
-      "blocker": "Below ACTION freshness/EV requirements"
-    }
-  ],
-  "screeningRows": [
+      "bestOutside": 1.0957854406130267,
+      "independentSources": 1,
+      "fairProbability": 0.8788623223702322,
+      "fairDecimal": 1.137834646617991,
+      "estimatedEV": 0.8719767466485946,
+      "startTime": "2026-10-07T01:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Los Angeles Lakers vs Golden State Warriors",
+      "target": "Golden State Warriors",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "los angeles lakers vs golden state warriors",
+        "family": "ml",
+        "target": "golden state warriors",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|los angeles lakers vs golden state warriors|ml|golden state warriors||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.77,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "Unibet/Kambi Direct",
+          "price": 1.53,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.53,
+      "independentSources": 1,
+      "fairProbability": 0.625,
+      "fairDecimal": 1.6,
+      "estimatedEV": 0.73125,
+      "startTime": "2026-10-22T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
     {
       "tier": "SCREENING",
       "sport": "basketball",
@@ -114,7 +150,7 @@
       },
       "identityKey": "basketball|golden state warriors vs los angeles lakers|ml|los angeles lakers||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.42,
+      "thunderpick": 2.39,
       "outside": [
         {
           "sourceFamily": "fanduel",
@@ -127,7 +163,7 @@
       "independentSources": 1,
       "fairProbability": 0.6361132966168371,
       "fairDecimal": 1.5720470006184293,
-      "estimatedEV": 0.5393941778127458,
+      "estimatedEV": 0.5203107789142409,
       "startTime": "2026-10-07T02:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -183,8 +219,8 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
-      "match": "Malaika Rapolu vs Dalayna Hewitt",
-      "target": "Malaika Rapolu",
+      "match": "Viktoria Varga vs Alesia Breaz",
+      "target": "Viktoria Varga",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -197,9 +233,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "tennis",
-        "event": "malaika rapolu vs dalayna hewitt",
+        "event": "viktoria varga vs alesia breaz",
         "family": "ml",
-        "target": "malaika rapolu",
+        "target": "viktoria varga",
         "stat": "",
         "line": "",
         "period": "",
@@ -210,121 +246,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "tennis|malaika rapolu vs dalayna hewitt|ml|malaika rapolu||||||||prematch|standard",
+      "identityKey": "tennis|viktoria varga vs alesia breaz|ml|viktoria varga||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.7,
+      "thunderpick": 6.5,
       "outside": [
         {
           "sourceFamily": "unibet-kambi",
           "book": "Unibet/Kambi Direct",
-          "price": 1.12,
+          "price": 4.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.12,
+      "bestOutside": 4.5,
       "independentSources": 1,
-      "fairProbability": 0.8241758241758241,
-      "fairDecimal": 1.2133333333333334,
-      "estimatedEV": 0.401098901098901,
-      "startTime": "2026-10-06T17:33:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Minas Tênis Clube vs Basquete Tatui",
-      "target": "Basquete Tatui",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "minas tênis clube vs basquete tatui",
-        "family": "ml",
-        "target": "basquete tatui",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|minas tênis clube vs basquete tatui|ml|basquete tatui||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 11,
-      "outside": [
-        {
-          "sourceFamily": "cloudbet",
-          "book": "Cloudbet",
-          "price": 7.3,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 7.3,
-      "independentSources": 1,
-      "fairProbability": 0.12259615384615384,
-      "fairDecimal": 8.15686274509804,
-      "estimatedEV": 0.3485576923076923,
-      "startTime": "2026-10-06T20:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Charlotte Hornets vs Brooklyn Nets",
-      "target": "Brooklyn Nets",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "charlotte hornets vs brooklyn nets",
-        "family": "ml",
-        "target": "brooklyn nets",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|charlotte hornets vs brooklyn nets|ml|brooklyn nets||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.75,
-      "outside": [
-        {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": 2.02,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 2.02,
-      "independentSources": 1,
-      "fairProbability": 0.4757785467128028,
-      "fairDecimal": 2.1018181818181816,
-      "estimatedEV": 0.30839100346020776,
-      "startTime": "2026-10-06T23:00:00+00:00",
+      "fairProbability": 0.2063492063492063,
+      "fairDecimal": 4.846153846153847,
+      "estimatedEV": 0.34126984126984095,
+      "startTime": "2026-10-07T12:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -379,6 +317,104 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
+      "match": "Eliakim Coulibaly vs Frederic Schlossmann",
+      "target": "Frederic Schlossmann",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "tennis",
+        "event": "eliakim coulibaly vs frederic schlossmann",
+        "family": "ml",
+        "target": "frederic schlossmann",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|eliakim coulibaly vs frederic schlossmann|ml|frederic schlossmann||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 7.4,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "Unibet/Kambi Direct",
+          "price": 5.4,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 5.4,
+      "independentSources": 1,
+      "fairProbability": 0.17177914110429449,
+      "fairDecimal": 5.821428571428571,
+      "estimatedEV": 0.27116564417177935,
+      "startTime": "2026-10-07T09:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Charlotte Hornets vs Brooklyn Nets",
+      "target": "Brooklyn Nets",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "charlotte hornets vs brooklyn nets",
+        "family": "ml",
+        "target": "brooklyn nets",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|charlotte hornets vs brooklyn nets|ml|brooklyn nets||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.61,
+      "outside": [
+        {
+          "sourceFamily": "fanduel",
+          "book": "FanDuel Direct",
+          "price": 2.02,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 2.02,
+      "independentSources": 1,
+      "fairProbability": 0.4757785467128028,
+      "fairDecimal": 2.1018181818181816,
+      "estimatedEV": 0.2417820069204153,
+      "startTime": "2026-10-06T23:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
       "match": "Zuzanna Pawlikowska vs Oriana Gniewkowska",
       "target": "Oriana Gniewkowska",
       "side": null,
@@ -428,8 +464,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Dallas Mavericks vs Houston Rockets",
-      "target": "Houston Rockets",
+      "match": "Toros del Valle vs Sabios de Manizales",
+      "target": "Sabios de Manizales",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -442,9 +478,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "dallas mavericks vs houston rockets",
+        "event": "toros del valle vs sabios de manizales",
         "family": "ml",
-        "target": "houston rockets",
+        "target": "sabios de manizales",
         "stat": "",
         "line": "",
         "period": "",
@@ -455,30 +491,30 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|dallas mavericks vs houston rockets|ml|houston rockets||||||||prematch|standard",
+      "identityKey": "basketball|toros del valle vs sabios de manizales|ml|sabios de manizales||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.69,
+      "thunderpick": 11,
       "outside": [
         {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": 1.3333333333333333,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 8.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.3333333333333333,
+      "bestOutside": 8.5,
       "independentSources": 1,
-      "fairProbability": 0.7212543554006969,
-      "fairDecimal": 1.3864734299516908,
-      "estimatedEV": 0.21891986062717783,
-      "startTime": "2026-10-31T00:00:00+00:00",
+      "fairProbability": 0.1099476439790576,
+      "fairDecimal": 9.095238095238095,
+      "estimatedEV": 0.2094240837696335,
+      "startTime": "2026-10-06T23:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "SCREENING",
       "sport": "tennis",
-      "match": "Viktoria Varga vs Alesia Breaz",
-      "target": "Viktoria Varga",
+      "match": "Andrea Bacaloni vs Javier Munoz Fuster",
+      "target": "Javier Munoz Fuster",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -491,9 +527,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "tennis",
-        "event": "viktoria varga vs alesia breaz",
+        "event": "andrea bacaloni vs javier munoz fuster",
         "family": "ml",
-        "target": "viktoria varga",
+        "target": "javier munoz fuster",
         "stat": "",
         "line": "",
         "period": "",
@@ -504,30 +540,30 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "tennis|viktoria varga vs alesia breaz|ml|viktoria varga||||||||prematch|standard",
+      "identityKey": "tennis|andrea bacaloni vs javier munoz fuster|ml|javier munoz fuster||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 5.9,
+      "thunderpick": 6.5,
       "outside": [
         {
           "sourceFamily": "unibet-kambi",
           "book": "Unibet/Kambi Direct",
-          "price": 4.5,
+          "price": 5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.5,
+      "bestOutside": 5,
       "independentSources": 1,
-      "fairProbability": 0.2063492063492063,
-      "fairDecimal": 4.846153846153847,
-      "estimatedEV": 0.21746031746031735,
-      "startTime": "2026-10-07T12:00:00+00:00",
+      "fairProbability": 0.18566775244299674,
+      "fairDecimal": 5.385964912280702,
+      "estimatedEV": 0.20684039087947892,
+      "startTime": "2026-10-07T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Donar Groningen vs Leuven Bears",
-      "target": "Leuven Bears",
+      "match": "Boston Celtics vs New York Knicks",
+      "target": "Boston Celtics",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -540,9 +576,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "donar groningen vs leuven bears",
+        "event": "boston celtics vs new york knicks",
         "family": "ml",
-        "target": "leuven bears",
+        "target": "boston celtics",
         "stat": "",
         "line": "",
         "period": "",
@@ -553,127 +589,127 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|donar groningen vs leuven bears|ml|leuven bears||||||||prematch|standard",
+      "identityKey": "basketball|boston celtics vs new york knicks|ml|boston celtics||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.04,
+      "thunderpick": 1.76,
       "outside": [
         {
-          "sourceFamily": "bovada",
-          "book": "Bovada Direct",
-          "price": 1.625,
+          "sourceFamily": "fanduel",
+          "book": "FanDuel Direct",
+          "price": 1.3448275862068966,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.625,
+      "bestOutside": 1.3448275862068966,
       "independentSources": 1,
-      "fairProbability": 0.5695364238410596,
-      "fairDecimal": 1.755813953488372,
-      "estimatedEV": 0.16185430463576167,
-      "startTime": "2026-10-06T17:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "cs2",
-      "match": "Falcons vs Natus Vincere",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
-      "marketKey": "round_handicap",
-      "line": -7.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "cs2",
-        "event": "2775324",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-7.5",
-        "period": "",
-        "map": "2",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2775324|round_handicap|falcons||-7.5||2|||falcons|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 5.3,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibet-kambi-direct",
-          "price": null,
-          "lastUpdate": "2026-10-06T15:56:09Z"
-        }
-      ],
-      "bestOutside": null,
-      "independentSources": 1,
-      "fairProbability": 0.2153284671532846,
-      "fairDecimal": 4.644067796610171,
-      "estimatedEV": 0.14124087591240841,
-      "startTime": "2026-10-06T17:30:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Stefan Ilie Bogdan Petre vs George Lazarov",
-      "target": "Stefan Ilie Bogdan Petre",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "tennis",
-        "event": "stefan ilie bogdan petre vs george lazarov",
-        "family": "ml",
-        "target": "stefan ilie bogdan petre",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|stefan ilie bogdan petre vs george lazarov|ml|stefan ilie bogdan petre||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 5.9,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "Unibet/Kambi Direct",
-          "price": 4.8,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 4.8,
-      "independentSources": 1,
-      "fairProbability": 0.19327731092436976,
-      "fairDecimal": 5.173913043478261,
-      "estimatedEV": 0.14033613445378168,
-      "startTime": "2026-10-07T08:00:00+00:00",
+      "fairProbability": 0.6794081381011098,
+      "fairDecimal": 1.471869328493648,
+      "estimatedEV": 0.19575832305795315,
+      "startTime": "2026-10-23T23:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
   "topScreeningRows": [
     {
       "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "San Diego Padres vs Milwaukee Brewers",
+      "target": "Milwaukee Brewers",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "baseball",
+        "event": "san diego padres vs milwaukee brewers",
+        "family": "ml",
+        "target": "milwaukee brewers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "baseball|san diego padres vs milwaukee brewers|ml|milwaukee brewers||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.13,
+      "outside": [
+        {
+          "sourceFamily": "pinnacle",
+          "book": "Pinnacle Direct",
+          "price": 1.0957854406130267,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.0957854406130267,
+      "independentSources": 1,
+      "fairProbability": 0.8788623223702322,
+      "fairDecimal": 1.137834646617991,
+      "estimatedEV": 0.8719767466485946,
+      "startTime": "2026-10-07T01:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Los Angeles Lakers vs Golden State Warriors",
+      "target": "Golden State Warriors",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "los angeles lakers vs golden state warriors",
+        "family": "ml",
+        "target": "golden state warriors",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|los angeles lakers vs golden state warriors|ml|golden state warriors||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.77,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "Unibet/Kambi Direct",
+          "price": 1.53,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.53,
+      "independentSources": 1,
+      "fairProbability": 0.625,
+      "fairDecimal": 1.6,
+      "estimatedEV": 0.73125,
+      "startTime": "2026-10-22T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Golden State Warriors vs Los Angeles Lakers",
       "target": "Los Angeles Lakers",
@@ -704,7 +740,7 @@
       },
       "identityKey": "basketball|golden state warriors vs los angeles lakers|ml|los angeles lakers||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.42,
+      "thunderpick": 2.39,
       "outside": [
         {
           "sourceFamily": "fanduel",
@@ -717,7 +753,7 @@
       "independentSources": 1,
       "fairProbability": 0.6361132966168371,
       "fairDecimal": 1.5720470006184293,
-      "estimatedEV": 0.5393941778127458,
+      "estimatedEV": 0.5203107789142409,
       "startTime": "2026-10-07T02:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
@@ -773,8 +809,8 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
-      "match": "Malaika Rapolu vs Dalayna Hewitt",
-      "target": "Malaika Rapolu",
+      "match": "Viktoria Varga vs Alesia Breaz",
+      "target": "Viktoria Varga",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -787,9 +823,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "tennis",
-        "event": "malaika rapolu vs dalayna hewitt",
+        "event": "viktoria varga vs alesia breaz",
         "family": "ml",
-        "target": "malaika rapolu",
+        "target": "viktoria varga",
         "stat": "",
         "line": "",
         "period": "",
@@ -800,121 +836,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "tennis|malaika rapolu vs dalayna hewitt|ml|malaika rapolu||||||||prematch|standard",
+      "identityKey": "tennis|viktoria varga vs alesia breaz|ml|viktoria varga||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.7,
+      "thunderpick": 6.5,
       "outside": [
         {
           "sourceFamily": "unibet-kambi",
           "book": "Unibet/Kambi Direct",
-          "price": 1.12,
+          "price": 4.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.12,
+      "bestOutside": 4.5,
       "independentSources": 1,
-      "fairProbability": 0.8241758241758241,
-      "fairDecimal": 1.2133333333333334,
-      "estimatedEV": 0.401098901098901,
-      "startTime": "2026-10-06T17:33:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Minas Tênis Clube vs Basquete Tatui",
-      "target": "Basquete Tatui",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "minas tênis clube vs basquete tatui",
-        "family": "ml",
-        "target": "basquete tatui",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|minas tênis clube vs basquete tatui|ml|basquete tatui||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 11,
-      "outside": [
-        {
-          "sourceFamily": "cloudbet",
-          "book": "Cloudbet",
-          "price": 7.3,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 7.3,
-      "independentSources": 1,
-      "fairProbability": 0.12259615384615384,
-      "fairDecimal": 8.15686274509804,
-      "estimatedEV": 0.3485576923076923,
-      "startTime": "2026-10-06T20:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Charlotte Hornets vs Brooklyn Nets",
-      "target": "Brooklyn Nets",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "charlotte hornets vs brooklyn nets",
-        "family": "ml",
-        "target": "brooklyn nets",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|charlotte hornets vs brooklyn nets|ml|brooklyn nets||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.75,
-      "outside": [
-        {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": 2.02,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 2.02,
-      "independentSources": 1,
-      "fairProbability": 0.4757785467128028,
-      "fairDecimal": 2.1018181818181816,
-      "estimatedEV": 0.30839100346020776,
-      "startTime": "2026-10-06T23:00:00+00:00",
+      "fairProbability": 0.2063492063492063,
+      "fairDecimal": 4.846153846153847,
+      "estimatedEV": 0.34126984126984095,
+      "startTime": "2026-10-07T12:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -969,6 +907,104 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
+      "match": "Eliakim Coulibaly vs Frederic Schlossmann",
+      "target": "Frederic Schlossmann",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "tennis",
+        "event": "eliakim coulibaly vs frederic schlossmann",
+        "family": "ml",
+        "target": "frederic schlossmann",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|eliakim coulibaly vs frederic schlossmann|ml|frederic schlossmann||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 7.4,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "Unibet/Kambi Direct",
+          "price": 5.4,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 5.4,
+      "independentSources": 1,
+      "fairProbability": 0.17177914110429449,
+      "fairDecimal": 5.821428571428571,
+      "estimatedEV": 0.27116564417177935,
+      "startTime": "2026-10-07T09:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Charlotte Hornets vs Brooklyn Nets",
+      "target": "Brooklyn Nets",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "charlotte hornets vs brooklyn nets",
+        "family": "ml",
+        "target": "brooklyn nets",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|charlotte hornets vs brooklyn nets|ml|brooklyn nets||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.61,
+      "outside": [
+        {
+          "sourceFamily": "fanduel",
+          "book": "FanDuel Direct",
+          "price": 2.02,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 2.02,
+      "independentSources": 1,
+      "fairProbability": 0.4757785467128028,
+      "fairDecimal": 2.1018181818181816,
+      "estimatedEV": 0.2417820069204153,
+      "startTime": "2026-10-06T23:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
       "match": "Zuzanna Pawlikowska vs Oriana Gniewkowska",
       "target": "Oriana Gniewkowska",
       "side": null,
@@ -1018,8 +1054,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Dallas Mavericks vs Houston Rockets",
-      "target": "Houston Rockets",
+      "match": "Toros del Valle vs Sabios de Manizales",
+      "target": "Sabios de Manizales",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1032,9 +1068,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "dallas mavericks vs houston rockets",
+        "event": "toros del valle vs sabios de manizales",
         "family": "ml",
-        "target": "houston rockets",
+        "target": "sabios de manizales",
         "stat": "",
         "line": "",
         "period": "",
@@ -1045,194 +1081,176 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|dallas mavericks vs houston rockets|ml|houston rockets||||||||prematch|standard",
+      "identityKey": "basketball|toros del valle vs sabios de manizales|ml|sabios de manizales||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.69,
-      "outside": [
-        {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": 1.3333333333333333,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 1.3333333333333333,
-      "independentSources": 1,
-      "fairProbability": 0.7212543554006969,
-      "fairDecimal": 1.3864734299516908,
-      "estimatedEV": 0.21891986062717783,
-      "startTime": "2026-10-31T00:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Viktoria Varga vs Alesia Breaz",
-      "target": "Viktoria Varga",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "tennis",
-        "event": "viktoria varga vs alesia breaz",
-        "family": "ml",
-        "target": "viktoria varga",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|viktoria varga vs alesia breaz|ml|viktoria varga||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 5.9,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "Unibet/Kambi Direct",
-          "price": 4.5,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 4.5,
-      "independentSources": 1,
-      "fairProbability": 0.2063492063492063,
-      "fairDecimal": 4.846153846153847,
-      "estimatedEV": 0.21746031746031735,
-      "startTime": "2026-10-07T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Donar Groningen vs Leuven Bears",
-      "target": "Leuven Bears",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "donar groningen vs leuven bears",
-        "family": "ml",
-        "target": "leuven bears",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|donar groningen vs leuven bears|ml|leuven bears||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.04,
+      "thunderpick": 11,
       "outside": [
         {
           "sourceFamily": "bovada",
           "book": "Bovada Direct",
-          "price": 1.625,
+          "price": 8.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.625,
+      "bestOutside": 8.5,
       "independentSources": 1,
-      "fairProbability": 0.5695364238410596,
-      "fairDecimal": 1.755813953488372,
-      "estimatedEV": 0.16185430463576167,
-      "startTime": "2026-10-06T17:30:00+00:00",
+      "fairProbability": 0.1099476439790576,
+      "fairDecimal": 9.095238095238095,
+      "estimatedEV": 0.2094240837696335,
+      "startTime": "2026-10-06T23:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
-  "arbFoundRows": [],
-  "arbWatchRows": [],
-  "arbScreeningRows": [],
-  "watchBoardRows": [
+  "arbFoundRows": [
     {
-      "tier": "WATCH",
-      "sport": "baseball",
-      "match": "Atlanta Braves vs Los Angeles Dodgers",
-      "target": "Los Angeles Dodgers",
-      "side": "Los Angeles Dodgers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "baseball",
-        "event": "2771015",
-        "family": "ml",
-        "target": "los angeles dodgers",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "los angeles dodgers",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "baseball|2771015|ml|los angeles dodgers|||||||los angeles dodgers|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 1.88,
-      "outside": [
+      "tier": "ARB FOUND",
+      "identityGroup": "cs2|2747956|round_handicap|||-2.5||1|||prematch|standard",
+      "inverseSum": 0.9,
+      "arbMargin": 0.11111111111111116,
+      "legs": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "pinnacle",
-          "price": 1.5882352941176472,
-          "lastUpdate": null
+          "target": "fnatic",
+          "sourceFamily": "thunderpick",
+          "book": "Thunderpick",
+          "price": 2
         },
         {
-          "sourceFamily": "bovada",
-          "book": "bovada",
-          "price": 1.8849557522123894,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "fanduel",
-          "book": "fanduel",
-          "price": 1.9090909090909092,
-          "lastUpdate": null
+          "target": "phantom esports",
+          "sourceFamily": "thunderpick",
+          "book": "Thunderpick",
+          "price": 2.5
         }
       ],
-      "bestOutside": 1.9090909090909092,
-      "independentSources": 3,
-      "fairProbability": 0.5388908987444213,
-      "fairDecimal": 1.8556631821578935,
-      "estimatedEV": 0.013114889639511906,
-      "startTime": "2026-10-06T22:00:00+00:00",
-      "blocker": "Below ACTION freshness/EV requirements",
-      "watchType": "+EV WATCH"
+      "independentSourceFamilies": 1
+    },
+    {
+      "tier": "ARB FOUND",
+      "identityGroup": "basketball|golden state warriors vs los angeles lakers|ml||||||||prematch|standard",
+      "inverseSum": 0.9998053906782135,
+      "arbMargin": 0.0001946472019465073,
+      "legs": [
+        {
+          "target": "los angeles lakers",
+          "sourceFamily": "thunderpick",
+          "book": "Thunderpick",
+          "price": 2.39
+        },
+        {
+          "target": "golden state warriors",
+          "sourceFamily": "thunderpick",
+          "book": "Thunderpick",
+          "price": 1.72
+        }
+      ],
+      "independentSourceFamilies": 1
     }
   ],
+  "arbWatchRows": [],
+  "arbScreeningRows": [],
+  "watchBoardRows": [],
   "screeningBoardRows": [
     {
       "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "San Diego Padres vs Milwaukee Brewers",
+      "target": "Milwaukee Brewers",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "baseball",
+        "event": "san diego padres vs milwaukee brewers",
+        "family": "ml",
+        "target": "milwaukee brewers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "baseball|san diego padres vs milwaukee brewers|ml|milwaukee brewers||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.13,
+      "outside": [
+        {
+          "sourceFamily": "pinnacle",
+          "book": "Pinnacle Direct",
+          "price": 1.0957854406130267,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.0957854406130267,
+      "independentSources": 1,
+      "fairProbability": 0.8788623223702322,
+      "fairDecimal": 1.137834646617991,
+      "estimatedEV": 0.8719767466485946,
+      "startTime": "2026-10-07T01:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Los Angeles Lakers vs Golden State Warriors",
+      "target": "Golden State Warriors",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "los angeles lakers vs golden state warriors",
+        "family": "ml",
+        "target": "golden state warriors",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|los angeles lakers vs golden state warriors|ml|golden state warriors||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.77,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "Unibet/Kambi Direct",
+          "price": 1.53,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.53,
+      "independentSources": 1,
+      "fairProbability": 0.625,
+      "fairDecimal": 1.6,
+      "estimatedEV": 0.73125,
+      "startTime": "2026-10-22T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Golden State Warriors vs Los Angeles Lakers",
       "target": "Los Angeles Lakers",
@@ -1263,7 +1281,7 @@
       },
       "identityKey": "basketball|golden state warriors vs los angeles lakers|ml|los angeles lakers||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.42,
+      "thunderpick": 2.39,
       "outside": [
         {
           "sourceFamily": "fanduel",
@@ -1276,7 +1294,7 @@
       "independentSources": 1,
       "fairProbability": 0.6361132966168371,
       "fairDecimal": 1.5720470006184293,
-      "estimatedEV": 0.5393941778127458,
+      "estimatedEV": 0.5203107789142409,
       "startTime": "2026-10-07T02:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
@@ -1334,8 +1352,8 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
-      "match": "Malaika Rapolu vs Dalayna Hewitt",
-      "target": "Malaika Rapolu",
+      "match": "Viktoria Varga vs Alesia Breaz",
+      "target": "Viktoria Varga",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1348,9 +1366,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "tennis",
-        "event": "malaika rapolu vs dalayna hewitt",
+        "event": "viktoria varga vs alesia breaz",
         "family": "ml",
-        "target": "malaika rapolu",
+        "target": "viktoria varga",
         "stat": "",
         "line": "",
         "period": "",
@@ -1361,123 +1379,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "tennis|malaika rapolu vs dalayna hewitt|ml|malaika rapolu||||||||prematch|standard",
+      "identityKey": "tennis|viktoria varga vs alesia breaz|ml|viktoria varga||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.7,
+      "thunderpick": 6.5,
       "outside": [
         {
           "sourceFamily": "unibet-kambi",
           "book": "Unibet/Kambi Direct",
-          "price": 1.12,
+          "price": 4.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.12,
+      "bestOutside": 4.5,
       "independentSources": 1,
-      "fairProbability": 0.8241758241758241,
-      "fairDecimal": 1.2133333333333334,
-      "estimatedEV": 0.401098901098901,
-      "startTime": "2026-10-06T17:33:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "screenType": "+EV SCREENING"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Minas Tênis Clube vs Basquete Tatui",
-      "target": "Basquete Tatui",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "minas tênis clube vs basquete tatui",
-        "family": "ml",
-        "target": "basquete tatui",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|minas tênis clube vs basquete tatui|ml|basquete tatui||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 11,
-      "outside": [
-        {
-          "sourceFamily": "cloudbet",
-          "book": "Cloudbet",
-          "price": 7.3,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 7.3,
-      "independentSources": 1,
-      "fairProbability": 0.12259615384615384,
-      "fairDecimal": 8.15686274509804,
-      "estimatedEV": 0.3485576923076923,
-      "startTime": "2026-10-06T20:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "screenType": "+EV SCREENING"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Charlotte Hornets vs Brooklyn Nets",
-      "target": "Brooklyn Nets",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "charlotte hornets vs brooklyn nets",
-        "family": "ml",
-        "target": "brooklyn nets",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|charlotte hornets vs brooklyn nets|ml|brooklyn nets||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.75,
-      "outside": [
-        {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": 2.02,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 2.02,
-      "independentSources": 1,
-      "fairProbability": 0.4757785467128028,
-      "fairDecimal": 2.1018181818181816,
-      "estimatedEV": 0.30839100346020776,
-      "startTime": "2026-10-06T23:00:00+00:00",
+      "fairProbability": 0.2063492063492063,
+      "fairDecimal": 4.846153846153847,
+      "estimatedEV": 0.34126984126984095,
+      "startTime": "2026-10-07T12:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     },
@@ -1534,6 +1452,106 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
+      "match": "Eliakim Coulibaly vs Frederic Schlossmann",
+      "target": "Frederic Schlossmann",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "tennis",
+        "event": "eliakim coulibaly vs frederic schlossmann",
+        "family": "ml",
+        "target": "frederic schlossmann",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|eliakim coulibaly vs frederic schlossmann|ml|frederic schlossmann||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 7.4,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "Unibet/Kambi Direct",
+          "price": 5.4,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 5.4,
+      "independentSources": 1,
+      "fairProbability": 0.17177914110429449,
+      "fairDecimal": 5.821428571428571,
+      "estimatedEV": 0.27116564417177935,
+      "startTime": "2026-10-07T09:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Charlotte Hornets vs Brooklyn Nets",
+      "target": "Brooklyn Nets",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "charlotte hornets vs brooklyn nets",
+        "family": "ml",
+        "target": "brooklyn nets",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|charlotte hornets vs brooklyn nets|ml|brooklyn nets||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.61,
+      "outside": [
+        {
+          "sourceFamily": "fanduel",
+          "book": "FanDuel Direct",
+          "price": 2.02,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 2.02,
+      "independentSources": 1,
+      "fairProbability": 0.4757785467128028,
+      "fairDecimal": 2.1018181818181816,
+      "estimatedEV": 0.2417820069204153,
+      "startTime": "2026-10-06T23:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
       "match": "Zuzanna Pawlikowska vs Oriana Gniewkowska",
       "target": "Oriana Gniewkowska",
       "side": null,
@@ -1584,8 +1602,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Dallas Mavericks vs Houston Rockets",
-      "target": "Houston Rockets",
+      "match": "Toros del Valle vs Sabios de Manizales",
+      "target": "Sabios de Manizales",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1598,9 +1616,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "dallas mavericks vs houston rockets",
+        "event": "toros del valle vs sabios de manizales",
         "family": "ml",
-        "target": "houston rockets",
+        "target": "sabios de manizales",
         "stat": "",
         "line": "",
         "period": "",
@@ -1611,31 +1629,31 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|dallas mavericks vs houston rockets|ml|houston rockets||||||||prematch|standard",
+      "identityKey": "basketball|toros del valle vs sabios de manizales|ml|sabios de manizales||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 1.69,
+      "thunderpick": 11,
       "outside": [
         {
-          "sourceFamily": "fanduel",
-          "book": "FanDuel Direct",
-          "price": 1.3333333333333333,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 8.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.3333333333333333,
+      "bestOutside": 8.5,
       "independentSources": 1,
-      "fairProbability": 0.7212543554006969,
-      "fairDecimal": 1.3864734299516908,
-      "estimatedEV": 0.21891986062717783,
-      "startTime": "2026-10-31T00:00:00+00:00",
+      "fairProbability": 0.1099476439790576,
+      "fairDecimal": 9.095238095238095,
+      "estimatedEV": 0.2094240837696335,
+      "startTime": "2026-10-06T23:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     },
     {
       "tier": "SCREENING",
       "sport": "tennis",
-      "match": "Viktoria Varga vs Alesia Breaz",
-      "target": "Viktoria Varga",
+      "match": "Andrea Bacaloni vs Javier Munoz Fuster",
+      "target": "Javier Munoz Fuster",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1648,9 +1666,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "tennis",
-        "event": "viktoria varga vs alesia breaz",
+        "event": "andrea bacaloni vs javier munoz fuster",
         "family": "ml",
-        "target": "viktoria varga",
+        "target": "javier munoz fuster",
         "stat": "",
         "line": "",
         "period": "",
@@ -1661,31 +1679,31 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "tennis|viktoria varga vs alesia breaz|ml|viktoria varga||||||||prematch|standard",
+      "identityKey": "tennis|andrea bacaloni vs javier munoz fuster|ml|javier munoz fuster||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 5.9,
+      "thunderpick": 6.5,
       "outside": [
         {
           "sourceFamily": "unibet-kambi",
           "book": "Unibet/Kambi Direct",
-          "price": 4.5,
+          "price": 5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.5,
+      "bestOutside": 5,
       "independentSources": 1,
-      "fairProbability": 0.2063492063492063,
-      "fairDecimal": 4.846153846153847,
-      "estimatedEV": 0.21746031746031735,
-      "startTime": "2026-10-07T12:00:00+00:00",
+      "fairProbability": 0.18566775244299674,
+      "fairDecimal": 5.385964912280702,
+      "estimatedEV": 0.20684039087947892,
+      "startTime": "2026-10-07T11:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     },
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Donar Groningen vs Leuven Bears",
-      "target": "Leuven Bears",
+      "match": "Boston Celtics vs New York Knicks",
+      "target": "Boston Celtics",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1698,9 +1716,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "donar groningen vs leuven bears",
+        "event": "boston celtics vs new york knicks",
         "family": "ml",
-        "target": "leuven bears",
+        "target": "boston celtics",
         "stat": "",
         "line": "",
         "period": "",
@@ -1711,123 +1729,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|donar groningen vs leuven bears|ml|leuven bears||||||||prematch|standard",
+      "identityKey": "basketball|boston celtics vs new york knicks|ml|boston celtics||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.04,
+      "thunderpick": 1.76,
       "outside": [
         {
-          "sourceFamily": "bovada",
-          "book": "Bovada Direct",
-          "price": 1.625,
+          "sourceFamily": "fanduel",
+          "book": "FanDuel Direct",
+          "price": 1.3448275862068966,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 1.625,
+      "bestOutside": 1.3448275862068966,
       "independentSources": 1,
-      "fairProbability": 0.5695364238410596,
-      "fairDecimal": 1.755813953488372,
-      "estimatedEV": 0.16185430463576167,
-      "startTime": "2026-10-06T17:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "screenType": "+EV SCREENING"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "cs2",
-      "match": "Falcons vs Natus Vincere",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
-      "marketKey": "round_handicap",
-      "line": -7.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "cs2",
-        "event": "2775324",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-7.5",
-        "period": "",
-        "map": "2",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2775324|round_handicap|falcons||-7.5||2|||falcons|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 5.3,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibet-kambi-direct",
-          "price": null,
-          "lastUpdate": "2026-10-06T15:56:09Z"
-        }
-      ],
-      "bestOutside": null,
-      "independentSources": 1,
-      "fairProbability": 0.2153284671532846,
-      "fairDecimal": 4.644067796610171,
-      "estimatedEV": 0.14124087591240841,
-      "startTime": "2026-10-06T17:30:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "screenType": "+EV SCREENING"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Stefan Ilie Bogdan Petre vs George Lazarov",
-      "target": "Stefan Ilie Bogdan Petre",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "tennis",
-        "event": "stefan ilie bogdan petre vs george lazarov",
-        "family": "ml",
-        "target": "stefan ilie bogdan petre",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|stefan ilie bogdan petre vs george lazarov|ml|stefan ilie bogdan petre||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 5.9,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "Unibet/Kambi Direct",
-          "price": 4.8,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 4.8,
-      "independentSources": 1,
-      "fairProbability": 0.19327731092436976,
-      "fairDecimal": 5.173913043478261,
-      "estimatedEV": 0.14033613445378168,
-      "startTime": "2026-10-07T08:00:00+00:00",
+      "fairProbability": 0.6794081381011098,
+      "fairDecimal": 1.471869328493648,
+      "estimatedEV": 0.19575832305795315,
+      "startTime": "2026-10-23T23:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     }
@@ -1837,212 +1755,206 @@
     {
       "tier": "PRICE BOARD",
       "sport": "cs2",
-      "match": "Falcons vs Natus Vincere",
-      "target": "Over",
-      "side": "Over",
-      "market": "Player Aleksib - Total Kills Over/Under (Incl. Overtime) - Map 1",
-      "marketKey": "player_prop",
-      "line": 11.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "cs2",
-        "event": "2775324",
-        "family": "player_prop",
-        "target": "aleksib",
-        "stat": "kills",
-        "line": "11.5",
-        "period": "",
-        "map": "1",
-        "round": "",
-        "set": "",
-        "side": "over",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2775324|player_prop|aleksib|kills|11.5||1|||over|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.4,
-      "outside": [
-        {
-          "sourceFamily": "stake-oddin",
-          "book": "stake-direct",
-          "price": null,
-          "lastUpdate": "2026-10-06T14:27:43.192Z"
-        },
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibet-kambi-direct",
-          "price": null,
-          "lastUpdate": "2026-10-06T15:56:05Z"
-        }
-      ],
-      "bestOutside": null,
-      "independentSources": 2,
-      "fairProbability": 0.4155697243932538,
-      "fairDecimal": 2.4063350655778275,
-      "estimatedEV": -0.002632661456190899,
-      "startTime": "2026-10-06T17:30:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "Falcons vs Natus Vincere",
-      "target": "Falcons",
-      "side": "Falcons",
+      "match": "K27 vs Metizport",
+      "target": "K27",
+      "side": "K27",
       "market": "Round Handicap (Incl. Overtime) - Map 1",
-      "marketKey": "round_handicap",
-      "line": -4.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "cs2",
-        "event": "2775324",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-4.5",
-        "period": "",
-        "map": "1",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2775324|round_handicap|falcons||-4.5||1|||falcons|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 3.1,
-      "outside": [
-        {
-          "sourceFamily": "unibet-kambi",
-          "book": "unibet-kambi-direct",
-          "price": null,
-          "lastUpdate": "2026-10-06T15:56:05Z"
-        }
-      ],
-      "bestOutside": null,
-      "independentSources": 1,
-      "fairProbability": 0.32084309133489464,
-      "fairDecimal": 3.116788321167883,
-      "estimatedEV": -0.005386416861826615,
-      "startTime": "2026-10-06T17:30:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
-    },
-    {
-      "tier": "PRICE BOARD",
-      "sport": "cs2",
-      "match": "Falcons vs Natus Vincere",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
       "marketKey": "round_handicap",
       "line": -3.5,
       "scope": {
-        "map": 2,
+        "map": 1,
         "round": null
       },
       "state": "prematch",
       "settlementScope": null,
       "identity": {
         "sport": "cs2",
-        "event": "2775324",
+        "event": "2747955",
         "family": "round_handicap",
-        "target": "falcons",
+        "target": "k27",
         "stat": "",
         "line": "-3.5",
         "period": "",
-        "map": "2",
+        "map": "1",
         "round": "",
         "set": "",
-        "side": "falcons",
+        "side": "k27",
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "cs2|2775324|round_handicap|falcons||-3.5||2|||falcons|prematch|standard",
+      "identityKey": "cs2|2747955|round_handicap|k27||-3.5||1|||k27|prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.1,
+      "thunderpick": 2.5,
       "outside": [
         {
           "sourceFamily": "unibet-kambi",
           "book": "unibet-kambi-direct",
           "price": null,
-          "lastUpdate": "2026-10-06T15:56:08Z"
+          "lastUpdate": "2026-10-05T18:49:11Z"
         }
       ],
       "bestOutside": null,
       "independentSources": 1,
-      "fairProbability": 0.47184986595174266,
-      "fairDecimal": 2.1193181818181817,
-      "estimatedEV": -0.009115281501340333,
-      "startTime": "2026-10-06T17:30:00+00:00",
+      "fairProbability": 0.3994845360824742,
+      "fairDecimal": 2.503225806451613,
+      "estimatedEV": -0.0012886597938145394,
+      "startTime": "2026-10-07T17:30:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "HOTU vs STATE",
+      "target": "HOTU",
+      "side": "HOTU",
+      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "marketKey": "round_handicap",
+      "line": -6.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "cs2",
+        "event": "2770512",
+        "family": "round_handicap",
+        "target": "hotu",
+        "stat": "",
+        "line": "-6.5",
+        "period": "",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "hotu",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2770512|round_handicap|hotu||-6.5||1|||hotu|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 3.3,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibet-kambi-direct",
+          "price": null,
+          "lastUpdate": "2026-10-06T10:01:01Z"
+        }
+      ],
+      "bestOutside": null,
+      "independentSources": 1,
+      "fairProbability": 0.30022573363431154,
+      "fairDecimal": 3.3308270676691727,
+      "estimatedEV": -0.009255079006771916,
+      "startTime": "2026-10-07T09:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
+    },
+    {
+      "tier": "PRICE BOARD",
+      "sport": "cs2",
+      "match": "HOTU vs STATE",
+      "target": "HOTU",
+      "side": "HOTU",
+      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "marketKey": "round_handicap",
+      "line": -5.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "cs2",
+        "event": "2770512",
+        "family": "round_handicap",
+        "target": "hotu",
+        "stat": "",
+        "line": "-5.5",
+        "period": "",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "hotu",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2770512|round_handicap|hotu||-5.5||1|||hotu|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.7,
+      "outside": [
+        {
+          "sourceFamily": "unibet-kambi",
+          "book": "unibet-kambi-direct",
+          "price": null,
+          "lastUpdate": "2026-10-06T10:01:01Z"
+        }
+      ],
+      "bestOutside": null,
+      "independentSources": 1,
+      "fairProbability": 0.3640897755610973,
+      "fairDecimal": 2.746575342465753,
+      "estimatedEV": -0.01695760598503726,
+      "startTime": "2026-10-07T09:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY"
     }
   ],
   "informationalBreakdown": {
-    "player_prop": 175
+    "player_prop": 177
   },
   "coverageAudit": {
     "american-football": {
-      "events": 77,
-      "tpMarkets": 1276,
-      "deepMarkets": 1039,
+      "events": 92,
+      "tpMarkets": 1400,
+      "deepMarkets": 1109,
       "deepSelectedEvents": 8,
       "deepSuccessfulEvents": 8,
       "deepFailedEvents": 0,
-      "exact1Source": 19,
+      "exact1Source": 28,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 19,
+      "screening": 28,
       "identityIncomplete": 0
     },
     "baseball": {
       "events": 10,
-      "tpMarkets": 328,
-      "deepMarkets": 318,
+      "tpMarkets": 330,
+      "deepMarkets": 320,
       "deepSelectedEvents": 10,
       "deepSuccessfulEvents": 10,
       "deepFailedEvents": 0,
       "exact1Source": 5,
       "exact2Source": 0,
-      "exact3Plus": 1,
+      "exact3Plus": 0,
       "action": 0,
-      "watch": 1,
+      "watch": 0,
       "screening": 5,
       "identityIncomplete": 0
     },
     "basketball": {
-      "events": 237,
-      "tpMarkets": 11706,
-      "deepMarkets": 11249,
-      "deepSelectedEvents": 155,
-      "deepSuccessfulEvents": 155,
+      "events": 224,
+      "tpMarkets": 9797,
+      "deepMarkets": 9368,
+      "deepSelectedEvents": 147,
+      "deepSuccessfulEvents": 147,
       "deepFailedEvents": 0,
-      "exact1Source": 47,
+      "exact1Source": 53,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 47,
+      "screening": 53,
       "identityIncomplete": 0
     },
     "soccer": {
-      "events": 965,
-      "tpMarkets": 38973,
-      "deepMarkets": 35537,
-      "deepSelectedEvents": 141,
-      "deepSuccessfulEvents": 141,
+      "events": 932,
+      "tpMarkets": 43432,
+      "deepMarkets": 40184,
+      "deepSelectedEvents": 160,
+      "deepSuccessfulEvents": 160,
       "deepFailedEvents": 0,
       "exact1Source": 0,
       "exact2Source": 0,
@@ -2053,33 +1965,33 @@
       "identityIncomplete": 0
     },
     "tennis": {
-      "events": 346,
-      "tpMarkets": 7052,
-      "deepMarkets": 6710,
-      "deepSelectedEvents": 346,
-      "deepSuccessfulEvents": 346,
+      "events": 385,
+      "tpMarkets": 7569,
+      "deepMarkets": 7193,
+      "deepSelectedEvents": 385,
+      "deepSuccessfulEvents": 385,
       "deepFailedEvents": 0,
-      "exact1Source": 134,
+      "exact1Source": 126,
       "exact2Source": 2,
-      "exact3Plus": 8,
+      "exact3Plus": 3,
       "action": 0,
       "watch": 0,
-      "screening": 144,
+      "screening": 131,
       "identityIncomplete": 0
     },
     "cs2": {
-      "events": 49,
-      "tpMarkets": 4253,
-      "deepMarkets": 4178,
-      "deepSelectedEvents": 39,
-      "deepSuccessfulEvents": 39,
+      "events": 53,
+      "tpMarkets": 4425,
+      "deepMarkets": 4346,
+      "deepSelectedEvents": 43,
+      "deepSuccessfulEvents": 43,
       "deepFailedEvents": 0,
-      "exact1Source": 47,
-      "exact2Source": 55,
+      "exact1Source": 51,
+      "exact2Source": 6,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 10,
+      "screening": 4,
       "identityIncomplete": 0
     },
     "dota2": {
@@ -2089,7 +2001,7 @@
       "deepSelectedEvents": 3,
       "deepSuccessfulEvents": 3,
       "deepFailedEvents": 0,
-      "exact1Source": 1,
+      "exact1Source": 3,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
@@ -2098,18 +2010,18 @@
       "identityIncomplete": 0
     },
     "lol": {
-      "events": 14,
-      "tpMarkets": 771,
-      "deepMarkets": 754,
-      "deepSelectedEvents": 13,
-      "deepSuccessfulEvents": 13,
+      "events": 12,
+      "tpMarkets": 764,
+      "deepMarkets": 749,
+      "deepSelectedEvents": 11,
+      "deepSuccessfulEvents": 11,
       "deepFailedEvents": 0,
-      "exact1Source": 5,
-      "exact2Source": 0,
+      "exact1Source": 40,
+      "exact2Source": 4,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 5,
+      "screening": 1,
       "identityIncomplete": 0
     },
     "valorant": {
@@ -2119,12 +2031,12 @@
       "deepSelectedEvents": 5,
       "deepSuccessfulEvents": 5,
       "deepFailedEvents": 0,
-      "exact1Source": 1,
+      "exact1Source": 2,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 1,
+      "screening": 2,
       "identityIncomplete": 0
     }
   },
@@ -2138,115 +2050,128 @@
         "rawEvents": 2000,
         "pages": 20,
         "acceptedEvents": 0,
-        "rejectedStale": 7329,
-        "fetchedAt": "2026-10-06T17:28:04.273Z"
+        "rejectedStale": 7332,
+        "fetchedAt": "2026-10-06T20:28:56.356Z"
       },
       "stake": {
         "ok": true,
         "status": 200,
         "sports": 9,
-        "scheduleFixtures": 196,
-        "detailRequests": 196,
-        "acceptedEvents": 179,
-        "marketCount": 2844,
-        "playerPropMarkets": 466,
+        "scheduleFixtures": 202,
+        "detailRequests": 202,
+        "acceptedEvents": 186,
+        "marketCount": 2488,
+        "playerPropMarkets": 177,
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:09.787Z"
+        "fetchedAt": "2026-10-06T20:29:03.429Z"
       },
       "kalshi": {
         "ok": true,
         "status": 200,
         "rawMarkets": 60000,
         "pages": 60,
-        "acceptedEvents": 7,
-        "rejectedMulti": 59603,
-        "rejectedNonSports": 167,
-        "rejectedShape": 223,
-        "fetchedAt": "2026-10-06T17:28:17.074Z"
+        "acceptedEvents": 2,
+        "rejectedMulti": 59994,
+        "rejectedNonSports": 2,
+        "rejectedShape": 2,
+        "fetchedAt": "2026-10-06T20:29:09.360Z"
       },
       "betway": {
         "ok": true,
         "status": 200,
         "fetchedPages": 6,
-        "rawEvents": 108,
+        "rawEvents": 106,
         "rawMarkets": 39,
-        "rawOutcomes": 501,
+        "rawOutcomes": 381,
         "acceptedEvents": 37,
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:26.824Z",
+        "fetchedAt": "2026-10-06T20:29:18.936Z",
         "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
       },
       "pinnacle": {
         "ok": true,
         "status": 200,
         "sports": 63,
-        "leagues": 269,
-        "matchups": 9432,
-        "marketRequests": 240,
-        "acceptedEvents": 123,
-        "acceptedMarkets": 183,
+        "leagues": 256,
+        "matchups": 9229,
+        "marketRequests": 252,
+        "acceptedEvents": 111,
+        "acceptedMarkets": 171,
         "playerPropMarkets": 0,
         "mapWinnerMarkets": 0,
-        "rejectedUnorientableMarkets": 168,
+        "rejectedUnorientableMarkets": 149,
         "errors": [
           "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
         ],
-        "fetchedAt": "2026-10-06T17:28:37.817Z"
+        "fetchedAt": "2026-10-06T20:29:29.183Z"
+      },
+      "pinnwire": {
+        "ok": false,
+        "status": 429,
+        "events": 0,
+        "acceptedEvents": 0,
+        "acceptedMarkets": 0,
+        "specials": 0,
+        "errors": [
+          "HTTP 429 {\"error\":\"rate_limited\",\"window\":\"day\",\"limit\":50,\"retry_after_ms\":12630215,\"message\":\"Rate limit reached for the \\\"demo"
+        ],
+        "fetchedAt": "2026-10-06T20:29:29.280Z",
+        "sourceFamily": "pinnacle"
       },
       "kambi": {
         "ok": true,
         "status": 200,
-        "rawEvents": 722,
-        "acceptedEvents": 219,
-        "marketCount": 562,
-        "deepEventRequests": 28,
-        "playerPropMarkets": 180,
-        "playerKillMarkets": 140,
+        "rawEvents": 650,
+        "acceptedEvents": 229,
+        "marketCount": 441,
+        "deepEventRequests": 27,
+        "playerPropMarkets": 80,
+        "playerKillMarkets": 40,
         "playerDeathMarkets": 40,
-        "mapWinnerMarkets": 30,
+        "mapWinnerMarkets": 28,
         "mapHandicapMarkets": 0,
-        "roundHandicapMarkets": 72,
-        "roundTotalMarkets": 61,
+        "roundHandicapMarkets": 52,
+        "roundTotalMarkets": 52,
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:39.355Z"
+        "fetchedAt": "2026-10-06T20:29:31.376Z"
       },
       "kambiTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 722,
-        "eligibleEvents": 76,
-        "deepRequests": 76,
-        "acceptedEvents": 73,
-        "marketCount": 716,
-        "playerPropMarkets": 92,
+        "rawEvents": 650,
+        "eligibleEvents": 78,
+        "deepRequests": 78,
+        "acceptedEvents": 75,
+        "marketCount": 693,
+        "playerPropMarkets": 100,
         "bySport": {
           "baseball": {
-            "eligible": 4,
-            "deepEvents": 4,
-            "events": 2,
-            "markets": 126,
-            "playerProps": 72
+            "eligible": 8,
+            "deepEvents": 8,
+            "events": 5,
+            "markets": 195,
+            "playerProps": 94
           },
           "basketball": {
-            "eligible": 24,
-            "deepEvents": 24,
-            "events": 24,
-            "markets": 298,
+            "eligible": 22,
+            "deepEvents": 22,
+            "events": 22,
+            "markets": 307,
             "playerProps": 0
           },
           "soccer": {
             "eligible": 24,
             "deepEvents": 24,
             "events": 24,
-            "markets": 168,
-            "playerProps": 0
+            "markets": 162,
+            "playerProps": 6
           },
           "tennis": {
             "eligible": 24,
             "deepEvents": 24,
-            "events": 23,
-            "markets": 124,
-            "playerProps": 20
+            "events": 24,
+            "markets": 29,
+            "playerProps": 0
           }
         },
         "unknownPropLikeLabels": [
@@ -2266,10 +2191,10 @@
           "baseball: 1+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 2+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 1+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 3+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 1+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 2+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 2+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 3+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 4+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 3+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 3+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
@@ -2277,17 +2202,46 @@
           "baseball: Total Stolen Bases by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: Most Hits",
           "baseball: 10+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: Most Hits - Inning 1",
+          "baseball: Total Hits - Inning 1",
           "baseball: 4+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
           "baseball: 3+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
-          "baseball: 2+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)"
+          "baseball: 2+ Strikeouts thrown by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "basketball: 2+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 6+ Rebounds By The Player - Including Overtime",
+          "basketball: 2+ Rebounds By The Player - Including Overtime",
+          "basketball: 10+ Rebounds By The Player - Including Overtime",
+          "basketball: 15+ Points Scored By The Player - Including Overtime",
+          "basketball: 4+ Rebounds By The Player - Including Overtime",
+          "basketball: 10+ Points Scored By The Player - Including Overtime",
+          "basketball: 8+ Assists By The Player - Including Overtime",
+          "basketball: 30+ Points Scored By The Player - Including Overtime",
+          "basketball: 3+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 6+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 4+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 4+ Assists By The Player - Including Overtime",
+          "basketball: 14+ Rebounds By The Player - Including Overtime",
+          "basketball: 8+ Rebounds By The Player - Including Overtime",
+          "basketball: 20+ Points Scored By The Player - Including Overtime",
+          "basketball: 6+ Assists By The Player - Including Overtime",
+          "basketball: 10+ Assists By The Player - Including Overtime",
+          "basketball: 25+ Points Scored By The Player - Including Overtime",
+          "basketball: 5+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "basketball: 12+ Rebounds By The Player - Including Overtime",
+          "basketball: 2+ Assists By The Player - Including Overtime",
+          "basketball: 5+ Points Scored By The Player - Including Overtime",
+          "basketball: 7+ Three-Point Field Goals Made By The Player - Including Overtime",
+          "soccer: Total Shots on Target (Settled using Opta data)",
+          "soccer: Player's shots on target (Settled using Opta data)",
+          "soccer: Most Shots on Target (Settled using Opta data)"
         ],
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:41.345Z"
+        "fetchedAt": "2026-10-06T20:29:33.529Z"
       },
       "kambiNfl": {
         "ok": true,
         "status": 200,
-        "rawEvents": 722,
+        "rawEvents": 651,
         "nflEvents": 0,
         "deepRequests": 0,
         "acceptedEvents": 0,
@@ -2298,7 +2252,7 @@
         "teamTotals": 0,
         "playerPropMarkets": 0,
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:42.343Z"
+        "fetchedAt": "2026-10-06T20:29:34.291Z"
       },
       "bovadaNfl": {
         "ok": true,
@@ -2317,57 +2271,57 @@
         "playerReceptions": 12,
         "playerPassingTouchdowns": 2,
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:43.402Z"
+        "fetchedAt": "2026-10-06T20:29:35.190Z"
       },
       "bovadaTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 373,
-        "acceptedEvents": 156,
-        "marketCount": 585,
-        "playerPropMarkets": 124,
+        "rawEvents": 401,
+        "acceptedEvents": 211,
+        "marketCount": 883,
+        "playerPropMarkets": 111,
         "bySport": {
           "basketball": {
-            "rawEvents": 173,
-            "acceptedEvents": 32,
-            "markets": 250,
-            "playerProps": 100
+            "rawEvents": 206,
+            "acceptedEvents": 86,
+            "markets": 540,
+            "playerProps": 87
           },
           "baseball": {
-            "rawEvents": 46,
-            "acceptedEvents": 18,
-            "markets": 69,
+            "rawEvents": 44,
+            "acceptedEvents": 12,
+            "markets": 57,
             "playerProps": 24
           },
           "tennis": {
-            "rawEvents": 154,
-            "acceptedEvents": 106,
-            "markets": 266,
+            "rawEvents": 151,
+            "acceptedEvents": 113,
+            "markets": 286,
             "playerProps": 0
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:44.612Z"
+        "fetchedAt": "2026-10-06T20:29:36.723Z"
       },
       "fanduel": {
         "ok": true,
         "status": 200,
-        "acceptedEvents": 44,
-        "marketCount": 131,
+        "acceptedEvents": 65,
+        "marketCount": 194,
         "bySport": {
           "american-football": {
-            "events": 15,
-            "markets": 45,
-            "h2h": 15,
-            "spreads": 15,
-            "totals": 15
+            "events": 29,
+            "markets": 87,
+            "h2h": 29,
+            "spreads": 29,
+            "totals": 29
           },
           "basketball": {
-            "events": 25,
-            "markets": 74,
-            "h2h": 25,
-            "spreads": 24,
-            "totals": 25
+            "events": 32,
+            "markets": 95,
+            "h2h": 32,
+            "spreads": 31,
+            "totals": 32
           },
           "baseball": {
             "events": 4,
@@ -2378,35 +2332,35 @@
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:45.296476+00:00"
+        "fetchedAt": "2026-10-06T20:29:37.423153+00:00"
       },
       "fanduelProps": {
         "ok": true,
         "status": 200,
         "acceptedEvents": 11,
-        "eventPageRequests": 26,
+        "eventPageRequests": 31,
         "eventPageErrors": 0,
         "marketCount": 144,
         "playerPropMarkets": 144,
         "bySport": {
           "american-football": {
-            "boardEvents": 18,
+            "boardEvents": 32,
             "eligibleEvents": 15,
             "eventPages": 15,
             "eventsWithProps": 8,
             "playerProps": 138,
             "byStat": {
-              "passing_touchdowns": 16,
-              "rushing_yards": 26,
               "receptions": 40,
+              "rushing_yards": 26,
               "receiving_yards": 40,
+              "passing_touchdowns": 16,
               "passing_yards": 16
             }
           },
           "basketball": {
-            "boardEvents": 27,
-            "eligibleEvents": 7,
-            "eventPages": 7,
+            "boardEvents": 34,
+            "eligibleEvents": 12,
+            "eventPages": 12,
             "eventsWithProps": 0,
             "playerProps": 0,
             "byStat": {}
@@ -2423,15 +2377,15 @@
           }
         },
         "byStat": {
-          "passing_touchdowns": 16,
-          "rushing_yards": 26,
           "receptions": 40,
+          "rushing_yards": 26,
           "receiving_yards": 40,
+          "passing_touchdowns": 16,
           "passing_yards": 16,
           "strikeouts": 6
         },
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:46.683378+00:00"
+        "fetchedAt": "2026-10-06T20:29:38.712240+00:00"
       },
       "draftkingsNfl": {
         "ok": true,
@@ -2447,7 +2401,7 @@
           "passing_touchdowns": 14
         },
         "errors": [],
-        "fetchedAt": "2026-10-06T17:28:48.637303+00:00"
+        "fetchedAt": "2026-10-06T20:29:40.670684+00:00"
       },
       "draftkingsTraditional": {
         "ok": true,
@@ -2467,9 +2421,9 @@
             }
           },
           "baseball": {
-            "categories": 178,
-            "selectedSubcategories": 59,
-            "requests": 59,
+            "categories": 187,
+            "selectedSubcategories": 63,
+            "requests": 63,
             "events": 4,
             "markets": 297,
             "byStat": {
@@ -2482,7 +2436,7 @@
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-06T17:29:05.641640+00:00"
+        "fetchedAt": "2026-10-06T20:30:01.381905+00:00"
       },
       "cloudbet": {
         "ok": true,
@@ -2491,7 +2445,7 @@
         "state": "CONNECTED_USABLE",
         "source": "cloudbet-direct",
         "apiMode": "competition-batch",
-        "events": 129,
+        "events": 125,
         "sportsFetched": 9,
         "sportsDiscovered": 74,
         "sportApiKeys": {
@@ -2509,37 +2463,37 @@
           "american-football": {
             "name": "American Football",
             "key": "american-football",
-            "eventCount": 421,
+            "eventCount": 432,
             "competitionCount": 5
           },
           "baseball": {
             "name": "Baseball",
             "key": "baseball",
-            "eventCount": 47,
+            "eventCount": 46,
             "competitionCount": 8
           },
           "basketball": {
             "name": "Basketball",
             "key": "basketball",
-            "eventCount": 614,
-            "competitionCount": 64
+            "eventCount": 583,
+            "competitionCount": 62
           },
           "soccer": {
             "name": "Soccer",
             "key": "soccer",
-            "eventCount": 1766,
-            "competitionCount": 243
+            "eventCount": 1662,
+            "competitionCount": 231
           },
           "tennis": {
             "name": "Tennis",
             "key": "tennis",
-            "eventCount": 404,
+            "eventCount": 371,
             "competitionCount": 43
           },
           "cs2": {
             "name": "Counter-Strike",
             "key": "counter-strike",
-            "eventCount": 61,
+            "eventCount": 63,
             "competitionCount": 6
           },
           "dota2": {
@@ -2551,7 +2505,7 @@
           "lol": {
             "name": "League of Legends",
             "key": "league-of-legends",
-            "eventCount": 32,
+            "eventCount": 30,
             "competitionCount": 7
           },
           "valorant": {
@@ -2566,49 +2520,49 @@
             "selected": 5,
             "fetched": 5,
             "failed": 0,
-            "rawEvents": 421,
-            "usableEvents": 7,
-            "uniqueEvents": 421
+            "rawEvents": 432,
+            "usableEvents": 20,
+            "uniqueEvents": 432
           },
           "baseball": {
             "selected": 4,
             "fetched": 4,
             "failed": 0,
-            "rawEvents": 47,
-            "usableEvents": 2,
-            "uniqueEvents": 47
+            "rawEvents": 46,
+            "usableEvents": 0,
+            "uniqueEvents": 46
           },
           "basketball": {
-            "selected": 55,
-            "fetched": 55,
+            "selected": 53,
+            "fetched": 53,
             "failed": 0,
-            "rawEvents": 609,
-            "usableEvents": 23,
-            "uniqueEvents": 609
+            "rawEvents": 578,
+            "usableEvents": 24,
+            "uniqueEvents": 578
           },
           "soccer": {
-            "selected": 206,
-            "fetched": 206,
+            "selected": 193,
+            "fetched": 193,
             "failed": 0,
-            "rawEvents": 1691,
-            "usableEvents": 23,
-            "uniqueEvents": 1691
+            "rawEvents": 1587,
+            "usableEvents": 19,
+            "uniqueEvents": 1587
           },
           "tennis": {
-            "selected": 40,
-            "fetched": 40,
+            "selected": 39,
+            "fetched": 39,
             "failed": 0,
-            "rawEvents": 388,
-            "usableEvents": 68,
-            "uniqueEvents": 388
+            "rawEvents": 347,
+            "usableEvents": 60,
+            "uniqueEvents": 347
           },
           "cs2": {
             "selected": 3,
             "fetched": 3,
             "failed": 0,
-            "rawEvents": 6,
+            "rawEvents": 8,
             "usableEvents": 0,
-            "uniqueEvents": 6
+            "uniqueEvents": 8
           },
           "dota2": {
             "selected": 2,
@@ -2622,9 +2576,9 @@
             "selected": 5,
             "fetched": 5,
             "failed": 0,
-            "rawEvents": 31,
-            "usableEvents": 6,
-            "uniqueEvents": 31
+            "rawEvents": 29,
+            "usableEvents": 2,
+            "uniqueEvents": 29
           },
           "valorant": {
             "selected": 1,
@@ -2636,20 +2590,20 @@
           }
         },
         "bySport": {
-          "american-football": 7,
-          "baseball": 2,
-          "basketball": 23,
-          "soccer": 23,
-          "tennis": 68,
+          "american-football": 20,
+          "baseball": 0,
+          "basketball": 24,
+          "soccer": 19,
+          "tennis": 60,
           "cs2": 0,
           "dota2": 0,
-          "lol": 6,
+          "lol": 2,
           "valorant": 0
         },
         "errors": [],
         "windowDays": 30,
         "concurrency": 12,
-        "fetchedAt": "2026-10-06T17:29:20.831996+00:00"
+        "fetchedAt": "2026-10-06T20:30:13.937791+00:00"
       }
     },
     "strictSnapshotHealthy": true,
