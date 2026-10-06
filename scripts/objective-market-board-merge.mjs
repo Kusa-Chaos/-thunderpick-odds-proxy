@@ -19,6 +19,18 @@ function chooseBetter(a,b){
   if((b.independentSources||0)>(a.independentSources||0))return b;
   return a;
 }
+function objectiveSourceAbsenceAudit(rows=[]){
+  const expected=['stake-oddin','ggbet','unibet-kambi','cloudbet'];
+  const groups=new Map();
+  for(const r of rows.filter(x=>x.objectiveMarket===true&&x.identityComplete)){
+    const k=r.identityKey;
+    const seen=new Set((r.outside||[]).map(o=>String(o.sourceFamily||o.book||'').toLowerCase()));
+    groups.set(k,{identityKey:k,sport:r.sport,match:r.match,market:r.market,line:r.line??null,scope:r.scope||null,
+      present:[...seen],missing:expected.filter(e=>![...seen].some(s=>s.includes(e))),
+      missingReason:Object.fromEntries(expected.filter(e=>![...seen].some(s=>s.includes(e))).map(e=>[e,'NO EXACT NORMALIZED QUOTE FOR THIS OBJECTIVE CONTRACT']))});
+  }
+  return [...groups.values()];
+}
 function recomputeCoverage(board,rows){
   const audit={...(board.coverageAudit||{})};
   const sports=new Set([...Object.keys(audit),...rows.map(r=>canonSport(r.sport)).filter(Boolean)]);
@@ -45,7 +57,7 @@ export function mergeObjectiveRowsIntoBoard({board={},objectiveRows=[]}={}){
   for(const raw of objectiveRows||[]){const r=normalized(raw);if(!r.identityComplete&&r.tier!=='INFORMATIONAL')r.tier='INFORMATIONAL';map.set(r.identityKey,chooseBetter(map.get(r.identityKey),r));}
   const rows=[...map.values()].sort((a,b)=>(priority[a.tier]??99)-(priority[b.tier]??99)||(Number(b.estimatedEV??-99)-Number(a.estimatedEV??-99))||(Number(b.independentSources||0)-Number(a.independentSources||0)));
   const counts=Object.fromEntries(TIERS.map(t=>[t,rows.filter(r=>r.tier===t).length]));
-  return {...board,counts,rows:rows.slice(0,500),coverageAudit:recomputeCoverage(board,rows),objectiveMarketPromotion:{enabled:true,rows:rows.filter(r=>r.objectiveMarket===true).length,generatedAt:new Date().toISOString()}};
+  return {...board,counts,rows:rows.slice(0,500),coverageAudit:recomputeCoverage(board,rows),objectiveMarketPromotion:{enabled:true,rows:rows.filter(r=>r.objectiveMarket===true).length,generatedAt:new Date().toISOString()},objectiveSourceAbsenceAudit:objectiveSourceAbsenceAudit(rows)};
 }
 
 async function main(){
