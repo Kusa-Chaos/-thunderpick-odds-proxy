@@ -3,12 +3,15 @@ import {normalizeObjectiveMarket,objectiveContractKey} from './objective-market-
 
 const TP_FILE=process.env.TP_FILE||'data/owls-latest.json';
 const DIRECT_FILE=process.env.DIRECT_FILE||'data/direct-sources-latest.json';
+const GGBET_FILE=process.env.GGBET_FILE||'data/ggbet-direct-latest.json';
 const OUT_FILE=process.env.OUT_FILE||'data/objective-market-inventory-latest.json';
 const SPORTS=['lol','dota2'];
 
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
+const readOptional=async p=>{try{return await read(p)}catch{return {sports:{}}}};
 const tp=await read(TP_FILE);
 const direct=await read(DIRECT_FILE);
+const ggbet=await readOptional(GGBET_FILE);
 
 function sourceFamily(raw=''){
   const s=String(raw).toLowerCase();
@@ -48,7 +51,7 @@ for(const sport of SPORTS){
       raw.push({...n,sport,source:'thunderpick',event:eventName(e),state:eventState(e),label:m.name||m.nickName||n.label});
     }
   }
-  const outside=direct?.sports?.[sport]?.exactV2||[];
+  const outside=[...(direct?.sports?.[sport]?.exactV2||[]),...(ggbet?.sports?.[sport]?.exactV2||[])];
   for(const e of outside){
     const teams=eventTeams(e);
     for(const bm of e.bookmakers||[]){
