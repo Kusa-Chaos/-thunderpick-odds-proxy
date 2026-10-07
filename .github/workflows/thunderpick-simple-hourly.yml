@@ -126,6 +126,9 @@ jobs:
         run: node scripts/pinnwire-direct.mjs
       - name: Add Unibet Kambi esports deep market and prop source
         run: node scripts/kambi-direct.mjs
+      - name: Add Unibet Kambi esports objective markets
+        continue-on-error: true
+        run: node scripts/kambi-objective-direct.mjs
       - name: Add Unibet Kambi traditional-sports deep markets and props
         run: node scripts/kambi-traditional-direct.mjs
       - name: Add Unibet Kambi NFL lines and player props
@@ -173,6 +176,7 @@ jobs:
           node scripts/pinnacle-direct.mjs
           node scripts/pinnwire-direct.mjs || true
           node scripts/kambi-direct.mjs
+          node scripts/kambi-objective-direct.mjs || true
           node scripts/kambi-traditional-direct.mjs
           node scripts/kambi-nfl-direct.mjs
           node scripts/bovada-nfl-direct.mjs
