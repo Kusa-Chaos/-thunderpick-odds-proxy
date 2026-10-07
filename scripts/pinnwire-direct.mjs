@@ -19,8 +19,10 @@ function fixtureMarkets(e={}){
  return ms;
 }
 try{
- const u='https://pinnwire.com/kit/v1/prematch/fixtures?sport_id=11&include_specials=nested&key=demo';
- const r=await fetch(u,{headers:{Accept:'application/json','User-Agent':'thunderpick-scanner/1.0'},signal:AbortSignal.timeout(30000)});health.status=r.status;const body=await r.text();if(!r.ok)throw new Error('HTTP '+r.status+' '+body.slice(0,120));
+ const key=process.env.PINNWIRE_API_KEY?.trim();
+ if(!key)throw new Error('PINNWIRE_API_KEY_NOT_CONFIGURED');
+ const u='https://pinnwire.com/kit/v1/prematch/fixtures?sport_id=11&include_specials=nested';
+ const r=await fetch(u,{headers:{Accept:'application/json','User-Agent':'thunderpick-scanner/1.0','x-api-key':key},signal:AbortSignal.timeout(30000)});health.status=r.status;const body=await r.text();if(!r.ok)throw new Error('HTTP '+r.status+' '+body.slice(0,120));
  const j=JSON.parse(body),events=Array.isArray(j.events)?j.events:[];health.events=events.length;
  for(const e of events){const sport=sportOf(e);if(!sport||!out?.sports?.[sport])continue;const markets=fixtureMarkets(e);
   for(const sp of e.specials||[]){for(const rows of Object.values(sp.special_markets||{}))for(const m of rows||[]){const o=[];for(const q of m.prices||[])push(o,q.name,q.price,q.points);if(o.length>=2){health.specials++;markets.push({key:'player_prop',name:sp.special||sp.special_category||m.type||'Special',scope:{period:0,map:null,round:null},line:null,last_update:null,outcomes:o});}}}
