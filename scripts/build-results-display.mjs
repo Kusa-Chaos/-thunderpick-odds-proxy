@@ -20,10 +20,12 @@ const compact=r=>{const outside=normalizeOutside(r);const derivedFairP=Number(r.
 const actionRows=rows.filter(r=>r.tier==='ACTION').sort(rank).map(compact); const watchRows=rows.filter(r=>r.tier==='WATCH').sort(rank).map(compact); const screeningRows=rows.filter(r=>r.tier==='SCREENING').sort(rank).slice(0,12).map(compact); const topScreeningRows=screeningRows.slice(0,10); const topPriceBoardRows=rows.filter(r=>r.tier==='PRICE BOARD').sort(rank).slice(0,3).map(compact);
 const persistedArb=board.arbitrageAudit&&typeof board.arbitrageAudit==='object'?board.arbitrageAudit:null;
 const arbitrage=persistedArb?[...(persistedArb.found||[]),...(persistedArb.watch||[]),...(persistedArb.screening||[])]:detectArbitrage(rows);
-const arbFoundRows=arbitrage.filter(r=>r.tier==='ARB FOUND');
+const crossBook=r=>{const legs=Array.isArray(r.legs)?r.legs:[];return legs.length>=2&&new Set(legs.map(l=>String(l.sourceFamily||l.book||'').trim().toLowerCase())).size>=2;};
+const verifiedArb=r=>crossBook(r)&&r.identityVerified===true&&r.blocker==null;
+const arbFoundRows=arbitrage.filter(r=>r.tier==='ARB FOUND'&&verifiedArb(r));
 // WATCH is never capped: every +EV WATCH and every ARB WATCH must be delivered.
-const arbWatchRows=arbitrage.filter(r=>r.tier==='ARB WATCH');
-const arbScreeningRows=arbitrage.filter(r=>r.tier==='ARB SCREENING');
+const arbWatchRows=arbitrage.filter(r=>r.tier==='ARB WATCH'&&crossBook(r)).concat(arbitrage.filter(r=>r.tier==='ARB FOUND'&&crossBook(r)&&!verifiedArb(r)).map(r=>({...r,tier:'ARB WATCH',blocker:r.blocker||'Arbitrage contract verification incomplete'})));
+const arbScreeningRows=arbitrage.filter(r=>r.tier==='ARB SCREENING'&&crossBook(r));
 const watchBoardRows=[...watchRows.map(r=>({...r,watchType:'+EV WATCH'})),...arbWatchRows.map(r=>({...r,watchType:'ARB WATCH'}))];
 const screeningBoardRows=[...screeningRows.map(r=>({...r,screenType:'+EV SCREENING'})),...arbScreeningRows.map(r=>({...r,screenType:'ARB SCREENING'}))];
 const info=rows.filter(r=>r.tier==='INFORMATIONAL'); const familyOf=r=>r.marketKey||r.market||r.identity?.family||'unknown'; const informationalBreakdown=info.reduce((a,r)=>{const k=familyOf(r);a[k]=(a[k]||0)+1;return a;},{}); const priced=[...actionRows,...watchRows,...screeningRows]; const parseErrors={identity:[...actionRows,...watchRows].filter(r=>!r.identityComplete).length,price:priced.filter(r=>!valid(r.thunderpick)||(r.tier!=='SCREENING'&&r.outside.some(o=>!valid(o.price)))).length}; const counts={...(board.counts??{}),'ARB FOUND':arbFoundRows.length,'ARB WATCH':arbWatchRows.length,'ARB SCREENING':arbScreeningRows.length};
