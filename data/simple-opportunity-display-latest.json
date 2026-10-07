@@ -1,17 +1,17 @@
 {
   "generatedAt": "2026-10-07T01:18:15.550Z",
-  "builtAt": "2026-10-07T01:18:15.791Z",
+  "builtAt": "2026-10-07T01:18:35.808Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
     "SCREENING": 234,
     "PRICE BOARD": 0,
     "INFORMATIONAL": 301,
-    "ARB FOUND": 1,
-    "ARB WATCH": 0,
-    "ARB SCREENING": 0
+    "ARB FOUND": 0,
+    "ARB WATCH": 4,
+    "ARB SCREENING": 4
   },
   "parseErrors": {
     "identity": 0,
@@ -1101,32 +1101,521 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
-  "arbFoundRows": [
+  "arbFoundRows": [],
+  "arbWatchRows": [
     {
-      "tier": "ARB FOUND",
-      "identityGroup": "basketball|golden state warriors vs los angeles lakers|ml||||||||prematch|standard",
-      "inverseSum": 0.8948749726616607,
-      "arbMargin": 0.1174745417515275,
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2771892,
+      "match": "Zhizhen Zhang vs Tomas Machac",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T05:30:00+00:00",
+      "exactContractKey": "tennis|tomasmachac|zhizhenzhang|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9848323007904294,
+      "arbROI": 0.015401301518438215,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T08:24:46Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
       "legs": [
         {
-          "target": "los angeles lakers",
-          "sourceFamily": "thunderpick",
+          "outcome": "Tomas Machac",
           "book": "Thunderpick",
-          "price": 3.19
+          "sourceFamily": "thunderpick",
+          "price": 1.51
         },
         {
-          "target": "golden state warriors",
-          "sourceFamily": "thunderpick",
-          "book": "Thunderpick",
-          "price": 1.72
+          "outcome": "Zhizhen Zhang",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.1
         }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779256,
+      "match": "Rinky Hijikata vs Roman Safiullin",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T07:30:00+00:00",
+      "exactContractKey": "tennis|rinkyhijikata|romansafiullin|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9859154929577465,
+      "arbROI": 0.014285714285714235,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
       ],
-      "independentSourceFamilies": 1
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T21:41:37Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Roman Safiullin",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.42
+        },
+        {
+          "outcome": "Rinky Hijikata",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.55
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779251,
+      "match": "Mattia Bellucci vs Yi Zhou",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T07:00:00+00:00",
+      "exactContractKey": "tennis|mattiabellucci|yizhou|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9907407407407407,
+      "arbROI": 0.009345794392523477,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T01:17:25.635Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Mattia Bellucci",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.35
+        },
+        {
+          "outcome": "Yi Zhou",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 4
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779255,
+      "match": "Alex Molcan vs Federico Cina",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T06:00:00+00:00",
+      "exactContractKey": "tennis|alexmolcan|federicocina|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.003238610076217,
+      "arbROI": -0.003228155339805916,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T21:28:25Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alex Molcan",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.69
+        },
+        {
+          "outcome": "Federico Cina",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.43
+        }
+      ]
     }
   ],
-  "arbWatchRows": [],
-  "arbScreeningRows": [],
-  "watchBoardRows": [],
+  "arbScreeningRows": [
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771899,
+      "match": "Sho Shimabukuro vs Miomir Kecmanovic",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T04:05:00+00:00",
+      "exactContractKey": "tennis|miomirkecmanovic|shoshimabukuro|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0136054421768708,
+      "arbROI": -0.01342281879194629,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T01:17:25.635Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Miomir Kecmanovic",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.47
+        },
+        {
+          "outcome": "Sho Shimabukuro",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 3
+        }
+      ]
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771926,
+      "match": "Yannick Hanfmann vs Kamil Majchrzak",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T05:30:00+00:00",
+      "exactContractKey": "tennis|kamilmajchrzak|yannickhanfmann|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.010269882971101,
+      "arbROI": -0.010165484633569699,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T16:04:43Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Kamil Majchrzak",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.58
+        },
+        {
+          "outcome": "Yannick Hanfmann",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.65
+        }
+      ]
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771902,
+      "match": "Arthur Gea vs Jaime Faria",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T04:05:00+00:00",
+      "exactContractKey": "tennis|arthurgea|jaimefaria|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0135462022254473,
+      "arbROI": -0.013365155131264794,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T01:17:25.634Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Arthur Gea",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.59
+        },
+        {
+          "outcome": "Jaime Faria",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 2.6
+        }
+      ]
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771893,
+      "match": "Aleksandar Kovacevic vs Matteo Berrettini",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T04:05:00+00:00",
+      "exactContractKey": "tennis|aleksandarkovacevic|matteoberrettini|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0197210197210196,
+      "arbROI": -0.019339622641509346,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T23:38:01Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Matteo Berrettini",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.54
+        },
+        {
+          "outcome": "Aleksandar Kovacevic",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.7
+        }
+      ]
+    }
+  ],
+  "watchBoardRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2771892,
+      "match": "Zhizhen Zhang vs Tomas Machac",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T05:30:00+00:00",
+      "exactContractKey": "tennis|tomasmachac|zhizhenzhang|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9848323007904294,
+      "arbROI": 0.015401301518438215,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T08:24:46Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Tomas Machac",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.51
+        },
+        {
+          "outcome": "Zhizhen Zhang",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.1
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779256,
+      "match": "Rinky Hijikata vs Roman Safiullin",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T07:30:00+00:00",
+      "exactContractKey": "tennis|rinkyhijikata|romansafiullin|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9859154929577465,
+      "arbROI": 0.014285714285714235,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T21:41:37Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Roman Safiullin",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.42
+        },
+        {
+          "outcome": "Rinky Hijikata",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.55
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779251,
+      "match": "Mattia Bellucci vs Yi Zhou",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T07:00:00+00:00",
+      "exactContractKey": "tennis|mattiabellucci|yizhou|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9907407407407407,
+      "arbROI": 0.009345794392523477,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T01:17:25.635Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Mattia Bellucci",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.35
+        },
+        {
+          "outcome": "Yi Zhou",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 4
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779255,
+      "match": "Alex Molcan vs Federico Cina",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T06:00:00+00:00",
+      "exactContractKey": "tennis|alexmolcan|federicocina|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.003238610076217,
+      "arbROI": -0.003228155339805916,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T21:28:25Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Alex Molcan",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.69
+        },
+        {
+          "outcome": "Federico Cina",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.43
+        }
+      ],
+      "watchType": "ARB WATCH"
+    }
+  ],
   "screeningBoardRows": [
     {
       "tier": "SCREENING",
@@ -1727,9 +2216,531 @@
       "startTime": "2026-10-07T10:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771899,
+      "match": "Sho Shimabukuro vs Miomir Kecmanovic",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T04:05:00+00:00",
+      "exactContractKey": "tennis|miomirkecmanovic|shoshimabukuro|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0136054421768708,
+      "arbROI": -0.01342281879194629,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T01:17:25.635Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Miomir Kecmanovic",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.47
+        },
+        {
+          "outcome": "Sho Shimabukuro",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 3
+        }
+      ],
+      "screenType": "ARB SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771926,
+      "match": "Yannick Hanfmann vs Kamil Majchrzak",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T05:30:00+00:00",
+      "exactContractKey": "tennis|kamilmajchrzak|yannickhanfmann|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.010269882971101,
+      "arbROI": -0.010165484633569699,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T16:04:43Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Kamil Majchrzak",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.58
+        },
+        {
+          "outcome": "Yannick Hanfmann",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.65
+        }
+      ],
+      "screenType": "ARB SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771902,
+      "match": "Arthur Gea vs Jaime Faria",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T04:05:00+00:00",
+      "exactContractKey": "tennis|arthurgea|jaimefaria|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0135462022254473,
+      "arbROI": -0.013365155131264794,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T01:17:25.634Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Arthur Gea",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.59
+        },
+        {
+          "outcome": "Jaime Faria",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 2.6
+        }
+      ],
+      "screenType": "ARB SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2771893,
+      "match": "Aleksandar Kovacevic vs Matteo Berrettini",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-07T04:05:00+00:00",
+      "exactContractKey": "tennis|aleksandarkovacevic|matteoberrettini|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0197210197210196,
+      "arbROI": -0.019339622641509346,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T23:38:01Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Matteo Berrettini",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.54
+        },
+        {
+          "outcome": "Aleksandar Kovacevic",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.7
+        }
+      ],
+      "screenType": "ARB SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-07T01:18:12.512Z",
+    "marketsTested": 1277,
+    "screensEvaluated": 8,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2771892,
+        "match": "Zhizhen Zhang vs Tomas Machac",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T05:30:00+00:00",
+        "exactContractKey": "tennis|tomasmachac|zhizhenzhang|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9848323007904294,
+        "arbROI": 0.015401301518438215,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-06T08:24:46Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Tomas Machac",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.51
+          },
+          {
+            "outcome": "Zhizhen Zhang",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 3.1
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2779256,
+        "match": "Rinky Hijikata vs Roman Safiullin",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T07:30:00+00:00",
+        "exactContractKey": "tennis|rinkyhijikata|romansafiullin|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9859154929577465,
+        "arbROI": 0.014285714285714235,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-06T21:41:37Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Roman Safiullin",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.42
+          },
+          {
+            "outcome": "Rinky Hijikata",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 3.55
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2779251,
+        "match": "Mattia Bellucci vs Yi Zhou",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T07:00:00+00:00",
+        "exactContractKey": "tennis|mattiabellucci|yizhou|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9907407407407407,
+        "arbROI": 0.009345794392523477,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-07T01:17:25.635Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Mattia Bellucci",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.35
+          },
+          {
+            "outcome": "Yi Zhou",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 4
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2779255,
+        "match": "Alex Molcan vs Federico Cina",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T06:00:00+00:00",
+        "exactContractKey": "tennis|alexmolcan|federicocina|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.003238610076217,
+        "arbROI": -0.003228155339805916,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-06T21:28:25Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alex Molcan",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.69
+          },
+          {
+            "outcome": "Federico Cina",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 2.43
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2771899,
+        "match": "Sho Shimabukuro vs Miomir Kecmanovic",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T04:05:00+00:00",
+        "exactContractKey": "tennis|miomirkecmanovic|shoshimabukuro|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0136054421768708,
+        "arbROI": -0.01342281879194629,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-07T01:17:25.635Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Miomir Kecmanovic",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.47
+          },
+          {
+            "outcome": "Sho Shimabukuro",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 3
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2771926,
+        "match": "Yannick Hanfmann vs Kamil Majchrzak",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T05:30:00+00:00",
+        "exactContractKey": "tennis|kamilmajchrzak|yannickhanfmann|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.010269882971101,
+        "arbROI": -0.010165484633569699,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-06T16:04:43Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Kamil Majchrzak",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.58
+          },
+          {
+            "outcome": "Yannick Hanfmann",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 2.65
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2771902,
+        "match": "Arthur Gea vs Jaime Faria",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T04:05:00+00:00",
+        "exactContractKey": "tennis|arthurgea|jaimefaria|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0135462022254473,
+        "arbROI": -0.013365155131264794,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-07T01:17:25.634Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Arthur Gea",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.59
+          },
+          {
+            "outcome": "Jaime Faria",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 2.6
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2771893,
+        "match": "Aleksandar Kovacevic vs Matteo Berrettini",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-07T04:05:00+00:00",
+        "exactContractKey": "tennis|aleksandarkovacevic|matteoberrettini|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0197210197210196,
+        "arbROI": -0.019339622641509346,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-06T23:38:01Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Matteo Berrettini",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.54
+          },
+          {
+            "outcome": "Aleksandar Kovacevic",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 2.7
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 8,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [],
   "informationalBreakdown": {
     "round_handicap": 18,
