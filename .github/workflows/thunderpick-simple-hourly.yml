@@ -164,12 +164,14 @@ jobs:
         run: node scripts/audit-production-coverage.mjs
       - name: Retry degraded/failing collectors once and rebuild
         if: steps.coverage_audit.outcome == 'failure'
+        env:
+          PINNWIRE_API_KEY: ${{ secrets.PINNWIRE_API_KEY }}
         run: |
           node scripts/direct-public-sources.mjs
           node scripts/kalshi-rate-limited.mjs
           node scripts/betway-direct.mjs
           node scripts/pinnacle-direct.mjs
-          PINNWIRE_API_KEY="${{ secrets.PINNWIRE_API_KEY }}" node scripts/pinnwire-direct.mjs || true
+          node scripts/pinnwire-direct.mjs || true
           node scripts/kambi-direct.mjs
           node scripts/kambi-traditional-direct.mjs
           node scripts/kambi-nfl-direct.mjs
