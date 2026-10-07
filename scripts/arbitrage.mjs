@@ -55,10 +55,13 @@ export function detectArbitrage(rows,{nearThreshold=1.01}={}){
         if(legs.length!==3||![...names].some(x=>x==='draw'||x==='tie')) continue;
       }
     }
+    // A single bookmaker cannot create a cross-book arbitrage; fail closed.
+    const independentBooks=new Set(legs.map(l=>clean(l.sourceFamily||l.book)));
+    if(independentBooks.size<2) continue;
     const inverseSum=legs.reduce((s,l)=>s+1/l.price,0);
     if(inverseSum>nearThreshold) continue;
     const arbMargin=1/inverseSum-1;
-    out.push({tier:inverseSum<1?'ARB FOUND':'ARB WATCH',identityGroup,inverseSum,arbMargin,legs,independentSourceFamilies:new Set(legs.map(l=>l.sourceFamily)).size});
+    out.push({tier:inverseSum<1?'ARB FOUND':'ARB WATCH',identityGroup,inverseSum,arbMargin,legs,independentSourceFamilies:independentBooks.size});
   }
   return out.sort((a,b)=>a.inverseSum-b.inverseSum);
 }
