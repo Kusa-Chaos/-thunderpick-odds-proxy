@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-10-07T17:09:08.098Z",
-  "builtAt": "2026-10-07T17:09:08.321Z",
+  "builtAt": "2026-10-07T17:09:31.921Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
@@ -10,8 +10,8 @@
     "PRICE BOARD": 0,
     "INFORMATIONAL": 277,
     "ARB FOUND": 0,
-    "ARB WATCH": 0,
-    "ARB SCREENING": 0
+    "ARB WATCH": 2,
+    "ARB SCREENING": 3
   },
   "parseErrors": {
     "identity": 0,
@@ -1102,9 +1102,308 @@
     }
   ],
   "arbFoundRows": [],
-  "arbWatchRows": [],
-  "arbScreeningRows": [],
-  "watchBoardRows": [],
+  "arbWatchRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779305,
+      "match": "Kimmer Coppejans vs Stefanos Tsitsipas",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T04:00:00+00:00",
+      "exactContractKey": "tennis|kimmercoppejans|stefanostsitsipas|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9599640125955916,
+      "arbROI": 0.041705716963448936,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T17:07:58.888Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Stefanos Tsitsipas",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.17
+        },
+        {
+          "outcome": "Kimmer Coppejans",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 9.5
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2772107,
+      "match": "Nuno Borges vs Facundo Diaz Acosta",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T04:00:00+00:00",
+      "exactContractKey": "tennis|facundodiazacosta|nunoborges|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9843779408996801,
+      "arbROI": 0.015869980879541057,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T10:22:53Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Nuno Borges",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.38
+        },
+        {
+          "outcome": "Facundo Diaz Acosta",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.85
+        }
+      ]
+    }
+  ],
+  "arbScreeningRows": [
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2772152,
+      "match": "Martin Landaluce vs Jan-Lennard Struff",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T07:00:00+00:00",
+      "exactContractKey": "tennis|janlennardstruff|martinlandaluce|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0186097143745787,
+      "arbROI": -0.018269720101781073,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T06:36:57Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Martin Landaluce",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.91
+        },
+        {
+          "outcome": "Jan-Lennard Struff",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.02
+        }
+      ]
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2779309,
+      "match": "Pavel Kotov vs Tallon Griekspoor",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T04:00:00+00:00",
+      "exactContractKey": "tennis|pavelkotov|tallongriekspoor|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0150375939849625,
+      "arbROI": -0.014814814814814947,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Tallon Griekspoor",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.52
+        },
+        {
+          "outcome": "Pavel Kotov",
+          "book": "bovada-traditional-direct",
+          "sourceFamily": "bovada",
+          "price": 2.8
+        }
+      ]
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2772193,
+      "match": "Vit Kopriva vs Zizou Bergs",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T08:30:00+00:00",
+      "exactContractKey": "tennis|vitkopriva|zizoubergs|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0118006993006994,
+      "arbROI": -0.011663066954643697,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Zizou Bergs",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.43
+        },
+        {
+          "outcome": "Vit Kopriva",
+          "book": "bovada-traditional-direct",
+          "sourceFamily": "bovada",
+          "price": 3.2
+        }
+      ]
+    }
+  ],
+  "watchBoardRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2779305,
+      "match": "Kimmer Coppejans vs Stefanos Tsitsipas",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T04:00:00+00:00",
+      "exactContractKey": "tennis|kimmercoppejans|stefanostsitsipas|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9599640125955916,
+      "arbROI": 0.041705716963448936,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "betway"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T17:07:58.888Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Stefanos Tsitsipas",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.17
+        },
+        {
+          "outcome": "Kimmer Coppejans",
+          "book": "betway-direct",
+          "sourceFamily": "betway",
+          "price": 9.5
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2772107,
+      "match": "Nuno Borges vs Facundo Diaz Acosta",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T04:00:00+00:00",
+      "exactContractKey": "tennis|facundodiazacosta|nunoborges|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9843779408996801,
+      "arbROI": 0.015869980879541057,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-06T10:22:53Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Nuno Borges",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.38
+        },
+        {
+          "outcome": "Facundo Diaz Acosta",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 3.85
+        }
+      ],
+      "watchType": "ARB WATCH"
+    }
+  ],
   "screeningBoardRows": [
     {
       "tier": "SCREENING",
@@ -1705,9 +2004,362 @@
       "startTime": "2026-10-31T00:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2772152,
+      "match": "Martin Landaluce vs Jan-Lennard Struff",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T07:00:00+00:00",
+      "exactContractKey": "tennis|janlennardstruff|martinlandaluce|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0186097143745787,
+      "arbROI": -0.018269720101781073,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-07T06:36:57Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Martin Landaluce",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.91
+        },
+        {
+          "outcome": "Jan-Lennard Struff",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 2.02
+        }
+      ],
+      "screenType": "ARB SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2779309,
+      "match": "Pavel Kotov vs Tallon Griekspoor",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T04:00:00+00:00",
+      "exactContractKey": "tennis|pavelkotov|tallongriekspoor|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0150375939849625,
+      "arbROI": -0.014814814814814947,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Tallon Griekspoor",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.52
+        },
+        {
+          "outcome": "Pavel Kotov",
+          "book": "bovada-traditional-direct",
+          "sourceFamily": "bovada",
+          "price": 2.8
+        }
+      ],
+      "screenType": "ARB SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "tennis",
+      "eventId": 2772193,
+      "match": "Vit Kopriva vs Zizou Bergs",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-08T08:30:00+00:00",
+      "exactContractKey": "tennis|vitkopriva|zizoubergs|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0118006993006994,
+      "arbROI": -0.011663066954643697,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Zizou Bergs",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.43
+        },
+        {
+          "outcome": "Vit Kopriva",
+          "book": "bovada-traditional-direct",
+          "sourceFamily": "bovada",
+          "price": 3.2
+        }
+      ],
+      "screenType": "ARB SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-07T17:09:04.117Z",
+    "marketsTested": 963,
+    "screensEvaluated": 5,
+    "found": [],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2779305,
+        "match": "Kimmer Coppejans vs Stefanos Tsitsipas",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-08T04:00:00+00:00",
+        "exactContractKey": "tennis|kimmercoppejans|stefanostsitsipas|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9599640125955916,
+        "arbROI": 0.041705716963448936,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-07T17:07:58.888Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Stefanos Tsitsipas",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.17
+          },
+          {
+            "outcome": "Kimmer Coppejans",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 9.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2772107,
+        "match": "Nuno Borges vs Facundo Diaz Acosta",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-08T04:00:00+00:00",
+        "exactContractKey": "tennis|facundodiazacosta|nunoborges|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9843779408996801,
+        "arbROI": 0.015869980879541057,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-06T10:22:53Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Nuno Borges",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.38
+          },
+          {
+            "outcome": "Facundo Diaz Acosta",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 3.85
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2772152,
+        "match": "Martin Landaluce vs Jan-Lennard Struff",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-08T07:00:00+00:00",
+        "exactContractKey": "tennis|janlennardstruff|martinlandaluce|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0186097143745787,
+        "arbROI": -0.018269720101781073,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-07T06:36:57Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Martin Landaluce",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.91
+          },
+          {
+            "outcome": "Jan-Lennard Struff",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 2.02
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2779309,
+        "match": "Pavel Kotov vs Tallon Griekspoor",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-08T04:00:00+00:00",
+        "exactContractKey": "tennis|pavelkotov|tallongriekspoor|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0150375939849625,
+        "arbROI": -0.014814814814814947,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Tallon Griekspoor",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.52
+          },
+          {
+            "outcome": "Pavel Kotov",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 2.8
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2772193,
+        "match": "Vit Kopriva vs Zizou Bergs",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-08T08:30:00+00:00",
+        "exactContractKey": "tennis|vitkopriva|zizoubergs|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0118006993006994,
+        "arbROI": -0.011663066954643697,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Zizou Bergs",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.43
+          },
+          {
+            "outcome": "Vit Kopriva",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 3.2
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 5,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [],
   "informationalBreakdown": {
     "round_handicap": 27,
