@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T17:01:58.993Z",
+  "generatedAt": "2026-10-08T17:11:07.672Z",
   "mode": "simple-discovery-first-full-board-v4-strict-scope-source-quality",
   "identitySchema": "sport+event+market family+target+stat+exact line+period/map/round/set+side+prematch/live+settlement scope",
   "rules": {
@@ -17,30 +17,32 @@
         "pages": 20,
         "acceptedEvents": 0,
         "rejectedStale": 7327,
-        "fetchedAt": "2026-10-08T17:00:00.644Z"
-      },
-      "stake": {
-        "ok": true,
-        "status": 200,
-        "sports": 7,
-        "scheduleFixtures": 186,
-        "detailRequests": 186,
-        "acceptedEvents": 173,
-        "marketCount": 2733,
-        "playerPropMarkets": 558,
-        "errors": [],
-        "fetchedAt": "2026-10-08T17:00:08.357Z"
+        "fetchedAt": "2026-10-08T17:07:49.317Z"
       },
       "kalshi": {
         "ok": true,
         "status": 200,
-        "rawMarkets": 60000,
-        "pages": 60,
-        "acceptedEvents": 3,
-        "rejectedMulti": 59884,
-        "rejectedNonSports": 98,
-        "rejectedShape": 15,
-        "fetchedAt": "2026-10-08T17:00:14.489Z"
+        "recovered": true,
+        "rawMarkets": 30000,
+        "pages": 30,
+        "acceptedEvents": 44,
+        "retries": 0,
+        "rejectedMulti": 29390,
+        "rejectedNonSports": 309,
+        "rejectedShape": 257,
+        "fetchedAt": "2026-10-08T17:09:21.106Z"
+      },
+      "stake": {
+        "ok": true,
+        "status": 200,
+        "sports": 9,
+        "scheduleFixtures": 223,
+        "detailRequests": 223,
+        "acceptedEvents": 214,
+        "marketCount": 3656,
+        "playerPropMarkets": 873,
+        "errors": [],
+        "fetchedAt": "2026-10-08T17:07:53.308Z"
       },
       "betway": {
         "ok": true,
@@ -51,43 +53,43 @@
         "rawOutcomes": 377,
         "acceptedEvents": 38,
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:22.214Z",
+        "fetchedAt": "2026-10-08T17:09:28.824Z",
         "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
       },
       "pinnacle": {
         "ok": true,
         "status": 200,
         "sports": 63,
-        "leagues": 337,
-        "matchups": 11596,
-        "marketRequests": 226,
-        "acceptedEvents": 139,
-        "acceptedMarkets": 1357,
+        "leagues": 336,
+        "matchups": 11575,
+        "marketRequests": 215,
+        "acceptedEvents": 146,
+        "acceptedMarkets": 1318,
         "playerPropMarkets": 0,
         "mapWinnerMarkets": 0,
-        "rejectedUnorientableMarkets": 1255,
+        "rejectedUnorientableMarkets": 1147,
         "errors": [
           "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
         ],
-        "fetchedAt": "2026-10-08T17:00:32.004Z"
+        "fetchedAt": "2026-10-08T17:09:34.680Z"
       },
       "pinnwire": {
         "ok": true,
         "status": 200,
         "events": 42,
         "acceptedEvents": 28,
-        "acceptedMarkets": 1118,
+        "acceptedMarkets": 1171,
         "specials": 199,
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:32.085Z",
+        "fetchedAt": "2026-10-08T17:09:34.769Z",
         "sourceFamily": "pinnacle"
       },
       "kambi": {
         "ok": true,
         "status": 200,
-        "rawEvents": 675,
-        "acceptedEvents": 131,
-        "marketCount": 803,
+        "rawEvents": 685,
+        "acceptedEvents": 130,
+        "marketCount": 802,
         "deepEventRequests": 22,
         "playerPropMarkets": 440,
         "playerKillMarkets": 420,
@@ -97,12 +99,12 @@
         "roundHandicapMarkets": 99,
         "roundTotalMarkets": 88,
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:34.610Z"
+        "fetchedAt": "2026-10-08T17:09:36.805Z"
       },
       "kambiObjective": {
         "ok": true,
         "status": 200,
-        "rawEvents": 675,
+        "rawEvents": 685,
         "eligibleEvents": 3,
         "deepEventRequests": 3,
         "acceptedEvents": 0,
@@ -119,17 +121,17 @@
         },
         "byFamilyHint": {},
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:34.888Z"
+        "fetchedAt": "2026-10-08T17:09:37.170Z"
       },
       "kambiTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 676,
-        "eligibleEvents": 69,
-        "deepRequests": 69,
-        "acceptedEvents": 65,
-        "marketCount": 528,
-        "playerPropMarkets": 42,
+        "rawEvents": 685,
+        "eligibleEvents": 67,
+        "deepRequests": 67,
+        "acceptedEvents": 63,
+        "marketCount": 560,
+        "playerPropMarkets": 43,
         "bySport": {
           "baseball": {
             "eligible": 4,
@@ -139,25 +141,25 @@
             "playerProps": 36
           },
           "basketball": {
-            "eligible": 17,
-            "deepEvents": 17,
-            "events": 17,
-            "markets": 274,
+            "eligible": 15,
+            "deepEvents": 15,
+            "events": 15,
+            "markets": 260,
             "playerProps": 0
           },
           "soccer": {
             "eligible": 24,
             "deepEvents": 24,
             "events": 24,
-            "markets": 128,
+            "markets": 153,
             "playerProps": 0
           },
           "tennis": {
             "eligible": 24,
             "deepEvents": 24,
             "events": 23,
-            "markets": 60,
-            "playerProps": 6
+            "markets": 81,
+            "playerProps": 7
           }
         },
         "unknownPropLikeLabels": [
@@ -208,23 +210,23 @@
           "basketball: 4+ Three-Point Field Goals Made By The Player - Including Overtime"
         ],
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:37.307Z"
+        "fetchedAt": "2026-10-08T17:09:38.726Z"
       },
       "kambiNfl": {
         "ok": true,
         "status": 200,
-        "rawEvents": 676,
+        "rawEvents": 685,
         "nflEvents": 1,
         "deepRequests": 1,
         "acceptedEvents": 1,
-        "marketCount": 142,
+        "marketCount": 143,
         "h2h": 1,
-        "spreads": 49,
+        "spreads": 50,
         "totals": 58,
         "teamTotals": 2,
         "playerPropMarkets": 34,
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:39.049Z"
+        "fetchedAt": "2026-10-08T17:09:39.314Z"
       },
       "bovadaNfl": {
         "ok": true,
@@ -243,20 +245,20 @@
         "playerReceptions": 0,
         "playerPassingTouchdowns": 0,
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:40.662Z"
+        "fetchedAt": "2026-10-08T17:09:40.262Z"
       },
       "bovadaTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 369,
-        "acceptedEvents": 188,
-        "marketCount": 910,
+        "rawEvents": 371,
+        "acceptedEvents": 187,
+        "marketCount": 909,
         "playerPropMarkets": 153,
         "bySport": {
           "basketball": {
-            "rawEvents": 241,
-            "acceptedEvents": 113,
-            "markets": 729,
+            "rawEvents": 243,
+            "acceptedEvents": 114,
+            "markets": 732,
             "playerProps": 147
           },
           "baseball": {
@@ -267,19 +269,19 @@
           },
           "tennis": {
             "rawEvents": 105,
-            "acceptedEvents": 69,
-            "markets": 159,
+            "acceptedEvents": 67,
+            "markets": 155,
             "playerProps": 0
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:42.023Z"
+        "fetchedAt": "2026-10-08T17:09:41.437Z"
       },
       "fanduel": {
         "ok": true,
         "status": 200,
-        "acceptedEvents": 62,
-        "marketCount": 185,
+        "acceptedEvents": 66,
+        "marketCount": 197,
         "bySport": {
           "american-football": {
             "events": 29,
@@ -289,11 +291,11 @@
             "totals": 29
           },
           "basketball": {
-            "events": 31,
-            "markets": 92,
-            "h2h": 31,
-            "spreads": 30,
-            "totals": 31
+            "events": 35,
+            "markets": 104,
+            "h2h": 35,
+            "spreads": 34,
+            "totals": 35
           },
           "baseball": {
             "events": 2,
@@ -304,13 +306,13 @@
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:42.697112+00:00"
+        "fetchedAt": "2026-10-08T17:09:42.152689+00:00"
       },
       "fanduelProps": {
         "ok": true,
         "status": 200,
         "acceptedEvents": 16,
-        "eventPageRequests": 29,
+        "eventPageRequests": 34,
         "eventPageErrors": 0,
         "marketCount": 377,
         "playerPropMarkets": 377,
@@ -330,9 +332,9 @@
             }
           },
           "basketball": {
-            "boardEvents": 33,
-            "eligibleEvents": 12,
-            "eventPages": 12,
+            "boardEvents": 37,
+            "eligibleEvents": 17,
+            "eventPages": 17,
             "eventsWithProps": 0,
             "playerProps": 0,
             "byStat": {}
@@ -357,7 +359,7 @@
           "strikeouts": 1
         },
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:44.205663+00:00"
+        "fetchedAt": "2026-10-08T17:09:43.951534+00:00"
       },
       "draftkingsNfl": {
         "ok": true,
@@ -374,7 +376,7 @@
           "rushing_yards": 2
         },
         "errors": [],
-        "fetchedAt": "2026-10-08T17:00:47.788215+00:00"
+        "fetchedAt": "2026-10-08T17:09:46.472294+00:00"
       },
       "draftkingsTraditional": {
         "ok": true,
@@ -409,7 +411,7 @@
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-08T17:01:02.968891+00:00"
+        "fetchedAt": "2026-10-08T17:09:58.129296+00:00"
       },
       "cloudbet": {
         "ok": true,
@@ -418,7 +420,7 @@
         "state": "CONNECTED_USABLE",
         "source": "cloudbet-direct",
         "apiMode": "competition-batch",
-        "events": 213,
+        "events": 211,
         "sportsFetched": 9,
         "sportsDiscovered": 74,
         "sportApiKeys": {
@@ -448,19 +450,19 @@
           "basketball": {
             "name": "Basketball",
             "key": "basketball",
-            "eventCount": 670,
+            "eventCount": 674,
             "competitionCount": 95
           },
           "soccer": {
             "name": "Soccer",
             "key": "soccer",
-            "eventCount": 1935,
-            "competitionCount": 263
+            "eventCount": 1938,
+            "competitionCount": 262
           },
           "tennis": {
             "name": "Tennis",
             "key": "tennis",
-            "eventCount": 243,
+            "eventCount": 242,
             "competitionCount": 42
           },
           "cs2": {
@@ -509,32 +511,32 @@
             "selected": 86,
             "fetched": 86,
             "failed": 0,
-            "rawEvents": 665,
+            "rawEvents": 669,
             "usableEvents": 15,
-            "uniqueEvents": 665
+            "uniqueEvents": 669
           },
           "soccer": {
-            "selected": 234,
-            "fetched": 234,
+            "selected": 233,
+            "fetched": 233,
             "failed": 0,
-            "rawEvents": 1918,
-            "usableEvents": 77,
-            "uniqueEvents": 1918
+            "rawEvents": 1921,
+            "usableEvents": 79,
+            "uniqueEvents": 1921
           },
           "tennis": {
             "selected": 34,
             "fetched": 34,
             "failed": 0,
-            "rawEvents": 182,
-            "usableEvents": 32,
-            "uniqueEvents": 182
+            "rawEvents": 181,
+            "usableEvents": 29,
+            "uniqueEvents": 181
           },
           "cs2": {
             "selected": 11,
             "fetched": 11,
             "failed": 0,
             "rawEvents": 26,
-            "usableEvents": 4,
+            "usableEvents": 3,
             "uniqueEvents": 26
           },
           "dota2": {
@@ -566,9 +568,9 @@
           "american-football": 76,
           "baseball": 1,
           "basketball": 15,
-          "soccer": 77,
-          "tennis": 32,
-          "cs2": 4,
+          "soccer": 79,
+          "tennis": 29,
+          "cs2": 3,
           "dota2": 0,
           "lol": 8,
           "valorant": 0
@@ -576,7 +578,7 @@
         "errors": [],
         "windowDays": 30,
         "concurrency": 12,
-        "fetchedAt": "2026-10-08T17:01:46.592406+00:00"
+        "fetchedAt": "2026-10-08T17:10:59.855005+00:00"
       }
     },
     "strictSnapshotHealthy": true,
@@ -597,17 +599,17 @@
   "coverageAudit": {
     "american-football": {
       "events": 100,
-      "tpMarkets": 3085,
-      "deepMarkets": 2914,
-      "deepSelectedEvents": 62,
-      "deepSuccessfulEvents": 62,
+      "tpMarkets": 3905,
+      "deepMarkets": 3764,
+      "deepSelectedEvents": 70,
+      "deepSuccessfulEvents": 70,
       "deepFailedEvents": 0,
-      "exact1Source": 33,
+      "exact1Source": 34,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 33,
+      "screening": 34,
       "identityIncomplete": 0
     },
     "baseball": {
@@ -617,33 +619,33 @@
       "deepSelectedEvents": 5,
       "deepSuccessfulEvents": 5,
       "deepFailedEvents": 0,
-      "exact1Source": 7,
+      "exact1Source": 6,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 7,
+      "screening": 6,
       "identityIncomplete": 0
     },
     "basketball": {
-      "events": 279,
-      "tpMarkets": 16008,
-      "deepMarkets": 15603,
-      "deepSelectedEvents": 225,
-      "deepSuccessfulEvents": 225,
+      "events": 270,
+      "tpMarkets": 16215,
+      "deepMarkets": 15825,
+      "deepSelectedEvents": 218,
+      "deepSuccessfulEvents": 218,
       "deepFailedEvents": 0,
-      "exact1Source": 68,
+      "exact1Source": 67,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 68,
+      "screening": 67,
       "identityIncomplete": 0
     },
     "soccer": {
-      "events": 983,
-      "tpMarkets": 167209,
-      "deepMarkets": 165105,
+      "events": 977,
+      "tpMarkets": 168494,
+      "deepMarkets": 166414,
       "deepSelectedEvents": 609,
       "deepSuccessfulEvents": 609,
       "deepFailedEvents": 0,
@@ -656,33 +658,33 @@
       "identityIncomplete": 0
     },
     "tennis": {
-      "events": 172,
-      "tpMarkets": 5882,
-      "deepMarkets": 5717,
-      "deepSelectedEvents": 172,
-      "deepSuccessfulEvents": 172,
+      "events": 175,
+      "tpMarkets": 5913,
+      "deepMarkets": 5746,
+      "deepSelectedEvents": 175,
+      "deepSuccessfulEvents": 175,
       "deepFailedEvents": 0,
-      "exact1Source": 74,
+      "exact1Source": 73,
       "exact2Source": 4,
       "exact3Plus": 3,
       "action": 0,
       "watch": 0,
-      "screening": 80,
+      "screening": 79,
       "identityIncomplete": 0
     },
     "cs2": {
-      "events": 41,
-      "tpMarkets": 3133,
-      "deepMarkets": 3067,
-      "deepSelectedEvents": 32,
-      "deepSuccessfulEvents": 32,
+      "events": 38,
+      "tpMarkets": 3155,
+      "deepMarkets": 3093,
+      "deepSelectedEvents": 30,
+      "deepSuccessfulEvents": 30,
       "deepFailedEvents": 0,
-      "exact1Source": 114,
+      "exact1Source": 113,
       "exact2Source": 3,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 17,
+      "screening": 16,
       "identityIncomplete": 0
     },
     "dota2": {
@@ -707,18 +709,18 @@
       "deepSelectedEvents": 7,
       "deepSuccessfulEvents": 7,
       "deepFailedEvents": 0,
-      "exact1Source": 5,
+      "exact1Source": 6,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 5,
+      "screening": 6,
       "identityIncomplete": 0
     },
     "valorant": {
       "events": 5,
-      "tpMarkets": 1897,
-      "deepMarkets": 1892,
+      "tpMarkets": 1899,
+      "deepMarkets": 1894,
       "deepSelectedEvents": 5,
       "deepSuccessfulEvents": 5,
       "deepFailedEvents": 0,
@@ -734,7 +736,7 @@
   "counts": {
     "ACTION": 0,
     "WATCH": 0,
-    "SCREENING": 216,
+    "SCREENING": 214,
     "PRICE BOARD": 0,
     "INFORMATIONAL": 272
   },
@@ -961,62 +963,6 @@
         "settlement": "standard"
       },
       "identityKey": "basketball|philadelphia 76ers vs new york knicks|ml|new york knicks||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Britt Du Pree vs Maria Martinez Vaquero",
-      "target": "Maria Martinez Vaquero",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 5.6,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 4.25,
-          "fairProbability": 0.21731123388581952,
-          "fairDecimal": 4.601694915254237,
-          "selections": [
-            {
-              "name": "Britt Du Pree",
-              "odds": 1.18
-            },
-            {
-              "name": "Maria Martinez Vaquero",
-              "odds": 4.25
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.21731123388581952,
-      "fairDecimal": 4.601694915254237,
-      "estimatedEV": 0.21694290976058928,
-      "startTime": "2026-10-09T10:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "britt du pree vs maria martinez vaquero",
-        "family": "ml",
-        "target": "maria martinez vaquero",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|britt du pree vs maria martinez vaquero|ml|maria martinez vaquero||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -1301,62 +1247,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "Milwaukee Brewers vs Los Angeles Dodgers",
-      "target": "Los Angeles Dodgers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.86,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "price": 1.625,
-          "fairProbability": 0.5922208281053952,
-          "fairDecimal": 1.6885593220338984,
-          "selections": [
-            {
-              "name": "Los Angeles Dodgers",
-              "odds": 1.625
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "odds": 2.3600000000000003
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.5922208281053952,
-      "fairDecimal": 1.6885593220338984,
-      "estimatedEV": 0.10153074027603526,
-      "startTime": "2026-10-11T23:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "baseball",
-        "event": "milwaukee brewers vs los angeles dodgers",
-        "family": "ml",
-        "target": "los angeles dodgers",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "baseball|milwaukee brewers vs los angeles dodgers|ml|los angeles dodgers||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Breidablik vs Fjolnir",
       "target": "Fjolnir",
@@ -1414,6 +1304,118 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
+      "match": "Victoria Rodriguez vs Annika Penickova",
+      "target": "Victoria Rodriguez",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.35,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 2.88,
+          "fairProbability": 0.32075471698113206,
+          "fairDecimal": 3.1176470588235294,
+          "selections": [
+            {
+              "name": "Victoria Rodriguez",
+              "odds": 2.88
+            },
+            {
+              "name": "Annika Penickova",
+              "odds": 1.36
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.32075471698113206,
+      "fairDecimal": 3.1176470588235294,
+      "estimatedEV": 0.07452830188679238,
+      "startTime": "2026-10-08T17:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "victoria rodriguez vs annika penickova",
+        "family": "ml",
+        "target": "victoria rodriguez",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|victoria rodriguez vs annika penickova|ml|victoria rodriguez||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
+      "match": "Britt Du Pree vs Maria Martinez Vaquero",
+      "target": "Maria Martinez Vaquero",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 4.93,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 4.25,
+          "fairProbability": 0.21731123388581952,
+          "fairDecimal": 4.601694915254237,
+          "selections": [
+            {
+              "name": "Britt Du Pree",
+              "odds": 1.18
+            },
+            {
+              "name": "Maria Martinez Vaquero",
+              "odds": 4.25
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.21731123388581952,
+      "fairDecimal": 4.601694915254237,
+      "estimatedEV": 0.07134438305709012,
+      "startTime": "2026-10-09T10:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "britt du pree vs maria martinez vaquero",
+        "family": "ml",
+        "target": "maria martinez vaquero",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|britt du pree vs maria martinez vaquero|ml|maria martinez vaquero||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
       "match": "Agustina Daniela Duarte vs Sol Ailin Larraya Guidi",
       "target": "Agustina Daniela Duarte",
       "market": "Match Winner",
@@ -1447,7 +1449,7 @@
       "fairProbability": 0.21389396709323583,
       "fairDecimal": 4.6752136752136755,
       "estimatedEV": 0.06946983546617913,
-      "startTime": "2026-10-08T18:00:00+00:00",
+      "startTime": "2026-10-08T18:08:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "identity": {
         "sport": "tennis",
@@ -1465,62 +1467,6 @@
         "settlement": "standard"
       },
       "identityKey": "tennis|agustina daniela duarte vs sol ailin larraya guidi|ml|agustina daniela duarte||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Giulio Perego vs Peter Makk",
-      "target": "Giulio Perego",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 5.6,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 4.9,
-          "fairProbability": 0.1887417218543046,
-          "fairDecimal": 5.298245614035089,
-          "selections": [
-            {
-              "name": "Giulio Perego",
-              "odds": 4.9
-            },
-            {
-              "name": "Peter Makk",
-              "odds": 1.14
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.1887417218543046,
-      "fairDecimal": 5.298245614035089,
-      "estimatedEV": 0.05695364238410572,
-      "startTime": "2026-10-09T07:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "giulio perego vs peter makk",
-        "family": "ml",
-        "target": "giulio perego",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|giulio perego vs peter makk|ml|giulio perego||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -1694,8 +1640,8 @@
     {
       "tier": "SCREENING",
       "sport": "cs2",
-      "match": "Just Players vs ENCE",
-      "target": "ENCE",
+      "match": "Galorys vs Low Cortisol BR",
+      "target": "Low Cortisol BR",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -1703,37 +1649,37 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 2.1,
+      "thunderpick": 3.66,
       "outside": [
         {
           "book": "Pinnacle (PinnWire)",
-          "price": 1.901,
-          "fairProbability": 0.49788695192815635,
-          "fairDecimal": 2.0084880636604776,
+          "price": 3.14,
+          "fairProbability": 0.2858767341369115,
+          "fairDecimal": 3.4980111376292764,
           "selections": [
             {
-              "name": "Just Players",
-              "odds": 1.885
+              "name": "Galorys",
+              "odds": 1.257
             },
             {
-              "name": "ENCE",
-              "odds": 1.901
+              "name": "Low Cortisol",
+              "odds": 3.14
             }
           ],
           "sourceFamily": "pinnacle"
         }
       ],
       "independentSources": 1,
-      "fairProbability": 0.49788695192815635,
-      "fairDecimal": 2.0084880636604776,
-      "estimatedEV": 0.045562599049128405,
-      "startTime": "2026-10-08T17:00:00+00:00",
+      "fairProbability": 0.2858767341369115,
+      "fairDecimal": 3.4980111376292764,
+      "estimatedEV": 0.04630884694109616,
+      "startTime": "2026-10-08T21:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "identity": {
         "sport": "cs2",
-        "event": "just players vs ence",
+        "event": "galorys vs low cortisol br",
         "family": "ml",
-        "target": "ence",
+        "target": "low cortisol br",
         "stat": "",
         "line": "",
         "period": "",
@@ -1744,7 +1690,63 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "cs2|just players vs ence|ml|ence||||||||prematch|standard",
+      "identityKey": "cs2|galorys vs low cortisol br|ml|low cortisol br||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Sodertalje W vs AIK Basket W",
+      "target": "AIK Basket W",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 6.7,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "price": 5.14,
+          "fairProbability": 0.16934257329539565,
+          "fairDecimal": 5.905189584285061,
+          "selections": [
+            {
+              "name": "Sodertalje",
+              "odds": 1.0478697941598851
+            },
+            {
+              "name": "AIK Basket",
+              "odds": 5.14
+            }
+          ],
+          "sourceFamily": "pinnacle"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.1555169046589018,
+      "fairDecimal": 6.430169133016884,
+      "estimatedEV": 0.04196326121464211,
+      "startTime": "2026-10-09T17:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "basketball",
+        "event": "sodertalje w vs aik basket w",
+        "family": "ml",
+        "target": "aik basket w",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|sodertalje w vs aik basket w|ml|aik basket w||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -1942,9 +1944,9 @@
           "pB": 0.6153846153846154,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T16:58:14.872Z",
+          "lastUpdate": "2026-10-08T17:02:03.787Z",
           "sourceFamily": "stake-oddin",
-          "qualityTimestamp": "2026-10-08T16:58:14.872Z"
+          "qualityTimestamp": "2026-10-08T17:02:03.787Z"
         },
         {
           "book": "pinnacle",
@@ -1957,7 +1959,7 @@
           "identityReason": null,
           "lastUpdate": null,
           "sourceFamily": "pinnacle",
-          "qualityTimestamp": "2026-10-08T17:00:32.004Z"
+          "qualityTimestamp": "2026-10-08T17:09:34.680Z"
         }
       ],
       "independentSources": 2,
@@ -2008,11 +2010,11 @@
           "b": 7,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway",
           "pA": 0.8641975308641975,
           "pB": 0.13580246913580246,
-          "qualityTimestamp": "2026-10-08T17:00:22.213Z"
+          "qualityTimestamp": "2026-10-08T17:09:28.824Z"
         },
         {
           "book": "bovada-traditional-direct",
@@ -2024,7 +2026,7 @@
           "sourceFamily": "bovada",
           "pA": 0.8766066838046271,
           "pB": 0.12339331619537272,
-          "qualityTimestamp": "2026-10-08T17:00:42.023Z"
+          "qualityTimestamp": "2026-10-08T17:09:41.437Z"
         }
       ],
       "independentSources": 2,
@@ -2227,62 +2229,6 @@
     {
       "tier": "SCREENING",
       "sport": "cs2",
-      "match": "Galorys vs Low Cortisol BR",
-      "target": "Low Cortisol BR",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.66,
-      "outside": [
-        {
-          "book": "Pinnacle (PinnWire)",
-          "price": 3.21,
-          "fairProbability": 0.27913766000449136,
-          "fairDecimal": 3.582461786001609,
-          "selections": [
-            {
-              "name": "Galorys",
-              "odds": 1.243
-            },
-            {
-              "name": "Low Cortisol",
-              "odds": 3.21
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.27913766000449136,
-      "fairDecimal": 3.582461786001609,
-      "estimatedEV": 0.021643835616438345,
-      "startTime": "2026-10-08T21:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "cs2",
-        "event": "galorys vs low cortisol br",
-        "family": "ml",
-        "target": "low cortisol br",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|galorys vs low cortisol br|ml|low cortisol br||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "cs2",
       "match": "largadosypelados vs Turma do Pagode",
       "target": "Turma do Pagode",
       "market": "Match Winner",
@@ -2334,6 +2280,62 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|largadosypelados vs turma do pagode|ml|turma do pagode||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Suwon KT Sonicboom vs Goyang Sono",
+      "target": "Suwon KT Sonicboom",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.29,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 2.1,
+          "fairProbability": 0.4458598726114649,
+          "fairDecimal": 2.242857142857143,
+          "selections": [
+            {
+              "name": "Suwon KT Sonicboom",
+              "odds": 2.1
+            },
+            {
+              "name": "Goyang Sono Skygunners",
+              "odds": 1.6896551724137931
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.4458598726114649,
+      "fairDecimal": 2.242857142857143,
+      "estimatedEV": 0.02101910828025466,
+      "startTime": "2026-10-09T05:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "basketball",
+        "event": "suwon kt sonicboom vs goyang sono",
+        "family": "ml",
+        "target": "suwon kt sonicboom",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|suwon kt sonicboom vs goyang sono|ml|suwon kt sonicboom||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -2449,6 +2451,62 @@
       "identityComplete": true
     },
     {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Cleveland Cavaliers vs Boston Celtics",
+      "target": "Cleveland Cavaliers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.31,
+      "outside": [
+        {
+          "book": "FanDuel Direct",
+          "price": 2.16,
+          "fairProbability": 0.44102638868639743,
+          "fairDecimal": 2.2674380165289256,
+          "selections": [
+            {
+              "name": "Cleveland Cavaliers",
+              "odds": 2.16
+            },
+            {
+              "name": "Boston Celtics",
+              "odds": 1.704225352112676
+            }
+          ],
+          "sourceFamily": "fanduel"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.44102638868639743,
+      "fairDecimal": 2.2674380165289256,
+      "estimatedEV": 0.01877095786557814,
+      "startTime": "2026-10-08T23:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "basketball",
+        "event": "cleveland cavaliers vs boston celtics",
+        "family": "ml",
+        "target": "cleveland cavaliers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|cleveland cavaliers vs boston celtics|ml|cleveland cavaliers||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
       "sport": "tennis",
       "eventId": 2784014,
       "match": "Miomir Kecmanovic vs Jakub Mensik",
@@ -2472,11 +2530,11 @@
           "b": 1.3,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway",
           "pA": 0.27083333333333337,
           "pB": 0.7291666666666667,
-          "qualityTimestamp": "2026-10-08T17:00:22.213Z"
+          "qualityTimestamp": "2026-10-08T17:09:28.824Z"
         },
         {
           "book": "bovada-traditional-direct",
@@ -2488,7 +2546,7 @@
           "sourceFamily": "bovada",
           "pA": 0.27424749163879597,
           "pB": 0.725752508361204,
-          "qualityTimestamp": "2026-10-08T17:00:42.023Z"
+          "qualityTimestamp": "2026-10-08T17:09:41.437Z"
         }
       ],
       "independentSources": 2,
@@ -2578,9 +2636,9 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Suwon KT Sonicboom vs Goyang Sono",
-      "target": "Suwon KT Sonicboom",
+      "sport": "tennis",
+      "match": "Kajsa Rinaldo Persson vs Kaitlyn Carnicella",
+      "target": "Kaitlyn Carnicella",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -2588,37 +2646,37 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 2.28,
+      "thunderpick": 4.05,
       "outside": [
         {
-          "book": "Bovada Direct",
-          "price": 2.1,
-          "fairProbability": 0.4458598726114649,
-          "fairDecimal": 2.242857142857143,
+          "book": "Unibet/Kambi Direct",
+          "price": 3.7,
+          "fairProbability": 0.2510121457489878,
+          "fairDecimal": 3.983870967741937,
           "selections": [
             {
-              "name": "Suwon KT Sonicboom",
-              "odds": 2.1
+              "name": "Kajsa Rinaldo Persson",
+              "odds": 1.24
             },
             {
-              "name": "Goyang Sono Skygunners",
-              "odds": 1.6896551724137931
+              "name": "Kaitlyn Carnicella",
+              "odds": 3.7
             }
           ],
-          "sourceFamily": "bovada"
+          "sourceFamily": "unibet-kambi"
         }
       ],
       "independentSources": 1,
-      "fairProbability": 0.4458598726114649,
-      "fairDecimal": 2.242857142857143,
-      "estimatedEV": 0.0165605095541399,
-      "startTime": "2026-10-09T05:00:00+00:00",
+      "fairProbability": 0.2510121457489878,
+      "fairDecimal": 3.983870967741937,
+      "estimatedEV": 0.0165991902834004,
+      "startTime": "2026-10-08T17:12:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "identity": {
-        "sport": "basketball",
-        "event": "suwon kt sonicboom vs goyang sono",
+        "sport": "tennis",
+        "event": "kajsa rinaldo persson vs kaitlyn carnicella",
         "family": "ml",
-        "target": "suwon kt sonicboom",
+        "target": "kaitlyn carnicella",
         "stat": "",
         "line": "",
         "period": "",
@@ -2629,7 +2687,7 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|suwon kt sonicboom vs goyang sono|ml|suwon kt sonicboom||||||||prematch|standard",
+      "identityKey": "tennis|kajsa rinaldo persson vs kaitlyn carnicella|ml|kaitlyn carnicella||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -2656,11 +2714,11 @@
           "b": 1.2,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway",
           "pA": 0.21052631578947367,
           "pB": 0.7894736842105263,
-          "qualityTimestamp": "2026-10-08T17:00:22.213Z"
+          "qualityTimestamp": "2026-10-08T17:09:28.824Z"
         },
         {
           "book": "bovada-traditional-direct",
@@ -2672,7 +2730,7 @@
           "sourceFamily": "bovada",
           "pA": 0.21359223300970875,
           "pB": 0.7864077669902914,
-          "qualityTimestamp": "2026-10-08T17:00:42.023Z"
+          "qualityTimestamp": "2026-10-08T17:09:41.437Z"
         }
       ],
       "independentSources": 2,
@@ -2705,62 +2763,6 @@
       ]
     },
     {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Francesca Mattioli vs Victoria Bosio",
-      "target": "Victoria Bosio",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.35,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 1.23,
-          "fairProbability": 0.7505070993914807,
-          "fairDecimal": 1.3324324324324324,
-          "selections": [
-            {
-              "name": "Francesca Mattioli",
-              "odds": 3.7
-            },
-            {
-              "name": "Victoria Bosio",
-              "odds": 1.23
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.7505070993914807,
-      "fairDecimal": 1.3324324324324324,
-      "estimatedEV": 0.013184584178498993,
-      "startTime": "2026-10-08T17:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "francesca mattioli vs victoria bosio",
-        "family": "ml",
-        "target": "victoria bosio",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|francesca mattioli vs victoria bosio|ml|victoria bosio||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
       "sport": "tennis",
       "eventId": 2785689,
       "match": "Ben Shelton vs Daniel Altmaier",
@@ -2784,11 +2786,11 @@
           "b": 6,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway",
           "pA": 0.8426966292134831,
           "pB": 0.15730337078651685,
-          "qualityTimestamp": "2026-10-08T17:00:22.213Z"
+          "qualityTimestamp": "2026-10-08T17:09:28.824Z"
         },
         {
           "book": "bovada-traditional-direct",
@@ -2800,7 +2802,7 @@
           "sourceFamily": "bovada",
           "pA": 0.8586572438162544,
           "pB": 0.1413427561837456,
-          "qualityTimestamp": "2026-10-08T17:00:42.023Z"
+          "qualityTimestamp": "2026-10-08T17:09:41.437Z"
         }
       ],
       "independentSources": 2,
@@ -2831,62 +2833,6 @@
           "reason": "stale-timestamp"
         }
       ]
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Cleveland Cavaliers vs Boston Celtics",
-      "target": "Cleveland Cavaliers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.29,
-      "outside": [
-        {
-          "book": "FanDuel Direct",
-          "price": 2.16,
-          "fairProbability": 0.44102638868639743,
-          "fairDecimal": 2.2674380165289256,
-          "selections": [
-            {
-              "name": "Cleveland Cavaliers",
-              "odds": 2.16
-            },
-            {
-              "name": "Boston Celtics",
-              "odds": 1.704225352112676
-            }
-          ],
-          "sourceFamily": "fanduel"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.44102638868639743,
-      "fairDecimal": 2.2674380165289256,
-      "estimatedEV": 0.009950430091850038,
-      "startTime": "2026-10-08T23:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "basketball",
-        "event": "cleveland cavaliers vs boston celtics",
-        "family": "ml",
-        "target": "cleveland cavaliers",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|cleveland cavaliers vs boston celtics|ml|cleveland cavaliers||||||||prematch|standard",
-      "identityComplete": true
     },
     {
       "tier": "SCREENING",
@@ -3136,7 +3082,7 @@
           "b": 3,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway"
         },
         {
@@ -3318,7 +3264,7 @@
           "b": 2.4,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway"
         },
         {
@@ -3366,6 +3312,118 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "San Antonio Spurs vs Atlanta Hawks",
+      "target": "Atlanta Hawks",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.28,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 3.15,
+          "fairProbability": 0.3053435114503817,
+          "fairDecimal": 3.275,
+          "selections": [
+            {
+              "name": "San Antonio Spurs",
+              "odds": 1.3846153846153846
+            },
+            {
+              "name": "Atlanta Hawks",
+              "odds": 3.15
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.3053435114503817,
+      "fairDecimal": 3.275,
+      "estimatedEV": 0.0015267175572519776,
+      "startTime": "2026-10-09T00:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "basketball",
+        "event": "san antonio spurs vs atlanta hawks",
+        "family": "ml",
+        "target": "atlanta hawks",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|san antonio spurs vs atlanta hawks|ml|atlanta hawks||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
+      "match": "Giulio Perego vs Peter Makk",
+      "target": "Giulio Perego",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 5.3,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 4.9,
+          "fairProbability": 0.1887417218543046,
+          "fairDecimal": 5.298245614035089,
+          "selections": [
+            {
+              "name": "Giulio Perego",
+              "odds": 4.9
+            },
+            {
+              "name": "Peter Makk",
+              "odds": 1.14
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.1887417218543046,
+      "fairDecimal": 5.298245614035089,
+      "estimatedEV": 0.00033112582781424926,
+      "startTime": "2026-10-09T07:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "giulio perego vs peter makk",
+        "family": "ml",
+        "target": "giulio perego",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|giulio perego vs peter makk|ml|giulio perego||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
       "sport": "tennis",
       "match": "Alex Hernandez vs Miles Clark",
       "target": "Miles Clark",
@@ -3400,7 +3458,7 @@
       "fairProbability": 0.1315136476426799,
       "fairDecimal": 7.603773584905661,
       "estimatedEV": -0.0004962779156328923,
-      "startTime": "2026-10-08T18:03:00+00:00",
+      "startTime": "2026-10-08T18:12:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "identity": {
         "sport": "tennis",
@@ -3646,62 +3704,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Sodertalje W vs AIK Basket W",
-      "target": "AIK Basket W",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 6.4,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "price": 5.14,
-          "fairProbability": 0.16934257329539565,
-          "fairDecimal": 5.905189584285061,
-          "selections": [
-            {
-              "name": "Sodertalje",
-              "odds": 1.0478697941598851
-            },
-            {
-              "name": "AIK Basket",
-              "odds": 5.14
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.1555169046589018,
-      "fairDecimal": 6.430169133016884,
-      "estimatedEV": -0.004691810183028444,
-      "startTime": "2026-10-09T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "basketball",
-        "event": "sodertalje w vs aik basket w",
-        "family": "ml",
-        "target": "aik basket w",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|sodertalje w vs aik basket w|ml|aik basket w||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "american-football",
       "match": "Indianapolis Colts vs Tennessee Titans",
       "target": "Tennessee Titans",
@@ -3810,6 +3812,62 @@
         "settlement": "standard"
       },
       "identityKey": "tennis|daniel michalski vs giovanni oradini|ml|giovanni oradini||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "lol",
+      "match": "Cupid Esports vs Maryville University",
+      "target": "Maryville University",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.67,
+      "outside": [
+        {
+          "book": "Stake Direct (Oddin)",
+          "price": 2.5,
+          "fairProbability": 0.37185929648241206,
+          "fairDecimal": 2.689189189189189,
+          "selections": [
+            {
+              "name": "Cupid Esports",
+              "odds": 1.48
+            },
+            {
+              "name": "Maryville University",
+              "odds": 2.5
+            }
+          ],
+          "sourceFamily": "stake-oddin"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.37185929648241206,
+      "fairDecimal": 2.689189189189189,
+      "estimatedEV": -0.007135678391959832,
+      "startTime": "2026-10-08T20:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "lol",
+        "event": "cupid esports vs maryville university",
+        "family": "ml",
+        "target": "maryville university",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "lol|cupid esports vs maryville university|ml|maryville university||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -4090,62 +4148,6 @@
         "settlement": "standard"
       },
       "identityKey": "tennis|novak djokovic vs hubert hurkacz|ml|novak djokovic||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Victoria Rodriguez vs Annika Penickova",
-      "target": "Victoria Rodriguez",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.09,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 2.88,
-          "fairProbability": 0.32075471698113206,
-          "fairDecimal": 3.1176470588235294,
-          "selections": [
-            {
-              "name": "Victoria Rodriguez",
-              "odds": 2.88
-            },
-            {
-              "name": "Annika Penickova",
-              "odds": 1.36
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.32075471698113206,
-      "fairDecimal": 3.1176470588235294,
-      "estimatedEV": -0.008867924528301985,
-      "startTime": "2026-10-08T17:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "victoria rodriguez vs annika penickova",
-        "family": "ml",
-        "target": "victoria rodriguez",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|victoria rodriguez vs annika penickova|ml|victoria rodriguez||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -4710,6 +4712,62 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "tennis",
+      "match": "Mirra Andreeva vs Nikola Bartunkova",
+      "target": "Nikola Bartunkova",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.08,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 3,
+          "fairProbability": 0.3181818181818181,
+          "fairDecimal": 3.1428571428571432,
+          "selections": [
+            {
+              "name": "Mirra Andreeva",
+              "odds": 1.4
+            },
+            {
+              "name": "Nikola Bartunkova",
+              "odds": 3
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.3181818181818181,
+      "fairDecimal": 3.1428571428571432,
+      "estimatedEV": -0.02000000000000013,
+      "startTime": "2026-10-10T03:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "mirra andreeva vs nikola bartunkova",
+        "family": "ml",
+        "target": "nikola bartunkova",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|mirra andreeva vs nikola bartunkova|ml|nikola bartunkova||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Detroit Pistons vs Boston Celtics",
       "target": "Boston Celtics",
@@ -4878,6 +4936,62 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "tennis",
+      "match": "Stefano D'Agostino vs Andrey Chepelev",
+      "target": "Andrey Chepelev",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.56,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 1.48,
+          "fairProbability": 0.6262626262626262,
+          "fairDecimal": 1.5967741935483872,
+          "selections": [
+            {
+              "name": "Stefano D'Agostino",
+              "odds": 2.48
+            },
+            {
+              "name": "Andrey Chepelev",
+              "odds": 1.48
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.6262626262626262,
+      "fairDecimal": 1.5967741935483872,
+      "estimatedEV": -0.023030303030303068,
+      "startTime": "2026-10-09T09:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "stefano d'agostino vs andrey chepelev",
+        "family": "ml",
+        "target": "andrey chepelev",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|stefano d'agostino vs andrey chepelev|ml|andrey chepelev||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Baskonia vs Besiktas",
       "target": "Baskonia",
@@ -4930,62 +5044,6 @@
         "settlement": "standard"
       },
       "identityKey": "basketball|baskonia vs besiktas|ml|baskonia||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "San Antonio Spurs vs Atlanta Hawks",
-      "target": "Atlanta Hawks",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.28,
-      "outside": [
-        {
-          "book": "FanDuel Direct",
-          "price": 3.2,
-          "fairProbability": 0.29780564263322884,
-          "fairDecimal": 3.3578947368421055,
-          "selections": [
-            {
-              "name": "San Antonio Spurs",
-              "odds": 1.3571428571428572
-            },
-            {
-              "name": "Atlanta Hawks",
-              "odds": 3.2
-            }
-          ],
-          "sourceFamily": "fanduel"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.29780564263322884,
-      "fairDecimal": 3.3578947368421055,
-      "estimatedEV": -0.02319749216300948,
-      "startTime": "2026-10-09T00:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "basketball",
-        "event": "san antonio spurs vs atlanta hawks",
-        "family": "ml",
-        "target": "atlanta hawks",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|san antonio spurs vs atlanta hawks|ml|atlanta hawks||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -5215,6 +5273,62 @@
     {
       "tier": "SCREENING",
       "sport": "american-football",
+      "match": "Los Angeles Chargers vs Denver Broncos",
+      "target": "Los Angeles Chargers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.55,
+      "outside": [
+        {
+          "book": "FanDuel Direct",
+          "price": 2.52,
+          "fairProbability": 0.3816793893129771,
+          "fairDecimal": 2.6199999999999997,
+          "selections": [
+            {
+              "name": "Los Angeles Chargers",
+              "odds": 2.52
+            },
+            {
+              "name": "Denver Broncos",
+              "odds": 1.5555555555555556
+            }
+          ],
+          "sourceFamily": "fanduel"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.3816793893129771,
+      "fairDecimal": 2.6199999999999997,
+      "estimatedEV": -0.026717557251908386,
+      "startTime": "2026-10-11T20:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "american-football",
+        "event": "los angeles chargers vs denver broncos",
+        "family": "ml",
+        "target": "los angeles chargers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "american-football|los angeles chargers vs denver broncos|ml|los angeles chargers||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
       "match": "Las Vegas Raiders vs Buffalo Bills",
       "target": "Buffalo Bills",
       "market": "Match Winner",
@@ -5438,6 +5552,62 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "cs2",
+      "match": "Bounty Hunters vs ALKA",
+      "target": "ALKA",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 3.44,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 3.3,
+          "fairProbability": 0.28260869565217395,
+          "fairDecimal": 3.538461538461538,
+          "selections": [
+            {
+              "name": "Bounty Hunters",
+              "odds": 1.3
+            },
+            {
+              "name": "Alka",
+              "odds": 3.3
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.28260869565217395,
+      "fairDecimal": 3.538461538461538,
+      "estimatedEV": -0.027826086956521667,
+      "startTime": "2026-10-08T21:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "cs2",
+        "event": "bounty hunters vs alka",
+        "family": "ml",
+        "target": "alka",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|bounty hunters vs alka|ml|alka||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
       "sport": "tennis",
       "match": "Bianca Andreescu vs Anna Blinkova",
       "target": "Anna Blinkova",
@@ -5606,6 +5776,62 @@
     },
     {
       "tier": "SCREENING",
+      "sport": "cs2",
+      "match": "Just Players vs ENCE",
+      "target": "ENCE",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.95,
+      "outside": [
+        {
+          "book": "Pinnacle (PinnWire)",
+          "price": 1.901,
+          "fairProbability": 0.49788695192815635,
+          "fairDecimal": 2.0084880636604776,
+          "selections": [
+            {
+              "name": "Just Players",
+              "odds": 1.885
+            },
+            {
+              "name": "ENCE",
+              "odds": 1.901
+            }
+          ],
+          "sourceFamily": "pinnacle"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.49788695192815635,
+      "fairDecimal": 2.0084880636604776,
+      "estimatedEV": -0.029120443740095148,
+      "startTime": "2026-10-08T17:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "cs2",
+        "event": "just players vs ence",
+        "family": "ml",
+        "target": "ence",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|just players vs ence|ml|ence||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Valencia Basket vs Hapoel Tel Aviv",
       "target": "Valencia Basket",
@@ -5714,62 +5940,6 @@
         "settlement": "standard"
       },
       "identityKey": "american-football|washington commanders vs new york giants|ml|washington commanders||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Mirra Andreeva vs Nikola Bartunkova",
-      "target": "Nikola Bartunkova",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.05,
-      "outside": [
-        {
-          "book": "Bovada Direct",
-          "price": 3,
-          "fairProbability": 0.3181818181818181,
-          "fairDecimal": 3.1428571428571432,
-          "selections": [
-            {
-              "name": "Mirra Andreeva",
-              "odds": 1.4
-            },
-            {
-              "name": "Nikola Bartunkova",
-              "odds": 3
-            }
-          ],
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.3181818181818181,
-      "fairDecimal": 3.1428571428571432,
-      "estimatedEV": -0.029545454545454763,
-      "startTime": "2026-10-10T03:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "mirra andreeva vs nikola bartunkova",
-        "family": "ml",
-        "target": "nikola bartunkova",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|mirra andreeva vs nikola bartunkova|ml|nikola bartunkova||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -5887,8 +6057,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Las Vegas Aces W vs Golden State Valkyries W",
-      "target": "Las Vegas Aces W",
+      "match": "Monarcas Juana Diaz W vs Criollos de Caguas W",
+      "target": "Criollos de Caguas W",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -5896,37 +6066,37 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 1.56,
+      "thunderpick": 1.19,
       "outside": [
         {
-          "book": "Bovada Direct",
-          "price": 1.5555555555555556,
-          "fairProbability": 0.6211096075778079,
-          "fairDecimal": 1.6100217864923747,
+          "book": "Pinnacle Direct",
+          "price": 1.0937207122774133,
+          "fairProbability": 0.8141107020944802,
+          "fairDecimal": 1.2283341779284787,
           "selections": [
             {
-              "name": "Las Vegas Aces",
-              "odds": 1.5555555555555556
+              "name": "Monarcas Juana Diaz",
+              "odds": 4.79
             },
             {
-              "name": "Golden State Valkyries",
-              "odds": 2.55
+              "name": "Criollos De Caguas",
+              "odds": 1.0937207122774133
             }
           ],
-          "sourceFamily": "bovada"
+          "sourceFamily": "pinnacle"
         }
       ],
       "independentSources": 1,
-      "fairProbability": 0.6211096075778079,
-      "fairDecimal": 1.6100217864923747,
-      "estimatedEV": -0.03106901217861968,
-      "startTime": "2026-10-10T01:30:00+00:00",
+      "fairProbability": 0.8141107020944802,
+      "fairDecimal": 1.2283341779284787,
+      "estimatedEV": -0.03120826450756853,
+      "startTime": "2026-10-09T00:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "identity": {
         "sport": "basketball",
-        "event": "las vegas aces w vs golden state valkyries w",
+        "event": "monarcas juana diaz w vs criollos de caguas w",
         "family": "ml",
-        "target": "las vegas aces w",
+        "target": "criollos de caguas w",
         "stat": "",
         "line": "",
         "period": "",
@@ -5937,7 +6107,7 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|las vegas aces w vs golden state valkyries w|ml|las vegas aces w||||||||prematch|standard",
+      "identityKey": "basketball|monarcas juana diaz w vs criollos de caguas w|ml|criollos de caguas w||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -6279,6 +6449,174 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
+      "match": "Haruna Arakawa vs I Wen Wan",
+      "target": "Haruna Arakawa",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.44,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 2.33,
+          "fairProbability": 0.3963730569948186,
+          "fairDecimal": 2.5228758169934644,
+          "selections": [
+            {
+              "name": "Haruna Arakawa",
+              "odds": 2.33
+            },
+            {
+              "name": "I Wen Wan",
+              "odds": 1.53
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.3963730569948186,
+      "fairDecimal": 2.5228758169934644,
+      "estimatedEV": -0.03284974093264259,
+      "startTime": "2026-10-08T23:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "haruna arakawa vs i wen wan",
+        "family": "ml",
+        "target": "haruna arakawa",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|haruna arakawa vs i wen wan|ml|haruna arakawa||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "NC Dinos vs KIA Tigers",
+      "target": "KIA Tigers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.69,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 1.6451612903225805,
+          "fairProbability": 0.5721476510067114,
+          "fairDecimal": 1.747800586510264,
+          "selections": [
+            {
+              "name": "NC Dinos",
+              "odds": 2.2
+            },
+            {
+              "name": "Kia Tigers",
+              "odds": 1.6451612903225805
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.5721476510067114,
+      "fairDecimal": 1.747800586510264,
+      "estimatedEV": -0.0330704697986578,
+      "startTime": "2026-10-09T05:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "baseball",
+        "event": "nc dinos vs kia tigers",
+        "family": "ml",
+        "target": "kia tigers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "baseball|nc dinos vs kia tigers|ml|kia tigers||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "lol",
+      "match": "Solary vs G2 NORD",
+      "target": "G2 NORD",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 5,
+      "outside": [
+        {
+          "book": "Cloudbet",
+          "price": 4.8,
+          "fairProbability": 0.19327731092436976,
+          "fairDecimal": 5.173913043478261,
+          "selections": [
+            {
+              "name": "G2 NORD",
+              "odds": 4.8
+            },
+            {
+              "name": "Solary",
+              "odds": 1.15
+            }
+          ],
+          "sourceFamily": "cloudbet"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.19327731092436976,
+      "fairDecimal": 5.173913043478261,
+      "estimatedEV": -0.03361344537815125,
+      "startTime": "2026-10-10T16:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "lol",
+        "event": "solary vs g2 nord",
+        "family": "ml",
+        "target": "g2 nord",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "lol|solary vs g2 nord|ml|g2 nord||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
       "match": "Elise Mertens vs Iga Swiatek",
       "target": "Iga Swiatek",
       "market": "Match Winner",
@@ -6442,62 +6780,6 @@
         "settlement": "standard"
       },
       "identityKey": "basketball|san antonio spurs vs oklahoma city thunder|ml|oklahoma city thunder||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "american-football",
-      "match": "Los Angeles Chargers vs Denver Broncos",
-      "target": "Denver Broncos",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.56,
-      "outside": [
-        {
-          "book": "FanDuel Direct",
-          "price": 1.5555555555555556,
-          "fairProbability": 0.6183206106870229,
-          "fairDecimal": 1.6172839506172838,
-          "selections": [
-            {
-              "name": "Los Angeles Chargers",
-              "odds": 2.52
-            },
-            {
-              "name": "Denver Broncos",
-              "odds": 1.5555555555555556
-            }
-          ],
-          "sourceFamily": "fanduel"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.6183206106870229,
-      "fairDecimal": 1.6172839506172838,
-      "estimatedEV": -0.035419847328244214,
-      "startTime": "2026-10-11T20:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "american-football",
-        "event": "los angeles chargers vs denver broncos",
-        "family": "ml",
-        "target": "denver broncos",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "american-football|los angeles chargers vs denver broncos|ml|denver broncos||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -6782,62 +7064,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Vejen vs Vaerlose BBK",
-      "target": "Vejen",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.68,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "price": 1.6802721088435373,
-          "fairProbability": 0.5555155659528523,
-          "fairDecimal": 1.8001295756397795,
-          "selections": [
-            {
-              "name": "Vejen",
-              "odds": 1.6802721088435373
-            },
-            {
-              "name": "Vaerlose BBK",
-              "odds": 2.1
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.5732450177840493,
-      "fairDecimal": 1.7444547601401328,
-      "estimatedEV": -0.03694837012279717,
-      "startTime": "2026-10-08T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "basketball",
-        "event": "vejen vs vaerlose bbk",
-        "family": "ml",
-        "target": "vejen",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|vejen vs vaerlose bbk|ml|vejen||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "american-football",
       "match": "Los Angeles Rams vs Arizona Cardinals",
       "target": "Los Angeles Rams",
@@ -7006,62 +7232,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Jay Dylan Hara Friend vs Ryan Seggerman",
-      "target": "Jay Dylan Hara Friend",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.52,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 1.48,
-          "fairProbability": 0.6327543424317617,
-          "fairDecimal": 1.5803921568627455,
-          "selections": [
-            {
-              "name": "Jay Dylan Hara Friend",
-              "odds": 1.48
-            },
-            {
-              "name": "Ryan Seggerman",
-              "odds": 2.55
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.6327543424317617,
-      "fairDecimal": 1.5803921568627455,
-      "estimatedEV": -0.03821339950372227,
-      "startTime": "2026-10-09T04:30:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "jay dylan hara friend vs ryan seggerman",
-        "family": "ml",
-        "target": "jay dylan hara friend",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|jay dylan hara friend vs ryan seggerman|ml|jay dylan hara friend||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Paris Basketball vs SIG Strasbourg",
       "target": "Paris Basketball",
@@ -7114,174 +7284,6 @@
         "settlement": "standard"
       },
       "identityKey": "basketball|paris basketball vs sig strasbourg|ml|paris basketball||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "NC Dinos vs KIA Tigers",
-      "target": "KIA Tigers",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.68,
-      "outside": [
-        {
-          "book": "Bovada Direct",
-          "price": 1.6451612903225805,
-          "fairProbability": 0.5721476510067114,
-          "fairDecimal": 1.747800586510264,
-          "selections": [
-            {
-              "name": "NC Dinos",
-              "odds": 2.2
-            },
-            {
-              "name": "Kia Tigers",
-              "odds": 1.6451612903225805
-            }
-          ],
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.5721476510067114,
-      "fairDecimal": 1.747800586510264,
-      "estimatedEV": -0.038791946308724956,
-      "startTime": "2026-10-09T05:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "baseball",
-        "event": "nc dinos vs kia tigers",
-        "family": "ml",
-        "target": "kia tigers",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "baseball|nc dinos vs kia tigers|ml|kia tigers||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Alex Hernandez vs Miles Clark",
-      "target": "Alex Hernandez",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.05,
-      "outside": [
-        {
-          "book": "Bovada Direct",
-          "price": 1.02,
-          "fairProbability": 0.9151414309484193,
-          "fairDecimal": 1.0927272727272728,
-          "selections": [
-            {
-              "name": "Alex Hernandez",
-              "odds": 1.02
-            },
-            {
-              "name": "Miles Clark",
-              "odds": 11
-            }
-          ],
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.9151414309484193,
-      "fairDecimal": 1.0927272727272728,
-      "estimatedEV": -0.0391014975041597,
-      "startTime": "2026-10-08T18:03:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "alex hernandez vs miles clark",
-        "family": "ml",
-        "target": "alex hernandez",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|alex hernandez vs miles clark|ml|alex hernandez||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "cs2",
-      "match": "Bounty Hunters vs ALKA",
-      "target": "ALKA",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.4,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 3.3,
-          "fairProbability": 0.28260869565217395,
-          "fairDecimal": 3.538461538461538,
-          "selections": [
-            {
-              "name": "Bounty Hunters",
-              "odds": 1.3
-            },
-            {
-              "name": "Alka",
-              "odds": 3.3
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.28260869565217395,
-      "fairDecimal": 3.538461538461538,
-      "estimatedEV": -0.03913043478260858,
-      "startTime": "2026-10-08T21:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "cs2",
-        "event": "bounty hunters vs alka",
-        "family": "ml",
-        "target": "alka",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|bounty hunters vs alka|ml|alka||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -7394,6 +7396,62 @@
         "settlement": "standard"
       },
       "identityKey": "american-football|green bay packers vs chicago bears|ml|chicago bears||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
+      "match": "Francesca Mattioli vs Victoria Bosio",
+      "target": "Victoria Bosio",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.35,
+      "outside": [
+        {
+          "book": "Unibet/Kambi Direct",
+          "price": 1.3,
+          "fairProbability": 0.7111111111111111,
+          "fairDecimal": 1.40625,
+          "selections": [
+            {
+              "name": "Francesca Mattioli",
+              "odds": 3.2
+            },
+            {
+              "name": "Victoria Bosio",
+              "odds": 1.3
+            }
+          ],
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.7111111111111111,
+      "fairDecimal": 1.40625,
+      "estimatedEV": -0.039999999999999925,
+      "startTime": "2026-10-08T17:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "francesca mattioli vs victoria bosio",
+        "family": "ml",
+        "target": "victoria bosio",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|francesca mattioli vs victoria bosio|ml|victoria bosio||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -7791,62 +7849,6 @@
     {
       "tier": "SCREENING",
       "sport": "tennis",
-      "match": "Haruna Arakawa vs I Wen Wan",
-      "target": "Haruna Arakawa",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.42,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 2.33,
-          "fairProbability": 0.3963730569948186,
-          "fairDecimal": 2.5228758169934644,
-          "selections": [
-            {
-              "name": "Haruna Arakawa",
-              "odds": 2.33
-            },
-            {
-              "name": "I Wen Wan",
-              "odds": 1.53
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.3963730569948186,
-      "fairDecimal": 2.5228758169934644,
-      "estimatedEV": -0.04077720207253899,
-      "startTime": "2026-10-08T23:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "haruna arakawa vs i wen wan",
-        "family": "ml",
-        "target": "haruna arakawa",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|haruna arakawa vs i wen wan|ml|haruna arakawa||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
       "match": "Arthur Fils vs Pavel Kotov",
       "target": "Arthur Fils",
       "market": "Match Winner",
@@ -8010,6 +8012,62 @@
         "settlement": "standard"
       },
       "identityKey": "tennis|gabriele piraino vs enrico dalla valle|ml|gabriele piraino||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "SSG Landers vs Samsung Lions",
+      "target": "SSG Landers",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 2.13,
+      "outside": [
+        {
+          "book": "Pinnacle Direct",
+          "price": 2.12,
+          "fairProbability": 0.45010680500457734,
+          "fairDecimal": 2.2216949152542376,
+          "selections": [
+            {
+              "name": "SSG Landers",
+              "odds": 2.12
+            },
+            {
+              "name": "Samsung Lions",
+              "odds": 1.7352941176470589
+            }
+          ],
+          "sourceFamily": "pinnacle"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.45010680500457734,
+      "fairDecimal": 2.2216949152542376,
+      "estimatedEV": -0.04127250534025029,
+      "startTime": "2026-10-09T05:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "baseball",
+        "event": "ssg landers vs samsung lions",
+        "family": "ml",
+        "target": "ssg landers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "baseball|ssg landers vs samsung lions|ml|ssg landers||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -8346,62 +8404,6 @@
         "settlement": "standard"
       },
       "identityKey": "american-football|pittsburgh steelers vs indianapolis colts|ml|pittsburgh steelers||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Botic van de Zandschulp vs Alex Michelsen",
-      "target": "Botic van de Zandschulp",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 2.44,
-      "outside": [
-        {
-          "book": "Betway Direct",
-          "price": 2.4,
-          "fairProbability": 0.3924050632911393,
-          "fairDecimal": 2.5483870967741935,
-          "selections": [
-            {
-              "name": "Botic Van De Zandschulp",
-              "odds": 2.4
-            },
-            {
-              "name": "Alex Michelsen",
-              "odds": 1.55
-            }
-          ],
-          "sourceFamily": "betway"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.3924050632911393,
-      "fairDecimal": 2.5483870967741935,
-      "estimatedEV": -0.04253164556962019,
-      "startTime": "2026-10-10T04:05:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "botic van de zandschulp vs alex michelsen",
-        "family": "ml",
-        "target": "botic van de zandschulp",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|botic van de zandschulp vs alex michelsen|ml|botic van de zandschulp||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -9303,8 +9305,8 @@
     {
       "tier": "SCREENING",
       "sport": "baseball",
-      "match": "SSG Landers vs Samsung Lions",
-      "target": "SSG Landers",
+      "match": "Lotte Giants vs LG Twins",
+      "target": "LG Twins",
       "market": "Match Winner",
       "marketKey": "h2h",
       "line": null,
@@ -9312,37 +9314,37 @@
         "map": null,
         "round": null
       },
-      "thunderpick": 2.12,
+      "thunderpick": 1.37,
       "outside": [
         {
-          "book": "Pinnacle Direct",
-          "price": 2.12,
-          "fairProbability": 0.45010680500457734,
-          "fairDecimal": 2.2216949152542376,
+          "book": "Bovada Direct",
+          "price": 1.3508771929824561,
+          "fairProbability": 0.696491919590067,
+          "fairDecimal": 1.4357668364459537,
           "selections": [
             {
-              "name": "SSG Landers",
-              "odds": 2.12
+              "name": "Lotte Giants",
+              "odds": 3.1
             },
             {
-              "name": "Samsung Lions",
-              "odds": 1.7352941176470589
+              "name": "LG Twins",
+              "odds": 1.3508771929824561
             }
           ],
-          "sourceFamily": "pinnacle"
+          "sourceFamily": "bovada"
         }
       ],
       "independentSources": 1,
-      "fairProbability": 0.45010680500457734,
-      "fairDecimal": 2.2216949152542376,
-      "estimatedEV": -0.045773573390295974,
+      "fairProbability": 0.696491919590067,
+      "fairDecimal": 1.4357668364459537,
+      "estimatedEV": -0.0458060701616082,
       "startTime": "2026-10-09T05:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "identity": {
         "sport": "baseball",
-        "event": "ssg landers vs samsung lions",
+        "event": "lotte giants vs lg twins",
         "family": "ml",
-        "target": "ssg landers",
+        "target": "lg twins",
         "stat": "",
         "line": "",
         "period": "",
@@ -9353,7 +9355,7 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "baseball|ssg landers vs samsung lions|ml|ssg landers||||||||prematch|standard",
+      "identityKey": "baseball|lotte giants vs lg twins|ml|lg twins||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -9690,6 +9692,62 @@
         "settlement": "standard"
       },
       "identityKey": "american-football|new england patriots vs new york jets|ml|new york jets||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "tennis",
+      "match": "Botic van de Zandschulp vs Alex Michelsen",
+      "target": "Alex Michelsen",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.53,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 1.5405405405405406,
+          "fairProbability": 0.6233894945490583,
+          "fairDecimal": 1.6041335453100163,
+          "selections": [
+            {
+              "name": "Botic van de Zandschulp",
+              "odds": 2.55
+            },
+            {
+              "name": "Alex Michelsen",
+              "odds": 1.5405405405405406
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.6233894945490583,
+      "fairDecimal": 1.6041335453100163,
+      "estimatedEV": -0.046214073339940764,
+      "startTime": "2026-10-10T04:05:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "tennis",
+        "event": "botic van de zandschulp vs alex michelsen",
+        "family": "ml",
+        "target": "alex michelsen",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "tennis|botic van de zandschulp vs alex michelsen|ml|alex michelsen||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -10087,62 +10145,6 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Monarcas Juana Diaz W vs Criollos de Caguas W",
-      "target": "Criollos de Caguas W",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.17,
-      "outside": [
-        {
-          "book": "Pinnacle Direct",
-          "price": 1.0937207122774133,
-          "fairProbability": 0.8141107020944802,
-          "fairDecimal": 1.2283341779284787,
-          "selections": [
-            {
-              "name": "Monarcas Juana Diaz",
-              "odds": 4.79
-            },
-            {
-              "name": "Criollos De Caguas",
-              "odds": 1.0937207122774133
-            }
-          ],
-          "sourceFamily": "pinnacle"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.8141107020944802,
-      "fairDecimal": 1.2283341779284787,
-      "estimatedEV": -0.047490478549458204,
-      "startTime": "2026-10-09T00:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "basketball",
-        "event": "monarcas juana diaz w vs criollos de caguas w",
-        "family": "ml",
-        "target": "criollos de caguas w",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|monarcas juana diaz w vs criollos de caguas w|ml|criollos de caguas w||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
       "match": "Saint-Quentin vs Le Mans",
       "target": "Le Mans",
       "market": "Match Winner",
@@ -10362,118 +10364,6 @@
         "settlement": "standard"
       },
       "identityKey": "tennis|alejandro davidovich fokina vs jenson brooksby|ml|alejandro davidovich fokina||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Bauska vs Grobina",
-      "target": "Grobina",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 3.86,
-      "outside": [
-        {
-          "book": "Bovada Direct",
-          "price": 3.75,
-          "fairProbability": 0.2465753424657534,
-          "fairDecimal": 4.055555555555555,
-          "selections": [
-            {
-              "name": "BK Bauska",
-              "odds": 1.2272727272727273
-            },
-            {
-              "name": "BK Grobina",
-              "odds": 3.75
-            }
-          ],
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.2465753424657534,
-      "fairDecimal": 4.055555555555555,
-      "estimatedEV": -0.048219178082191894,
-      "startTime": "2026-10-08T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "basketball",
-        "event": "bauska vs grobina",
-        "family": "ml",
-        "target": "grobina",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|bauska vs grobina|ml|grobina||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "lol",
-      "match": "Solary vs G2 NORD",
-      "target": "G2 NORD",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 4.8,
-      "outside": [
-        {
-          "book": "Cloudbet",
-          "price": 4.65,
-          "fairProbability": 0.19827586206896547,
-          "fairDecimal": 5.043478260869566,
-          "selections": [
-            {
-              "name": "G2 NORD",
-              "odds": 4.65
-            },
-            {
-              "name": "Solary",
-              "odds": 1.15
-            }
-          ],
-          "sourceFamily": "cloudbet"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.19827586206896547,
-      "fairDecimal": 5.043478260869566,
-      "estimatedEV": -0.048275862068965836,
-      "startTime": "2026-10-10T16:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "lol",
-        "event": "solary vs g2 nord",
-        "family": "ml",
-        "target": "g2 nord",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "lol|solary vs g2 nord|ml|g2 nord||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -11094,62 +10984,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "tennis",
-      "match": "Selina Dal vs Oceane Dodin",
-      "target": "Oceane Dodin",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.19,
-      "outside": [
-        {
-          "book": "Unibet/Kambi Direct",
-          "price": 1.16,
-          "fairProbability": 0.7986111111111112,
-          "fairDecimal": 1.2521739130434781,
-          "selections": [
-            {
-              "name": "Selina Dal",
-              "odds": 4.6
-            },
-            {
-              "name": "Oceane Dodin",
-              "odds": 1.16
-            }
-          ],
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.7986111111111112,
-      "fairDecimal": 1.2521739130434781,
-      "estimatedEV": -0.04965277777777777,
-      "startTime": "2026-10-08T17:02:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "tennis",
-        "event": "selina dal vs oceane dodin",
-        "family": "ml",
-        "target": "oceane dodin",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "tennis|selina dal vs oceane dodin|ml|oceane dodin||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "cs2",
       "match": "Isurus vs ex-Keyd Stars",
       "target": "Isurus",
@@ -11202,6 +11036,62 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|isurus vs ex-keyd stars|ml|isurus||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Las Vegas Aces W vs Golden State Valkyries W",
+      "target": "Las Vegas Aces W",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.53,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 1.5555555555555556,
+          "fairProbability": 0.6211096075778079,
+          "fairDecimal": 1.6100217864923747,
+          "selections": [
+            {
+              "name": "Las Vegas Aces",
+              "odds": 1.5555555555555556
+            },
+            {
+              "name": "Golden State Valkyries",
+              "odds": 2.55
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.6211096075778079,
+      "fairDecimal": 1.6100217864923747,
+      "estimatedEV": -0.049702300405953914,
+      "startTime": "2026-10-10T01:30:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "basketball",
+        "event": "las vegas aces w vs golden state valkyries w",
+        "family": "ml",
+        "target": "las vegas aces w",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|las vegas aces w vs golden state valkyries w|ml|las vegas aces w||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -12046,62 +11936,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "baseball",
-      "match": "Lotte Giants vs LG Twins",
-      "target": "LG Twins",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.36,
-      "outside": [
-        {
-          "book": "Bovada Direct",
-          "price": 1.3508771929824561,
-          "fairProbability": 0.696491919590067,
-          "fairDecimal": 1.4357668364459537,
-          "selections": [
-            {
-              "name": "Lotte Giants",
-              "odds": 3.1
-            },
-            {
-              "name": "LG Twins",
-              "odds": 1.3508771929824561
-            }
-          ],
-          "sourceFamily": "bovada"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.696491919590067,
-      "fairDecimal": 1.4357668364459537,
-      "estimatedEV": -0.0527709893575089,
-      "startTime": "2026-10-09T05:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "baseball",
-        "event": "lotte giants vs lg twins",
-        "family": "ml",
-        "target": "lg twins",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "baseball|lotte giants vs lg twins|ml|lg twins||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Hamar vs Thor Akureyri",
       "target": "Thor Akureyri",
@@ -12378,6 +12212,62 @@
         "settlement": "standard"
       },
       "identityKey": "basketball|miami heat vs minnesota timberwolves|ml|minnesota timberwolves||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Cleveland Cavaliers vs Boston Celtics",
+      "target": "Boston Celtics",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.58,
+      "outside": [
+        {
+          "book": "Bovada Direct",
+          "price": 1.606060606060606,
+          "fairProbability": 0.5990922844175491,
+          "fairDecimal": 1.6691919191919193,
+          "selections": [
+            {
+              "name": "Cleveland Cavaliers",
+              "odds": 2.4
+            },
+            {
+              "name": "Boston Celtics",
+              "odds": 1.606060606060606
+            }
+          ],
+          "sourceFamily": "bovada"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.5990922844175491,
+      "fairDecimal": 1.6691919191919193,
+      "estimatedEV": -0.053434190620272326,
+      "startTime": "2026-10-08T23:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "basketball",
+        "event": "cleveland cavaliers vs boston celtics",
+        "family": "ml",
+        "target": "boston celtics",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|cleveland cavaliers vs boston celtics|ml|boston celtics||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -12718,62 +12608,6 @@
     },
     {
       "tier": "SCREENING",
-      "sport": "cs2",
-      "match": "Infinite Gaming vs G2 Ares",
-      "target": "Infinite Gaming",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "thunderpick": 1.33,
-      "outside": [
-        {
-          "book": "Stake Direct (Oddin)",
-          "price": 1.3,
-          "fairProbability": 0.7111111111111111,
-          "fairDecimal": 1.40625,
-          "selections": [
-            {
-              "name": "Infinite Gaming",
-              "odds": 1.3
-            },
-            {
-              "name": "G2 Ares",
-              "odds": 3.2
-            }
-          ],
-          "sourceFamily": "stake-oddin"
-        }
-      ],
-      "independentSources": 1,
-      "fairProbability": 0.7111111111111111,
-      "fairDecimal": 1.40625,
-      "estimatedEV": -0.05422222222222217,
-      "startTime": "2026-10-08T17:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "identity": {
-        "sport": "cs2",
-        "event": "infinite gaming vs g2 ares",
-        "family": "ml",
-        "target": "infinite gaming",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|infinite gaming vs g2 ares|ml|infinite gaming||||||||prematch|standard",
-      "identityComplete": true
-    },
-    {
-      "tier": "SCREENING",
       "sport": "basketball",
       "match": "Sindri vs IR Reykjavik",
       "target": "Sindri",
@@ -12938,6 +12772,62 @@
         "settlement": "standard"
       },
       "identityKey": "tennis|sebastian baez vs valentin vacherot|ml|valentin vacherot||||||||prematch|standard",
+      "identityComplete": true
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "american-football",
+      "match": "Oregon Ducks vs Nebraska Cornhuskers",
+      "target": "Oregon Ducks",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "thunderpick": 1.19,
+      "outside": [
+        {
+          "book": "Cloudbet",
+          "price": 1.19,
+          "fairProbability": 0.7944732297063903,
+          "fairDecimal": 1.258695652173913,
+          "selections": [
+            {
+              "name": "Oregon",
+              "odds": 1.19
+            },
+            {
+              "name": "Nebraska",
+              "odds": 4.6
+            }
+          ],
+          "sourceFamily": "cloudbet"
+        }
+      ],
+      "independentSources": 1,
+      "fairProbability": 0.7944732297063903,
+      "fairDecimal": 1.258695652173913,
+      "estimatedEV": -0.05457685664939549,
+      "startTime": "2026-10-17T04:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "identity": {
+        "sport": "american-football",
+        "event": "oregon ducks vs nebraska cornhuskers",
+        "family": "ml",
+        "target": "oregon ducks",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "american-football|oregon ducks vs nebraska cornhuskers|ml|oregon ducks||||||||prematch|standard",
       "identityComplete": true
     },
     {
@@ -13514,58 +13404,6 @@
     },
     {
       "sport": "cs2",
-      "eventId": 2786896,
-      "match": "Falcons vs Spirit",
-      "target": "Spirit",
-      "side": "Spirit",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
-      "marketKey": "round_handicap",
-      "line": -6.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "isLive": false,
-      "state": "prematch",
-      "settlementScope": null,
-      "thunderpick": 4.8,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.18,
-          "b": 4.4,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:43Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": 0.015053763440860068,
-      "startTime": "2026-10-09T16:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "identity": {
-        "sport": "cs2",
-        "event": "2786896",
-        "family": "round_handicap",
-        "target": "spirit",
-        "stat": "",
-        "line": "-6.5",
-        "period": "",
-        "map": "2",
-        "round": "",
-        "set": "",
-        "side": "spirit",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2786896|round_handicap|spirit||-6.5||2|||spirit|prematch|standard",
-      "identityComplete": true,
-      "tier": "INFORMATIONAL",
-      "rejectedOutside": []
-    },
-    {
-      "sport": "cs2",
       "eventId": 2786888,
       "match": "1W vs Aurora",
       "target": "1W",
@@ -13620,50 +13458,50 @@
       "sport": "cs2",
       "eventId": 2786896,
       "match": "Falcons vs Spirit",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "target": "Spirit",
+      "side": "Spirit",
+      "market": "Round Handicap (Incl. Overtime) - Map 2",
       "marketKey": "round_handicap",
       "line": -6.5,
       "scope": {
-        "map": 1,
+        "map": 2,
         "round": null
       },
       "isLive": false,
       "state": "prematch",
       "settlementScope": null,
-      "thunderpick": 5.3,
+      "thunderpick": 4.8,
       "outside": [
         {
           "book": "unibet-kambi-direct",
-          "a": 4.9,
-          "b": 1.15,
+          "a": 1.17,
+          "b": 4.4,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
+          "lastUpdate": "2026-10-08T17:04:35Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": 0.007438016528925395,
+      "estimatedEV": 0.00825852782764791,
       "startTime": "2026-10-09T16:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
       "identity": {
         "sport": "cs2",
         "event": "2786896",
         "family": "round_handicap",
-        "target": "falcons",
+        "target": "spirit",
         "stat": "",
         "line": "-6.5",
         "period": "",
-        "map": "1",
+        "map": "2",
         "round": "",
         "set": "",
-        "side": "falcons",
+        "side": "spirit",
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "cs2|2786896|round_handicap|falcons||-6.5||1|||falcons|prematch|standard",
+      "identityKey": "cs2|2786896|round_handicap|spirit||-6.5||2|||spirit|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -13848,7 +13686,7 @@
           "b": 3.55,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:42Z",
+          "lastUpdate": "2026-10-08T17:04:34Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
@@ -13900,7 +13738,7 @@
           "b": 2.75,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T17:00:22.213Z",
+          "lastUpdate": "2026-10-08T17:09:28.824Z",
           "sourceFamily": "betway"
         },
         {
@@ -14468,6 +14306,58 @@
     },
     {
       "sport": "cs2",
+      "eventId": 2786896,
+      "match": "Falcons vs Spirit",
+      "target": "Falcons",
+      "side": "Falcons",
+      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "marketKey": "round_handicap",
+      "line": -6.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "isLive": false,
+      "state": "prematch",
+      "settlementScope": null,
+      "thunderpick": 5.3,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 5.1,
+          "b": 1.14,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-10-08T17:04:25Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.03173076923076912,
+      "startTime": "2026-10-09T16:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
+      "identity": {
+        "sport": "cs2",
+        "event": "2786896",
+        "family": "round_handicap",
+        "target": "falcons",
+        "stat": "",
+        "line": "-6.5",
+        "period": "",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "falcons",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2786896|round_handicap|falcons||-6.5||1|||falcons|prematch|standard",
+      "identityComplete": true,
+      "tier": "INFORMATIONAL",
+      "rejectedOutside": []
+    },
+    {
+      "sport": "cs2",
       "eventId": 2786888,
       "match": "1W vs Aurora",
       "target": "Over",
@@ -14576,30 +14466,30 @@
       "match": "Falcons vs Spirit",
       "target": "Falcons",
       "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "market": "Round Handicap (Incl. Overtime) - Map 2",
       "marketKey": "round_handicap",
-      "line": -3.5,
+      "line": -2.5,
       "scope": {
-        "map": 1,
+        "map": 2,
         "round": null
       },
       "isLive": false,
       "state": "prematch",
       "settlementScope": null,
-      "thunderpick": 2.7,
+      "thunderpick": 2.6,
       "outside": [
         {
           "book": "unibet-kambi-direct",
-          "a": 2.6,
-          "b": 1.45,
+          "a": 2.5,
+          "b": 1.48,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
+          "lastUpdate": "2026-10-08T17:04:34Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.033333333333333326,
+      "estimatedEV": -0.03316582914572863,
       "startTime": "2026-10-09T16:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
       "identity": {
@@ -14608,16 +14498,16 @@
         "family": "round_handicap",
         "target": "falcons",
         "stat": "",
-        "line": "-3.5",
+        "line": "-2.5",
         "period": "",
-        "map": "1",
+        "map": "2",
         "round": "",
         "set": "",
         "side": "falcons",
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "cs2|2786896|round_handicap|falcons||-3.5||1|||falcons|prematch|standard",
+      "identityKey": "cs2|2786896|round_handicap|falcons||-2.5||2|||falcons|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -15086,58 +14976,6 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|2786888|player_prop|xantares|kills|15.5||2|||over|prematch|standard",
-      "identityComplete": true,
-      "tier": "INFORMATIONAL",
-      "rejectedOutside": []
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2786896,
-      "match": "Falcons vs Spirit",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
-      "marketKey": "round_handicap",
-      "line": -2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "isLive": false,
-      "state": "prematch",
-      "settlementScope": null,
-      "thunderpick": 2.6,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 2.5,
-          "b": 1.46,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:42Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.04141414141414124,
-      "startTime": "2026-10-09T16:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "identity": {
-        "sport": "cs2",
-        "event": "2786896",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-2.5",
-        "period": "",
-        "map": "2",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2786896|round_handicap|falcons||-2.5||2|||falcons|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -15658,110 +15496,6 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|2786888|round_handicap|1w||-2.5||2|||1w|prematch|standard",
-      "identityComplete": true,
-      "tier": "INFORMATIONAL",
-      "rejectedOutside": []
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2786896,
-      "match": "Falcons vs Spirit",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 1",
-      "marketKey": "round_handicap",
-      "line": -4.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "isLive": false,
-      "state": "prematch",
-      "settlementScope": null,
-      "thunderpick": 3.3,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 3.2,
-          "b": 1.3,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.046666666666666634,
-      "startTime": "2026-10-09T16:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "identity": {
-        "sport": "cs2",
-        "event": "2786896",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-4.5",
-        "period": "",
-        "map": "1",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2786896|round_handicap|falcons||-4.5||1|||falcons|prematch|standard",
-      "identityComplete": true,
-      "tier": "INFORMATIONAL",
-      "rejectedOutside": []
-    },
-    {
-      "sport": "cs2",
-      "eventId": 2786896,
-      "match": "Falcons vs Spirit",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 1",
-      "marketKey": "round_handicap",
-      "line": -5.5,
-      "scope": {
-        "map": 1,
-        "round": null
-      },
-      "isLive": false,
-      "state": "prematch",
-      "settlementScope": null,
-      "thunderpick": 4,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 3.9,
-          "b": 1.22,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.04687499999999989,
-      "startTime": "2026-10-09T16:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "identity": {
-        "sport": "cs2",
-        "event": "2786896",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-5.5",
-        "period": "",
-        "map": "1",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2786896|round_handicap|falcons||-5.5||1|||falcons|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -16392,6 +16126,58 @@
     },
     {
       "sport": "cs2",
+      "eventId": 2786896,
+      "match": "Falcons vs Spirit",
+      "target": "Falcons",
+      "side": "Falcons",
+      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "marketKey": "round_handicap",
+      "line": -4.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "isLive": false,
+      "state": "prematch",
+      "settlementScope": null,
+      "thunderpick": 3.3,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 3.25,
+          "b": 1.3,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-10-08T17:04:25Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.05714285714285705,
+      "startTime": "2026-10-09T16:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
+      "identity": {
+        "sport": "cs2",
+        "event": "2786896",
+        "family": "round_handicap",
+        "target": "falcons",
+        "stat": "",
+        "line": "-4.5",
+        "period": "",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "falcons",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2786896|round_handicap|falcons||-4.5||1|||falcons|prematch|standard",
+      "identityComplete": true,
+      "tier": "INFORMATIONAL",
+      "rejectedOutside": []
+    },
+    {
+      "sport": "cs2",
       "eventId": 2786888,
       "match": "1W vs Aurora",
       "target": "1W",
@@ -16446,50 +16232,50 @@
       "sport": "cs2",
       "eventId": 2786896,
       "match": "Falcons vs Spirit",
-      "target": "Spirit",
-      "side": "Spirit",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
+      "target": "Falcons",
+      "side": "Falcons",
+      "market": "Round Handicap (Incl. Overtime) - Map 1",
       "marketKey": "round_handicap",
       "line": -3.5,
       "scope": {
-        "map": 2,
+        "map": 1,
         "round": null
       },
       "isLive": false,
       "state": "prematch",
       "settlementScope": null,
-      "thunderpick": 2.4,
+      "thunderpick": 2.7,
       "outside": [
         {
           "book": "unibet-kambi-direct",
-          "a": 1.53,
-          "b": 2.38,
+          "a": 2.63,
+          "b": 1.41,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:42Z",
+          "lastUpdate": "2026-10-08T17:04:25Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
       "independentSources": 1,
-      "estimatedEV": -0.060869565217391286,
+      "estimatedEV": -0.0576732673267325,
       "startTime": "2026-10-09T16:00:00+00:00",
       "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
       "identity": {
         "sport": "cs2",
         "event": "2786896",
         "family": "round_handicap",
-        "target": "spirit",
+        "target": "falcons",
         "stat": "",
         "line": "-3.5",
         "period": "",
-        "map": "2",
+        "map": "1",
         "round": "",
         "set": "",
-        "side": "spirit",
+        "side": "falcons",
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "cs2|2786896|round_handicap|spirit||-3.5||2|||spirit|prematch|standard",
+      "identityKey": "cs2|2786896|round_handicap|falcons||-3.5||1|||falcons|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -16778,7 +16564,7 @@
           "b": 5.6,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
+          "lastUpdate": "2026-10-08T17:04:25Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
@@ -17242,6 +17028,58 @@
     },
     {
       "sport": "cs2",
+      "eventId": 2786896,
+      "match": "Falcons vs Spirit",
+      "target": "Falcons",
+      "side": "Falcons",
+      "market": "Round Handicap (Incl. Overtime) - Map 2",
+      "marketKey": "round_handicap",
+      "line": 2.5,
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "isLive": false,
+      "state": "prematch",
+      "settlementScope": null,
+      "thunderpick": 1.75,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.74,
+          "b": 1.98,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-10-08T17:04:34Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06854838709677447,
+      "startTime": "2026-10-09T16:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
+      "identity": {
+        "sport": "cs2",
+        "event": "2786896",
+        "family": "round_handicap",
+        "target": "falcons",
+        "stat": "",
+        "line": "2.5",
+        "period": "",
+        "map": "2",
+        "round": "",
+        "set": "",
+        "side": "falcons",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2786896|round_handicap|falcons||2.5||2|||falcons|prematch|standard",
+      "identityComplete": true,
+      "tier": "INFORMATIONAL",
+      "rejectedOutside": []
+    },
+    {
+      "sport": "cs2",
       "eventId": 2786888,
       "match": "1W vs Aurora",
       "target": "1W",
@@ -17294,58 +17132,6 @@
     },
     {
       "sport": "cs2",
-      "eventId": 2786896,
-      "match": "Falcons vs Spirit",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
-      "marketKey": "round_handicap",
-      "line": -3.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "isLive": false,
-      "state": "prematch",
-      "settlementScope": null,
-      "thunderpick": 3.1,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 3.1,
-          "b": 1.33,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:42Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.06930022573363415,
-      "startTime": "2026-10-09T16:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "identity": {
-        "sport": "cs2",
-        "event": "2786896",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "-3.5",
-        "period": "",
-        "map": "2",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2786896|round_handicap|falcons||-3.5||2|||falcons|prematch|standard",
-      "identityComplete": true,
-      "tier": "INFORMATIONAL",
-      "rejectedOutside": []
-    },
-    {
-      "sport": "cs2",
       "eventId": 2786888,
       "match": "1W vs Aurora",
       "target": "Over",
@@ -17392,6 +17178,58 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|2786888|player_prop|wicadia|kills|14.5||2|||over|prematch|standard",
+      "identityComplete": true,
+      "tier": "INFORMATIONAL",
+      "rejectedOutside": []
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2786896,
+      "match": "Falcons vs Spirit",
+      "target": "Spirit",
+      "side": "Spirit",
+      "market": "Round Handicap (Incl. Overtime) - Map 2",
+      "marketKey": "round_handicap",
+      "line": -3.5,
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "isLive": false,
+      "state": "prematch",
+      "settlementScope": null,
+      "thunderpick": 2.4,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 1.52,
+          "b": 2.4,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-10-08T17:04:34Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06938775510204087,
+      "startTime": "2026-10-09T16:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
+      "identity": {
+        "sport": "cs2",
+        "event": "2786896",
+        "family": "round_handicap",
+        "target": "spirit",
+        "stat": "",
+        "line": "-3.5",
+        "period": "",
+        "map": "2",
+        "round": "",
+        "set": "",
+        "side": "spirit",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2786896|round_handicap|spirit||-3.5||2|||spirit|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -17472,7 +17310,7 @@
           "b": 4.4,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T06:34:18Z",
+          "lastUpdate": "2026-10-08T17:04:25Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
@@ -17524,7 +17362,7 @@
           "b": 2.9,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:42Z",
+          "lastUpdate": "2026-10-08T17:04:34Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
@@ -17600,6 +17438,58 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|2786888|player_prop|ax1le|kills|13.5||1|||over|prematch|standard",
+      "identityComplete": true,
+      "tier": "INFORMATIONAL",
+      "rejectedOutside": []
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2786896,
+      "match": "Falcons vs Spirit",
+      "target": "Spirit",
+      "side": "Spirit",
+      "market": "Round Handicap (Incl. Overtime) - Map 2",
+      "marketKey": "round_handicap",
+      "line": 3.5,
+      "scope": {
+        "map": 2,
+        "round": null
+      },
+      "isLive": false,
+      "state": "prematch",
+      "settlementScope": null,
+      "thunderpick": 1.32,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 3.15,
+          "b": 1.32,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-10-08T17:04:34Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.06979865771812077,
+      "startTime": "2026-10-09T16:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
+      "identity": {
+        "sport": "cs2",
+        "event": "2786896",
+        "family": "round_handicap",
+        "target": "spirit",
+        "stat": "",
+        "line": "3.5",
+        "period": "",
+        "map": "2",
+        "round": "",
+        "set": "",
+        "side": "spirit",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2786896|round_handicap|spirit||3.5||2|||spirit|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -17732,7 +17622,7 @@
           "b": 2.3,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
+          "lastUpdate": "2026-10-08T17:04:25Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
@@ -17808,6 +17698,58 @@
         "settlement": "standard"
       },
       "identityKey": "cs2|2786888|player_prop|woxic|kills|14.5||1|||over|prematch|standard",
+      "identityComplete": true,
+      "tier": "INFORMATIONAL",
+      "rejectedOutside": []
+    },
+    {
+      "sport": "cs2",
+      "eventId": 2786896,
+      "match": "Falcons vs Spirit",
+      "target": "Falcons",
+      "side": "Falcons",
+      "market": "Round Handicap (Incl. Overtime) - Map 1",
+      "marketKey": "round_handicap",
+      "line": -5.5,
+      "scope": {
+        "map": 1,
+        "round": null
+      },
+      "isLive": false,
+      "state": "prematch",
+      "settlementScope": null,
+      "thunderpick": 4,
+      "outside": [
+        {
+          "book": "unibet-kambi-direct",
+          "a": 4,
+          "b": 1.21,
+          "identityVerified": true,
+          "identityReason": null,
+          "lastUpdate": "2026-10-08T17:04:25Z",
+          "sourceFamily": "unibet-kambi"
+        }
+      ],
+      "independentSources": 1,
+      "estimatedEV": -0.07101727447216888,
+      "startTime": "2026-10-09T16:00:00+00:00",
+      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
+      "identity": {
+        "sport": "cs2",
+        "event": "2786896",
+        "family": "round_handicap",
+        "target": "falcons",
+        "stat": "",
+        "line": "-5.5",
+        "period": "",
+        "map": "1",
+        "round": "",
+        "set": "",
+        "side": "falcons",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "cs2|2786896|round_handicap|falcons||-5.5||1|||falcons|prematch|standard",
       "identityComplete": true,
       "tier": "INFORMATIONAL",
       "rejectedOutside": []
@@ -18022,58 +17964,6 @@
     },
     {
       "sport": "cs2",
-      "eventId": 2786896,
-      "match": "Falcons vs Spirit",
-      "target": "Falcons",
-      "side": "Falcons",
-      "market": "Round Handicap (Incl. Overtime) - Map 2",
-      "marketKey": "round_handicap",
-      "line": 2.5,
-      "scope": {
-        "map": 2,
-        "round": null
-      },
-      "isLive": false,
-      "state": "prematch",
-      "settlementScope": null,
-      "thunderpick": 1.75,
-      "outside": [
-        {
-          "book": "unibet-kambi-direct",
-          "a": 1.75,
-          "b": 1.97,
-          "identityVerified": true,
-          "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:42Z",
-          "sourceFamily": "unibet-kambi"
-        }
-      ],
-      "independentSources": 1,
-      "estimatedEV": -0.073252688172043,
-      "startTime": "2026-10-09T16:00:00+00:00",
-      "blocker": "fewer than 3 independent exact-scope sources; SCREENING ONLY",
-      "identity": {
-        "sport": "cs2",
-        "event": "2786896",
-        "family": "round_handicap",
-        "target": "falcons",
-        "stat": "",
-        "line": "2.5",
-        "period": "",
-        "map": "2",
-        "round": "",
-        "set": "",
-        "side": "falcons",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "cs2|2786896|round_handicap|falcons||2.5||2|||falcons|prematch|standard",
-      "identityComplete": true,
-      "tier": "INFORMATIONAL",
-      "rejectedOutside": []
-    },
-    {
-      "sport": "cs2",
       "eventId": 2786888,
       "match": "1W vs Aurora",
       "target": "Under",
@@ -18200,7 +18090,7 @@
           "b": 3.55,
           "identityVerified": true,
           "identityReason": null,
-          "lastUpdate": "2026-10-08T08:19:24Z",
+          "lastUpdate": "2026-10-08T17:04:25Z",
           "sourceFamily": "unibet-kambi"
         }
       ],
