@@ -1,0 +1,51 @@
+name: PinnWire Independent Esports Price Snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/pinnwire-source-hourly.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pinnwire-source-hourly
+  cancel-in-progress: false
+
+jobs:
+  fetch-price-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Isolate bookmaker collection from production scanner
+        run: |
+          node - <<'JS'
+          const fs=require('node:fs');
+          const sports=['american-football','baseball','basketball','soccer','tennis','cs2','dota2','lol','valorant'];
+          fs.mkdirSync('data',{recursive:true});
+          fs.writeFileSync('data/direct-sources-latest.json',JSON.stringify({generatedAt:new Date().toISOString(),providerHealth:{},sports:Object.fromEntries(sports.map(s=>[s,{exactV2:[]}]))}));
+          JS
+      - name: Fetch PinnWire once using existing GitHub secret
+        env:
+          PINNWIRE_API_KEY: ${{ secrets.PINNWIRE_API_KEY }}
+        run: node scripts/pinnwire-direct.mjs
+      - name: Publish timestamped and source-isolated quote artifact
+        run: node scripts/pinnwire-bridge.mjs publish
+      - name: Commit only quote artifact, never credential
+        run: |
+          git config user.name 'thunderpick-pinnwire-source-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/pinnwire-source-latest.json
+          if git diff --cached --quiet; then echo 'No quote changes'; exit 0; fi
+          git commit -m 'Refresh PinnWire independent source snapshot [skip ci]'
+          git restore --worktree data/direct-sources-latest.json
+          git pull --rebase origin main
+          git push origin HEAD:main
