@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {extractObjectiveContract,compareObjectiveContractSets} from './objective-market-comparator.mjs';
+const mk={name:'Map 2 - Total Kills',scope:{map:2},line:30.5,outcomes:[{name:'Over',price:1.91},{name:'Under',price:1.91}]};
+const tp=extractObjectiveContract({sport:'lol',source:'thunderpick',event:{name:'TLN Pirates vs KOI Academy',home:'TLN Pirates',away:'KOI Academy',state:'prematch'},market:mk});
+const st=extractObjectiveContract({sport:'lol',source:'stake-oddin',event:{name:'TLN Pirates vs Movistar KOI Academy',home:'TLN Pirates',away:'Movistar KOI Academy',state:'prematch'},market:mk});
+const gg=extractObjectiveContract({sport:'lol',source:'ggbet',event:{name:'TLN Pirates vs Movistar KOI Fenix',home:'TLN Pirates',away:'Movistar KOI Fenix',state:'prematch'},market:mk});
+assert(tp&&st&&gg,'all three exact map 2 kill-total contracts must normalize');
+const rows=compareObjectiveContractSets([tp],[st,gg]);
+assert.equal(rows.length,1,'confirmed KOI Academy / Movistar KOI Fenix alias should join event');
+assert.equal(rows[0].independentOutsideSources,2,'GG.BET and Stake are independent exact sources');
+assert.equal(compareObjectiveContractSets([tp],[{...st,line:31.5},gg]).length,1,'different line must not count as additional source');
+assert.equal(compareObjectiveContractSets([tp],[{...st,map:1},{...gg,map:1}]).length,0,'different map is not an exact match');
+console.log('MOVISTAR_KOI_FENIX_EXACT_ALIAS_VERIFIED');
