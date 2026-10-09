@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {replaceDirectSnapshot,isDirectSnapshotEvent} from './direct-merge.mjs';
+const stale={id:'unibet-kambi-objective:1029386765',bookmakers:[{key:'unibet-kambi-objective',markets:[{name:'Map 1 Kills'}]}]};
+const goneCloudbet={id:'cloudbet-objective:outdated'};
+const existing=[{id:'owls-baseline-123'},{...stale},{...goneCloudbet},{id:'stake-direct:vanished'}];
+const empty=replaceDirectSnapshot(existing,[]);
+assert.deepEqual(empty.map(e=>e.id),['owls-baseline-123'],'stale provider rows must disappear on zero-current-events collection');
+assert.equal(isDirectSnapshotEvent(stale),true,'Kambi objective collector rows must count as direct snapshot events');
+const next=replaceDirectSnapshot(existing,[{id:'unibet-kambi-objective:fresh',bookmakers:[{key:'unibet-kambi-objective'}]}]);
+assert.deepEqual(next.map(e=>e.id).sort(),['owls-baseline-123','unibet-kambi-objective:fresh'].sort(),'new Kambi objective rows replace old provider rows without losing Owls baseline');
+console.log('DIRECT_MERGE_STALE_KAMBI_CLEANUP_VERIFIED');
