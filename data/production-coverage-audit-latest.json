@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-09T21:21:22.137Z",
-  "boardGeneratedAt": "2026-10-09T21:21:21.931Z",
+  "generatedAt": "2026-10-09T21:29:03.191Z",
+  "boardGeneratedAt": "2026-10-09T21:29:03.013Z",
   "status": "OK",
   "familyEvidence": {
     "map_winner": 31,
     "map_handicap": 0,
     "round_handicap": 88,
     "round_total": 79,
-    "esports_player_kills": 346,
-    "esports_player_deaths": 130,
-    "sports_spread_handicap": 70,
-    "sports_total": 71,
+    "esports_player_kills": 366,
+    "esports_player_deaths": 150,
+    "sports_spread_handicap": 72,
+    "sports_total": 73,
     "team_total": 28,
     "player_prop": 2199
   },
@@ -49,7 +49,7 @@
     },
     "esports_player_kills": {
       "status": "OK",
-      "inventory": 346,
+      "inventory": 366,
       "collectors": [
         "kambi"
       ],
@@ -57,7 +57,7 @@
     },
     "esports_player_deaths": {
       "status": "OK",
-      "inventory": 130,
+      "inventory": 150,
       "collectors": [
         "kambi"
       ],
@@ -65,7 +65,7 @@
     },
     "sports_spread_handicap": {
       "status": "OK",
-      "inventory": 70,
+      "inventory": 72,
       "collectors": [
         "kambiNfl",
         "fanduel"
@@ -74,7 +74,7 @@
     },
     "sports_total": {
       "status": "OK",
-      "inventory": 71,
+      "inventory": 73,
       "collectors": [
         "kambiNfl",
         "fanduel"
@@ -108,6 +108,8 @@
   },
   "failures": [],
   "degraded": [],
-  "optionalDegraded": [],
+  "optionalDegraded": [
+    "optional collector unavailable: pinnacle (HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"B)"
+  ],
   "rule": "Healthy collector + explicit zero inventory = NO_MARKETS_AVAILABLE. Missing/unhealthy required enumeration = COVERAGE_FAILURE. Required collector error arrays count as degradation even when ok=true. A pure Pinnacle HTTP 403 is recorded as optional degradation and does not block publication because Pinnacle is additive and not the sole required collector for any coverage family."
 }
