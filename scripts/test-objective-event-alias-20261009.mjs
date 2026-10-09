@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {extractObjectiveContract,compareObjectiveContractSets} from './objective-market-comparator.mjs';
+const market={name:'Map 1 - Total Kills',scope:{map:1},line:28.5,outcomes:[{name:'Over',price:1.95},{name:'Under',price:1.85}]};
+const tp=extractObjectiveContract({sport:'lol',source:'thunderpick',event:{name:'Galions vs Hangry Knights',home:'Galions',away:'Hangry Knights',state:'prematch'},market});
+const ggbet=extractObjectiveContract({sport:'lol',source:'ggbet',event:{name:'Galions vs Kaufland Hangry Knights',home:'Galions',away:'Kaufland Hangry Knights',state:'prematch'},market});
+const stake=extractObjectiveContract({sport:'lol',source:'stake-oddin',event:{name:'Kaufland Hangry Knights vs Galions',home:'Kaufland Hangry Knights',away:'Galions',state:'prematch'},market});
+assert(tp&&ggbet&&stake,'valid map total contracts must normalize');
+const rows=compareObjectiveContractSets([tp],[ggbet,stake]);
+assert.equal(rows.length,1,'same scheduled Hangry Knights event must match canonical team alias');
+assert.equal(rows[0].independentOutsideSources,2,'two genuinely distinct sources should survive alias match');
+assert.equal(compareObjectiveContractSets([tp],[{...ggbet,map:2}]).length,0,'different maps must never compare');
+assert.equal(compareObjectiveContractSets([tp],[{...ggbet,line:29.5}]).length,0,'different numeric lines must never compare');
+console.log('HANGRY_KNIGHTS_EXACT_ALIAS_VERIFIED');

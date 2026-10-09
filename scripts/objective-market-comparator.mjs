@@ -3,7 +3,7 @@ import {normalizeObjectiveMarket} from './objective-market-normalizer.mjs';
 function num(v){const n=Number(v);return Number.isFinite(n)?n:null;}
 function canon(v=''){
   return String(v).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
-    .replace(/\b(team|esports|gaming|club)\b/g,' ').replace(/[^a-z0-9]+/g,'').trim();
+    .replace(/\bkaufland\s+hangry\s+knights\b/g,'hangry knights').replace(/\b(team|esports|gaming|club)\b/g,' ').replace(/[^a-z0-9]+/g,'').trim();
 }
 function eventTeams(event={}){
   return [event.home??event.home_team??event?.teams?.home?.name??event?.market?.home?.name??null,
