@@ -17,8 +17,8 @@ function bestSide(row={}){
 }
 function tierFor({sources,ev,fresh,exact}){
   if(!fresh||!exact)return'INFORMATIONAL';
-  if(sources>=3&&ev>=0.02)return'ACTION';
-  if(sources>=2&&ev>=0.01)return'WATCH';
+  if(sources>=5&&ev>=0.02)return'ACTION';
+  if(sources>=3&&ev>=0.01)return'WATCH';
   if(sources>=1&&ev>=0.0025)return'SCREENING';
   if(sources>=1)return'PRICE BOARD';
   return'INFORMATIONAL';

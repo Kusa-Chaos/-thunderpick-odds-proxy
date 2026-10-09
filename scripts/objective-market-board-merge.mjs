@@ -14,6 +14,8 @@ function chooseBetter(a,b){
   if(!a)return b;if(!b)return a;
   const pa=priority[a.tier]??99,pb=priority[b.tier]??99;
   if(pb<pa)return b;if(pa<pb)return a;
+  const na=Number(a.independentSources)||0,nb=Number(b.independentSources)||0;
+  if(nb!==na)return nb>na?b:a;
   const ea=Number(a.estimatedEV),eb=Number(b.estimatedEV);
   if(Number.isFinite(eb)&&(!Number.isFinite(ea)||eb>ea))return b;
   if((b.independentSources||0)>(a.independentSources||0))return b;

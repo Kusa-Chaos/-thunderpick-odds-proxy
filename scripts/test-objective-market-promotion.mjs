@@ -31,6 +31,6 @@ const lol=promoted.find(r=>r.sport==='lol');
 expect(lol?.tier==='SCREENING','one-source +EV objective contract must remain SCREENING');
 expect(lol?.marketKey==='race_to_kills'&&lol?.line===5&&lol?.scope?.map===1,'race-to-5 identity must be retained');
 const dota=promoted.find(r=>r.sport==='dota2');
-expect(dota?.tier==='WATCH','two-source objective contract with EV >=1% must be WATCH');
+expect(dota?.tier==='SCREENING','two-source objective contract remains SCREENING under the production source policy');
 expect(dota?.side==='under'&&dota?.line===11.5&&dota?.scope?.map===1,'tower Under 11.5 exact identity must be retained');
 console.log('OBJECTIVE_MARKET_PROMOTION_VERIFIED',promoted.length);
