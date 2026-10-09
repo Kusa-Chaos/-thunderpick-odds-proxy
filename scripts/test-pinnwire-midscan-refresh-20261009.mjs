@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import {mkdtempSync,mkdirSync,writeFileSync,readFileSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+const root=mkdtempSync(join(tmpdir(),'pinnwire-fetch-'));
+const git=(cwd,...args)=>{const r=spawnSync('git',args,{cwd,encoding:'utf8'});assert.equal(r.status,0,args.join(' ')+': '+r.stderr);return r.stdout.trim()};
+const put=(cwd,body)=>{mkdirSync(join(cwd,'data'),{recursive:true});writeFileSync(join(cwd,'data/pinnwire-source-latest.json'),body)};
+const artifact=n=>JSON.stringify({generatedAt:'2026-10-09T21:'+n+':00Z',source:'pinnwire-github-readonly-snapshot',providerHealth:{pinnwire:{ok:true,status:200,fetchedAt:'2026-10-09T21:'+n+':00Z'}},sports:{lol:{exactV2:[]}}});
+try{
+ const bare=join(root,'origin.git'),prod=join(root,'producer'),consumer=join(root,'consumer');
+ mkdirSync(prod);
+ git(root,'init','--bare',bare);git(prod,'init','-b','main');git(prod,'config','user.email','test@example.invalid');git(prod,'config','user.name','Test');
+ put(prod,artifact('10'));git(prod,'add','data/pinnwire-source-latest.json');git(prod,'commit','-m','first');
+ git(prod,'remote','add','origin',bare);git(prod,'push','-u','origin','main');
+ git(root,'clone','-b','main',bare,consumer);
+ const stable=git(consumer,'rev-parse','HEAD');
+ writeFileSync(join(consumer,'data/direct-sources-latest.json'),'DO NOT OVERWRITE');
+ put(prod,artifact('44'));git(prod,'add','data/pinnwire-source-latest.json');git(prod,'commit','-m','fresh');git(prod,'push');
+ const script=fileURLToPath(new URL('./refresh-pinnwire-source-artifact.sh',import.meta.url));
+ const run=()=>spawnSync('bash',[script],{cwd:consumer,encoding:'utf8',timeout:18000});
+ let r=run();assert.equal(r.status,0,r.stderr);
+ assert.equal(readFileSync(join(consumer,'data/pinnwire-source-latest.json'),'utf8'),artifact('44'),'fetch latest GitHub artifact during scan');
+ assert.equal(readFileSync(join(consumer,'data/direct-sources-latest.json'),'utf8'),'DO NOT OVERWRITE','never reset scanner data');
+ assert.equal(git(consumer,'rev-parse','HEAD'),stable,'never change scanner code commit midscan');
+ put(prod,'{INVALID JSON');git(prod,'add','data/pinnwire-source-latest.json');git(prod,'commit','-m','bad');git(prod,'push');
+ r=run();assert.equal(r.status,0,'fail closed without killing scan');
+ assert.equal(readFileSync(join(consumer,'data/pinnwire-source-latest.json'),'utf8'),artifact('44'),'retain last good file if upstream invalid');
+ console.log('PINNWIRE_MIDSCAN_ARTIFACT_REFRESH_VERIFIED');
+}finally{rmSync(root,{recursive:true,force:true})}
