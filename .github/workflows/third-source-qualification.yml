@@ -1,0 +1,53 @@
+name: Qualify Third Independent Esports Source
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/third-source-qualification.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: independent-esports-source-qualifier
+  cancel-in-progress: false
+
+jobs:
+  check-existing-access:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check existing keys with at most one esports odds sample per provider
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDS_API_IO_KEY: ${{ secrets.ODDS_API_IO_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          const keyP=(process.env.ODDSPAPI_API_KEY||'').trim(), keyI=(process.env.ODDS_API_IO_KEY||process.env.ODDS_API_KEY||'').trim();
+          const clean=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+          const family=s=>{s=clean(s);if(s.includes('pinnacle')||s.includes('pinnwire'))return 'pinnacle';if(s.includes('stake')||s.includes('oddin'))return 'stake-oddin';if(s.includes('ggbet'))return 'ggbet';if(s.includes('unibet')||s.includes('kambi'))return 'unibet-kambi';return s;};
+          if(family('PinnWire')!=='pinnacle'||family('Oddin Stake')!=='stake-oddin'||family('Unibet')!=='unibet-kambi')throw Error('source family regression');
+          const qualified=(obj={})=>{const b=obj.bookmakerOdds||obj.bookmakers||obj.odds||{};const names=Object.keys(b);return {books:names.length,families:[...new Set(names.map(family))].slice(0,35),candidateThird:[...new Set(names.map(family))].filter(x=>!['thunderpick','stake-oddin','ggbet','pinnacle','cloudbet'].includes(x)).slice(0,15),exactSelectionsVerified:false};};
+          async function get(root,path,key,query={}){const u=new URL(root+path);u.searchParams.set('apiKey',key);for(const [k,v] of Object.entries(query))u.searchParams.set(k,String(v));try{const r=await fetch(u,{signal:AbortSignal.timeout(20000),headers:{Accept:'application/json'}});const body=await r.json().catch(()=>null);return {ok:r.ok,status:r.status,body};}catch(e){return {ok:false,status:null,err:String(e.name)}}}
+          const rows=v=>Array.isArray(v)?v:Array.isArray(v?.data)?v.data:Array.isArray(v?.events)?v.events:Array.isArray(v?.fixtures)?v.fixtures:[];
+          async function papi(){if(!keyP)return {state:'NO_CONFIGURED_KEY'};const base='https://api.oddspapi.io/v4';const a=await get(base,'/account',keyP);if(!a.ok)return {state:'ACCOUNT_DENIED',status:a.status};
+            const info=[a.body,...Object.values(a.body||{}).filter(x=>x&&typeof x==='object')];const first=keys=>info.map(o=>keys.map(k=>o?.[k]).find(x=>x!==undefined)).find(x=>x!==undefined);
+            const limit=Number(first(['request_limit','requestLimit'])),used=Number(first(['request_count','requestCount']));const left=Number.isFinite(limit)&&Number.isFinite(used)?limit-used:null;
+            if(left===null||left<5)return {state:'AUTHENTICATED_BUT_QUOTA_UNKNOWN_OR_LOW',remaining:left};
+            const from=new Date(),to=new Date(from.getTime()+36*3600e3);
+            const f=await get(base,'/fixtures',keyP,{sportId:18,from:from.toISOString(),to:to.toISOString(),statusId:0,hasOdds:true});if(!f.ok)return {state:'ESPORTS_FIXTURES_DENIED',status:f.status};
+            const list=rows(f.body),pick=list.find(x=>x.fixtureId);if(!pick)return {state:'NO_LOL_FIXTURES',events:list.length};
+            const odds=await get(base,'/odds',keyP,{fixtureId:pick.fixtureId,language:'en',verbosity:2,oddsFormat:'decimal'});
+            return odds.ok?{state:'PRICE_SAMPLE_OBTAINED',events:list.length,...qualified(odds.body)}:{state:'PRICE_QUERY_DENIED',status:odds.status};}
+          async function oddsio(){if(!keyI)return {state:'NO_CONFIGURED_KEY'};const base='https://api.odds-api.io/v3';const e=await get(base,'/events',keyI,{sport:'esports',status:'pending',limit:12});if(!e.ok)return {state:'ESPORTS_EVENTS_DENIED',status:e.status};const list=rows(e.body),first=list.find(x=>x.id);if(!first)return {state:'NO_ESPORTS_EVENTS',events:list.length};const o=await get(base,'/odds',keyI,{eventId:first.id,bookmakers:'Unibet,Bet365,Rivalry,Roobet,1xBet,Betano'});return o.ok?{state:'PRICE_SAMPLE_OBTAINED',events:list.length,...qualified(o.body)}:{state:'PRICE_QUERY_DENIED',status:o.status};}
+          for(const [name,fn] of [['OddsPapi',papi],['Odds-API.io',oddsio]]){try{const result=await fn();console.log('ESPORTS_SOURCE_DIAGNOSTIC',JSON.stringify({provider:name,...result}));}catch(e){console.log('ESPORTS_SOURCE_DIAGNOSTIC',JSON.stringify({provider:name,state:'CHECK_ERROR',error:String(e.name)}));}}
+          console.log('NO_PRODUCTION_CHANGE — prices are not independent until exact event, selection, map, numeric line, settlement, freshness and distinct sportsbook family are verified.');
+          NODE
