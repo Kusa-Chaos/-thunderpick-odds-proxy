@@ -2,7 +2,11 @@ import assert from 'node:assert/strict';
 import {collectOddsPapiShadow} from './oddspapi-shadow-collector.mjs';
 const account={current_subscription_id:'a',subscriptions:[{subscription_id:'a',is_active:true,sport_ids:[16,17,18,61],request_limit:100,request_count:10,bookmakers:{bet365:{},'1xbet':{},unibet:{}}}]};
 const catalog=[{marketId:181,marketName:'Winner',period:'result',marketType:'moneyline',outcomes:[{outcomeId:181,outcomeName:'1'},{outcomeId:182,outcomeName:'2'}]}];
-const bookmaker={bookmakerIsActive:true,suspended:false,markets:{181:{marketActive:true,outcomes:{181:{players:{'0':{active:true,price:1.8}}},182:{players:{'0':{active:true,price:2.03}}}}}}}};
+const selection=(price)=>({players:{'0':{active:true,price}}});
+const bookmaker={
+  bookmakerIsActive:true,suspended:false,
+  markets:{'181':{marketActive:true,outcomes:{'181':selection(1.8),'182':selection(2.03)}}}
+};
 const fixture={fixtureId:'id18abc',participant1Name:'Fuego',participant2Name:'T1 Academy',statusId:0,sportId:18,hasOdds:true,startTime:'2026-10-11T12:40:00Z'};
 let calls=[];
 const get=async(path,args)=>{calls.push(path);if(path==='/account')return account;if(path==='/markets')return catalog;if(path==='/fixtures')return args.sportId===18?[fixture]:[];if(path==='/odds')return {...fixture,bookmakerOdds:{bet365:bookmaker,'1xbet':bookmaker,unibet:bookmaker}};throw Error('Unexpected request');};
