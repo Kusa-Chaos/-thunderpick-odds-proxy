@@ -63,6 +63,7 @@ jobs:
         run: |
           node scripts/test-third-source-eligibility-20261010.mjs
           node scripts/test-oddspapi-exact-normalizer-20261010.mjs
+          node --check scripts/test-oddspapi-shadow-collector-20261010.mjs
           node scripts/test-oddspapi-shadow-collector-20261010.mjs
       - name: Shadow collect bookmaker-attributed esports prices (not production)
         env:
