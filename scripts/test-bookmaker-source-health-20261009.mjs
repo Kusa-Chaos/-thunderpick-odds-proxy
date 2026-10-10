@@ -16,4 +16,10 @@ const p=buildPinnacleFamilyHealth({pinnacle:{ok:false,status:500,errors:['HTTP 4
 assert.equal(p.usable,true);assert.equal(p.preferredPath,'pinnwire');assert.equal(p.sourceFamily,'pinnacle');
 assert.equal(p.nativeDirectStatus,500);assert.equal(p.fallbackStatus,200);
 assert.equal(buildPinnacleFamilyHealth({pinnacle:{ok:false},pinnwire:{ok:false,usable:false}}).usable,false);
+const pAwsDirect=buildPinnacleFamilyHealth({pinnacle:{ok:false,status:500},pinnwire:{ok:true,status:200,events:32,acceptedEvents:19,acceptedMarkets:871}});
+assert.equal(pAwsDirect.usable,true,'verified AWS PinnWire collector must count as a usable Pinnacle-family source');
+assert.equal(pAwsDirect.preferredPath,'pinnwire');
+assert.equal(pAwsDirect.events,19,'prefer accepted, not raw PinnWire event count');
+assert.equal(pAwsDirect.markets,871);
+assert.equal(buildPinnacleFamilyHealth({pinnwire:{ok:true,status:200,acceptedEvents:0,acceptedMarkets:0}}).usable,false,'empty collector must not count');
 console.log('GGBET_AND_PINNACLE_FAMILY_TELEMETRY_VERIFIED');

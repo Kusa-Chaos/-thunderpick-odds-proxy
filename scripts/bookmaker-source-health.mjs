@@ -23,7 +23,7 @@ export function buildGGBetHealth(artifact={}, {now=Date.now(),maxAgeMs=40*60*100
 export function buildPinnacleFamilyHealth(direct={}){
   const native=direct.pinnacle||{},fallback=direct.pinnwire||{};
   const nativeUsable=native.usable===true||(native.ok===true&&Number(native.acceptedEvents)>0);
-  const fallbackUsable=fallback.ok===true&&fallback.usable===true;
+  const fallbackUsable=fallback.ok===true&&(fallback.usable===true||(fallback.status===200&&Number(fallback.acceptedEvents)>0&&Number(fallback.acceptedMarkets)>0));
   const usable=nativeUsable||fallbackUsable;
   return {
     sourceFamily:'pinnacle',ok:usable,usable,
@@ -31,7 +31,7 @@ export function buildPinnacleFamilyHealth(direct={}){
     preferredPath:nativeUsable?'native':fallbackUsable?'pinnwire':null,
     nativeDirectStatus:native.status??null,fallbackStatus:fallback.status??null,
     nativeUsable,fallbackUsable,
-    events:fallbackUsable?integerOrNull(fallback.events):nativeUsable?integerOrNull(native.acceptedEvents):0,
-    markets:fallbackUsable?integerOrNull(fallback.markets):nativeUsable?integerOrNull(native.acceptedMarkets):0
+    events:fallbackUsable?integerOrNull(fallback.acceptedEvents??fallback.events):nativeUsable?integerOrNull(native.acceptedEvents):0,
+    markets:fallbackUsable?integerOrNull(fallback.acceptedMarkets??fallback.markets):nativeUsable?integerOrNull(native.acceptedMarkets):0
   };
 }
