@@ -31,6 +31,7 @@ jobs:
         shell: bash
         run: |
           node --input-type=module <<'NODE'
+          import {readOddsPapiEntitlement} from './scripts/third-source-eligibility.mjs';
           const keyP=(process.env.ODDSPAPI_API_KEY||'').trim(), keyI=(process.env.ODDS_API_IO_KEY||process.env.ODDS_API_KEY||'').trim();
           const clean=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
           const family=s=>{s=clean(s);if(s.includes('pinnacle')||s.includes('pinnwire'))return 'pinnacle';if(s.includes('stake')||s.includes('oddin'))return 'stake-oddin';if(s.includes('ggbet'))return 'ggbet';if(s.includes('unibet')||s.includes('kambi'))return 'unibet-kambi';return s;};
@@ -39,9 +40,10 @@ jobs:
           async function get(root,path,key,query={}){const u=new URL(root+path);u.searchParams.set('apiKey',key);for(const [k,v] of Object.entries(query))u.searchParams.set(k,String(v));try{const r=await fetch(u,{signal:AbortSignal.timeout(20000),headers:{Accept:'application/json'}});const body=await r.json().catch(()=>null);return {ok:r.ok,status:r.status,body};}catch(e){return {ok:false,status:null,err:String(e.name)}}}
           const rows=v=>Array.isArray(v)?v:Array.isArray(v?.data)?v.data:Array.isArray(v?.events)?v.events:Array.isArray(v?.fixtures)?v.fixtures:[];
           async function papi(){if(!keyP)return {state:'NO_CONFIGURED_KEY'};const base='https://api.oddspapi.io/v4';const a=await get(base,'/account',keyP);if(!a.ok)return {state:'ACCOUNT_DENIED',status:a.status};
-            const info=[a.body,...Object.values(a.body||{}).filter(x=>x&&typeof x==='object')];const first=keys=>info.map(o=>keys.map(k=>o?.[k]).find(x=>x!==undefined)).find(x=>x!==undefined);
-            const limit=Number(first(['request_limit','requestLimit'])),used=Number(first(['request_count','requestCount']));const left=Number.isFinite(limit)&&Number.isFinite(used)?limit-used:null;
-            if(left===null||left<5)return {state:'AUTHENTICATED_BUT_QUOTA_UNKNOWN_OR_LOW',remaining:left};
+            const access=readOddsPapiEntitlement(a.body||{});
+            if(access.state!=='ESPORTS_ELIGIBLE')return access;
+            const left=access.remaining;
+            if(left<5)return {...access,state:'QUOTA_RESERVED_BELOW_SAFE_SAMPLE_MINIMUM'};
             const from=new Date(),to=new Date(from.getTime()+36*3600e3);
             const f=await get(base,'/fixtures',keyP,{sportId:18,from:from.toISOString(),to:to.toISOString(),statusId:0,hasOdds:true});if(!f.ok)return {state:'ESPORTS_FIXTURES_DENIED',status:f.status};
             const list=rows(f.body),pick=list.find(x=>x.fixtureId);if(!pick)return {state:'NO_LOL_FIXTURES',events:list.length};
