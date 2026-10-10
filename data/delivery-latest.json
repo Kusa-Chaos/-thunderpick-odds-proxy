@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-09T22:36:06.946Z",
-  "builtAt": "2026-10-09T22:36:07.176Z",
+  "generatedAt": "2026-10-10T00:51:14.914Z",
+  "builtAt": "2026-10-10T00:51:15.136Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
   "strictSnapshotHealthy": false,
   "counts": {
     "ACTION": 0,
-    "WATCH": 0,
-    "SCREENING": 219,
+    "WATCH": 1,
+    "SCREENING": 225,
     "PRICE BOARD": 0,
-    "INFORMATIONAL": 298,
+    "INFORMATIONAL": 296,
     "ARB FOUND": 0,
     "ARB WATCH": 0,
     "ARB SCREENING": 0
@@ -18,7 +18,69 @@
     "price": 0
   },
   "actionRows": [],
-  "watchRows": [],
+  "watchRows": [
+    {
+      "tier": "WATCH",
+      "sport": "american-football",
+      "match": "Jacksonville Jaguars vs Philadelphia Eagles",
+      "target": "Over",
+      "side": "Over",
+      "market": "Player Trevor Lawrence - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "line": 1.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "american-football",
+        "event": "2741576",
+        "family": "player_prop",
+        "target": "trevor lawrence",
+        "stat": "passing_tds",
+        "line": "1.5",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "over",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "american-football|2741576|player_prop|trevor lawrence|passing_tds|1.5|||||over|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2,
+      "outside": [
+        {
+          "sourceFamily": "bovada",
+          "book": "bovada-nfl-direct",
+          "price": 1.8333333333333335,
+          "lastUpdate": null
+        },
+        {
+          "sourceFamily": "fanduel",
+          "book": "fanduel-direct",
+          "price": 1.847457627118644,
+          "lastUpdate": null
+        },
+        {
+          "sourceFamily": "draftkings",
+          "book": "draftkings-direct",
+          "price": 1.847457627118644,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.847457627118644,
+      "independentSources": 3,
+      "fairProbability": 0.5088626683588394,
+      "fairDecimal": 1.9651667575166287,
+      "estimatedEV": 0.01772533671767884,
+      "startTime": "2026-10-11T13:30:00+00:00",
+      "blocker": null
+    }
+  ],
   "screeningRows": [
     {
       "tier": "SCREENING",
@@ -150,7 +212,7 @@
       },
       "identityKey": "basketball|jsf nanterre u21 vs bcm gravelines dunkerque u21|ml|jsf nanterre u21||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.6,
+      "thunderpick": 2.63,
       "outside": [
         {
           "sourceFamily": "bovada",
@@ -163,57 +225,8 @@
       "independentSources": 1,
       "fairProbability": 0.7864077669902914,
       "fairDecimal": 1.2716049382716048,
-      "estimatedEV": 1.0446601941747575,
+      "estimatedEV": 1.0682524271844662,
       "startTime": "2026-10-10T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Iwate Big Bulls vs Koshigaya Alphas",
-      "target": "Iwate Big Bulls",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "iwate big bulls vs koshigaya alphas",
-        "family": "ml",
-        "target": "iwate big bulls",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|iwate big bulls vs koshigaya alphas|ml|iwate big bulls||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.82,
-      "outside": [
-        {
-          "sourceFamily": "bovada",
-          "book": "Bovada Direct",
-          "price": 1.9523809523809523,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 1.9523809523809523,
-      "independentSources": 1,
-      "fairProbability": 0.4796954314720812,
-      "fairDecimal": 2.0846560846560847,
-      "estimatedEV": 0.35274111675126885,
-      "startTime": "2026-10-11T05:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -263,6 +276,55 @@
       "fairDecimal": 1.5720470006184293,
       "estimatedEV": 0.3358379228953581,
       "startTime": "2026-10-31T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Iwate Big Bulls vs Koshigaya Alphas",
+      "target": "Iwate Big Bulls",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "iwate big bulls vs koshigaya alphas",
+        "family": "ml",
+        "target": "iwate big bulls",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|iwate big bulls vs koshigaya alphas|ml|iwate big bulls||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.82,
+      "outside": [
+        {
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 2.05,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 2.05,
+      "independentSources": 1,
+      "fairProbability": 0.45920859794821695,
+      "fairDecimal": 2.177659574468085,
+      "estimatedEV": 0.2949682462139718,
+      "startTime": "2026-10-11T05:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -349,80 +411,25 @@
       "thunderpick": 6,
       "outside": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "Pinnacle Direct",
-          "price": 4.24,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 4.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.24,
+      "bestOutside": 4.5,
       "independentSources": 1,
-      "fairProbability": 0.21016431027894536,
-      "fairDecimal": 4.758181818181818,
-      "estimatedEV": 0.2609858616736722,
+      "fairProbability": 0.20588235294117646,
+      "fairDecimal": 4.857142857142858,
+      "estimatedEV": 0.23529411764705888,
       "startTime": "2026-10-10T15:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Wetterbygden Stars vs Malbas",
-      "target": "Malbas",
-      "side": "Malbas",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "2791148",
-        "family": "ml",
-        "target": "malbas",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "malbas",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|2791148|ml|malbas|||||||malbas|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 6,
-      "outside": [
-        {
-          "sourceFamily": "pinnacle",
-          "book": "pinnacle",
-          "price": 4.24,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "bovada",
-          "book": "bovada",
-          "price": 4.5,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 4.5,
-      "independentSources": 2,
-      "fairProbability": 0.20802333161006092,
-      "fairDecimal": 4.80715308355169,
-      "estimatedEV": 0.24813998966036555,
-      "startTime": "2026-10-10T15:00:00+00:00",
-      "blocker": "2 independent exact Match Winner sources; WATCH pending a third fresh consensus source"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Sporting CP vs CP Esgueira",
-      "target": "CP Esgueira",
+      "match": "Antwerp Giants vs Kortrijk",
+      "target": "Kortrijk",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -435,9 +442,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "sporting cp vs cp esgueira",
+        "event": "antwerp giants vs kortrijk",
         "family": "ml",
-        "target": "cp esgueira",
+        "target": "kortrijk",
         "stat": "",
         "line": "",
         "period": "",
@@ -448,23 +455,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|sporting cp vs cp esgueira|ml|cp esgueira||||||||prematch|standard",
+      "identityKey": "basketball|antwerp giants vs kortrijk|ml|kortrijk||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 8.1,
+      "thunderpick": 5,
       "outside": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "Pinnacle Direct",
-          "price": 5.33,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 3.75,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 5.33,
+      "bestOutside": 3.75,
       "independentSources": 1,
-      "fairProbability": 0.14964626937059805,
-      "fairDecimal": 6.68242518978877,
-      "estimatedEV": 0.2121347819018442,
-      "startTime": "2026-10-10T14:00:00+00:00",
+      "fairProbability": 0.2465753424657534,
+      "fairDecimal": 4.055555555555555,
+      "estimatedEV": 0.23287671232876717,
+      "startTime": "2026-10-10T18:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -568,8 +575,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Antwerp Giants vs Kortrijk",
-      "target": "Kortrijk",
+      "match": "Cholet U21 vs Pau-Lacq-Orthez U21",
+      "target": "Pau-Lacq-Orthez U21",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -582,9 +589,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "antwerp giants vs kortrijk",
+        "event": "cholet u21 vs pau-lacq-orthez u21",
         "family": "ml",
-        "target": "kortrijk",
+        "target": "pau-lacq-orthez u21",
         "stat": "",
         "line": "",
         "period": "",
@@ -595,23 +602,72 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|antwerp giants vs kortrijk|ml|kortrijk||||||||prematch|standard",
+      "identityKey": "basketball|cholet u21 vs pau-lacq-orthez u21|ml|pau-lacq-orthez u21||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 5.4,
+      "thunderpick": 8.7,
       "outside": [
         {
           "sourceFamily": "bovada",
           "book": "Bovada Direct",
-          "price": 4.5,
+          "price": 7,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.5,
+      "bestOutside": 7,
       "independentSources": 1,
-      "fairProbability": 0.20588235294117646,
-      "fairDecimal": 4.857142857142858,
-      "estimatedEV": 0.11176470588235299,
-      "startTime": "2026-10-10T18:30:00+00:00",
+      "fairProbability": 0.13274336283185842,
+      "fairDecimal": 7.533333333333332,
+      "estimatedEV": 0.15486725663716805,
+      "startTime": "2026-10-10T12:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "Milwaukee Brewers vs Los Angeles Dodgers",
+      "target": "Los Angeles Dodgers",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "baseball",
+        "event": "milwaukee brewers vs los angeles dodgers",
+        "family": "ml",
+        "target": "los angeles dodgers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "baseball|milwaukee brewers vs los angeles dodgers|ml|los angeles dodgers||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 1.86,
+      "outside": [
+        {
+          "sourceFamily": "pinnacle",
+          "book": "Pinnacle Direct",
+          "price": 1.617283950617284,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.617283950617284,
+      "independentSources": 1,
+      "fairProbability": 0.5954042868614491,
+      "fairDecimal": 1.6795310716879346,
+      "estimatedEV": 0.10745197356229541,
+      "startTime": "2026-10-12T00:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
@@ -746,7 +802,7 @@
       },
       "identityKey": "basketball|jsf nanterre u21 vs bcm gravelines dunkerque u21|ml|jsf nanterre u21||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.6,
+      "thunderpick": 2.63,
       "outside": [
         {
           "sourceFamily": "bovada",
@@ -759,57 +815,8 @@
       "independentSources": 1,
       "fairProbability": 0.7864077669902914,
       "fairDecimal": 1.2716049382716048,
-      "estimatedEV": 1.0446601941747575,
+      "estimatedEV": 1.0682524271844662,
       "startTime": "2026-10-10T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Iwate Big Bulls vs Koshigaya Alphas",
-      "target": "Iwate Big Bulls",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "iwate big bulls vs koshigaya alphas",
-        "family": "ml",
-        "target": "iwate big bulls",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|iwate big bulls vs koshigaya alphas|ml|iwate big bulls||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.82,
-      "outside": [
-        {
-          "sourceFamily": "bovada",
-          "book": "Bovada Direct",
-          "price": 1.9523809523809523,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 1.9523809523809523,
-      "independentSources": 1,
-      "fairProbability": 0.4796954314720812,
-      "fairDecimal": 2.0846560846560847,
-      "estimatedEV": 0.35274111675126885,
-      "startTime": "2026-10-11T05:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -859,6 +866,55 @@
       "fairDecimal": 1.5720470006184293,
       "estimatedEV": 0.3358379228953581,
       "startTime": "2026-10-31T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Iwate Big Bulls vs Koshigaya Alphas",
+      "target": "Iwate Big Bulls",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "iwate big bulls vs koshigaya alphas",
+        "family": "ml",
+        "target": "iwate big bulls",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|iwate big bulls vs koshigaya alphas|ml|iwate big bulls||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.82,
+      "outside": [
+        {
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 2.05,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 2.05,
+      "independentSources": 1,
+      "fairProbability": 0.45920859794821695,
+      "fairDecimal": 2.177659574468085,
+      "estimatedEV": 0.2949682462139718,
+      "startTime": "2026-10-11T05:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -945,80 +1001,25 @@
       "thunderpick": 6,
       "outside": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "Pinnacle Direct",
-          "price": 4.24,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 4.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.24,
+      "bestOutside": 4.5,
       "independentSources": 1,
-      "fairProbability": 0.21016431027894536,
-      "fairDecimal": 4.758181818181818,
-      "estimatedEV": 0.2609858616736722,
+      "fairProbability": 0.20588235294117646,
+      "fairDecimal": 4.857142857142858,
+      "estimatedEV": 0.23529411764705888,
       "startTime": "2026-10-10T15:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Wetterbygden Stars vs Malbas",
-      "target": "Malbas",
-      "side": "Malbas",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "2791148",
-        "family": "ml",
-        "target": "malbas",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "malbas",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|2791148|ml|malbas|||||||malbas|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 6,
-      "outside": [
-        {
-          "sourceFamily": "pinnacle",
-          "book": "pinnacle",
-          "price": 4.24,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "bovada",
-          "book": "bovada",
-          "price": 4.5,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 4.5,
-      "independentSources": 2,
-      "fairProbability": 0.20802333161006092,
-      "fairDecimal": 4.80715308355169,
-      "estimatedEV": 0.24813998966036555,
-      "startTime": "2026-10-10T15:00:00+00:00",
-      "blocker": "2 independent exact Match Winner sources; WATCH pending a third fresh consensus source"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Sporting CP vs CP Esgueira",
-      "target": "CP Esgueira",
+      "match": "Antwerp Giants vs Kortrijk",
+      "target": "Kortrijk",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1031,9 +1032,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "sporting cp vs cp esgueira",
+        "event": "antwerp giants vs kortrijk",
         "family": "ml",
-        "target": "cp esgueira",
+        "target": "kortrijk",
         "stat": "",
         "line": "",
         "period": "",
@@ -1044,23 +1045,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|sporting cp vs cp esgueira|ml|cp esgueira||||||||prematch|standard",
+      "identityKey": "basketball|antwerp giants vs kortrijk|ml|kortrijk||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 8.1,
+      "thunderpick": 5,
       "outside": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "Pinnacle Direct",
-          "price": 5.33,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 3.75,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 5.33,
+      "bestOutside": 3.75,
       "independentSources": 1,
-      "fairProbability": 0.14964626937059805,
-      "fairDecimal": 6.68242518978877,
-      "estimatedEV": 0.2121347819018442,
-      "startTime": "2026-10-10T14:00:00+00:00",
+      "fairProbability": 0.2465753424657534,
+      "fairDecimal": 4.055555555555555,
+      "estimatedEV": 0.23287671232876717,
+      "startTime": "2026-10-10T18:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     },
     {
@@ -1111,12 +1112,124 @@
       "estimatedEV": 0.16120401337792645,
       "startTime": "2026-10-31T00:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Falco KC Szombathely vs SZTE-Szedeak",
+      "target": "SZTE-Szedeak",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "falco kc szombathely vs szte-szedeak",
+        "family": "ml",
+        "target": "szte-szedeak",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|falco kc szombathely vs szte-szedeak|ml|szte-szedeak||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 10.5,
+      "outside": [
+        {
+          "sourceFamily": "pinnacle",
+          "book": "Pinnacle Direct",
+          "price": 8.17,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 8.17,
+      "independentSources": 1,
+      "fairProbability": 0.11049258987836108,
+      "fairDecimal": 9.050380673499268,
+      "estimatedEV": 0.16017219372279135,
+      "startTime": "2026-10-10T16:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
   "arbFoundRows": [],
   "arbWatchRows": [],
   "arbScreeningRows": [],
-  "watchBoardRows": [],
+  "watchBoardRows": [
+    {
+      "tier": "WATCH",
+      "sport": "american-football",
+      "match": "Jacksonville Jaguars vs Philadelphia Eagles",
+      "target": "Over",
+      "side": "Over",
+      "market": "Player Trevor Lawrence - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "line": 1.5,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": "prematch",
+      "settlementScope": null,
+      "identity": {
+        "sport": "american-football",
+        "event": "2741576",
+        "family": "player_prop",
+        "target": "trevor lawrence",
+        "stat": "passing_tds",
+        "line": "1.5",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "over",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "american-football|2741576|player_prop|trevor lawrence|passing_tds|1.5|||||over|prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2,
+      "outside": [
+        {
+          "sourceFamily": "bovada",
+          "book": "bovada-nfl-direct",
+          "price": 1.8333333333333335,
+          "lastUpdate": null
+        },
+        {
+          "sourceFamily": "fanduel",
+          "book": "fanduel-direct",
+          "price": 1.847457627118644,
+          "lastUpdate": null
+        },
+        {
+          "sourceFamily": "draftkings",
+          "book": "draftkings-direct",
+          "price": 1.847457627118644,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.847457627118644,
+      "independentSources": 3,
+      "fairProbability": 0.5088626683588394,
+      "fairDecimal": 1.9651667575166287,
+      "estimatedEV": 0.01772533671767884,
+      "startTime": "2026-10-11T13:30:00+00:00",
+      "blocker": null,
+      "watchType": "+EV WATCH"
+    }
+  ],
   "screeningBoardRows": [
     {
       "tier": "SCREENING",
@@ -1250,7 +1363,7 @@
       },
       "identityKey": "basketball|jsf nanterre u21 vs bcm gravelines dunkerque u21|ml|jsf nanterre u21||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 2.6,
+      "thunderpick": 2.63,
       "outside": [
         {
           "sourceFamily": "bovada",
@@ -1263,58 +1376,8 @@
       "independentSources": 1,
       "fairProbability": 0.7864077669902914,
       "fairDecimal": 1.2716049382716048,
-      "estimatedEV": 1.0446601941747575,
+      "estimatedEV": 1.0682524271844662,
       "startTime": "2026-10-10T12:00:00+00:00",
-      "blocker": "Loose event discovery; exact contract verification required before ACTION",
-      "screenType": "+EV SCREENING"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Iwate Big Bulls vs Koshigaya Alphas",
-      "target": "Iwate Big Bulls",
-      "side": null,
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": null,
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "iwate big bulls vs koshigaya alphas",
-        "family": "ml",
-        "target": "iwate big bulls",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|iwate big bulls vs koshigaya alphas|ml|iwate big bulls||||||||prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 2.82,
-      "outside": [
-        {
-          "sourceFamily": "bovada",
-          "book": "Bovada Direct",
-          "price": 1.9523809523809523,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 1.9523809523809523,
-      "independentSources": 1,
-      "fairProbability": 0.4796954314720812,
-      "fairDecimal": 2.0846560846560847,
-      "estimatedEV": 0.35274111675126885,
-      "startTime": "2026-10-11T05:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     },
@@ -1365,6 +1428,56 @@
       "fairDecimal": 1.5720470006184293,
       "estimatedEV": 0.3358379228953581,
       "startTime": "2026-10-31T02:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "basketball",
+      "match": "Iwate Big Bulls vs Koshigaya Alphas",
+      "target": "Iwate Big Bulls",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "basketball",
+        "event": "iwate big bulls vs koshigaya alphas",
+        "family": "ml",
+        "target": "iwate big bulls",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "basketball|iwate big bulls vs koshigaya alphas|ml|iwate big bulls||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 2.82,
+      "outside": [
+        {
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 2.05,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 2.05,
+      "independentSources": 1,
+      "fairProbability": 0.45920859794821695,
+      "fairDecimal": 2.177659574468085,
+      "estimatedEV": 0.2949682462139718,
+      "startTime": "2026-10-11T05:05:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     },
@@ -1453,17 +1566,17 @@
       "thunderpick": 6,
       "outside": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "Pinnacle Direct",
-          "price": 4.24,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 4.5,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.24,
+      "bestOutside": 4.5,
       "independentSources": 1,
-      "fairProbability": 0.21016431027894536,
-      "fairDecimal": 4.758181818181818,
-      "estimatedEV": 0.2609858616736722,
+      "fairProbability": 0.20588235294117646,
+      "fairDecimal": 4.857142857142858,
+      "estimatedEV": 0.23529411764705888,
       "startTime": "2026-10-10T15:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
@@ -1471,64 +1584,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Wetterbygden Stars vs Malbas",
-      "target": "Malbas",
-      "side": "Malbas",
-      "market": "Match Winner",
-      "marketKey": "h2h",
-      "line": null,
-      "scope": {
-        "map": null,
-        "round": null
-      },
-      "state": "prematch",
-      "settlementScope": null,
-      "identity": {
-        "sport": "basketball",
-        "event": "2791148",
-        "family": "ml",
-        "target": "malbas",
-        "stat": "",
-        "line": "",
-        "period": "",
-        "map": "",
-        "round": "",
-        "set": "",
-        "side": "malbas",
-        "state": "prematch",
-        "settlement": "standard"
-      },
-      "identityKey": "basketball|2791148|ml|malbas|||||||malbas|prematch|standard",
-      "identityComplete": true,
-      "thunderpick": 6,
-      "outside": [
-        {
-          "sourceFamily": "pinnacle",
-          "book": "pinnacle",
-          "price": 4.24,
-          "lastUpdate": null
-        },
-        {
-          "sourceFamily": "bovada",
-          "book": "bovada",
-          "price": 4.5,
-          "lastUpdate": null
-        }
-      ],
-      "bestOutside": 4.5,
-      "independentSources": 2,
-      "fairProbability": 0.20802333161006092,
-      "fairDecimal": 4.80715308355169,
-      "estimatedEV": 0.24813998966036555,
-      "startTime": "2026-10-10T15:00:00+00:00",
-      "blocker": "2 independent exact Match Winner sources; WATCH pending a third fresh consensus source",
-      "screenType": "+EV SCREENING"
-    },
-    {
-      "tier": "SCREENING",
-      "sport": "basketball",
-      "match": "Sporting CP vs CP Esgueira",
-      "target": "CP Esgueira",
+      "match": "Antwerp Giants vs Kortrijk",
+      "target": "Kortrijk",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1541,9 +1598,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "sporting cp vs cp esgueira",
+        "event": "antwerp giants vs kortrijk",
         "family": "ml",
-        "target": "cp esgueira",
+        "target": "kortrijk",
         "stat": "",
         "line": "",
         "period": "",
@@ -1554,23 +1611,23 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|sporting cp vs cp esgueira|ml|cp esgueira||||||||prematch|standard",
+      "identityKey": "basketball|antwerp giants vs kortrijk|ml|kortrijk||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 8.1,
+      "thunderpick": 5,
       "outside": [
         {
-          "sourceFamily": "pinnacle",
-          "book": "Pinnacle Direct",
-          "price": 5.33,
+          "sourceFamily": "bovada",
+          "book": "Bovada Direct",
+          "price": 3.75,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 5.33,
+      "bestOutside": 3.75,
       "independentSources": 1,
-      "fairProbability": 0.14964626937059805,
-      "fairDecimal": 6.68242518978877,
-      "estimatedEV": 0.2121347819018442,
-      "startTime": "2026-10-10T14:00:00+00:00",
+      "fairProbability": 0.2465753424657534,
+      "fairDecimal": 4.055555555555555,
+      "estimatedEV": 0.23287671232876717,
+      "startTime": "2026-10-10T18:30:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     },
@@ -1677,8 +1734,8 @@
     {
       "tier": "SCREENING",
       "sport": "basketball",
-      "match": "Antwerp Giants vs Kortrijk",
-      "target": "Kortrijk",
+      "match": "Cholet U21 vs Pau-Lacq-Orthez U21",
+      "target": "Pau-Lacq-Orthez U21",
       "side": null,
       "market": "Match Winner",
       "marketKey": "h2h",
@@ -1691,9 +1748,9 @@
       "settlementScope": null,
       "identity": {
         "sport": "basketball",
-        "event": "antwerp giants vs kortrijk",
+        "event": "cholet u21 vs pau-lacq-orthez u21",
         "family": "ml",
-        "target": "kortrijk",
+        "target": "pau-lacq-orthez u21",
         "stat": "",
         "line": "",
         "period": "",
@@ -1704,23 +1761,73 @@
         "state": "prematch",
         "settlement": "standard"
       },
-      "identityKey": "basketball|antwerp giants vs kortrijk|ml|kortrijk||||||||prematch|standard",
+      "identityKey": "basketball|cholet u21 vs pau-lacq-orthez u21|ml|pau-lacq-orthez u21||||||||prematch|standard",
       "identityComplete": true,
-      "thunderpick": 5.4,
+      "thunderpick": 8.7,
       "outside": [
         {
           "sourceFamily": "bovada",
           "book": "Bovada Direct",
-          "price": 4.5,
+          "price": 7,
           "lastUpdate": null
         }
       ],
-      "bestOutside": 4.5,
+      "bestOutside": 7,
       "independentSources": 1,
-      "fairProbability": 0.20588235294117646,
-      "fairDecimal": 4.857142857142858,
-      "estimatedEV": 0.11176470588235299,
-      "startTime": "2026-10-10T18:30:00+00:00",
+      "fairProbability": 0.13274336283185842,
+      "fairDecimal": 7.533333333333332,
+      "estimatedEV": 0.15486725663716805,
+      "startTime": "2026-10-10T12:00:00+00:00",
+      "blocker": "Loose event discovery; exact contract verification required before ACTION",
+      "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "SCREENING",
+      "sport": "baseball",
+      "match": "Milwaukee Brewers vs Los Angeles Dodgers",
+      "target": "Los Angeles Dodgers",
+      "side": null,
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "line": null,
+      "scope": {
+        "map": null,
+        "round": null
+      },
+      "state": null,
+      "settlementScope": null,
+      "identity": {
+        "sport": "baseball",
+        "event": "milwaukee brewers vs los angeles dodgers",
+        "family": "ml",
+        "target": "los angeles dodgers",
+        "stat": "",
+        "line": "",
+        "period": "",
+        "map": "",
+        "round": "",
+        "set": "",
+        "side": "",
+        "state": "prematch",
+        "settlement": "standard"
+      },
+      "identityKey": "baseball|milwaukee brewers vs los angeles dodgers|ml|los angeles dodgers||||||||prematch|standard",
+      "identityComplete": true,
+      "thunderpick": 1.86,
+      "outside": [
+        {
+          "sourceFamily": "pinnacle",
+          "book": "Pinnacle Direct",
+          "price": 1.617283950617284,
+          "lastUpdate": null
+        }
+      ],
+      "bestOutside": 1.617283950617284,
+      "independentSources": 1,
+      "fairProbability": 0.5954042868614491,
+      "fairDecimal": 1.6795310716879346,
+      "estimatedEV": 0.10745197356229541,
+      "startTime": "2026-10-12T00:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
     }
@@ -1728,63 +1835,63 @@
   "arbitrageAudit": null,
   "topPriceBoardRows": [],
   "informationalBreakdown": {
-    "player_prop": 266,
+    "player_prop": 257,
     "h2h": 3,
     "round_handicap": 4,
-    "map_winner": 8
+    "map_winner": 10
   },
   "coverageAudit": {
     "american-football": {
-      "events": 130,
-      "tpMarkets": 4724,
-      "deepMarkets": 4544,
-      "deepSelectedEvents": 99,
-      "deepSuccessfulEvents": 99,
+      "events": 138,
+      "tpMarkets": 4942,
+      "deepMarkets": 4757,
+      "deepSelectedEvents": 108,
+      "deepSuccessfulEvents": 108,
       "deepFailedEvents": 0,
-      "exact1Source": 30,
+      "exact1Source": 31,
       "exact2Source": 0,
-      "exact3Plus": 4,
+      "exact3Plus": 1,
       "action": 0,
-      "watch": 0,
-      "screening": 32,
+      "watch": 1,
+      "screening": 31,
       "identityIncomplete": 0
     },
     "baseball": {
       "events": 8,
-      "tpMarkets": 226,
-      "deepMarkets": 218,
+      "tpMarkets": 227,
+      "deepMarkets": 219,
       "deepSelectedEvents": 8,
       "deepSuccessfulEvents": 8,
       "deepFailedEvents": 0,
-      "exact1Source": 4,
+      "exact1Source": 6,
       "exact2Source": 0,
       "exact3Plus": 1,
       "action": 0,
       "watch": 0,
-      "screening": 4,
+      "screening": 6,
       "identityIncomplete": 0
     },
     "basketball": {
-      "events": 389,
-      "tpMarkets": 22412,
-      "deepMarkets": 21888,
-      "deepSelectedEvents": 331,
-      "deepSuccessfulEvents": 331,
+      "events": 381,
+      "tpMarkets": 21917,
+      "deepMarkets": 21401,
+      "deepSelectedEvents": 323,
+      "deepSuccessfulEvents": 323,
       "deepFailedEvents": 0,
-      "exact1Source": 85,
-      "exact2Source": 1,
+      "exact1Source": 82,
+      "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 86,
+      "screening": 82,
       "identityIncomplete": 0
     },
     "soccer": {
       "events": 900,
-      "tpMarkets": 180694,
-      "deepMarkets": 178987,
-      "deepSelectedEvents": 631,
-      "deepSuccessfulEvents": 631,
+      "tpMarkets": 181807,
+      "deepMarkets": 180106,
+      "deepSelectedEvents": 633,
+      "deepSuccessfulEvents": 633,
       "deepFailedEvents": 0,
       "exact1Source": 0,
       "exact2Source": 0,
@@ -1795,39 +1902,39 @@
       "identityIncomplete": 0
     },
     "tennis": {
-      "events": 139,
-      "tpMarkets": 8148,
-      "deepMarkets": 8009,
-      "deepSelectedEvents": 139,
-      "deepSuccessfulEvents": 139,
+      "events": 144,
+      "tpMarkets": 8431,
+      "deepMarkets": 8288,
+      "deepSelectedEvents": 144,
+      "deepSuccessfulEvents": 144,
       "deepFailedEvents": 0,
-      "exact1Source": 67,
-      "exact2Source": 10,
-      "exact3Plus": 4,
+      "exact1Source": 74,
+      "exact2Source": 11,
+      "exact3Plus": 3,
       "action": 0,
       "watch": 0,
-      "screening": 79,
+      "screening": 86,
       "identityIncomplete": 0
     },
     "cs2": {
-      "events": 31,
-      "tpMarkets": 2372,
-      "deepMarkets": 2311,
-      "deepSelectedEvents": 21,
-      "deepSuccessfulEvents": 21,
+      "events": 33,
+      "tpMarkets": 2801,
+      "deepMarkets": 2738,
+      "deepSelectedEvents": 23,
+      "deepSuccessfulEvents": 23,
       "deepFailedEvents": 0,
-      "exact1Source": 14,
-      "exact2Source": 88,
+      "exact1Source": 19,
+      "exact2Source": 86,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 9,
+      "screening": 12,
       "identityIncomplete": 0
     },
     "dota2": {
       "events": 5,
-      "tpMarkets": 658,
-      "deepMarkets": 653,
+      "tpMarkets": 723,
+      "deepMarkets": 718,
       "deepSelectedEvents": 5,
       "deepSuccessfulEvents": 5,
       "deepFailedEvents": 0,
@@ -1840,18 +1947,18 @@
       "identityIncomplete": 0
     },
     "lol": {
-      "events": 9,
-      "tpMarkets": 1477,
-      "deepMarkets": 1462,
-      "deepSelectedEvents": 7,
-      "deepSuccessfulEvents": 7,
+      "events": 8,
+      "tpMarkets": 1439,
+      "deepMarkets": 1425,
+      "deepSelectedEvents": 6,
+      "deepSuccessfulEvents": 6,
       "deepFailedEvents": 0,
-      "exact1Source": 4,
+      "exact1Source": 2,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 4,
+      "screening": 2,
       "identityIncomplete": 0
     },
     "valorant": {
@@ -1861,12 +1968,12 @@
       "deepSelectedEvents": 3,
       "deepSuccessfulEvents": 3,
       "deepFailedEvents": 0,
-      "exact1Source": 2,
+      "exact1Source": 3,
       "exact2Source": 0,
       "exact3Plus": 0,
       "action": 0,
       "watch": 0,
-      "screening": 2,
+      "screening": 3,
       "identityIncomplete": 0
     }
   },
@@ -1881,7 +1988,7 @@
         "pages": 20,
         "acceptedEvents": 0,
         "rejectedStale": 7293,
-        "fetchedAt": "2026-10-09T22:34:50.696Z"
+        "fetchedAt": "2026-10-10T00:50:20.121Z"
       },
       "stake": {
         "ok": true,
@@ -1889,22 +1996,22 @@
         "sports": 9,
         "scheduleFixtures": 228,
         "detailRequests": 228,
-        "acceptedEvents": 220,
-        "marketCount": 3391,
-        "playerPropMarkets": 929,
+        "acceptedEvents": 225,
+        "marketCount": 3358,
+        "playerPropMarkets": 906,
         "errors": [],
-        "fetchedAt": "2026-10-09T22:34:56.567Z"
+        "fetchedAt": "2026-10-10T00:50:23.709Z"
       },
       "kalshi": {
         "ok": true,
         "status": 200,
         "rawMarkets": 60000,
         "pages": 60,
-        "acceptedEvents": 0,
-        "rejectedMulti": 59980,
-        "rejectedNonSports": 0,
-        "rejectedShape": 20,
-        "fetchedAt": "2026-10-09T22:35:01.538Z"
+        "acceptedEvents": 2,
+        "rejectedMulti": 59909,
+        "rejectedNonSports": 29,
+        "rejectedShape": 60,
+        "fetchedAt": "2026-10-10T00:50:25.474Z"
       },
       "betway": {
         "ok": true,
@@ -1915,66 +2022,66 @@
         "rawOutcomes": 564,
         "acceptedEvents": 24,
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:09.919Z",
+        "fetchedAt": "2026-10-10T00:50:34.423Z",
         "note": "Public Betway pre-match Match Winner prices; distinct bookmaker source from Stake/Oddin"
       },
       "pinnacle": {
         "ok": true,
         "status": 200,
         "sports": 63,
-        "leagues": 399,
-        "matchups": 9082,
-        "marketRequests": 209,
-        "acceptedEvents": 155,
-        "acceptedMarkets": 1413,
+        "leagues": 412,
+        "matchups": 9154,
+        "marketRequests": 213,
+        "acceptedEvents": 154,
+        "acceptedMarkets": 1221,
         "playerPropMarkets": 0,
         "mapWinnerMarkets": 0,
-        "rejectedUnorientableMarkets": 1244,
+        "rejectedUnorientableMarkets": 1102,
         "errors": [
           "HTTP 403 {\n  \"detail\": \"Access from United States is prohibited\",\n  \"reason\": \"location\",\n  \"status\": 403,\n  \"title\": \"BAD_LOCATI"
         ],
-        "fetchedAt": "2026-10-09T22:35:19.316Z"
+        "fetchedAt": "2026-10-10T00:50:38.594Z"
       },
       "pinnwire": {
         "ok": true,
         "status": 200,
-        "events": 37,
-        "acceptedEvents": 22,
-        "acceptedMarkets": 881,
-        "specials": 157,
+        "events": 34,
+        "acceptedEvents": 20,
+        "acceptedMarkets": 934,
+        "specials": 161,
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:19.447Z",
+        "fetchedAt": "2026-10-10T00:50:38.697Z",
         "sourceFamily": "pinnacle"
       },
       "kambi": {
         "ok": true,
         "status": 200,
-        "rawEvents": 1172,
-        "acceptedEvents": 121,
-        "marketCount": 835,
-        "deepEventRequests": 16,
+        "rawEvents": 1285,
+        "acceptedEvents": 136,
+        "marketCount": 922,
+        "deepEventRequests": 23,
         "playerPropMarkets": 516,
         "playerKillMarkets": 366,
         "playerDeathMarkets": 150,
-        "mapWinnerMarkets": 31,
+        "mapWinnerMarkets": 45,
         "mapHandicapMarkets": 0,
-        "roundHandicapMarkets": 88,
-        "roundTotalMarkets": 79,
+        "roundHandicapMarkets": 116,
+        "roundTotalMarkets": 109,
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:26.096Z"
+        "fetchedAt": "2026-10-10T00:50:40.620Z"
       },
       "kambiObjective": {
         "ok": true,
         "status": 200,
-        "rawEvents": 1172,
+        "rawEvents": 1285,
         "eligibleEvents": 5,
         "deepEventRequests": 5,
-        "acceptedEvents": 4,
-        "marketCount": 189,
+        "acceptedEvents": 5,
+        "marketCount": 204,
         "bySport": {
           "lol": {
-            "events": 2,
-            "markets": 177
+            "events": 3,
+            "markets": 192
           },
           "dota2": {
             "events": 2,
@@ -1982,122 +2089,122 @@
           }
         },
         "byFamilyHint": {
-          "Total Kills": 168,
+          "Total Kills": 183,
           "Total Towers": 15,
           "Total Dragons": 3,
           "Total Barons": 3
         },
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:26.485Z"
+        "fetchedAt": "2026-10-10T00:50:40.941Z"
       },
       "kambiTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 1172,
-        "eligibleEvents": 76,
-        "deepRequests": 76,
-        "acceptedEvents": 75,
-        "marketCount": 907,
-        "playerPropMarkets": 148,
+        "rawEvents": 1285,
+        "eligibleEvents": 80,
+        "deepRequests": 80,
+        "acceptedEvents": 79,
+        "marketCount": 984,
+        "playerPropMarkets": 128,
         "bySport": {
           "baseball": {
-            "eligible": 4,
-            "deepEvents": 4,
-            "events": 4,
-            "markets": 40,
-            "playerProps": 0
+            "eligible": 8,
+            "deepEvents": 7,
+            "events": 7,
+            "markets": 108,
+            "playerProps": 18
           },
           "basketball": {
             "eligible": 24,
             "deepEvents": 24,
             "events": 24,
-            "markets": 489,
-            "playerProps": 97
+            "markets": 414,
+            "playerProps": 46
           },
           "soccer": {
             "eligible": 24,
             "deepEvents": 24,
-            "events": 23,
-            "markets": 141,
-            "playerProps": 6
+            "events": 24,
+            "markets": 149,
+            "playerProps": 5
           },
           "tennis": {
             "eligible": 24,
             "deepEvents": 24,
             "events": 24,
-            "markets": 237,
-            "playerProps": 45
+            "markets": 313,
+            "playerProps": 59
           }
         },
         "unknownPropLikeLabels": [
-          "basketball: New York Liberty (W) Assists - Including Overtime",
+          "baseball: 3+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 4+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 5+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 2+ Hits, Runs & RBIs Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: Player to Hit a Home Run - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: Player to hit 2 or more Home Runs - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ Doubles by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 2+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ Runs Scored by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 2+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 3+ Hits by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 2+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 1+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 3+ RBIs by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 2+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 3+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "baseball: 4+ Bases Recorded by the Player - Including Extra Innings (Listed player must be in starting lineup for bets to stand)",
+          "basketball: Total Match Assists - Including Overtime",
+          "basketball: Las Vegas Aces (W) Assists - Including Overtime",
+          "basketball: Las Vegas Aces (W) Steals - Including Overtime",
+          "basketball: Las Vegas Aces (W) made Threes - Including Overtime",
+          "basketball: Golden State Valkyries (W) Assists - Including Overtime",
           "basketball: Points & Assists by the player - Including Overtime",
           "basketball: Points & Rebounds by the player - Including Overtime",
-          "basketball: Rebounds & Assists by the player - Including Overtime",
-          "basketball: Points, rebounds & assists by the player - Including Overtime",
-          "basketball: 4+ Three-Point Field Goals Made By The Player - Including Overtime",
-          "basketball: 5+ Three-Point Field Goals Made By The Player - Including Overtime",
           "basketball: 2+ Three-Point Field Goals Made By The Player - Including Overtime",
           "basketball: 3+ Three-Point Field Goals Made By The Player - Including Overtime",
-          "basketball: 2+ Rebounds By The Player - Including Overtime",
-          "basketball: 4+ Rebounds By The Player - Including Overtime",
-          "basketball: 10+ Rebounds By The Player - Including Overtime",
+          "basketball: Rebounds & Assists by the player - Including Overtime",
+          "basketball: Points, rebounds & assists by the player - Including Overtime",
+          "basketball: 5+ Three-Point Field Goals Made By The Player - Including Overtime",
           "basketball: 6+ Rebounds By The Player - Including Overtime",
-          "basketball: 8+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 12+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 18+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 30+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 40+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 10+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 20+ Points Scored By The Player - Including Overtime",
-          "basketball: 15+ Points, Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 8+ Rebounds By The Player - Including Overtime",
+          "basketball: 2+ Rebounds By The Player - Including Overtime",
+          "basketball: 14+ Rebounds By The Player - Including Overtime",
+          "basketball: 4+ Rebounds By The Player - Including Overtime",
           "basketball: 6+ Rebounds & Assists By The Player - Including Overtime",
           "basketball: 10+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 15+ Points Scored By The Player - Including Overtime",
-          "basketball: 12+ Rebounds By The Player - Including Overtime",
-          "basketball: 14+ Rebounds By The Player - Including Overtime",
-          "basketball: 20+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 15+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 8+ Rebounds By The Player - Including Overtime",
-          "basketball: 20+ Points & Assists By The Player - Including Overtime",
-          "basketball: 30+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 25+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 35+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 10+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 2+ Assists By The Player - Including Overtime",
-          "basketball: 4+ Assists By The Player - Including Overtime",
-          "basketball: 5+ Points & Assists By The Player - Including Overtime",
-          "basketball: 10+ Points & Assists By The Player - Including Overtime",
-          "basketball: 30+ Points & Assists By The Player - Including Overtime",
-          "basketball: 15+ Points & Assists By The Player - Including Overtime",
-          "basketball: 8+ Assists By The Player - Including Overtime",
-          "basketball: 14+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 4+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 35+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 20+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 16+ Rebounds & Assists By The Player - Including Overtime",
-          "basketball: 30+ Points Scored By The Player - Including Overtime",
+          "basketball: 8+ Rebounds & Assists By The Player - Including Overtime",
           "basketball: 5+ Points Scored By The Player - Including Overtime",
+          "basketball: 10+ Points, Rebounds & Assists By The Player - Including Overtime",
           "basketball: 25+ Points, Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 4+ Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 12+ Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 14+ Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 16+ Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 40+ Points, Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 35+ Points & Rebounds By The Player - Including Overtime",
+          "basketball: 40+ Points & Rebounds By The Player - Including Overtime",
+          "basketball: 2+ Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 20+ Points, Rebounds & Assists By The Player - Including Overtime",
           "basketball: 10+ Points Scored By The Player - Including Overtime",
-          "basketball: 6+ Assists By The Player - Including Overtime",
-          "basketball: 25+ Points & Assists By The Player - Including Overtime",
-          "basketball: 10+ Assists By The Player - Including Overtime",
-          "basketball: Atlanta Dream (W) Assists - Including Overtime",
-          "basketball: 25+ Points Scored By The Player - Including Overtime",
-          "basketball: 5+ Points & Rebounds By The Player - Including Overtime",
-          "basketball: 16+ Rebounds By The Player - Including Overtime",
-          "basketball: Player to Score the First Field Goal of the Game",
-          "basketball: 45+ Points, Rebounds & Assists By The Player - Including Overtime",
-          "basketball: Total Match Assists - Including Overtime"
+          "basketball: 35+ Points, Rebounds & Assists By The Player - Including Overtime",
+          "basketball: 20+ Points & Rebounds By The Player - Including Overtime",
+          "basketball: 15+ Points Scored By The Player - Including Overtime",
+          "basketball: 25+ Points & Rebounds By The Player - Including Overtime",
+          "basketball: 30+ Points & Assists By The Player - Including Overtime",
+          "basketball: 10+ Points & Assists By The Player - Including Overtime",
+          "basketball: 15+ Points & Assists By The Player - Including Overtime",
+          "basketball: 6+ Assists By The Player - Including Overtime"
         ],
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:28.562Z"
+        "fetchedAt": "2026-10-10T00:50:42.823Z"
       },
       "kambiNfl": {
         "ok": true,
         "status": 200,
-        "rawEvents": 1172,
+        "rawEvents": 1285,
         "nflEvents": 0,
         "deepRequests": 0,
         "acceptedEvents": 0,
@@ -2108,62 +2215,62 @@
         "teamTotals": 0,
         "playerPropMarkets": 0,
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:29.303Z"
+        "fetchedAt": "2026-10-10T00:50:43.734Z"
       },
       "bovadaNfl": {
         "ok": true,
         "status": 200,
         "rawEvents": 15,
         "acceptedEvents": 14,
-        "marketCount": 472,
+        "marketCount": 479,
         "h2h": 14,
         "spreads": 14,
         "totals": 14,
         "teamTotals": 28,
-        "playerPropMarkets": 402,
+        "playerPropMarkets": 409,
         "playerPassingYards": 28,
-        "playerRushingYards": 66,
-        "playerReceivingYards": 140,
-        "playerReceptions": 140,
+        "playerRushingYards": 71,
+        "playerReceivingYards": 141,
+        "playerReceptions": 141,
         "playerPassingTouchdowns": 28,
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:30.820Z"
+        "fetchedAt": "2026-10-10T00:50:44.803Z"
       },
       "bovadaTraditional": {
         "ok": true,
         "status": 200,
-        "rawEvents": 511,
-        "acceptedEvents": 361,
-        "marketCount": 1615,
-        "playerPropMarkets": 112,
+        "rawEvents": 533,
+        "acceptedEvents": 375,
+        "marketCount": 1596,
+        "playerPropMarkets": 54,
         "bySport": {
           "basketball": {
-            "rawEvents": 364,
+            "rawEvents": 374,
             "acceptedEvents": 247,
-            "markets": 1334,
-            "playerProps": 106
+            "markets": 1282,
+            "playerProps": 47
           },
           "baseball": {
-            "rawEvents": 23,
-            "acceptedEvents": 8,
-            "markets": 28,
-            "playerProps": 6
+            "rawEvents": 25,
+            "acceptedEvents": 9,
+            "markets": 31,
+            "playerProps": 7
           },
           "tennis": {
-            "rawEvents": 124,
-            "acceptedEvents": 106,
-            "markets": 253,
+            "rawEvents": 134,
+            "acceptedEvents": 119,
+            "markets": 283,
             "playerProps": 0
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:32.551Z"
+        "fetchedAt": "2026-10-10T00:50:46.396Z"
       },
       "fanduel": {
         "ok": true,
         "status": 200,
-        "acceptedEvents": 71,
-        "marketCount": 212,
+        "acceptedEvents": 67,
+        "marketCount": 200,
         "bySport": {
           "american-football": {
             "events": 28,
@@ -2173,11 +2280,11 @@
             "totals": 28
           },
           "basketball": {
-            "events": 41,
-            "markets": 122,
-            "h2h": 41,
-            "spreads": 40,
-            "totals": 41
+            "events": 37,
+            "markets": 110,
+            "h2h": 37,
+            "spreads": 36,
+            "totals": 37
           },
           "baseball": {
             "events": 2,
@@ -2188,13 +2295,13 @@
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:33.472946+00:00"
+        "fetchedAt": "2026-10-10T00:50:47.268774+00:00"
       },
       "fanduelProps": {
         "ok": true,
         "status": 200,
         "acceptedEvents": 16,
-        "eventPageRequests": 40,
+        "eventPageRequests": 36,
         "eventPageErrors": 0,
         "marketCount": 421,
         "playerPropMarkets": 421,
@@ -2214,9 +2321,9 @@
             }
           },
           "basketball": {
-            "boardEvents": 44,
-            "eligibleEvents": 23,
-            "eventPages": 23,
+            "boardEvents": 39,
+            "eligibleEvents": 19,
+            "eventPages": 19,
             "eventsWithProps": 0,
             "playerProps": 0,
             "byStat": {}
@@ -2241,12 +2348,12 @@
           "strikeouts": 4
         },
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:36.026200+00:00"
+        "fetchedAt": "2026-10-10T00:50:48.775932+00:00"
       },
       "draftkingsNfl": {
         "ok": true,
         "status": 200,
-        "categories": 213,
+        "categories": 218,
         "selectedSubcategories": 10,
         "requests": 10,
         "acceptedEvents": 14,
@@ -2258,14 +2365,14 @@
           "passing_touchdowns": 28
         },
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:39.750315+00:00"
+        "fetchedAt": "2026-10-10T00:50:51.178943+00:00"
       },
       "draftkingsTraditional": {
         "ok": true,
         "status": 200,
         "acceptedEvents": 4,
-        "marketCount": 106,
-        "playerPropMarkets": 106,
+        "marketCount": 111,
+        "playerPropMarkets": 111,
         "bySport": {
           "basketball": {
             "categories": 120,
@@ -2278,22 +2385,22 @@
             }
           },
           "baseball": {
-            "categories": 138,
-            "selectedSubcategories": 44,
-            "requests": 44,
+            "categories": 146,
+            "selectedSubcategories": 46,
+            "requests": 46,
             "events": 2,
-            "markets": 104,
+            "markets": 109,
             "byStat": {
-              "hits": 42,
-              "walks": 22,
-              "strikeouts": 2,
-              "rbi": 36,
-              "total_bases": 2
+              "walks": 24,
+              "strikeouts": 3,
+              "hits": 43,
+              "total_bases": 3,
+              "rbi": 36
             }
           }
         },
         "errors": [],
-        "fetchedAt": "2026-10-09T22:35:52.199264+00:00"
+        "fetchedAt": "2026-10-10T00:51:00.772210+00:00"
       },
       "ggbet": {
         "source": "ggbet-objective",
@@ -2327,8 +2434,8 @@
         "fallbackStatus": 200,
         "nativeUsable": true,
         "fallbackUsable": false,
-        "events": 155,
-        "markets": 1413
+        "events": 154,
+        "markets": 1221
       }
     },
     "strictSnapshotHealthy": true,
