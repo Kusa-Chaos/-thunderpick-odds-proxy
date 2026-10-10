@@ -618,7 +618,10 @@
     "WATCH": 2,
     "SCREENING": 188,
     "PRICE BOARD": 0,
-    "INFORMATIONAL": 255
+    "INFORMATIONAL": 255,
+    "ARB FOUND": 1,
+    "ARB WATCH": 3,
+    "ARB SCREENING": 4
   },
   "rows": [
     {
@@ -23511,5 +23514,358 @@
       "identityKey": "cs2|2803525|player_prop|zywoo|kills|18.5||2|||over|prematch|standard",
       "identityComplete": true
     }
-  ]
+  ],
+  "strictSnapshotHealthy": true,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-10T23:01:08.859Z",
+    "marketsTested": 1361,
+    "screensEvaluated": 8,
+    "found": [
+      {
+        "tier": "ARB FOUND",
+        "sport": "basketball",
+        "eventId": 2797812,
+        "match": "Golden State Warriors vs Sacramento Kings",
+        "market": "Match Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-11T00:30:00+00:00",
+        "exactContractKey": "basketball|goldenstatewarriors|sacramentokings|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9947447447447447,
+        "arbROI": 0.005283018867924483,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-10T19:59:12Z"
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Sacramento Kings",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 3.33
+          },
+          {
+            "outcome": "Golden State Warriors",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 1.44
+          }
+        ]
+      }
+    ],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2794934,
+        "match": "Alexander Zverev vs Quentin Halys",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-11T10:00:00+00:00",
+        "exactContractKey": "tennis|alexanderzverev|quentinhalys|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9664516129032259,
+        "arbROI": 0.03471295060080104,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Alexander Zverev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.24
+          },
+          {
+            "outcome": "Quentin Halys",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 6.25
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2796562,
+        "match": "Hubert Hurkacz vs Yi Zhou",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-11T05:30:00+00:00",
+        "exactContractKey": "tennis|huberthurkacz|yizhou|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9941822882999354,
+        "arbROI": 0.0058517555266579535,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Hubert Hurkacz",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.19
+          },
+          {
+            "outcome": "Yi Zhou",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 6.5
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2795988,
+        "match": "Karen Khachanov vs Adrian Mannarino",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-11T04:00:00+00:00",
+        "exactContractKey": "tennis|adrianmannarino|karenkhachanov|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9965936739659367,
+        "arbROI": 0.00341796875,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Karen Khachanov",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.37
+          },
+          {
+            "outcome": "Adrian Mannarino",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 3.75
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2795988,
+        "match": "Karen Khachanov vs Adrian Mannarino",
+        "market": "Match Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-11T04:00:00+00:00",
+        "exactContractKey": "tennis|adrianmannarino|karenkhachanov|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0204870506378043,
+        "arbROI": -0.020075757575757525,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "betway"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-10T23:00:20.201Z"
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Adrian Mannarino",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 3.98
+          },
+          {
+            "outcome": "Karen Khachanov",
+            "book": "betway-direct",
+            "sourceFamily": "betway",
+            "price": 1.3
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2774951,
+        "match": "Washington Commanders vs New York Giants",
+        "market": "Player Jayden Daniels - Total passing touchdowns",
+        "marketKey": "player_prop",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-11T17:00:00+00:00",
+        "exactContractKey": "american-football|newyorkgiants|washingtoncommanders|player_prop|player=Jayden Daniels|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+        "reciprocalSum": 1.0207700101317123,
+        "arbROI": -0.02034739454094303,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-09T23:54:28Z"
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Over",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 2.35
+          },
+          {
+            "outcome": "Under",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 1.68
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "tennis",
+        "eventId": 2794355,
+        "match": "Ben Shelton vs Arthur Gea",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-11T04:00:00+00:00",
+        "exactContractKey": "tennis|arthurgea|benshelton|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.011917659804984,
+        "arbROI": -0.01177730192719506,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Ben Shelton",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.42
+          },
+          {
+            "outcome": "Arthur Gea",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 3.25
+          }
+        ]
+      },
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2774954,
+        "match": "Arizona Cardinals vs Detroit Lions",
+        "market": "Match Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-11T20:25:00+00:00",
+        "exactContractKey": "american-football|arizonacardinals|detroitlions|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0250335983235006,
+        "arbROI": -0.024422222222222234,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-10T17:42:07Z"
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Arizona Cardinals",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 3.07
+          },
+          {
+            "outcome": "Detroit Lions",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 1.43
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 4,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  }
 }
