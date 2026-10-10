@@ -17,7 +17,7 @@ concurrency:
 jobs:
   check-existing-access:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -56,6 +56,15 @@ jobs:
             const marketMeta=catalog.filter(m=>ids.includes(String(m.marketId))).map(m=>({id:m.marketId,name:m.marketName,type:m.marketType,period:m.period,handicap:m.handicap,outcomes:(m.outcomes||[]).map(o=>o.outcomeName).slice(0,3)}));
             return {state:'PRICE_SAMPLE_OBTAINED',events:list.length,...info,catalogStatus:cat.status,marketMeta,exactSelectionsVerified:false};}
           async function oddsio(){if(!keyI)return {state:'NO_CONFIGURED_KEY'};const base='https://api.odds-api.io/v3';const e=await get(base,'/events',keyI,{sport:'esports',status:'pending',limit:12});if(!e.ok)return {state:'ESPORTS_EVENTS_DENIED',status:e.status};const list=rows(e.body),first=list.find(x=>x.id);if(!first)return {state:'NO_ESPORTS_EVENTS',events:list.length};const o=await get(base,'/odds',keyI,{eventId:first.id,bookmakers:'Unibet,Bet365,Rivalry,Roobet,1xBet,Betano'});return o.ok?{state:'PRICE_SAMPLE_OBTAINED',events:list.length,...qualified(o.body)}:{state:'PRICE_QUERY_DENIED',status:o.status};}
-          for(const [name,fn] of [['OddsPapi',papi],['Odds-API.io',oddsio]]){try{const result=await fn();console.log('ESPORTS_SOURCE_DIAGNOSTIC',JSON.stringify({provider:name,...result}));}catch(e){console.log('ESPORTS_SOURCE_DIAGNOSTIC',JSON.stringify({provider:name,state:'CHECK_ERROR',error:String(e.name)}));}}
+          for(const [name,fn] of [['Odds-API.io',oddsio]]){try{const result=await fn();console.log('ESPORTS_SOURCE_DIAGNOSTIC',JSON.stringify({provider:name,...result}));}catch(e){console.log('ESPORTS_SOURCE_DIAGNOSTIC',JSON.stringify({provider:name,state:'CHECK_ERROR',error:String(e.name)}));}}
           console.log('NO_PRODUCTION_CHANGE — prices are not independent until exact event, selection, map, numeric line, settlement, freshness and distinct sportsbook family are verified.');
           NODE
+      - name: Run strict bookmaker and exact-contract regression tests
+        run: |
+          node scripts/test-third-source-eligibility-20261010.mjs
+          node scripts/test-oddspapi-exact-normalizer-20261010.mjs
+          node scripts/test-oddspapi-shadow-collector-20261010.mjs
+      - name: Shadow collect bookmaker-attributed esports prices (not production)
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: node scripts/oddspapi-shadow-collector.mjs
