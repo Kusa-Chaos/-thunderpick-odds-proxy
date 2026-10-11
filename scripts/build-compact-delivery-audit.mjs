@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 const SPORTS=['american-football','baseball','basketball','soccer','tennis','cs2','dota2','lol','valorant'];
 const NUMBER_FIELDS=['events','tpMarkets','deepMarkets','deepSelectedEvents','deepSuccessfulEvents','deepFailedEvents','exact1Source','exact2Source','exact3Plus','objectiveContracts','action','watch','screening','identityIncomplete'];
-const SOURCE_FIELDS=['ok','usable','status','state','events','markets','acceptedEvents','acceptedMarkets','marketCount','fetchedAt','generatedAt','fetchSelected','fetchSuccessful','fetchFailed','error','recoveryError','recoveryAttempted','recovered','rawEvents','rawMarkets','pages','targetSeries','rejectedStale','rejectedShape','rejectedMulti','rejectedNonSports','retries'];
+const SOURCE_FIELDS=['ok','usable','status','state','events','markets','acceptedEvents','acceptedMarkets','marketCount','fetchedAt','generatedAt','fetchSelected','fetchSuccessful','fetchFailed','error','recoveryError','recoveryAttempted','recovered','rawEvents','rawMarkets','pages','targetSeries','rejectedStale','rejectedShape','rejectedMulti','rejectedNonSports','retries','families','acceptedFromPrivateShadow','eligibleForActionOnlyThroughExactScanner'];
 const numeric=v=>typeof v==='number'&&Number.isFinite(v)?v:null;
 export function buildCompactDeliveryAudit(board={}){
  if(!board.generatedAt||!Number.isFinite(Date.parse(board.generatedAt)))throw new Error('delivery audit requires a valid board generatedAt');
