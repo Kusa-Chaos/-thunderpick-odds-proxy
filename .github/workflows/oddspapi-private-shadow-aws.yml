@@ -1,0 +1,58 @@
+name: OddsPapi Private AWS Bookmaker Shadow
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: oddspapi-private-aws-shadow
+  cancel-in-progress: false
+
+jobs:
+  qualify-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exact bookmaker identity, quota, and production freshness gates
+        run: |
+          node scripts/test-third-source-eligibility-20261010.mjs
+          node scripts/test-oddspapi-exact-normalizer-20261010.mjs
+          node scripts/test-oddspapi-shadow-collector-20261010.mjs
+          node scripts/test-oddspapi-aws-shadow-bridge.mjs
+      - name: Collect permitted bookmaker-attributed odds only
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: node scripts/oddspapi-shadow-collector.mjs
+      - name: Verify fresh bounded shadow before private AWS publication
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path='data/oddspapi-shadow-latest.json';
+          if(!fs.existsSync(path))throw Error('ODDSPAPI_SHADOW_MISSING');
+          const d=JSON.parse(fs.readFileSync(path,'utf8'));
+          const age=Date.now()-Date.parse(d.generatedAt||'');
+          if(d.mode!=='SHADOW_ONLY'||d.productionEligible!==false)throw Error('SHADOW_POLICY_VIOLATION');
+          if(!(age>=0&&age<10*60*1000))throw Error('STALE_SHADOW');
+          if(d.entitlement?.state!=='ESPORTS_ELIGIBLE')throw Error('ENTITLEMENT_FAILED');
+          if(d.state!=='COLLECTED'||!d.counts?.markets||!d.counts?.books)throw Error('NO_USABLE_EXACT_BOOKMAKER_PRICES');
+          if(Number(d.counts?.requests)>10)throw Error('QUOTA_BUDGET_EXCEEDED');
+          if(fs.statSync(path).size>500000)throw Error('OVERSIZED_SHADOW');
+          console.log('ODDSPAPI_SHADOW_VALIDATED',JSON.stringify({generatedAt:d.generatedAt,state:d.state,counts:d.counts,bookmakerFamilies:d.bookmakerFamilies,sports:Object.fromEntries(Object.entries(d.sports||{}).map(([s,x])=>[s,{events:x.exactV2?.length||0,targetMatched:x.fixtureSelection?.matchedTarget??null}]))}));
+          NODE
+      - name: Authenticate minimal GitHub OIDC S3 writer
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::367398820205:role/ThunderpickOddsPapiSnapshotUploadRole
+          aws-region: us-east-2
+      - name: Publish exactly one private snapshot to AWS
+        run: |
+          aws s3 cp data/oddspapi-shadow-latest.json s3://thunderpick-cloud-367398820205-us-east-2/collector/shadow/oddspapi-bookmakers-latest.json --sse AES256 --content-type application/json --no-progress
+          aws s3api head-object --bucket thunderpick-cloud-367398820205-us-east-2 --key collector/shadow/oddspapi-bookmakers-latest.json --query '{Size:ContentLength,Modified:LastModified}' --output json
+          echo 'ODDSPAPI_PRIVATE_SHADOW_PUBLISHED — does not launch or modify production scans'
