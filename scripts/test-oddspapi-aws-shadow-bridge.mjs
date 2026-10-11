@@ -5,7 +5,7 @@ const now=Date.parse('2026-10-11T10:40:00Z');
 const time='2026-10-11T10:38:00Z';
 const mk=(key='h2h',overrides={})=>({
  key,name:key==='map_winner'?'Map 1 Winner':'Match Winner',
- scope:{map:key==='map_winner'?1:null,round:null},line:null,last_update:time,
+ scope:{map:key==='map_winner'?1:null,round:null},line:null,last_update:time,quoteTimestampVerified:true,quoteTimestampSource:'outcome.changedAt',
  outcomes:[{name:'Alpha',price:1.9},{name:'Beta',price:1.9}],...overrides
 });
 const market=mk();
@@ -15,7 +15,7 @@ const event={id:'oddspapi-direct:fix1',home_team:'Alpha',away_team:'Beta',
   bookmaker('bet365'),bookmaker('bet365',[mk('map_winner')]),
   bookmaker('roobet',[mk('map_winner')]),bookmaker('unibet-kambi')
  ]};
-const shadow={generatedAt:time,mode:'SHADOW_ONLY',productionEligible:false,state:'COLLECTED',
+const shadow={generatedAt:time,mode:'SHADOW_ONLY',productionEligible:false,state:'COLLECTED',sourceMode:'AUTHORIZED_FIXTURE_QUOTE_TIMESTAMPS_VERIFIED',upstreamTimestampVerified:true,
  entitlement:{state:'ESPORTS_ELIGIBLE'},sports:{lol:{exactV2:[event]}}};
 const old={sports:{lol:{exactV2:[{id:'oddspapi-direct:stale'},{id:'cloudbet-direct:ok'}]}},providerHealth:{stake:{ok:true}}};
 const {direct,health}=bridgeOddsPapiSnapshot({direct:old,shadow,nowMs:now});
@@ -40,4 +40,14 @@ const badPrice=bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,sports:{lol:
 assert.equal(badPrice.health.markets,0,'disabled/zero-price quote cannot be accepted');
 assert.equal(bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,entitlement:{state:'QUOTA_EXHAUSTED'}},nowMs:now}).health.state,'ENTITLEMENT_NOT_VERIFIED');
 assert.equal(bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,productionEligible:true},nowMs:now}).health.state,'INVALID_SHADOW_ORIGIN');
+const invalidOrigin=bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,sourceMode:'collection-time'},nowMs:now});
+assert.equal(invalidOrigin.health.state,'UNVERIFIED_UPSTREAM_QUOTE_TIMESTAMPS');
+const quoteStale=bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,sports:{lol:{exactV2:[
+ {...event,bookmakers:[bookmaker('bet365',[mk('h2h',{last_update:'2026-10-11T09:45:00Z'})])]}
+]}}},nowMs:now});
+assert.equal(quoteStale.health.markets,0,'quote older than 40m at AWS scan is invalid despite fresh snapshot');
+const quoteUnverified=bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,sports:{lol:{exactV2:[
+ {...event,bookmakers:[bookmaker('bet365',[mk('h2h',{quoteTimestampVerified:false})])]}
+]}}},nowMs:now});
+assert.equal(quoteUnverified.health.markets,0,'collection-time substitutions are never accepted');
 console.log('ODDSPAPI_AWS_SHADOW_BRIDGE_VERIFIED');
