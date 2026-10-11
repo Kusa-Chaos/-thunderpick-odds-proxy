@@ -131,7 +131,9 @@ def usable_event(event):
 
 def collect_sport(canon,cfg,sport_api_key,key):
     comps=request_competitions_for_sport(sport_api_key,key)
-    stats={'selected':len(comps),'fetched':0,'failed':0,'rawEvents':0,'objectiveEvents':0,'objectiveMarkets':0,'byFamilyHint':{}}
+    stats={'selected':len(comps),'fetched':0,'failed':0,'rawEvents':0,'objectiveEvents':0,'objectiveMarkets':0,
+           'mapWinnerMarkets':0,'tradingEvents':0,'returnedMarketKeys':{},'enabledObjectiveSelections':0,
+           'disabledObjectiveSelections':0,'byFamilyHint':{}}
     errors=[];events={}
     def fetch(comp):return str(comp.get('key')),request_competition(comp.get('key'),cfg['markets'],key)
     with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
@@ -148,16 +150,42 @@ def collect_sport(canon,cfg,sport_api_key,key):
     out=[]
     for e in events.values():
         if not usable_event(e):continue
+        if str(e.get('status') or '').upper()=='TRADING':stats['tradingEvents']+=1
+        for market_key,market in (e.get('markets') or {}).items():
+            stats['returnedMarketKeys'][market_key]=stats['returnedMarketKeys'].get(market_key,0)+1
+            if market_key.endswith('.map_winner_v2'):continue
+            for sub in ((market or {}).get('submarkets') or {}).values():
+                for selection in ((sub or {}).get('selections') or []):
+                    key_name='enabledObjectiveSelections' if _enabled_for_health(selection) else 'disabledObjectiveSelections'
+                    stats[key_name]+=1
         row=build_objective_event_row(e)
         if row:
-            out.append(row);stats['objectiveEvents']+=1
+            out.append(row)
+            objective_in_event=0
             for m in row['bookmakers'][0]['markets']:
+                if str(m.get('key') or '').endswith('.map_winner_v2'):
+                    stats['mapWinnerMarkets']+=1
+                    continue
+                objective_in_event+=1
                 stats['objectiveMarkets']+=1
                 name=m.get('name','')
                 for hint in ('First Blood','First to ','First Tower','First Baron','First Dragon','Total Kills'):
                     if hint in name:stats['byFamilyHint'][hint]=stats['byFamilyHint'].get(hint,0)+1;break
+            if objective_in_event:stats['objectiveEvents']+=1
     stats['uniqueEvents']=len(events)
+    offered=sum(n for k,n in stats['returnedMarketKeys'].items() if not k.endswith('.map_winner_v2'))
+    stats['objectiveState']='USABLE' if stats['objectiveMarkets'] else (
+        'UPSTREAM_NOT_OFFERED' if not offered else
+        'UPSTREAM_ALL_DISABLED' if not stats['enabledObjectiveSelections'] else
+        'NO_VALID_TWO_SIDED_OBJECTIVE')
     return out,stats,errors
+
+def _enabled_for_health(selection):
+    if not isinstance(selection,dict):return False
+    if str(selection.get('status') or '').upper()!='SELECTION_ENABLED':return False
+    if str(selection.get('side') or 'BACK').upper()!='BACK':return False
+    try:return float(selection.get('price') or 0)>1
+    except (TypeError,ValueError):return False
 
 def main():
     with open(FILE) as f:out=json.load(f)
@@ -174,15 +202,17 @@ def main():
     except Exception as e:
         sport_keys={c:cfg['fallbackSport'] for c,cfg in SPORT_CONFIG.items()};resolve_error=sanitize_error(e)
     else:resolve_error=None
-    total_events=0;total_markets=0;by_sport={};errors=[]
+    total_events=0;total_markets=0;total_map_winners=0;by_sport={};errors=[]
     for canon,cfg in SPORT_CONFIG.items():
         try:
             rows,stats,errs=collect_sport(canon,cfg,sport_keys[canon],key)
-            sports[canon]['exactV2'].extend(rows);by_sport[canon]=stats;total_events+=len(rows);total_markets+=stats['objectiveMarkets'];errors.extend(f'{canon}:{x}' for x in errs)
+            sports[canon]['exactV2'].extend(rows);by_sport[canon]=stats;total_events+=len(rows);total_markets+=stats['objectiveMarkets'];total_map_winners+=stats['mapWinnerMarkets'];errors.extend(f'{canon}:{x}' for x in errs)
         except Exception as e:
-            by_sport[canon]={'selected':0,'fetched':0,'failed':1,'rawEvents':0,'objectiveEvents':0,'objectiveMarkets':0,'byFamilyHint':{}};errors.append(f'{canon}:{sanitize_error(e)}')
+            by_sport[canon]={'selected':0,'fetched':0,'failed':1,'rawEvents':0,'objectiveEvents':0,'objectiveMarkets':0,'mapWinnerMarkets':0,'objectiveState':'COLLECTOR_ERROR','byFamilyHint':{}};errors.append(f'{canon}:{sanitize_error(e)}')
     if resolve_error:errors.insert(0,'sports:'+resolve_error)
-    health['cloudbetObjective']={'ok':True,'connected':True,'usable':total_markets>0,'state':'CONNECTED_USABLE' if total_markets>0 else 'CONNECTED_NO_OBJECTIVE_MARKETS','source':SOURCE,'events':total_events,'markets':total_markets,'bySport':by_sport,'requestedMarkets':{k:v['markets'] for k,v in SPORT_CONFIG.items()},'errors':errors[:30],'fetchedAt':utcnow()}
+    feed_usable=total_markets>0 or total_map_winners>0
+    state='CONNECTED_USABLE' if total_markets>0 else ('CONNECTED_MAP_WINNER_ONLY' if total_map_winners else 'CONNECTED_NO_OBJECTIVE_MARKETS')
+    health['cloudbetObjective']={'ok':True,'connected':True,'usable':feed_usable,'objectiveUsable':total_markets>0,'state':state,'source':SOURCE,'events':total_events,'markets':total_markets,'mapWinnerMarkets':total_map_winners,'bySport':by_sport,'requestedMarkets':{k:v['markets'] for k,v in SPORT_CONFIG.items()},'errors':errors[:30],'fetchedAt':utcnow()}
     out['generatedAt']=utcnow()
     with open(FILE,'w') as f:json.dump(out,f,indent=2)
     print(json.dumps(health['cloudbetObjective']))
