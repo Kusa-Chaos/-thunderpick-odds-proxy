@@ -33,4 +33,17 @@ expect(lol?.marketKey==='race_to_kills'&&lol?.line===5&&lol?.scope?.map===1,'rac
 const dota=promoted.find(r=>r.sport==='dota2');
 expect(dota?.tier==='SCREENING','two-source objective contract remains SCREENING under the production source policy');
 expect(dota?.side==='under'&&dota?.line===11.5&&dota?.scope?.map===1,'tower Under 11.5 exact identity must be retained');
+const mapWinnerComparison={generatedAt:new Date().toISOString(),sports:{lol:{rows:[{
+  sport:'lol',event:'T1 vs Gen.G',family:'map_winner',target:null,map:1,line:null,
+  state:'prematch',settlement:'standard',exactIdentity:true,
+  thunderpick:{label:'Map 1 - Winner',prices:{t1:2.05,geng:1.72},sideLabels:{t1:'T1',geng:'Gen.G'}},
+  outsideQuotes:[{source:'cloudbet',prices:{t1:1.98,geng:1.81}}],
+  fairProbabilities:{t1:0.477,geng:0.523},ev:{t1:0.04,geng:-0.10}
+}]},dota2:{rows:[]}}};
+const promotedMap=promoteObjectiveComparison({comparison:mapWinnerComparison,tpFreshBySport:{lol:true},now:Date.now()});
+expect(promotedMap.length===1&&promotedMap[0].marketKey==='map_winner','valid exact map winner must be surfaced');
+expect(promotedMap[0].objectiveMarket===false,'map winner must not inflate kill/tower objective counts');
+expect(promotedMap[0].side==='T1'&&promotedMap[0].scope.map===1,'map winner exact team and map required');
+expect(promotedMap[0].tier==='SCREENING','one-source map winner must remain nonactionable SCREENING');
+
 console.log('OBJECTIVE_MARKET_PROMOTION_VERIFIED',promoted.length);
