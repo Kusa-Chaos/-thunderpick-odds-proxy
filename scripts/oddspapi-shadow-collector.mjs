@@ -25,7 +25,9 @@ export async function collectOddsPapiShadow({get,nowIso=new Date().toISOString()
   const access=readOddsPapiEntitlement(account);
   out.entitlement={state:access.state,sports:access.sports,remaining:access.remaining,candidateFamilies:access.candidateFamilies};
   if(access.state!=='ESPORTS_ELIGIBLE'){out.state=access.state;return out;}
-  const requestBudget=Math.min(10,Math.max(0,access.remaining-25)); // never burn the last 25 permitted requests
+  const configured=Number(process.env.ODDSPAPI_MAX_REQUESTS||10);
+  const cap=Number.isFinite(configured)?Math.max(4,Math.min(10,Math.floor(configured))):10;
+  const requestBudget=Math.min(cap,Math.max(0,access.remaining-25)); // preserve monthly quota floor
   if(requestBudget<4){out.state='QUOTA_RESERVED';return out;}
   calls++;const markets=await get('/markets',{language:'en'});
   if(!Array.isArray(markets)||markets.length===0){out.state='MARKET_CATALOG_MISSING';return out;}
