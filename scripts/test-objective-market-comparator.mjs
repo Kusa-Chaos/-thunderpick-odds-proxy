@@ -51,4 +51,7 @@ expect(sourceFamily('pinnwire-direct')==='pinnacle','PinnWire is Pinnacle family
 const pinDedup=compareObjectiveContractSets([tpMapWinner],[pinMapWinner,nativePinMapWinner]);
 expect(pinDedup.length===1&&pinDedup[0].independentOutsideSources===1,'PinnWire and native Pinnacle must not double-count');
 
-console.log('OBJECTIVE_MARKET_COMPARATOR_VERIFIED',15);
+expect(sourceFamily('oddspapi-bet365')==='bet365','OddsPapi Bet365 must retain distinct bookmaker brand identity');
+expect(sourceFamily('oddspapi-unibet-kambi')==='unibet-kambi','OddsPapi Unibet cannot count as independent from direct Kambi');
+expect(sourceFamily('oddspapi-roobet')==='roobet','OddsPapi Roobet must remain separately identifiable');
+console.log('OBJECTIVE_MARKET_COMPARATOR_VERIFIED',18);
