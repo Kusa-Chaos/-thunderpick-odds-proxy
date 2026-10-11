@@ -2,6 +2,8 @@ name: OddsPapi Private AWS Bookmaker Shadow
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '25 02 * * *'
 
 permissions:
   contents: read
@@ -29,6 +31,7 @@ jobs:
       - name: Collect permitted bookmaker-attributed odds only
         env:
           ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDSPAPI_MAX_REQUESTS: ${{ github.event_name == 'schedule' && '5' || '10' }}
         run: node scripts/oddspapi-shadow-collector.mjs
       - name: Verify fresh bounded shadow before private AWS publication
         run: |
