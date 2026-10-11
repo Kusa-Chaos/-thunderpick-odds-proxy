@@ -13,7 +13,7 @@ function cleanMarket(m={},createdAt){
  if(!two||!['h2h','totals','map_winner'].includes(key))return null;
  if(key==='map_winner'&&!(Number.isInteger(map)&&map>=1&&map<=5))return null;
  if(key!=='map_winner'&&map!=null)return null;
- if(key==='totals'&&(!Number.isFinite(Number(m.line))||!m.outcomes.some(o=>o.name==='Over')||!m.outcomes.some(o=>o.name==='Under')))return null;
+ if(key==='totals'&&(m.name!=='Total Maps'||m.line===null||m.line===undefined||!Number.isFinite(Number(m.line))||Number(m.line)<=0||!m.outcomes.some(o=>o.name==='Over')||!m.outcomes.some(o=>o.name==='Under')))return null;
  if(key==='h2h'&&m.line!=null)return null;
  if(!Number.isFinite(Date.parse(m.last_update||''))||Math.abs(Date.parse(m.last_update)-createdAt)>5*60000)return null;
  return {...m,scope:{map:key==='map_winner'?map:null,round:null},last_update:m.last_update};
