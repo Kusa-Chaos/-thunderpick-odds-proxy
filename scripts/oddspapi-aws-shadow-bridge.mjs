@@ -61,7 +61,12 @@ export function bridgeOddsPapiSnapshot({direct={},shadow={},nowMs=Date.now(),max
  }
  out.providerHealth??={};
  out.providerHealth.oddspapi={
-  ok:!blocker,usable:acceptedMarkets>0,state:blocker||'CONNECTED_EXACT_MARKETS',
+  // A safely expired optional quote cache is not a collector failure.
+  // Keep zero eligible markets, but distinguish quota-gated idle from real errors.
+  ok:!blocker||blocker==='STALE_OR_FUTURE_SHADOW',
+  usable:acceptedMarkets>0,
+  state:blocker==='STALE_OR_FUTURE_SHADOW'?'IDLE_NO_FRESH_QUOTA_GATED_QUOTES':blocker||'CONNECTED_EXACT_MARKETS',
+  shadowFailure:blocker&&blocker!=='STALE_OR_FUTURE_SHADOW'?blocker:null,
   generatedAt:shadow.generatedAt||null,fetchedAt:shadow.generatedAt||null,
   events:acceptedEvents,markets:acceptedMarkets,families:[...familySet].sort(),
   acceptedFromPrivateShadow:true,removedPrevious:removed,
