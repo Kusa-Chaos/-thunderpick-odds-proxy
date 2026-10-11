@@ -1,4 +1,4 @@
-import {extractObjectiveContract,compareObjectiveContractSets} from './objective-market-comparator.mjs';
+import {extractObjectiveContract,compareObjectiveContractSets,sourceFamily} from './objective-market-comparator.mjs';
 
 function expect(cond,msg){if(!cond)throw new Error(msg);}
 
@@ -43,4 +43,12 @@ expect(compareObjectiveContractSets([tpMapWinner],[{...cbMapWinner,map:2}]).leng
 expect(compareObjectiveContractSets([tpMapWinner],[{...cbMapWinner,state:'live'}]).length===0,'prematch and live map winners must never mix');
 expect(cbMapWinner.source==='cloudbet','Cloudbet objective and direct adapters must share one source family');
 
-console.log('OBJECTIVE_MARKET_COMPARATOR_VERIFIED',13);
+const pinMapWinner=extractObjectiveContract({sport:'lol',source:'pinnwire-direct',event:mapTpEvent,
+  market:{name:'Map 1 - Winner',scope:{map:1},outcomes:[{name:'T1',price:2.02},{name:'Gen.G',price:1.78}]}});
+const nativePinMapWinner=extractObjectiveContract({sport:'lol',source:'pinnacle-direct',event:mapTpEvent,
+  market:{name:'Map 1 - Winner',scope:{map:1},outcomes:[{name:'T1',price:2.01},{name:'Gen.G',price:1.79}]}});
+expect(sourceFamily('pinnwire-direct')==='pinnacle','PinnWire is Pinnacle family');
+const pinDedup=compareObjectiveContractSets([tpMapWinner],[pinMapWinner,nativePinMapWinner]);
+expect(pinDedup.length===1&&pinDedup[0].independentOutsideSources===1,'PinnWire and native Pinnacle must not double-count');
+
+console.log('OBJECTIVE_MARKET_COMPARATOR_VERIFIED',15);
