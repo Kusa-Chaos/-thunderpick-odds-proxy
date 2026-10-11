@@ -8,7 +8,15 @@ const snapshot=(at)=>({
  sports:Object.fromEntries(SPORT_ORDER.map(s=>[s,{exactV2:[]}])),
  bookmakerFamilies:[],counts:{events:0,markets:0,books:0,requests:0},errors:[]
 });
-export async function collectOddsPapiShadow({get,nowIso=new Date().toISOString()}={}){
+const pairKey=(value='')=>String(value).split(/\s+(?:vs\.?|v\.)\s+/i).map(x=>x.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/\b(team|esports|gaming|club)\b/g,'').replace(/[^a-z0-9]/g,'')).filter(Boolean).sort().join('|');
+export function selectFixture(fixtures=[],{now=Date.now(),targets=[]}={}){
+ const wanted=new Set(targets.map(pairKey).filter(x=>x.includes('|')));
+ const valid=fixtures.filter(x=>x&&Number(x.statusId)===0&&x.hasOdds===true&&x.fixtureId&&Number.isFinite(Date.parse(x.startTime||''))&&Date.parse(x.startTime)>=now)
+  .sort((a,b)=>Date.parse(a.startTime)-Date.parse(b.startTime));
+ const targeted=valid.find(x=>wanted.has(pairKey([x.participant1Name,x.participant2Name].join(' vs '))));
+ return {fixture:targeted||valid[0]||null,matchedTarget:Boolean(targeted),available:valid.length};
+}
+export async function collectOddsPapiShadow({get,nowIso=new Date().toISOString(),targetsBySport={}}={}){
  const out=snapshot(nowIso),now=Date.parse(nowIso);
  if(typeof get!=='function'||!Number.isFinite(now)){out.state='INVALID_INPUT';return out;}
  let calls=0;
@@ -17,7 +25,7 @@ export async function collectOddsPapiShadow({get,nowIso=new Date().toISOString()
   const access=readOddsPapiEntitlement(account);
   out.entitlement={state:access.state,sports:access.sports,remaining:access.remaining,candidateFamilies:access.candidateFamilies};
   if(access.state!=='ESPORTS_ELIGIBLE'){out.state=access.state;return out;}
-  const requestBudget=Math.min(10,Math.max(0,access.remaining-4));
+  const requestBudget=Math.min(10,Math.max(0,access.remaining-25)); // never burn the last 25 permitted requests
   if(requestBudget<4){out.state='QUOTA_RESERVED';return out;}
   const markets=await get('/markets',{language:'en'});calls++;
   if(!Array.isArray(markets)||markets.length===0){out.state='MARKET_CATALOG_MISSING';return out;}
@@ -27,8 +35,9 @@ export async function collectOddsPapiShadow({get,nowIso=new Date().toISOString()
    try{
     const list=await get('/fixtures',{sportId:ODDS_PAPI_ESPORT_SPORTS[sport],from:nowIso,to,statusId:0,hasOdds:true});calls++;
     const rows=Array.isArray(list)?list:Array.isArray(list?.data)?list.data:[];
-    const event=rows.filter(x=>Number(x.statusId)===0&&x.hasOdds===true&&Date.parse(x.startTime)>=now)
-      .sort((a,b)=>Date.parse(a.startTime)-Date.parse(b.startTime))[0];
+    const chosen=selectFixture(rows,{now,targets:targetsBySport[sport]||[]});
+    const event=chosen.fixture;
+    out.sports[sport].fixtureSelection={available:chosen.available,matchedTarget:chosen.matchedTarget};
     if(!event?.fixtureId)continue;
     const priced=await get('/odds',{fixtureId:event.fixtureId,oddsFormat:'decimal',language:'en',verbosity:3});calls++;
     const normalized=normalizeOddsPapiEvent(priced,markets,{fetchedAt:new Date().toISOString()});
@@ -60,7 +69,15 @@ async function run(){
   if(!response.ok)throw Object.assign(new Error('upstream-status'),{name:'HTTP_'+response.status});
   return response.json();
  };
- const result=await collectOddsPapiShadow({get});
+ let targetsBySport={};
+ try {
+  const board=JSON.parse(await fs.readFile('data/simple-opportunity-latest.json','utf8'));
+  for(const row of [...(board.rows||[]),...(board.candidates||[])]) {
+   const sport=String(row.sport||'').toLowerCase(),match=String(row.match||row.name||'');
+   if(SPORT_ORDER.includes(sport)&&pairKey(match).includes('|'))(targetsBySport[sport]??=[]).push(match);
+  }
+ } catch { /* no local matching board: use earliest eligible fixture, still shadow-only */ }
+ const result=await collectOddsPapiShadow({get,targetsBySport});
  await fs.mkdir('data',{recursive:true});
  await fs.writeFile('data/oddspapi-shadow-latest.json',JSON.stringify(result));
  console.log('ODDSPAPI_SHADOW',JSON.stringify({generatedAt:result.generatedAt,state:result.state,counts:result.counts,bookmakerFamilies:result.bookmakerFamilies,entitlement:result.entitlement,errors:result.errors,productionEligible:false}));
