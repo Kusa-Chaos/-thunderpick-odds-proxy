@@ -2,8 +2,10 @@ function norm(v='') {
   return String(v || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
+import {canonicalBookmakerFamily} from './third-source-eligibility.mjs';
 function sourceFamily(v='') {
   const x = String(v || '').toLowerCase();
+  const canonical=canonicalBookmakerFamily(x);if(canonical)return canonical;
   if (x.includes('unibet') || x.includes('kambi')) return 'unibet-kambi';
   if (x.includes('stake') || x.includes('oddin')) return 'stake-oddin';
   if (x.includes('draftkings')) return 'draftkings';
