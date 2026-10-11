@@ -76,6 +76,7 @@ export function normalizeObjectiveMarket({sport='',source='',event={},market={}}
   else if(/(?:first|1st).*roshan|roshan.*(?:first|1st)/i.test(name)) family='first_roshan';
   else if(/(?:first|1st).*inhibitor|inhibitor.*(?:first|1st)/i.test(name)) family='first_inhibitor';
   else if(/(?:first|1st).*barracks|barracks.*(?:first|1st)/i.test(name)) family='first_barracks';
+  else if(/\bmap\s*(?:#|=|:|-)?\s*\d+\b.*\b(?:winner|to win)\b|\b(?:win|winner of)\s*map\s*\d+\b|\bmap\s*winner\b/i.test(name)) family='map_winner';
   else if(/total.*barons?|barons?.*over\/under/i.test(name)) family='total_barons';
   else if(/total.*(?:elemental\s+)?dragons?|dragons?.*over\/under/i.test(name)) family='total_dragons';
   else if(/total.*roshans?|roshans?.*over\/under/i.test(name)) family='total_roshans';
@@ -88,6 +89,7 @@ export function normalizeObjectiveMarket({sport='',source='',event={},market={}}
 
   if(!family)return null;
   if(family==='race_to_kills'&&line===null)return null;
+  if(family==='map_winner'&&map===null)return null;
   const lineFamilies=new Set(['race_to_kills','total_towers','team_towers','total_barons','total_dragons','total_roshans','total_barracks','total_kills','team_kills']);
   return {family,map,line:lineFamilies.has(family)?line:null,target:target||null,sport:String(sport),source:String(source),label:name};
 }
