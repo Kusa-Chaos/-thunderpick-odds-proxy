@@ -27,7 +27,10 @@ function selections(meta,quoted,kind,home,away){
  }
  return rows;
 }
-export function normalizeOddsPapiEvent(odds={},catalog=[],{fetchedAt=new Date().toISOString()}={}){
+export function normalizeOddsPapiEvent(odds={},catalog=[],{fetchedAt=new Date().toISOString(),requireQuoteTimestamps=false,maxQuoteAgeMs=40*60000}={}){
+ // A response received now does NOT prove the underlying bookmaker prices
+ // changed recently. Only explicit outcome-level changedAt timestamps qualify.
+ const fetchedMs=Date.parse(fetchedAt);
  const id=String(odds.fixtureId||'').trim(),home=String(odds.participant1Name||'').trim(),away=String(odds.participant2Name||'').trim();
  const start=odds.startTime;
  if(!id||!home||!away||home===away||Number(odds.statusId)!==0||!SP.has(Number(odds.sportId))||!Number.isFinite(Date.parse(start||''))||!Number.isFinite(Date.parse(fetchedAt||'')))return null;
@@ -44,7 +47,20 @@ export function normalizeOddsPapiEvent(odds={},catalog=[],{fetchedAt=new Date().
    if(!kind)continue;
    const outcomes=selections(meta,q,kind.key,home,away);
    if(!outcomes||outcomes.length!==2)continue;
-   markets.push({...kind,last_update:fetchedAt,outcomes});
+   let verifiedQuoteAt=null;
+   if(requireQuoteTimestamps){
+    const updates=(meta?.outcomes||[]).map(metaOutcome=>{
+     const record=q?.outcomes?.[String(metaOutcome.outcomeId)]?.players?.['0'];
+     const date=Date.parse(record?.changedAt||'');
+     return record?.active===true&&Number.isFinite(date)?date:null;
+    });
+    if(updates.length!==2||updates.some(t=>t===null||t>fetchedMs+60000||fetchedMs-t>maxQuoteAgeMs||fetchedMs-t< -60000))continue;
+    // The older of both sides is the age of the usable two-way contract.
+    verifiedQuoteAt=new Date(Math.min(...updates)).toISOString();
+   }
+   markets.push({...kind,sourceMarketId:marketId,last_update:verifiedQuoteAt||fetchedAt,
+    quoteTimestampVerified:requireQuoteTimestamps,quoteTimestampSource:requireQuoteTimestamps?'outcome.changedAt':'collection-time-unverified',
+    outcomes});
   }
   if(!markets.length)continue;
   const entry={key:'oddspapi-'+family,title:slug+' (OddsPapi)',sourceFamily:family,markets};
