@@ -63,6 +63,29 @@ def test_grouping_parameters_fallback_and_selection_override():
     market['submarkets']['default']['selections'][1]['params']='map=2&xth=5'
     assert normalize_objective_market('league_of_legends.map_xth_kill',market,'T1','Gen.G')==[]
 
+def test_map_winner_exact_map_and_disabled_suppression():
+    market={'submarkets':{
+        'period=default&period=map1':{'selections':[
+            sel('home',2.05,'map=1'),sel('away',1.78,'map=1')]},
+        'period=default&period=map2':{'selections':[
+            sel('home',1.93,'map=2'),sel('away',1.94,'map=2')]},
+    }}
+    rows=normalize_objective_market('league_of_legends.map_winner_v2',market,'T1','Gen.G')
+    assert len(rows)==2
+    assert [m['scope']['map'] for m in rows]==[1,2]
+    assert rows[0]['name']=='Map 1 - Winner' and rows[0]['line'] is None
+    assert {o['name'] for o in rows[0]['outcomes']}=={'T1','Gen.G'}
+    market['submarkets']['period=default&period=map2']['selections'][1]['status']='SELECTION_DISABLED'
+    rows=normalize_objective_market('dota_2.map_winner_v2',market,'T1','Gen.G')
+    assert len(rows)==1 and rows[0]['scope']['map']==1
+    market['submarkets']['period=default&period=map1']['selections'][1]['params']='map=2'
+    assert normalize_objective_market('league_of_legends.map_winner_v2',market,'T1','Gen.G')==[]
+
+def test_cloudbet_market_request_limit():
+    from cloudbet_objective import SUPPORTED_MARKETS
+    assert len(SUPPORTED_MARKETS['lol'])==7
+    assert len(SUPPORTED_MARKETS['dota2'])<=7
+
 if __name__=='__main__':
     tests=[v for k,v in sorted(globals().items()) if k.startswith('test_') and callable(v)]
     for t in tests:
