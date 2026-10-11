@@ -23,7 +23,7 @@ function sourceFamily(v=''){
   if(x.includes('caesars'))return'caesars';
   if(x.includes('betmgm'))return'betmgm';
   if(x.includes('bovada'))return'bovada';
-  if(x.includes('pinnacle'))return'pinnacle';
+  if(x.includes('pinnacle')||x.includes('pinnwire'))return'pinnacle';
   if(x.includes('betway'))return'betway';
   if(x.includes('kalshi'))return'kalshi';
   if(x.includes('polymarket'))return'polymarket';
@@ -45,7 +45,7 @@ const directHealth=directSources?.providerHealth||direct?.providerHealth||{};
 const PROVIDER_FETCHED_AT={
   'stake-oddin':directHealth?.stake?.fetchedAt||null,
   'betway':directHealth?.betway?.fetchedAt||null,
-  'pinnacle':directHealth?.pinnacle?.fetchedAt||null,
+  'pinnacle':directHealth?.pinnwire?.fetchedAt||directHealth?.pinnacle?.fetchedAt||null,
   'unibet-kambi':directHealth?.kambiTraditional?.fetchedAt||directHealth?.kambi?.fetchedAt||null,
   'bovada':directHealth?.bovadaTraditional?.fetchedAt||directHealth?.bovadaNfl?.fetchedAt||null,
   'fanduel':directHealth?.fanduel?.fetchedAt||directHealth?.fanduelProps?.fetchedAt||null,
