@@ -58,7 +58,7 @@ export async function collectOddsPapiTournamentShadow({get,inventory={},previous
  const nowMs=Date.parse(nowIso);
  const result={generatedAt:nowIso,mode:'TOURNAMENT_SHADOW_ONLY',productionEligible:false,
   state:'INITIAL',counts:{requests:0,events:0,markets:0,books:0,fixturesExamined:0,batchedEvents:0,quoteAgeRejected:0},
-  bookmakerFamilies:[],bookmakerSlugsObserved:[],errors:[],sports:{},cacheUsed:false,
+  bookmakerFamilies:[],bookmakerSlugsObserved:[],errors:[],sports:{},cacheUsed:false,batchUnsupported:false,fallbackUsed:false,
   marketCatalog:null,source:'OddsPapi /v4/odds-by-tournaments'};
  if(typeof get!=='function'||!Number.isFinite(nowMs)){result.state='INVALID_INPUT';return result;}
  let billable=0;
@@ -129,7 +129,33 @@ export async function collectOddsPapiTournamentShadow({get,inventory={},previous
           }
           totals.set(id,current);
         }
-      }catch(e){result.errors.push('batch:'+str(e?.name||e?.message).slice(0,50));}
+      }catch(e){
+        const label=str(e?.name||'REQUEST_FAILED').slice(0,28);
+        const detail=str(e?.detail||'').slice(0,120);
+        result.errors.push('batch:'+label+(detail?':'+detail:''));
+        // Two 400s on the same tournament add cost but no information.
+        if(label==='HTTP_400'){result.batchUnsupported=true;break;}
+      }
+    }
+    if(result.batchUnsupported&&billable<allowed&&selection.fixtures.length){
+      // Authorized single-fixture endpoint was previously verified to return
+      // bookmaker-attributed data; fallback consumes at most ONE extra call.
+      const fixture=selection.fixtures[0];
+      try{
+        const raw=await call('/odds',{fixtureId:str(fixture.fixtureId),oddsFormat:'decimal',language:'en',verbosity:3});
+        const fixed=fuseTournamentQuote({...fixture,...raw},fixture);
+        if(fixed){
+          const odds={};
+          for(const [slug,book] of Object.entries(fixed.bookmakerOdds||{})){
+            if(!batchBookmakers({[slug]:{}}).length)continue;
+            slugs.add(slug);odds[slug]=book;
+          }
+          if(Object.keys(odds).length){
+            totals.set(str(fixture.fixtureId),{fixture,bookmakerOdds:odds,sport});
+            result.fallbackUsed=true;
+          }
+        }
+      }catch(e){result.errors.push('fallback:'+str(e?.name||e?.message).slice(0,45));}
     }
     break; // only one targeted tournament per run; never consume quota scanning everywhere
   }
@@ -171,7 +197,14 @@ async function run(){
   for(const [k,v] of Object.entries(params))url.searchParams.set(k,String(v));
   last=Date.now();
   const res=await fetch(url,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(30000)});
-  if(!res.ok)throw Object.assign(Error('upstream response'),{name:'HTTP_'+res.status});
+  if(!res.ok){
+    let payload={};try{payload=await res.json();}catch{}
+    const safe=x=>str(x).replace(/pk_[A-Za-z0-9_-]+/g,'[redacted]').replace(/apiKey[^\\s,]*/ig,'[redacted]').slice(0,90);
+    // Return public API error code/message only, never URL or credentials.
+    const detail=[safe(payload.code||payload.errorCode),safe(payload.message||payload.error)]
+     .filter(Boolean).join(':');
+    throw Object.assign(Error('upstream status'),{name:'HTTP_'+res.status,detail});
+  }
   return res.json();
  };
  const result=await collectOddsPapiTournamentShadow({get,inventory,previous,
@@ -181,7 +214,7 @@ async function run(){
  console.log('ODDSPAPI_TOURNAMENT_SHADOW',JSON.stringify({
   state:result.state,generatedAt:result.generatedAt,counts:result.counts,
   bookmakerFamilies:result.bookmakerFamilies,bookmakerSlugsObserved:result.bookmakerSlugsObserved,
-  cacheUsed:result.cacheUsed,entitlement:result.entitlement,
+  cacheUsed:result.cacheUsed,batchUnsupported:result.batchUnsupported,fallbackUsed:result.fallbackUsed,entitlement:result.entitlement,
   sports:Object.fromEntries(Object.entries(result.sports).map(([s,v])=>[s,{tournamentId:v.tournamentId,targetedFixtures:v.targetedFixtures,accepted:v.exactV2?.length||0}])),
   errors:result.errors,productionEligible:false
  }));
