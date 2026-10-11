@@ -215,7 +215,9 @@ def _fetch_event(opener, betting_url, token, env, slug):
     fixture_status = str((match.get('fixture') or {}).get('status') or '').upper()
     if fixture_status in {'FINISHED', 'ENDED', 'CANCELLED', 'CANCELED'}:
         return None
-    match['markets'] = [m for m in (match.get('markets') or []) if str(m.get('status') or '').upper() == 'ACTIVE' and is_objective_market(m.get('name'))]
+    active_markets = [m for m in (match.get('markets') or []) if str(m.get('status') or '').upper() == 'ACTIVE']
+    match['_diagnostics'] = {'activeMarkets': len(active_markets), 'objectiveMarkets': sum(1 for m in active_markets if is_objective_market(m.get('name')))}
+    match['markets'] = [m for m in active_markets if is_objective_market(m.get('name'))]
     return sport, match
 
 
@@ -227,7 +229,7 @@ def lambda_handler(event, context):
         'sports': {'lol': {'events': []}, 'dota2': {'events': []}},
         'errors': [],
         'discovery': {'lol': 0, 'dota2': 0},
-        'fetched': {'selected': 0, 'successful': 0, 'failed': 0, 'objectiveMarkets': 0},
+        'fetched': {'selected': 0, 'successful': 0, 'failed': 0, 'activeMarkets': 0, 'objectiveMarkets': 0},
     }
     try:
         opener, _ = _new_opener()
@@ -280,6 +282,7 @@ def lambda_handler(event, context):
                 out['fetched']['failed'] += 1
                 continue
             out['fetched']['successful'] += 1
+            out['fetched']['activeMarkets'] += match.get('_diagnostics', {}).get('activeMarkets', 0)
             objective_count = len(match.get('markets') or [])
             out['fetched']['objectiveMarkets'] += objective_count
             if objective_count:
