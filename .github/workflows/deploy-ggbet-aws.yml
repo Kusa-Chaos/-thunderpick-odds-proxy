@@ -15,7 +15,7 @@ jobs:
       - name: Validate collector syntax and tests
         run: |
           python -m py_compile scripts/lambda/ggbet_objective_collector/lambda_function.py
-          python -m unittest discover -s scripts -p 'test_ggbet_objective_collector.py' -v
+          python scripts/test_ggbet_objective_collector.py
       - name: Assume authorized AWS deployment role
         uses: aws-actions/configure-aws-credentials@v4
         with:
