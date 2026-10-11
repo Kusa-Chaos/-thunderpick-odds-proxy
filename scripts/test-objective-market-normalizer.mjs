@@ -72,4 +72,15 @@ expect(towerM1!==towerM2,'Map 1 and Map 2 tower totals must never collide');
 expect(towerM1!==teamTower,'game total towers and team towers must never collide');
 expect(race5!==race10,'First to 5 and First to 10 kills must never collide');
 
-console.log('OBJECTIVE_MARKET_NORMALIZER_VERIFIED',10);
+const lolMapWinner=normalizeObjectiveMarket({
+  sport:'lol',source:'cloudbet-objective',event:{home:'T1',away:'Gen.G'},
+  market:{name:'Map 2 - Winner',scope:{map:2},outcomes:[{name:'T1',price:1.8},{name:'Gen.G',price:2.0}]}
+});
+expect(lolMapWinner?.family==='map_winner'&&lolMapWinner?.map===2&&lolMapWinner?.line===null,
+  'Cloudbet map winner must preserve exact map number without inventing a line');
+expect(normalizeObjectiveMarket({sport:'lol',source:'cloudbet-objective',market:{name:'Map Winner'}})===null,
+  'Map winner without verified map index must be rejected');
+expect(normalizeObjectiveMarket({sport:'lol',source:'cloudbet-objective',market:{name:'Match Winner'}})===null,
+  'Unscoped match winner must not become a map winner');
+
+console.log('OBJECTIVE_MARKET_NORMALIZER_VERIFIED',13);
