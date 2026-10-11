@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {collectOddsPapiShadow} from './oddspapi-shadow-collector.mjs';
+import {collectOddsPapiShadow,selectFixture} from './oddspapi-shadow-collector.mjs';
 const account={current_subscription_id:'a',subscriptions:[{subscription_id:'a',is_active:true,sport_ids:[16,17,18,61],request_limit:100,request_count:10,bookmakers:{bet365:{},'1xbet':{},unibet:{}}}]};
 const catalog=[{marketId:181,marketName:'Winner',period:'result',marketType:'moneyline',outcomes:[{outcomeId:181,outcomeName:'1'},{outcomeId:182,outcomeName:'2'}]}];
 const selection=(price)=>({players:{'0':{active:true,price}}});
@@ -23,4 +23,15 @@ let limitedCalls=0;
 const denied=await collectOddsPapiShadow({get:async()=>{limitedCalls++;return {current_subscription_id:'a',subscriptions:[{subscription_id:'a',is_active:true,sport_ids:[14],request_limit:4,request_count:1,bookmakers:{bet365:{}}}]};},nowIso:'2026-10-10T12:40:00Z'});
 assert.equal(denied.state,'ESPORTS_NOT_AUTHORIZED');
 assert.equal(limitedCalls,1,'do not spend extra API requests without esports entitlement');
+
+const first={...fixture,fixtureId:'far',participant1Name:'Random',participant2Name:'Unrelated',startTime:'2026-10-11T10:40:00Z'};
+const selected=selectFixture([first,fixture],{now:Date.parse('2026-10-10T12:40:00Z'),targets:['T1 Academy vs Fuego']});
+assert.equal(selected.fixture.fixtureId,'id18abc','prioritize exact Thunderpick matchup regardless of participant orientation');
+assert.equal(selected.matchedTarget,true);
+assert.equal(selectFixture([first],{now:Date.parse('2026-10-10T12:40:00Z'),targets:['T1 Academy vs Fuego']}).matchedTarget,false);
+const targeted=await collectOddsPapiShadow({get,nowIso:'2026-10-10T12:40:00Z',targetsBySport:{lol:['T1 Academy vs Fuego']}});
+assert.equal(targeted.sports.lol.fixtureSelection.matchedTarget,true,'matched fixture is marked for downstream quality checks');
+const almostExhausted=await collectOddsPapiShadow({get:async()=>({current_subscription_id:'a',subscriptions:[{subscription_id:'a',is_active:true,sport_ids:[18],request_limit:100,request_count:79,bookmakers:{bet365:{}}}]}),nowIso:'2026-10-10T12:40:00Z'});
+assert.equal(almostExhausted.state,'QUOTA_RESERVED','reserve last 25 requests even for authorized account');
+
 console.log('ODDSPAPI_SHADOW_COLLECTOR_TEST_PASSED');
