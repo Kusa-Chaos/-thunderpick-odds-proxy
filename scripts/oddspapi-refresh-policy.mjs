@@ -34,7 +34,19 @@ export function decideOddsPapiRefresh({previous={},inventory={},nowMs=Date.now()
  const declared=Number(previous?.entitlement?.remaining);
  const usedLast=Number(previous?.counts?.requests||0);
  const remaining=Number.isFinite(declared)&&declared>=0?Math.max(0,declared-usedLast):null;
- const reserve=25, eligibleCount=events.length, soon=events.some(x=>x.hoursUntil<=2);
+ // This small paid quota cannot cover the whole 20-hour discovery horizon.
+ // Only pay when a target actually starts in <=2.5 hours. The hourly preflight
+ // itself remains free and does not touch the existing :40 scanner.
+ const reserve=25, eligibleCount=events.length, soon=events.some(x=>x.hoursUntil<=2.5);
+ const imminent=events.find(x=>x.hoursUntil<=2.5)||null;
+ const windowOpens=imminent?time(imminent.startTime)-2.5*HOUR_MS:null;
+ const inEventWindow=windowOpens===null?[]:history.filter(x=>time(x.at)>=windowOpens&&time(x.at)<=nowMs);
+ // Earlier manual tests may have spent the daily allowance many hours before
+ // kickoff. Recover at most ONE such wasted-window scan, only with >=100
+ // validated requests left, never after an event-window refresh.
+ const earlyTestRecovery=soon&&remaining!==null&&remaining>=100&&
+   history.length>=2&&history.length<=3&&inEventWindow.length===0&&
+   (lastMs===null||nowMs-lastMs>=2*HOUR_MS);
  // An off-cycle manual test can be fresh when published but expire seconds
  // before the next :40 collector. Permit only ONE automatic alignment repair
  // per rolling 24h, and only when the new snapshot has not been consumed by a
@@ -52,12 +64,13 @@ export function decideOddsPapiRefresh({previous={},inventory={},nowMs=Date.now()
    nextCollector.getTime()-nowMs>=3*60000&&nextCollector.getTime()-nowMs<=20*60000;
  let reason=null;
  if(!eligibleCount)reason='NO_MATCHING_UPCOMING_ESPORTS_EVENTS';
+ else if(!soon)reason='WAITING_FOR_NEAR_MATCH_NO_API_SPEND';
  else if(remaining===null)reason='QUOTA_UNVERIFIED';
  else if(remaining<=reserve+5)reason='MONTHLY_QUOTA_RESERVED';
- else if(!manual&&!alignmentRepair&&lastMs!==null&&nowMs-lastMs<4*HOUR_MS)reason='COOLDOWN_TO_AVOID_EXCESS_REQUESTS';
- else if(!manual&&!alignmentRepair&&history.length>=(remaining>=100&&soon?2:1))reason='DAILY_REQUEST_CAP';
- return {shouldRefresh:!reason,reason:reason||(alignmentRepair?'ONE_TIME_COLLECTOR_ALIGNMENT_REPAIR':'TARGETED_REFRESH_DUE'),events:events.slice(0,24),
-  eligibleEvents:eligibleCount,urgentEvent:soon,previous24hRuns:history.length,
+ else if(!alignmentRepair&&!earlyTestRecovery&&lastMs!==null&&nowMs-lastMs<4*HOUR_MS)reason='COOLDOWN_TO_AVOID_EXCESS_REQUESTS';
+ else if(!alignmentRepair&&!earlyTestRecovery&&history.length>=(remaining>=100?2:1))reason='DAILY_REQUEST_CAP';
+ return {shouldRefresh:!reason,reason:reason||(earlyTestRecovery?'ONE_PREMATCH_RECOVERY_AFTER_EARLY_TESTS':alignmentRepair?'ONE_TIME_COLLECTOR_ALIGNMENT_REPAIR':'TARGETED_REFRESH_DUE'),events:events.slice(0,24),
+  eligibleEvents:eligibleCount,urgentEvent:soon,eventWindowPreviousRuns:inEventWindow.length,previous24hRuns:history.length,
   lastAttemptAt:lastMs?new Date(lastMs).toISOString():null,estimatedRemaining:remaining,
   requestCap:5,reservedRequests:reserve,checkedAt:new Date(nowMs).toISOString()};
 }
