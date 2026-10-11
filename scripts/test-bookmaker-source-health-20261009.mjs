@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {buildGGBetHealth,buildPinnacleFamilyHealth} from './bookmaker-source-health.mjs';
+import {filterFreshConsensusQuotes} from './source-quality.mjs';
 const now=Date.parse('2026-10-09T21:55:00Z');
 const fresh={generatedAt:'2026-10-09T21:50:18Z',source:'ggbet-objective',connected:true,usable:true,state:'CONNECTED_USABLE',events:7,markets:548,errors:[],discovery:{lol:4,dota2:6},fetched:{selected:10,successful:10,failed:0,objectiveMarkets:548}};
 const x=buildGGBetHealth(fresh,{now});
@@ -22,4 +23,12 @@ assert.equal(pAwsDirect.preferredPath,'pinnwire');
 assert.equal(pAwsDirect.events,19,'prefer accepted, not raw PinnWire event count');
 assert.equal(pAwsDirect.markets,871);
 assert.equal(buildPinnacleFamilyHealth({pinnwire:{ok:true,status:200,acceptedEvents:0,acceptedMarkets:0}}).usable,false,'empty collector must not count');
+const probeTime='2026-10-11T03:40:00Z';
+const pinnacleDedup=filterFreshConsensusQuotes([
+  {book:'pinnwire-direct',pA:0.53,pB:0.47,fetchedAt:probeTime},
+  {book:'pinnacle-direct',pA:0.52,pB:0.48,fetchedAt:probeTime}
+],{now:Date.parse(probeTime)});
+assert.equal(pinnacleDedup.accepted.length,1,'PinnWire and native Pinnacle must count as one bookmaker family');
+assert.equal(pinnacleDedup.accepted[0].sourceFamily,'pinnacle','canonical source label must be Pinnacle');
+
 console.log('GGBET_AND_PINNACLE_FAMILY_TELEMETRY_VERIFIED');
