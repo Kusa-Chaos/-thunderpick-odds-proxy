@@ -3,6 +3,11 @@ import {orientNamedTwoWayPrices} from './source-quality.mjs';
 
 const FILE='data/direct-sources-latest.json';
 const out=JSON.parse(await fs.readFile(FILE,'utf8'));
+// Clear prior native Pinnacle quotes before every attempt. A blocked 403 cannot
+// leave old prices eligible for fresh exact comparisons. PinnWire is unaffected.
+for(const source of Object.values(out.sports||{})){
+  if(Array.isArray(source?.exactV2))source.exactV2=source.exactV2.filter(e=>!String(e?.id||'').startsWith('pinnacle-direct:'));
+}
 const NOW=Date.now(), MAX_FUTURE=NOW+30*24*3600e3;
 const UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36';
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
