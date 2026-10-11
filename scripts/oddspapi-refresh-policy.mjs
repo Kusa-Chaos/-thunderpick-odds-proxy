@@ -35,13 +35,28 @@ export function decideOddsPapiRefresh({previous={},inventory={},nowMs=Date.now()
  const usedLast=Number(previous?.counts?.requests||0);
  const remaining=Number.isFinite(declared)&&declared>=0?Math.max(0,declared-usedLast):null;
  const reserve=25, eligibleCount=events.length, soon=events.some(x=>x.hoursUntil<=2);
+ // An off-cycle manual test can be fresh when published but expire seconds
+ // before the next :40 collector. Permit only ONE automatic alignment repair
+ // per rolling 24h, and only when the new snapshot has not been consumed by a
+ // later official TP scan. Do not weaken the 40-minute betting-data gate.
+ const previousSnapshotTime=time(previous?.generatedAt);
+ const inventoryTime=time(inventory?.generatedAt);
+ const nextCollector=new Date(nowMs);nextCollector.setUTCMinutes(40,30,0);
+ if(nextCollector.getTime()<=nowMs)nextCollector.setUTCHours(nextCollector.getUTCHours()+1);
+ const unconsumed=previousSnapshotTime!==null&&inventoryTime!==null&&inventoryTime<previousSnapshotTime;
+ const minute=previousSnapshotTime===null?null:new Date(previousSnapshotTime).getUTCMinutes();
+ const offCycle=minute!==null&&(minute<20||minute>35);
+ const collectorWillReject=previousSnapshotTime!==null&&nextCollector.getTime()-previousSnapshotTime>40*60000;
+ const alignmentRepair=soon&&history.length===2&&remaining!==null&&remaining>=105&&
+   unconsumed&&offCycle&&collectorWillReject&&lastMs!==null&&nowMs-lastMs<60*60000&&
+   nextCollector.getTime()-nowMs>=3*60000&&nextCollector.getTime()-nowMs<=20*60000;
  let reason=null;
  if(!eligibleCount)reason='NO_MATCHING_UPCOMING_ESPORTS_EVENTS';
  else if(remaining===null)reason='QUOTA_UNVERIFIED';
  else if(remaining<=reserve+5)reason='MONTHLY_QUOTA_RESERVED';
- else if(!manual&&lastMs!==null&&nowMs-lastMs<4*HOUR_MS)reason='COOLDOWN_TO_AVOID_EXCESS_REQUESTS';
- else if(!manual&&history.length>=(remaining>=100&&soon?2:1))reason='DAILY_REQUEST_CAP';
- return {shouldRefresh:!reason,reason:reason||'TARGETED_REFRESH_DUE',events:events.slice(0,24),
+ else if(!manual&&!alignmentRepair&&lastMs!==null&&nowMs-lastMs<4*HOUR_MS)reason='COOLDOWN_TO_AVOID_EXCESS_REQUESTS';
+ else if(!manual&&!alignmentRepair&&history.length>=(remaining>=100&&soon?2:1))reason='DAILY_REQUEST_CAP';
+ return {shouldRefresh:!reason,reason:reason||(alignmentRepair?'ONE_TIME_COLLECTOR_ALIGNMENT_REPAIR':'TARGETED_REFRESH_DUE'),events:events.slice(0,24),
   eligibleEvents:eligibleCount,urgentEvent:soon,previous24hRuns:history.length,
   lastAttemptAt:lastMs?new Date(lastMs).toISOString():null,estimatedRemaining:remaining,
   requestCap:5,reservedRequests:reserve,checkedAt:new Date(nowMs).toISOString()};
