@@ -16,7 +16,7 @@ function catalogEntries(all=[]){
   (m.marketName==='Winner'||m.marketName==='Total Maps Over Under'||/^(?:First|Second|Third|Fourth|Fifth) Map Winner \(incl\. overtime\)$/i.test(str(m.marketName))) &&
   Array.isArray(m.outcomes)&&m.outcomes.length===2).slice(0,300);
 }
-function extractFixtureRows(v){return Array.isArray(v)?v:Array.isArray(v?.data)?v.data:Array.isArray(v?.fixtures)?v.fixtures:[];}
+function extractFixtureRows(v){return Array.isArray(v)?v:Array.isArray(v?.data)?v.data:Array.isArray(v?.fixtures)?v.fixtures:v?.fixtureId?[v]:[];}
 export function batchBookmakers(bookmakers={},maxGroups=2){
  const entries=Object.keys(bookmakers||{}).map(slug=>({slug,family:canonicalBookmakerFamily(slug)}))
   .filter(x=>NEW_BOOKMAKER_FAMILIES.includes(x.family));
