@@ -1,17 +1,17 @@
 {
   "generatedAt": "2026-10-11T16:09:03.009Z",
-  "builtAt": "2026-10-11T16:09:03.181Z",
+  "builtAt": "2026-10-11T16:09:23.365Z",
   "mode": "compact-aws-delivery-v12-watch-screen-parity",
-  "strictSnapshotHealthy": false,
+  "strictSnapshotHealthy": true,
   "counts": {
     "ACTION": 0,
     "WATCH": 3,
     "SCREENING": 185,
     "PRICE BOARD": 0,
     "INFORMATIONAL": 297,
-    "ARB FOUND": 0,
-    "ARB WATCH": 0,
-    "ARB SCREENING": 0
+    "ARB FOUND": 1,
+    "ARB WATCH": 6,
+    "ARB SCREENING": 1
   },
   "parseErrors": {
     "identity": 0,
@@ -1309,9 +1309,348 @@
       "blocker": "Loose event discovery; exact contract verification required before ACTION"
     }
   ],
-  "arbFoundRows": [],
-  "arbWatchRows": [],
-  "arbScreeningRows": [],
+  "arbFoundRows": [
+    {
+      "tier": "ARB FOUND",
+      "sport": "tennis",
+      "eventId": 2801052,
+      "match": "Pablo Carreno Busta vs Felix Auger-Aliassime",
+      "market": "Match Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-12T04:00:00+00:00",
+      "exactContractKey": "tennis|felixaugeraliassime|pablocarrenobusta|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.99,
+      "arbROI": 0.010101010101010166,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Pablo Carreno Busta",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 4
+        },
+        {
+          "outcome": "Felix Auger-Aliassime",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 1.3513513513513513
+        }
+      ]
+    }
+  ],
+  "arbWatchRows": [
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801725,
+      "match": "Arthur Fils vs Botic van de Zandschulp",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T08:30:00+00:00",
+      "exactContractKey": "tennis|arthurfils|boticvandezandschulp|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9507407407407407,
+      "arbROI": 0.051811453058044465,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Arthur Fils",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.35
+        },
+        {
+          "outcome": "Botic van de Zandschulp",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 4.761904761904763
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801051,
+      "match": "Daniil Medvedev vs Dalibor Svrcina",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T07:00:00+00:00",
+      "exactContractKey": "tennis|daliborsvrcina|daniilmedvedev|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9600000000000001,
+      "arbROI": 0.04166666666666652,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.25
+        },
+        {
+          "outcome": "Dalibor Svrcina",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 6.249999999999999
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801722,
+      "match": "Zizou Bergs vs Carlos Alcaraz",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T10:00:00+00:00",
+      "exactContractKey": "tennis|carlosalcaraz|zizoubergs|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9749557522123894,
+      "arbROI": 0.025687573749659576,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Carlos Alcaraz",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.13
+        },
+        {
+          "outcome": "Zizou Bergs",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 11.11111111111111
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801126,
+      "match": "Iva Jovic vs Mia Pohankova",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T04:30:00+00:00",
+      "exactContractKey": "tennis|ivajovic|miapohankova|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9830081300813008,
+      "arbROI": 0.017285584318914804,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Iva Jovic",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.23
+        },
+        {
+          "outcome": "Mia Pohankova",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 5.882352941176469
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801052,
+      "match": "Pablo Carreno Busta vs Felix Auger-Aliassime",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T04:00:00+00:00",
+      "exactContractKey": "tennis|felixaugeraliassime|pablocarrenobusta|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.991304347826087,
+      "arbROI": 0.00877192982456143,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Felix Auger-Aliassime",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.38
+        },
+        {
+          "outcome": "Pablo Carreno Busta",
+          "book": "bovada-traditional-direct",
+          "sourceFamily": "bovada",
+          "price": 3.75
+        }
+      ]
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801129,
+      "match": "Clara Tauson vs Marie Bouzkova",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T04:30:00+00:00",
+      "exactContractKey": "tennis|claratauson|mariebouzkova|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0002721088435373,
+      "arbROI": -0.0002720348204569012,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Marie Bouzkova",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.47
+        },
+        {
+          "outcome": "Clara Tauson",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 3.125
+        }
+      ]
+    }
+  ],
+  "arbScreeningRows": [
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2774951,
+      "match": "Washington Commanders vs New York Giants",
+      "market": "Player Jayden Daniels - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-11T17:00:00+00:00",
+      "exactContractKey": "american-football|newyorkgiants|washingtoncommanders|player_prop|player=Jayden Daniels|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.0207700101317123,
+      "arbROI": -0.02034739454094303,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-09T23:54:28Z"
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Over",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 2.35
+        },
+        {
+          "outcome": "Under",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 1.68
+        }
+      ]
+    }
+  ],
   "watchBoardRows": [
     {
       "tier": "WATCH",
@@ -1510,6 +1849,264 @@
       "startTime": "2026-10-11T17:00:00+00:00",
       "blocker": "2 independent exact NFL prop sources; WATCH pending third source and fresh Thunderpick verification",
       "watchType": "+EV WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801725,
+      "match": "Arthur Fils vs Botic van de Zandschulp",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T08:30:00+00:00",
+      "exactContractKey": "tennis|arthurfils|boticvandezandschulp|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9507407407407407,
+      "arbROI": 0.051811453058044465,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Arthur Fils",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.35
+        },
+        {
+          "outcome": "Botic van de Zandschulp",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 4.761904761904763
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801051,
+      "match": "Daniil Medvedev vs Dalibor Svrcina",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T07:00:00+00:00",
+      "exactContractKey": "tennis|daliborsvrcina|daniilmedvedev|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9600000000000001,
+      "arbROI": 0.04166666666666652,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Daniil Medvedev",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.25
+        },
+        {
+          "outcome": "Dalibor Svrcina",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 6.249999999999999
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801722,
+      "match": "Zizou Bergs vs Carlos Alcaraz",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T10:00:00+00:00",
+      "exactContractKey": "tennis|carlosalcaraz|zizoubergs|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9749557522123894,
+      "arbROI": 0.025687573749659576,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Carlos Alcaraz",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.13
+        },
+        {
+          "outcome": "Zizou Bergs",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 11.11111111111111
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801126,
+      "match": "Iva Jovic vs Mia Pohankova",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T04:30:00+00:00",
+      "exactContractKey": "tennis|ivajovic|miapohankova|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.9830081300813008,
+      "arbROI": 0.017285584318914804,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Iva Jovic",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.23
+        },
+        {
+          "outcome": "Mia Pohankova",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 5.882352941176469
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801052,
+      "match": "Pablo Carreno Busta vs Felix Auger-Aliassime",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T04:00:00+00:00",
+      "exactContractKey": "tennis|felixaugeraliassime|pablocarrenobusta|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 0.991304347826087,
+      "arbROI": 0.00877192982456143,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "bovada"
+      ],
+      "freshness": {
+        "outsideLastUpdate": null
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Felix Auger-Aliassime",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.38
+        },
+        {
+          "outcome": "Pablo Carreno Busta",
+          "book": "bovada-traditional-direct",
+          "sourceFamily": "bovada",
+          "price": 3.75
+        }
+      ],
+      "watchType": "ARB WATCH"
+    },
+    {
+      "tier": "ARB WATCH",
+      "sport": "tennis",
+      "eventId": 2801129,
+      "match": "Clara Tauson vs Marie Bouzkova",
+      "market": "Set 1 Winner",
+      "marketKey": "h2h",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": 1
+      },
+      "startTime": "2026-10-12T04:30:00+00:00",
+      "exactContractKey": "tennis|claratauson|mariebouzkova|h2h|player=|stat=|map=|round=|points=/|pregame",
+      "reciprocalSum": 1.0002721088435373,
+      "arbROI": -0.0002720348204569012,
+      "independentOutsideSources": 3,
+      "sourceFamilies": [
+        "thunderpick",
+        "polymarket"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+      },
+      "identityVerified": false,
+      "upstreamIdentityVerified": true,
+      "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+      "legs": [
+        {
+          "outcome": "Marie Bouzkova",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 1.47
+        },
+        {
+          "outcome": "Clara Tauson",
+          "book": "polymarket-direct",
+          "sourceFamily": "polymarket",
+          "price": 3.125
+        }
+      ],
+      "watchType": "ARB WATCH"
     }
   ],
   "screeningBoardRows": [
@@ -2118,9 +2715,403 @@
       "startTime": "2026-10-13T00:00:00+00:00",
       "blocker": "Loose event discovery; exact contract verification required before ACTION",
       "screenType": "+EV SCREENING"
+    },
+    {
+      "tier": "ARB SCREENING",
+      "sport": "american-football",
+      "eventId": 2774951,
+      "match": "Washington Commanders vs New York Giants",
+      "market": "Player Jayden Daniels - Total passing touchdowns",
+      "marketKey": "player_prop",
+      "scope": {
+        "map": null,
+        "round": null,
+        "set": null
+      },
+      "startTime": "2026-10-11T17:00:00+00:00",
+      "exactContractKey": "american-football|newyorkgiants|washingtoncommanders|player_prop|player=Jayden Daniels|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+      "reciprocalSum": 1.0207700101317123,
+      "arbROI": -0.02034739454094303,
+      "independentOutsideSources": 4,
+      "sourceFamilies": [
+        "thunderpick",
+        "unibet-kambi"
+      ],
+      "freshness": {
+        "outsideLastUpdate": "2026-10-09T23:54:28Z"
+      },
+      "identityVerified": true,
+      "upstreamIdentityVerified": true,
+      "blocker": null,
+      "legs": [
+        {
+          "outcome": "Over",
+          "book": "Thunderpick",
+          "sourceFamily": "thunderpick",
+          "price": 2.35
+        },
+        {
+          "outcome": "Under",
+          "book": "unibet-kambi-direct",
+          "sourceFamily": "unibet-kambi",
+          "price": 1.68
+        }
+      ],
+      "screenType": "ARB SCREENING"
     }
   ],
-  "arbitrageAudit": null,
+  "arbitrageAudit": {
+    "generatedAt": "2026-10-11T16:09:00.901Z",
+    "marketsTested": 985,
+    "screensEvaluated": 8,
+    "found": [
+      {
+        "tier": "ARB FOUND",
+        "sport": "tennis",
+        "eventId": 2801052,
+        "match": "Pablo Carreno Busta vs Felix Auger-Aliassime",
+        "market": "Match Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-12T04:00:00+00:00",
+        "exactContractKey": "tennis|felixaugeraliassime|pablocarrenobusta|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.99,
+        "arbROI": 0.010101010101010166,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "polymarket"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Pablo Carreno Busta",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 4
+          },
+          {
+            "outcome": "Felix Auger-Aliassime",
+            "book": "polymarket-direct",
+            "sourceFamily": "polymarket",
+            "price": 1.3513513513513513
+          }
+        ]
+      }
+    ],
+    "watch": [
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2801725,
+        "match": "Arthur Fils vs Botic van de Zandschulp",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-12T08:30:00+00:00",
+        "exactContractKey": "tennis|arthurfils|boticvandezandschulp|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9507407407407407,
+        "arbROI": 0.051811453058044465,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "polymarket"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Arthur Fils",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.35
+          },
+          {
+            "outcome": "Botic van de Zandschulp",
+            "book": "polymarket-direct",
+            "sourceFamily": "polymarket",
+            "price": 4.761904761904763
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2801051,
+        "match": "Daniil Medvedev vs Dalibor Svrcina",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-12T07:00:00+00:00",
+        "exactContractKey": "tennis|daliborsvrcina|daniilmedvedev|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9600000000000001,
+        "arbROI": 0.04166666666666652,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "polymarket"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Daniil Medvedev",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.25
+          },
+          {
+            "outcome": "Dalibor Svrcina",
+            "book": "polymarket-direct",
+            "sourceFamily": "polymarket",
+            "price": 6.249999999999999
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2801722,
+        "match": "Zizou Bergs vs Carlos Alcaraz",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-12T10:00:00+00:00",
+        "exactContractKey": "tennis|carlosalcaraz|zizoubergs|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9749557522123894,
+        "arbROI": 0.025687573749659576,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "polymarket"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Carlos Alcaraz",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.13
+          },
+          {
+            "outcome": "Zizou Bergs",
+            "book": "polymarket-direct",
+            "sourceFamily": "polymarket",
+            "price": 11.11111111111111
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2801126,
+        "match": "Iva Jovic vs Mia Pohankova",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-12T04:30:00+00:00",
+        "exactContractKey": "tennis|ivajovic|miapohankova|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.9830081300813008,
+        "arbROI": 0.017285584318914804,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "polymarket"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Iva Jovic",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.23
+          },
+          {
+            "outcome": "Mia Pohankova",
+            "book": "polymarket-direct",
+            "sourceFamily": "polymarket",
+            "price": 5.882352941176469
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2801052,
+        "match": "Pablo Carreno Busta vs Felix Auger-Aliassime",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-12T04:00:00+00:00",
+        "exactContractKey": "tennis|felixaugeraliassime|pablocarrenobusta|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 0.991304347826087,
+        "arbROI": 0.00877192982456143,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "bovada"
+        ],
+        "freshness": {
+          "outsideLastUpdate": null
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Felix Auger-Aliassime",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.38
+          },
+          {
+            "outcome": "Pablo Carreno Busta",
+            "book": "bovada-traditional-direct",
+            "sourceFamily": "bovada",
+            "price": 3.75
+          }
+        ]
+      },
+      {
+        "tier": "ARB WATCH",
+        "sport": "tennis",
+        "eventId": 2801129,
+        "match": "Clara Tauson vs Marie Bouzkova",
+        "market": "Set 1 Winner",
+        "marketKey": "h2h",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": 1
+        },
+        "startTime": "2026-10-12T04:30:00+00:00",
+        "exactContractKey": "tennis|claratauson|mariebouzkova|h2h|player=|stat=|map=|round=|points=/|pregame",
+        "reciprocalSum": 1.0002721088435373,
+        "arbROI": -0.0002720348204569012,
+        "independentOutsideSources": 3,
+        "sourceFamilies": [
+          "thunderpick",
+          "polymarket"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-11T10:41:04.51474Z"
+        },
+        "identityVerified": false,
+        "upstreamIdentityVerified": true,
+        "blocker": "Exact settlement scope not explicitly persisted by upstream comparator",
+        "legs": [
+          {
+            "outcome": "Marie Bouzkova",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 1.47
+          },
+          {
+            "outcome": "Clara Tauson",
+            "book": "polymarket-direct",
+            "sourceFamily": "polymarket",
+            "price": 3.125
+          }
+        ]
+      }
+    ],
+    "screening": [
+      {
+        "tier": "ARB SCREENING",
+        "sport": "american-football",
+        "eventId": 2774951,
+        "match": "Washington Commanders vs New York Giants",
+        "market": "Player Jayden Daniels - Total passing touchdowns",
+        "marketKey": "player_prop",
+        "scope": {
+          "map": null,
+          "round": null,
+          "set": null
+        },
+        "startTime": "2026-10-11T17:00:00+00:00",
+        "exactContractKey": "american-football|newyorkgiants|washingtoncommanders|player_prop|player=Jayden Daniels|stat=passing_touchdown|map=|round=|points=1.5/1.5|pregame",
+        "reciprocalSum": 1.0207700101317123,
+        "arbROI": -0.02034739454094303,
+        "independentOutsideSources": 4,
+        "sourceFamilies": [
+          "thunderpick",
+          "unibet-kambi"
+        ],
+        "freshness": {
+          "outsideLastUpdate": "2026-10-09T23:54:28Z"
+        },
+        "identityVerified": true,
+        "upstreamIdentityVerified": true,
+        "blocker": null,
+        "legs": [
+          {
+            "outcome": "Over",
+            "book": "Thunderpick",
+            "sourceFamily": "thunderpick",
+            "price": 2.35
+          },
+          {
+            "outcome": "Under",
+            "book": "unibet-kambi-direct",
+            "sourceFamily": "unibet-kambi",
+            "price": 1.68
+          }
+        ]
+      }
+    ],
+    "rejectedIncomplete": 6,
+    "rules": {
+      "watch": "reciprocal sum <= 1.01, or apparent positive arb awaiting exact identity/scope verification",
+      "screening": "reciprocal sum > 1.01 and <= 1.03; discovery only, not actionable"
+    }
+  },
   "topPriceBoardRows": [],
   "informationalBreakdown": {
     "player_prop": 242,
