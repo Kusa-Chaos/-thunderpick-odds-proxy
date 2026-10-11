@@ -1,4 +1,6 @@
 import fs from 'node:fs/promises';
+import {canonicalBookmakerFamily} from './third-source-eligibility.mjs';
+function independentBookFamily(raw='') {const x=String(raw||'').toLowerCase();return canonicalBookmakerFamily(x)||x.replace(/[^a-z0-9]/g,'');}
 
 const tp=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
 const cmp=JSON.parse(await fs.readFile('data/owls-comparison-latest.json','utf8'));
@@ -462,7 +464,7 @@ for(const sport of SPORTS){
    // the freshest representative quote only.
    const byBook=new Map();
    for(const q of saneOutside){
-    const bk=String(q.book||'').trim().toLowerCase(); if(!bk)continue;
+    const bk=independentBookFamily(q.book); if(!bk)continue;
     if(!byBook.has(bk))byBook.set(bk,[]); byBook.get(bk).push(q);
    }
    const deduped=[];
@@ -471,7 +473,7 @@ for(const sport of SPORTS){
     const agree=rows.every(q=>Math.abs(q.a-ref.a)<=0.08&&Math.abs(q.b-ref.b)<=0.08);
     if(!agree)continue;
     rows.sort((x,y)=>(Date.parse(y.lastUpdate||0)||0)-(Date.parse(x.lastUpdate||0)||0));
-    deduped.push(rows[0]);
+    deduped.push({...rows[0],sourceFamily:independentBookFamily(rows[0].book)});
    }
    saneOutside=deduped;
    if(derivativeDiagnostics[d.key]) derivativeDiagnostics[d.key].sane+=saneOutside.length;
@@ -487,7 +489,7 @@ for(const sport of SPORTS){
    }
    // Require >=3 independent books for ACTION/WATCH math. A two-book screen
    // remains diagnostic only and cannot create a candidate or arbitrage.
-   const uniqueBooks=new Set(saneOutside.map(q=>String(q.book||'').toLowerCase()).filter(Boolean));
+   const uniqueBooks=new Set(saneOutside.map(q=>independentBookFamily(q.book)).filter(Boolean));
    if(saneOutside.length<3||uniqueBooks.size<3){
     // A raw exact comparison is still a real matched contract even when it is
     // below the 3-source promotion gate. Count it for coverage, but keep it
@@ -505,8 +507,8 @@ for(const sport of SPORTS){
    // Hard anomaly quarantine: an apparent >=50% edge at 3+ books is much more
    // likely to be a contract/orientation mismatch. Keep it out of ACTION math.
    if(Math.max(evA,evB)>=0.50)continue;
-   const independentSources=new Set(saneOutside.map(q=>String(q.book).toLowerCase())).size;
-   const verifiedIndependentSources=new Set(saneOutside.filter(q=>q.identityVerified).map(q=>String(q.book).toLowerCase())).size;
+   const independentSources=new Set(saneOutside.map(q=>independentBookFamily(q.book))).size;
+   const verifiedIndependentSources=new Set(saneOutside.filter(q=>q.identityVerified).map(q=>independentBookFamily(q.book))).size;
    const verificationTier=verifiedIndependentSources>=5?'ACTION_ELIGIBLE':verifiedIndependentSources>=3?'WATCH_ONLY':verifiedIndependentSources===2?'SCREENING_ONLY':'INFORMATIONAL_ONLY';
    const row={sport,eventId:e.id,name:e.name,startTime:e.startTime,prop:d.prop||null,exactContractKey:exactContractKey(sport,e,d),marketKey:d.key,marketLabel:d.label,scope:d.scope,thunderpick:{a:d.selections[0],b:d.selections[1]},sourceDepth:saneOutside.length,verifiedIdentityDepth:saneOutside.filter(q=>q.identityVerified).length,independentSources,verifiedIndependentSources,verificationTier,actionEligible:verifiedIndependentSources>=5,watchEligible:verifiedIndependentSources>=3,outside:saneOutside,fair:{aProbability:pA,bProbability:pB,aOdds:1/pA,bOdds:1/pB},ev:{a:evA,b:evB},arbScreen,identityVerified:saneOutside.some(q=>q.identityVerified),plausible:Math.max(evA,evB)>=-0.01||Boolean(arbScreen?.trueArb||arbScreen?.nearArb)};
    if(row.plausible)marketTypeCounts[d.key].candidates++;all.push(row);
