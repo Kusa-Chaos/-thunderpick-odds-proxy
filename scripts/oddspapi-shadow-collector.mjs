@@ -21,25 +21,25 @@ export async function collectOddsPapiShadow({get,nowIso=new Date().toISOString()
  if(typeof get!=='function'||!Number.isFinite(now)){out.state='INVALID_INPUT';return out;}
  let calls=0;
  try{
-  const account=await get('/account',{});calls++;
+  calls++;const account=await get('/account',{});
   const access=readOddsPapiEntitlement(account);
   out.entitlement={state:access.state,sports:access.sports,remaining:access.remaining,candidateFamilies:access.candidateFamilies};
   if(access.state!=='ESPORTS_ELIGIBLE'){out.state=access.state;return out;}
   const requestBudget=Math.min(10,Math.max(0,access.remaining-25)); // never burn the last 25 permitted requests
   if(requestBudget<4){out.state='QUOTA_RESERVED';return out;}
-  const markets=await get('/markets',{language:'en'});calls++;
+  calls++;const markets=await get('/markets',{language:'en'});
   if(!Array.isArray(markets)||markets.length===0){out.state='MARKET_CATALOG_MISSING';return out;}
   const to=new Date(now+36*3600000).toISOString(),families=new Set();
   for(const sport of SPORT_ORDER){
    if(!access.sports.includes(sport)||calls+2>requestBudget)continue;
    try{
-    const list=await get('/fixtures',{sportId:ODDS_PAPI_ESPORT_SPORTS[sport],from:nowIso,to,statusId:0,hasOdds:true});calls++;
+    calls++;const list=await get('/fixtures',{sportId:ODDS_PAPI_ESPORT_SPORTS[sport],from:nowIso,to,statusId:0,hasOdds:true});
     const rows=Array.isArray(list)?list:Array.isArray(list?.data)?list.data:[];
     const chosen=selectFixture(rows,{now,targets:targetsBySport[sport]||[]});
     const event=chosen.fixture;
     out.sports[sport].fixtureSelection={available:chosen.available,matchedTarget:chosen.matchedTarget};
     if(!event?.fixtureId)continue;
-    const priced=await get('/odds',{fixtureId:event.fixtureId,oddsFormat:'decimal',language:'en',verbosity:3});calls++;
+    calls++;const priced=await get('/odds',{fixtureId:event.fixtureId,oddsFormat:'decimal',language:'en',verbosity:3});
     const normalized=normalizeOddsPapiEvent(priced,markets,{fetchedAt:new Date().toISOString()});
     if(!normalized)continue;
     out.sports[sport].exactV2.push(normalized);
