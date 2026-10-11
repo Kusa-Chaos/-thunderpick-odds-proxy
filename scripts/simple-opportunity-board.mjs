@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import {buildGGBetHealth,buildPinnacleFamilyHealth} from './bookmaker-source-health.mjs';
 import {canonSport,exactIdentity,exactKey,identityComplete} from './market-identity.mjs';
 import {filterFreshConsensusQuotes} from './source-quality.mjs';
+import {canonicalBookmakerFamily} from './third-source-eligibility.mjs';
 
 const readJson=async(path,fallback={})=>{try{return JSON.parse(await fs.readFile(path,'utf8'))}catch{return fallback}};
 const s=await readJson('data/screen-latest.json',{});
@@ -16,6 +17,7 @@ const rows=[];
 const key=r=>exactKey(r);
 function sourceFamily(v=''){
   const x=String(v||'').toLowerCase();
+  const known=canonicalBookmakerFamily(x);if(known)return known;
   if(x.includes('unibet')||x.includes('kambi'))return'unibet-kambi';
   if(x.includes('stake')||x.includes('oddin'))return'stake-oddin';
   if(x.includes('draftkings'))return'draftkings';
@@ -44,6 +46,11 @@ function dedupeOutside(list=[]){
 const directHealth=directSources?.providerHealth||direct?.providerHealth||{};
 const PROVIDER_FETCHED_AT={
   'stake-oddin':directHealth?.stake?.fetchedAt||null,
+  '1xbet':directHealth?.oddspapi?.fetchedAt||null,
+  'bet365':directHealth?.oddspapi?.fetchedAt||null,
+  'betano':directHealth?.oddspapi?.fetchedAt||null,
+  'roobet':directHealth?.oddspapi?.fetchedAt||null,
+  'rivalry':directHealth?.oddspapi?.fetchedAt||null,
   'betway':directHealth?.betway?.fetchedAt||null,
   'pinnacle':directHealth?.pinnwire?.fetchedAt||directHealth?.pinnacle?.fetchedAt||null,
   'unibet-kambi':directHealth?.kambiTraditional?.fetchedAt||directHealth?.kambi?.fetchedAt||null,
