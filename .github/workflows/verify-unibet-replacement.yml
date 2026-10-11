@@ -1,0 +1,36 @@
+name: Verify Unibet replacement feed (shadow)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-unibet-replacement.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test shadow normalization and quota protection
+        run: |
+          node scripts/test-oddspapi-exact-normalizer-20261010.mjs
+          node scripts/test-oddspapi-shadow-collector-20261010.mjs
+      - name: Verify authenticated OddsPapi Unibet feed without production promotion
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: |
+          node scripts/oddspapi-shadow-collector.mjs
+          node -e "const fs=require('fs');const p='data/oddspapi-shadow-latest.json';if(!fs.existsSync(p)){console.log('UNIBET_VERIFICATION_BLOCKED: no shadow artifact; key missing or unavailable');process.exitCode=1}else{const d=JSON.parse(fs.readFileSync(p));const ok=d.state==='COLLECTED'&&d.bookmakerFamilies.includes('unibet-kambi')&&d.counts.markets>0;console.log('UNIBET_VERIFICATION',JSON.stringify({state:d.state,counts:d.counts,families:d.bookmakerFamilies,entitlement:d.entitlement,productionEligible:false}));if(!ok)process.exitCode=1}"
+      - name: Preserve diagnostic artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unibet-replacement-shadow
+          path: data/oddspapi-shadow-latest.json
+          if-no-files-found: ignore
+          retention-days: 3
