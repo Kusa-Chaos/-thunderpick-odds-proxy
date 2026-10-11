@@ -1,3 +1,4 @@
+import {polymarketMatchRow,selectPolymarketSeries,kalshiSeriesURL,KALSHI_CANDIDATE_SERIES} from './sports-source-targeting.mjs';
 import fs from 'node:fs/promises';
 const OUT='data/direct-sources-latest.json';
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -15,13 +16,113 @@ function parsePoint(name=''){const m=String(name).match(/([+-]?\d+(?:\.\d+)?)\s*
 function mapNum(text=''){const m=String(text).match(/\bmap\s*(\d+)\b/i);return m?Number(m[1]):null}
 async function mapLimit(items,limit,fn){const result=[];let i=0;async function worker(){while(true){const n=i++;if(n>=items.length)return;try{result[n]=await fn(items[n],n)}catch(e){result[n]={__error:String(e?.message||e)}}}}await Promise.all(Array.from({length:Math.min(limit,items.length||1)},worker));return result}
 
-async function collectPolymarket(){let count=0,accepted=0,pages=0,stale=0;try{for(let offset=0;offset<2000;offset+=100){const u=new URL('https://gamma-api.polymarket.com/events');u.searchParams.set('active','true');u.searchParams.set('closed','false');u.searchParams.set('limit','100');u.searchParams.set('offset',String(offset));const r=await fetch(u,{headers:{Accept:'application/json','User-Agent':'thunderpick-comparison/1.4'},signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`HTTP ${r.status}`);const events=await r.json();count+=events.length;pages++;for(const ev of events){for(const m of(ev.markets||[])){if(m.closed===true||m.active===false)continue;const start=ev.startDate||ev.eventStartTime||m.endDate||null;if(start&&!currentWindow(start)){stale++;continue}const meta=[ev.title,ev.slug,ev.category,ev.subcategory,tags(ev),m.question,m.groupItemTitle,m.slug].filter(Boolean).join(' ');const sport=sportOf(meta);if(!sport)continue;const pair=pairFromText([ev.title,m.question,m.groupItemTitle].filter(Boolean).join(' '));if(!pair)continue;let names=m.outcomes,prices=m.outcomePrices;if(typeof names==='string')try{names=JSON.parse(names)}catch{};if(typeof prices==='string')try{prices=JSON.parse(prices)}catch{};if(!Array.isArray(names)||!Array.isArray(prices)||names.length!==2||prices.length!==2)continue;const odds=prices.map(dec);if(odds.some(x=>!(x>1)))continue;const low=names.map(x=>String(x).toLowerCase());if(low.includes('yes')&&low.includes('no'))continue;add(sport,{id:`polymarket-direct:${m.id||m.slug}`,home_team:pair[0],away_team:pair[1],commence_time:start,live:false,bookmakers:[{key:'polymarket-direct',title:'Polymarket Direct',markets:[{key:'h2h',name:'Match Winner',title:m.question||ev.title,scope:{map:null,round:null},last_update:m.updatedAt||ev.updatedAt||null,outcomes:names.map((n,i)=>({name:String(n).trim(),price:odds[i]}))}]}]});accepted++}}if(events.length<100)break;await sleep(50)}out.providerHealth.polymarket={ok:true,status:200,rawEvents:count,pages,acceptedEvents:accepted,rejectedStale:stale,fetchedAt:new Date().toISOString()}}catch(e){out.providerHealth.polymarket={ok:false,error:String(e?.message||e),rawEvents:count,pages,acceptedEvents:accepted,rejectedStale:stale,fetchedAt:new Date().toISOString()}}}
+async function collectPolymarket(){
+  let count=0,accepted=0,pages=0,stale=0,rejectedShape=0,seriesCount=0;
+  const errors=[];
+  try{
+    const resp=await fetch('https://gamma-api.polymarket.com/sports',{headers:{Accept:'application/json','User-Agent':'thunderpick-comparison/1.5'},signal:AbortSignal.timeout(30000)});
+    if(!resp.ok)throw new Error('Sports metadata HTTP '+resp.status);
+    const series=selectPolymarketSeries(await resp.json());
+    seriesCount=series.length;
+    if(!seriesCount)throw new Error('No eligible Polymarket sports series discovered');
+    for(const target of series){
+      // Sort by listing recency only for DISCOVERY; market.gameStartTime is the event clock.
+      for(let offset=0;offset<200;offset+=100){
+        const url=new URL('https://gamma-api.polymarket.com/events');
+        for(const [k,v] of Object.entries({active:'true',closed:'false',series_id:target.series,limit:'100',offset:String(offset),order:'startDate',ascending:'false'}))url.searchParams.set(k,v);
+        let events;
+        try{
+          const r=await fetch(url,{headers:{Accept:'application/json','User-Agent':'thunderpick-comparison/1.5'},signal:AbortSignal.timeout(30000)});
+          if(!r.ok)throw new Error('HTTP '+r.status);
+          events=await r.json();
+          if(!Array.isArray(events))throw new Error('Invalid events response');
+        }catch(e){errors.push(target.slug+': '+String(e?.message||e));break}
+        pages++;count+=events.length;
+        for(const ev of events)for(const m of ev.markets||[]){
+          if(m.sportsMarketType!=='moneyline')continue;
+          const row=polymarketMatchRow(ev,m,target.sport,NOW);
+          if(row){add(target.sport,row);accepted++}
+          else{
+            const time=Date.parse(m.gameStartTime||ev.startTime||'');
+            if(Number.isFinite(time)&&(time<NOW||time>MAX_FUTURE))stale++;
+            else rejectedShape++;
+          }
+        }
+        if(events.length<100)break;
+        await sleep(100);
+      }
+    }
+    out.providerHealth.polymarket={
+      ok:errors.length===0,status:errors.length?206:200,state:accepted?'CONNECTED_USABLE':'CONNECTED_NO_ELIGIBLE_MATCH_WINNERS',
+      rawEvents:count,pages,targetSeries:seriesCount,acceptedEvents:accepted,rejectedStale:stale,rejectedShape,
+      errors:errors.slice(0,5),fetchedAt:new Date().toISOString()
+    };
+  }catch(e){
+    out.providerHealth.polymarket={ok:false,error:String(e?.message||e),rawEvents:count,pages,targetSeries:seriesCount,
+      acceptedEvents:accepted,rejectedStale:stale,rejectedShape,errors:errors.slice(0,5),fetchedAt:new Date().toISOString()};
+  }
+}
 
 const KALSHI_FAMILIES=[['american-football',/KX(?:NFL|NCAAF)/i],['baseball',/KXMLB/i],['basketball',/KX(?:NBA|WNBA|NCAAB)/i],['soccer',/KX(?:MLS|EPL|UCL|SOCCER|LALIGA|SERIEA|BUNDESLIGA)/i],['tennis',/KX(?:ATP|WTA|TENNIS)/i],['cs2',/KX(?:CS2|CSGO|CS)/i],['dota2',/KXDOTA/i],['lol',/KX(?:LOL|LCS|LEC|LCK|LPL)/i],['valorant',/KXVAL/i]];
 function kalshiSport(m){const id=[m.series_ticker,m.event_ticker,m.ticker].filter(Boolean).join(' ');for(const [s,rx] of KALSHI_FAMILIES)if(rx.test(id))return s;return sportOf([id,m.title,m.subtitle].filter(Boolean).join(' '))}
 function kalshiKind(m){const id=[m.series_ticker,m.event_ticker,m.ticker,m.title,m.subtitle].filter(Boolean).join(' ').toUpperCase();if(/MVECROSS|MULTI|PARLAY/.test(id))return null;if(/SPREAD|HANDICAP/.test(id))return'spreads';if(/TOTAL|OVER\/UNDER|O\/U/.test(id))return'totals';if(/GAME|MATCH|WINNER|MONEYLINE/.test(id))return'h2h';return null}
 function cents(v){const n=Number(v);return Number.isFinite(n)&&n>0?n/100:null}function askProb(m,side){const d=Number(m[`${side}_ask_dollars`]);if(Number.isFinite(d)&&d>0&&d<1)return d;return cents(m[`${side}_ask`])}
-async function collectKalshi(){let count=0,accepted=0,cursor='',pages=0,rejectedMulti=0,rejectedNonSports=0,rejectedShape=0;try{for(let page=0;page<60;page++){const u=new URL('https://api.elections.kalshi.com/trade-api/v2/markets');u.searchParams.set('status','open');u.searchParams.set('limit','1000');if(cursor)u.searchParams.set('cursor',cursor);const r=await fetch(u,{headers:{Accept:'application/json','User-Agent':'thunderpick-comparison/1.4'},signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`HTTP ${r.status}`);const body=await r.json(),markets=body?.markets||[];count+=markets.length;pages++;for(const m of markets){const ids=[m.series_ticker,m.event_ticker,m.ticker].filter(Boolean).join(' ');if(/MVECROSS|MULTI|PARLAY/i.test(ids)){rejectedMulti++;continue}const sport=kalshiSport(m);if(!sport){rejectedNonSports++;continue}const kind=kalshiKind(m);if(!kind){rejectedShape++;continue}const text=[m.title,m.subtitle,m.yes_sub_title,m.no_sub_title].filter(Boolean).join(' ');let pair=pairFromText(text);if(!pair&&m.yes_sub_title&&m.no_sub_title&&!/^(yes|no)$/i.test(String(m.yes_sub_title))&&!/^(yes|no)$/i.test(String(m.no_sub_title)))pair=[m.yes_sub_title,m.no_sub_title];if(!pair){rejectedShape++;continue}const yp=askProb(m,'yes'),np=askProb(m,'no'),a=dec(yp),b=dec(np);if(!(a>1&&b>1)){rejectedShape++;continue}let line=null;const lineMatch=text.match(/(?:spread|handicap|total|over\/under|o\/u)\s*[:+-]?\s*(-?\d+(?:\.\d+)?)/i);if(lineMatch)line=Number(lineMatch[1]);const outcomes=[{name:String(m.yes_sub_title||pair[0]).trim(),price:a},{name:String(m.no_sub_title||pair[1]).trim(),price:b}];add(sport,{id:`kalshi-direct:${m.ticker}`,home_team:pair[0],away_team:pair[1],commence_time:m.expected_expiration_time||m.close_time||null,live:false,bookmakers:[{key:'kalshi-direct',title:'Kalshi Direct',markets:[{key:kind,name:kind==='h2h'?'Match Winner':kind==='spreads'?'Handicap':'Total',title:m.title,scope:{map:null,round:null},line,last_update:m.updated_time||null,outcomes}]}]});accepted++}cursor=body?.cursor||'';if(!cursor)break;await sleep(50)}out.providerHealth.kalshi={ok:true,status:200,rawMarkets:count,pages,acceptedEvents:accepted,rejectedMulti,rejectedNonSports,rejectedShape,fetchedAt:new Date().toISOString()}}catch(e){out.providerHealth.kalshi={ok:false,error:String(e?.message||e),rawMarkets:count,pages,acceptedEvents:accepted,rejectedMulti,rejectedNonSports,rejectedShape,fetchedAt:new Date().toISOString()}}}
+async function collectKalshi(){
+  let count=0,accepted=0,pages=0,rejectedMulti=0,rejectedNonSports=0,rejectedShape=0,retries=0;
+  try{
+    for(const series of KALSHI_CANDIDATE_SERIES){
+      let cursor='';
+      for(let p=0;p<3;p++){
+        const url=kalshiSeriesURL(series,cursor);
+        let response=null;
+        for(let attempt=0;attempt<3;attempt++){
+          response=await fetch(url,{headers:{Accept:'application/json','User-Agent':'thunderpick-comparison/1.5'},signal:AbortSignal.timeout(30000)});
+          if(response.ok)break;
+          if(response.status!==429&&response.status<500)throw new Error(series+' HTTP '+response.status);
+          retries++;
+          const retryAfter=Number(response.headers.get('retry-after'));
+          const wait=Number.isFinite(retryAfter)&&retryAfter>0?Math.min(retryAfter*1000,12000):Math.min(12000,1000*2**attempt);
+          await sleep(wait);
+        }
+        if(!response?.ok)throw new Error(series+' HTTP '+(response?.status||'unavailable')+' after retries');
+        const body=await response.json(),markets=body?.markets||[];
+        count+=markets.length;pages++;
+        for(const m of markets){
+          const ids=[m.series_ticker,m.event_ticker,m.ticker].filter(Boolean).join(' ');
+          if(/MVECROSS|MULTI|PARLAY/i.test(ids)){rejectedMulti++;continue}
+          const sport=kalshiSport(m);
+          if(!sport){rejectedNonSports++;continue}
+          const kind=kalshiKind(m);
+          if(!kind){rejectedShape++;continue}
+          const text=[m.title,m.subtitle,m.yes_sub_title,m.no_sub_title].filter(Boolean).join(' ');
+          let pair=pairFromText(text);
+          if(!pair&&m.yes_sub_title&&m.no_sub_title&&!/^(yes|no)$/i.test(String(m.yes_sub_title))&&!/^(yes|no)$/i.test(String(m.no_sub_title)))pair=[m.yes_sub_title,m.no_sub_title];
+          if(!pair){rejectedShape++;continue}
+          const yp=askProb(m,'yes'),np=askProb(m,'no'),a=dec(yp),b=dec(np);
+          if(!(a>1&&b>1)){rejectedShape++;continue}
+          let line=null;
+          const lm=text.match(/(?:spread|handicap|total|over\\/under|o\\/u)\\s*[:+-]?\\s*(-?\\d+(?:\\.\\d+)?)/i);
+          if(lm)line=Number(lm[1]);
+          add(sport,{id:'kalshi-direct:'+m.ticker,home_team:pair[0],away_team:pair[1],
+            commence_time:m.occurrence_datetime||m.expected_expiration_time||m.close_time||null,live:false,
+            bookmakers:[{key:'kalshi-direct',title:'Kalshi Direct',markets:[{key:kind,
+              name:kind==='h2h'?'Match Winner':kind==='spreads'?'Handicap':'Total',
+              title:m.title,scope:{map:null,round:null},line,last_update:m.updated_time||null,
+              outcomes:[{name:String(m.yes_sub_title||pair[0]).trim(),price:a},{name:String(m.no_sub_title||pair[1]).trim(),price:b}]
+            }]}]});accepted++;
+        }
+        cursor=body?.cursor||'';
+        if(!cursor||markets.length===0)break;
+        await sleep(150);
+      }
+    }
+    out.providerHealth.kalshi={ok:true,status:200,rawMarkets:count,pages,targetSeries:KALSHI_CANDIDATE_SERIES.length,
+      acceptedEvents:accepted,retries,rejectedMulti,rejectedNonSports,rejectedShape,fetchedAt:new Date().toISOString()};
+  }catch(e){
+    out.providerHealth.kalshi={ok:false,error:String(e?.message||e),rawMarkets:count,pages,targetSeries:KALSHI_CANDIDATE_SERIES.length,
+      acceptedEvents:accepted,retries,rejectedMulti,rejectedNonSports,rejectedShape,fetchedAt:new Date().toISOString()};
+  }
+}
 
 function stakePair(f={}){const c=f.competitors;if(Array.isArray(c)&&c.length>=2)return[String(c[0]),String(c[1])];const n=String(f.name||'');const parts=n.split(/\s+-\s+/);return parts.length===2?[parts[0].trim(),parts[1].trim()]:null}
 function flattenStakeMarkets(detail={}){const all=[];for(const g of detail.groups||[])for(const bucket of g.markets||[])if(Array.isArray(bucket))for(const m of bucket)all.push({...m,group:g.name});for(const area of ['matchMarkets','matchProps','playerProps','teamProps'])for(const m of detail?.swishMarkets?.[area]||[])all.push({...m,group:`swish:${area}`});const seen=new Set();return all.filter(m=>{const k=m.id||`${m.name}|${m.specifiers}`;if(seen.has(k))return false;seen.add(k);return true})}
