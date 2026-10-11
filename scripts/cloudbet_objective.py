@@ -22,7 +22,7 @@ def _parse(raw):
     return {k:v[-1] for k,v in q.items() if v}
 
 def _params(sel,subkey=''):
-    out=_parse(subkey); out.update(_parse(sel.get('params',''))); return out
+    out=_parse(subkey); out.update(_parse(sel.get('grouping_parameters',''))); out.update(_parse(sel.get('params',''))); return out
 
 def _number(v):
     try: return float(v)
