@@ -38,7 +38,13 @@ try{
   for(const g of marketGroups){if(g?.__error){health.errors.push(g.__error);continue}const markets=Array.isArray(g.markets)?g.markets:(g.markets?.markets||g.markets?.data||[]);const normalized=[];for(const m of markets){const kind=marketKind(m);if(!kind)continue;const outcomes=orientPrices(m,g.m,g.pair);if(!outcomes){health.rejectedUnorientableMarkets++;continue;}if(kind==='player_prop')health.playerPropMarkets++;if(kind==='map_winner')health.mapWinnerMarkets++;let scope={map:null,round:null};const txt=String([m.name,m.description,m.period?.description,m.period].filter(Boolean).join(' '));const mm=txt.match(/\bmap\s*(\d+)\b/i);if(mm)scope.map=Number(mm[1]);normalized.push({key:kind,name:m.name||m.description||kind,title:m.name||m.description||kind,scope,line:null,last_update:null,outcomes});}
     if(!normalized.length)continue;out.sports[g.sport].exactV2.push({id:`pinnacle-direct:${g.m.id}`,home_team:g.pair.home.name,away_team:g.pair.away.name,commence_time:g.m.startTime,live:false,bookmakers:[{key:'pinnacle-direct',title:'Pinnacle Direct',markets:normalized}]});health.acceptedEvents++;health.acceptedMarkets+=normalized.length;}
   health.ok=true;health.status=200;
-}catch(e){health.errors.push(String(e?.message||e));health.status=health.status||500;}
+}catch(e){
+  const error=String(e?.message||e);
+  health.errors.push(error);
+  // Preserve the actual upstream HTTP status; a blocked guest endpoint is not a production-scanner HTTP 500.
+  health.status=/\bHTTP 403\b/.test(error)?403:(health.status||500);
+  health.state=health.status===403?'UPSTREAM_ACCESS_RESTRICTED':'COLLECTOR_ERROR';
+}
 for(const s of Object.keys(out.sports||{}))out.sports[s].exactV2EventCount=(out.sports[s].exactV2||[]).length;
 health.errors=[...new Set(health.errors)].slice(0,20);health.fetchedAt=new Date().toISOString();out.providerHealth ||= {};out.providerHealth.pinnacle=health;out.generatedAt=new Date().toISOString();await fs.writeFile(FILE,JSON.stringify(out,null,2));
 console.log('PINNACLE_DIRECT_HEALTH',JSON.stringify(health));
