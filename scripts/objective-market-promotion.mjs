@@ -44,7 +44,7 @@ export function promoteObjectiveComparison({comparison={},tpFreshBySport={},now=
       const sourceBlock=tier==='SCREENING'&&sources===1?'1 SOURCE — SCREENING ONLY':tier==='PRICE BOARD'?'Objective exact comparison below +EV screening threshold':sources===0?'No outside exact objective source':null;
       const fair=best.fair;
       out.push({
-        tier,sport,eventId:null,match:row.event||null,target:row.target||null,side:String(best.id),
+        tier,sport,eventId:null,match:row.event||null,target:row.target||null,side:row.family==='map_winner'?best.label:String(best.id),
         market:row?.thunderpick?.label||row.family,marketKey:row.family,line:row.line??null,
         scope:{map:row.map??null,period:null,round:null,set:null},state:row.state||'prematch',
         settlementScope:row.settlement||'standard',
@@ -52,7 +52,7 @@ export function promoteObjectiveComparison({comparison={},tpFreshBySport={},now=
         fairProbability:fresh?fair:null,fairDecimal:fresh&&fair>0?1/fair:null,
         bestOutside:outside.length?Math.max(...outside.map(x=>x.price)):null,
         estimatedEV:fresh?best.ev:null,startTime:null,
-        objectiveMarket:true,exactObjectiveIdentity:exact,
+        objectiveMarket:row.family!=='map_winner',exactObjectiveIdentity:exact,
         blocker:[staleBlock,sourceBlock].filter(Boolean).join('; ')||null
       });
     }
