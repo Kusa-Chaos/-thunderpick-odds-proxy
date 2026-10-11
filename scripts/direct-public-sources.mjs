@@ -101,7 +101,7 @@ async function collectKalshi(){
           const yp=askProb(m,'yes'),np=askProb(m,'no'),a=dec(yp),b=dec(np);
           if(!(a>1&&b>1)){rejectedShape++;continue}
           let line=null;
-          const lm=text.match(/(?:spread|handicap|total|over\\/under|o\\/u)\\s*[:+-]?\\s*(-?\\d+(?:\\.\\d+)?)/i);
+          const lm=text.match(/(?:spread|handicap|total|over\/under|o\/u)\s*[:+-]?\s*(-?\d+(?:\.\d+)?)/i);
           if(lm)line=Number(lm[1]);
           add(sport,{id:'kalshi-direct:'+m.ticker,home_team:pair[0],away_team:pair[1],
             commence_time:m.occurrence_datetime||m.expected_expiration_time||m.close_time||null,live:false,
