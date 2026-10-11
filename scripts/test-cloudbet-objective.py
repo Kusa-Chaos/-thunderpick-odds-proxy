@@ -54,6 +54,15 @@ def test_objective_event_row_shape():
     assert bm['key']=='cloudbet-objective' and bm['title']=='Cloudbet'
     assert bm['markets'][0]['name']=='Map 1 - First to 5 Kills'
 
+def test_grouping_parameters_fallback_and_selection_override():
+    market={'submarkets':{'default':{'selections':[
+        {'outcome':'home','price':1.82,'grouping_parameters':'map=1&xth=5','status':'SELECTION_ENABLED','side':'BACK'},
+        {'outcome':'away','price':1.92,'grouping_parameters':'map=1&xth=5','status':'SELECTION_ENABLED','side':'BACK'}]}}}
+    rows=normalize_objective_market('league_of_legends.map_xth_kill',market,'T1','Gen.G')
+    assert len(rows)==1 and rows[0]['scope']['map']==1 and rows[0]['line']==5
+    market['submarkets']['default']['selections'][1]['params']='map=2&xth=5'
+    assert normalize_objective_market('league_of_legends.map_xth_kill',market,'T1','Gen.G')==[]
+
 if __name__=='__main__':
     tests=[v for k,v in sorted(globals().items()) if k.startswith('test_') and callable(v)]
     for t in tests:
