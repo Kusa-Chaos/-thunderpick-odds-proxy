@@ -1,0 +1,42 @@
+name: Deploy GG.BET objective Lambda to AWS
+on:
+  workflow_dispatch:
+permissions:
+  id-token: write
+  contents: read
+concurrency:
+  group: deploy-ggbet-objective-lambda
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate collector syntax and tests
+        run: |
+          python -m py_compile scripts/lambda/ggbet_objective_collector/lambda_function.py
+          python -m unittest discover -s scripts -p 'test_ggbet_objective_collector.py' -v
+      - name: Check deployment role configured
+        env:
+          ROLE: ${{ vars.GGBET_LAMBDA_DEPLOY_ROLE_ARN }}
+        run: |
+          if [ -z "$ROLE" ]; then echo "::error::Set repository variable GGBET_LAMBDA_DEPLOY_ROLE_ARN to an authorized scoped AWS OIDC role"; exit 1; fi
+      - name: Assume authorized AWS deployment role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.GGBET_LAMBDA_DEPLOY_ROLE_ARN }}
+          aws-region: eu-central-1
+      - name: Verify target and deploy exact collector code
+        run: |
+          set -euo pipefail
+          aws sts get-caller-identity
+          aws lambda get-function-configuration --function-name thunderpick-ggbet-objective-collector --query '{FunctionName:FunctionName,State:State,PackageType:PackageType,RevisionId:RevisionId}' --output json
+          test "$(aws lambda get-function-configuration --function-name thunderpick-ggbet-objective-collector --query PackageType --output text)" = Zip
+          cd scripts/lambda/ggbet_objective_collector
+          zip -q "$RUNNER_TEMP/ggbet-objective.zip" lambda_function.py
+          cd -
+          REVISION="$(aws lambda get-function-configuration --function-name thunderpick-ggbet-objective-collector --query RevisionId --output text)"
+          aws lambda update-function-code --function-name thunderpick-ggbet-objective-collector --zip-file "fileb://$RUNNER_TEMP/ggbet-objective.zip" --revision-id "$REVISION" --query '{FunctionName:FunctionName,LastUpdateStatus:LastUpdateStatus,CodeSha256:CodeSha256}' --output json
+          aws lambda wait function-updated --function-name thunderpick-ggbet-objective-collector
+          aws lambda get-function-configuration --function-name thunderpick-ggbet-objective-collector --query '{FunctionName:FunctionName,State:State,LastUpdateStatus:LastUpdateStatus,CodeSha256:CodeSha256,LastModified:LastModified}' --output json
