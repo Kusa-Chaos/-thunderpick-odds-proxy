@@ -60,9 +60,24 @@ def normalize_objective_market(market_key,market,home,away):
       'dota_2.map_total_kills_v2':'total',
       'dota_2.map_team_total_kills':'team',
     }
+    map_winner_keys={'league_of_legends.map_winner_v2','dota_2.map_winner_v2'}
     for subkey,sub in submarkets.items():
         sels=[s for s in ((sub or {}).get('selections') or []) if isinstance(s,dict) and _enabled(s)]
-        if market_key in team_keys:
+        if market_key in map_winner_keys:
+            groups={}
+            for s in sels:
+                p=_params(s,subkey)
+                mp=_clean_num(p.get('map'))
+                side=str(s.get('outcome') or '').lower()
+                if mp is None or mp<1 or side not in ('home','away'):continue
+                groups.setdefault(mp,{})[side]=s
+            for mp,g in groups.items():
+                if 'home' not in g or 'away' not in g:continue
+                rows.append(_market(f'Map {mp} - Winner',market_key,mp,None,[
+                    {'name':home,'type':'home','price':float(g['home']['price'])},
+                    {'name':away,'type':'away','price':float(g['away']['price'])},
+                ]))
+        elif market_key in team_keys:
             groups={}
             for s in sels:
                 p=_params(s,subkey); mp=_clean_num(p.get('map')); xth=_clean_num(p.get('xth'))
