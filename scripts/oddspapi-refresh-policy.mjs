@@ -1,0 +1,55 @@
+// OddsPapi has a monthly request allowance. Preflight NEVER calls OddsPapi.
+// Schedule may check each hour, but billable requests require a nearby
+// Thunderpick esports match and a strict daily / monthly quota budget.
+export const ESPORTS=['lol','dota2','cs2','valorant'];
+const DAY_MS=86400000, HOUR_MS=3600000;
+function time(v){const n=Date.parse(v||'');return Number.isFinite(n)?n:null;}
+function dayHistory(previous,nowMs){
+ const supplied=Array.isArray(previous?.refreshHistory)?previous.refreshHistory:[];
+ const fallback=previous?.generatedAt?[{at:previous.generatedAt,requests:previous?.counts?.requests||5}]:[];
+ return (supplied.length?supplied:fallback).map(x=>({at:String(x?.at||''),requests:Number(x?.requests)||0}))
+  .filter(x=>{const t=time(x.at);return t!==null&&t<=nowMs+60000&&t>nowMs-DAY_MS}).slice(-10);
+}
+export function eligibleEsportsMatches(inventory={},nowMs=Date.now(),hours=20){
+ const result=[];
+ for(const sport of ESPORTS) {
+  const bucket=inventory?.sports?.[sport];
+  const data=bucket?.data?.data||bucket?.data||[];
+  for(const e of Array.isArray(data)?data:[]){
+   const start=time(e?.startTime||e?.commence_time);
+   const name=String(e?.name||[e?.teams?.home?.name||e?.market?.home?.name,e?.teams?.away?.name||e?.market?.away?.name].filter(Boolean).join(' vs ')).trim();
+   if(!start||start<=nowMs+5*60000||start>nowMs+hours*HOUR_MS||e?.isLive===true)continue;
+   if(!/\s(?:vs\.?|v\.)\s/i.test(name))continue;
+   if(/\b(?:virtual|esoccer|ebasketball|madden|synthetic)\b/i.test(name))continue;
+   if(/mouz\s+vs\s+nrg|tes\s+vs\s+ig/i.test(name))continue;
+   result.push({sport,name,startTime:new Date(start).toISOString(),hoursUntil:(start-nowMs)/HOUR_MS});
+  }
+ }
+ return result.sort((a,b)=>a.hoursUntil-b.hoursUntil);
+}
+export function decideOddsPapiRefresh({previous={},inventory={},nowMs=Date.now(),manual=false}={}){
+ const events=eligibleEsportsMatches(inventory,nowMs);
+ const history=dayHistory(previous,nowMs);
+ const lastMs=history.length?Math.max(...history.map(x=>time(x.at))):null;
+ const declared=Number(previous?.entitlement?.remaining);
+ const usedLast=Number(previous?.counts?.requests||0);
+ const remaining=Number.isFinite(declared)&&declared>=0?Math.max(0,declared-usedLast):null;
+ const reserve=25, eligibleCount=events.length, soon=events.some(x=>x.hoursUntil<=2);
+ let reason=null;
+ if(!eligibleCount)reason='NO_MATCHING_UPCOMING_ESPORTS_EVENTS';
+ else if(remaining===null)reason='QUOTA_UNVERIFIED';
+ else if(remaining<=reserve+5)reason='MONTHLY_QUOTA_RESERVED';
+ else if(!manual&&lastMs!==null&&nowMs-lastMs<4*HOUR_MS)reason='COOLDOWN_TO_AVOID_EXCESS_REQUESTS';
+ else if(!manual&&history.length>=(remaining>=100&&soon?2:1))reason='DAILY_REQUEST_CAP';
+ return {shouldRefresh:!reason,reason:reason||'TARGETED_REFRESH_DUE',events:events.slice(0,24),
+  eligibleEvents:eligibleCount,urgentEvent:soon,previous24hRuns:history.length,
+  lastAttemptAt:lastMs?new Date(lastMs).toISOString():null,estimatedRemaining:remaining,
+  requestCap:5,reservedRequests:reserve,checkedAt:new Date(nowMs).toISOString()};
+}
+export function attachOddsPapiRefreshHistory(snapshot={},previous={},nowMs=Date.now()){
+ const history=dayHistory(previous,nowMs);
+ const at=snapshot.generatedAt||new Date(nowMs).toISOString();
+ const requests=Math.max(0,Math.min(10,Number(snapshot?.counts?.requests)||0));
+ return {...snapshot,refreshHistory:[...history,{at,requests}].slice(-10),
+  refreshPolicy:{mode:'quota-gated-hourly-preflight',attemptedAt:at,requests,reserve:25}};
+}
