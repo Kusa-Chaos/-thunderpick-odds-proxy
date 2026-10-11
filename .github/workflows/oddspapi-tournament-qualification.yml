@@ -1,0 +1,68 @@
+name: Qualify OddsPapi Tournament Batch (Shadow Only)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: oddspapi-tournament-qualification-only
+  cancel-in-progress: false
+
+jobs:
+  tournament-shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test tournament batch identity, quota budget, and quote timestamps
+        run: |
+          node scripts/test-oddspapi-exact-normalizer-20261010.mjs
+          node scripts/test-oddspapi-tournament-shadow-collector.mjs
+          node scripts/test-exact-esports-total-family.mjs
+      - name: Assume read-only inventory plus one dedicated shadow object AWS scope
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::367398820205:role/ThunderpickOddsPapiSnapshotUploadRole
+          aws-region: us-east-2
+      - name: Load current Thunderpick esports inventory and prior batch catalog cache
+        run: |
+          mkdir -p data
+          aws s3 cp s3://thunderpick-cloud-367398820205-us-east-2/collector/production/owls-latest.json data/owls-latest.json --no-progress
+          if aws s3api head-object --bucket thunderpick-cloud-367398820205-us-east-2 --key collector/shadow/oddspapi-tournament-qualification-latest.json >/dev/null 2>&1; then
+            aws s3 cp s3://thunderpick-cloud-367398820205-us-east-2/collector/shadow/oddspapi-tournament-qualification-latest.json /tmp/oddspapi-tournament-previous.json --no-progress
+          else
+            echo 'ODDSPAPI_TOURNAMENT_CACHE_COLD'
+          fi
+      - name: Query a single targeted esports tournament, max five billable calls
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+          ODDSPAPI_MAX_BILLABLE_REQUESTS: '5'
+        run: node scripts/oddspapi-tournament-shadow-collector.mjs
+      - name: Enforce separate shadow output and monthly quota
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path='data/oddspapi-tournament-shadow-latest.json';
+          if(!fs.existsSync(path))throw Error('TOURNAMENT_SHADOW_MISSING');
+          const d=JSON.parse(fs.readFileSync(path,'utf8'));
+          if(d.mode!=='TOURNAMENT_SHADOW_ONLY'||d.productionEligible!==false)throw Error('TOURNAMENT_PRODUCTION_PROMOTION_FORBIDDEN');
+          if((d.counts?.requests||0)>5)throw Error('MONTHLY_QUOTA_CALL_BUDGET_EXCEEDED');
+          if(d.entitlement?.state!=='ESPORTS_ELIGIBLE')throw Error('NO_ESPORTS_ENTITLEMENT');
+          if(fs.statSync(path).size>500000)throw Error('TOURNAMENT_PAYLOAD_TOO_LARGE');
+          if(d.counts?.events>0&&(!d.counts?.books||!d.bookmakerFamilies?.length))throw Error('UNATTRIBUTED_ODDS');
+          console.log('ODDSPAPI_TOURNAMENT_VERIFICATION',JSON.stringify({
+            state:d.state,counts:d.counts,bookmakerFamilies:d.bookmakerFamilies,
+            slugs:d.bookmakerSlugsObserved,cacheUsed:d.cacheUsed,
+            productionEligible:d.productionEligible,errors:d.errors
+          }));
+          NODE
+      - name: Publish exclusively to nonproduction shadow object
+        run: |
+          aws s3 cp data/oddspapi-tournament-shadow-latest.json s3://thunderpick-cloud-367398820205-us-east-2/collector/shadow/oddspapi-tournament-qualification-latest.json --sse AES256 --content-type application/json --no-progress
+          echo 'ODDSPAPI_TOURNAMENT_SHADOW_ONLY_PUBLISHED; PRODUCTION SCANNER AND :05 DELIVERY UNCHANGED'
