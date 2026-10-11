@@ -32,4 +32,15 @@ expect(compareObjectiveContractSets([tpRace],[outsideRace]).length===1,'same rac
 const liveRace={...outsideRace,state:'live'};
 expect(compareObjectiveContractSets([tpRace],[liveRace]).length===0,'live and prematch objective contracts must never match');
 
-console.log('OBJECTIVE_MARKET_COMPARATOR_VERIFIED',8);
+const mapTpEvent={home:'T1',away:'Gen.G',name:'T1 vs Gen.G',state:'prematch'};
+const tpMapWinner=extractObjectiveContract({sport:'lol',source:'thunderpick',event:mapTpEvent,
+  market:{name:'Map 1 - Winner',period:{type:'map',number:1},selections:[{name:'T1',odds:2.05},{name:'Gen.G',odds:1.72}]}});
+const cbMapWinner=extractObjectiveContract({sport:'lol',source:'cloudbet-objective',event:mapTpEvent,
+  market:{name:'Map 1 - Winner',scope:{map:1},outcomes:[{name:'T1',price:2.0},{name:'Gen.G',price:1.8}]}});
+expect(tpMapWinner&&cbMapWinner,'map-winner two-sided quotes must parse');
+expect(compareObjectiveContractSets([tpMapWinner],[cbMapWinner]).length===1,'Cloudbet map winner must compare only identical map contracts');
+expect(compareObjectiveContractSets([tpMapWinner],[{...cbMapWinner,map:2}]).length===0,'Map 1 and Map 2 must never mix');
+expect(compareObjectiveContractSets([tpMapWinner],[{...cbMapWinner,state:'live'}]).length===0,'prematch and live map winners must never mix');
+expect(cbMapWinner.source==='cloudbet','Cloudbet objective and direct adapters must share one source family');
+
+console.log('OBJECTIVE_MARKET_COMPARATOR_VERIFIED',13);
