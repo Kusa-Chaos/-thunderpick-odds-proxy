@@ -65,8 +65,16 @@ assert.equal(tiny.counts.requests,3);
 const staleRaw=response(['bet365'])[0];
 for(const o of Object.values(staleRaw.bookmakerOdds.bet365.markets[181].outcomes))o.players['0'].changedAt='2026-10-11T13:00:00Z';
 assert.equal(normalizeOddsPapiEvent({...fixtures[0],bookmakerOdds:staleRaw.bookmakerOdds},[market],{fetchedAt:at,requireQuoteTimestamps:true}),null,'older outcome change is never refreshed synthetically');
-const stale=await collectOddsPapiTournamentShadow({get:async(p,q)=>p==='/odds-by-tournaments'?response(q.bookmakers.split(',')).map(e=>({...e,bookmakerOdds:Object.fromEntries(Object.entries(e.bookmakerOdds).map(([k,v])=>[k,{...v,markets:{181:{...v.markets[181],outcomes:Object.fromEntries(Object.entries(v.markets[181].outcomes).map(([id,row])=>[id,{players:{0:{...row.players[0],changedAt:'2026-10-11T13:00:00Z'}}}]))}}}]]))})):get(p,q),
- inventory,nowIso:at,maxBillableCalls:5});
+const staleGet=async(path,params={})=>{
+ if(path!=='/odds-by-tournaments')return get(path,params);
+ const events=response(params.bookmakers.split(','));
+ for(const e of events)for(const book of Object.values(e.bookmakerOdds||{}))
+  for(const market of Object.values(book.markets||{}))
+   for(const outcome of Object.values(market.outcomes||{}))
+    for(const player of Object.values(outcome.players||{}))player.changedAt='2026-10-11T13:00:00Z';
+ return events;
+};
+const stale=await collectOddsPapiTournamentShadow({get:staleGet,inventory,nowIso:at,maxBillableCalls:5});
 assert.equal(stale.state,'NO_FRESH_EXACT_QUOTE_TIMESTAMPS');
 assert.equal(stale.counts.events,0);
 assert(stale.counts.quoteAgeRejected>=1);
