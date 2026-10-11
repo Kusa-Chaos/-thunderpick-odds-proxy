@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 const SPORTS=['american-football','baseball','basketball','soccer','tennis','cs2','dota2','lol','valorant'];
 const NUMBER_FIELDS=['events','tpMarkets','deepMarkets','deepSelectedEvents','deepSuccessfulEvents','deepFailedEvents','exact1Source','exact2Source','exact3Plus','objectiveContracts','action','watch','screening','identityIncomplete'];
-const SOURCE_FIELDS=['ok','usable','status','state','events','markets','acceptedEvents','acceptedMarkets','marketCount','fetchedAt','generatedAt','fetchSelected','fetchSuccessful','fetchFailed'];
+const SOURCE_FIELDS=['ok','usable','status','state','events','markets','acceptedEvents','acceptedMarkets','marketCount','fetchedAt','generatedAt','fetchSelected','fetchSuccessful','fetchFailed','error','recoveryError','recoveryAttempted','recovered','rawEvents','rawMarkets','pages','targetSeries','rejectedStale','rejectedShape','rejectedMulti','rejectedNonSports','retries'];
 const numeric=v=>typeof v==='number'&&Number.isFinite(v)?v:null;
 export function buildCompactDeliveryAudit(board={}){
  if(!board.generatedAt||!Number.isFinite(Date.parse(board.generatedAt)))throw new Error('delivery audit requires a valid board generatedAt');
@@ -13,7 +13,7 @@ export function buildCompactDeliveryAudit(board={}){
  const coverageAudit=Object.fromEntries(SPORTS.map(sp=>[sp,Object.fromEntries(NUMBER_FIELDS.map(k=>[k,numeric(sportAudit[sp][k])]))]));
  const sourceHealth=Object.fromEntries(Object.entries(source).map(([name,v])=>{
   const q=v&&typeof v==='object'?v:{};
-  const vals=Object.fromEntries(SOURCE_FIELDS.filter(k=>Object.hasOwn(q,k)).map(k=>[k,q[k]]));
+  const vals=Object.fromEntries(SOURCE_FIELDS.filter(k=>Object.hasOwn(q,k)).map(k=>[k,k==='error'||k==='recoveryError'?String(q[k]).slice(0,160):q[k]]));
   return [name,{...vals,errors:Array.isArray(q.errors)?q.errors.slice(0,2).map(e=>String(e).slice(0,125)):[]}];
  }));
  const a=board.arbitrageAudit||{};
