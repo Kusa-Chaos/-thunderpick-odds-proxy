@@ -7,7 +7,7 @@ const APPROVED_FAMILIES=new Set(['1xbet','bet365','betano','roobet','rivalry','u
 const plausibleDecimal=x=>typeof x==='number'&&Number.isFinite(x)&&x>1&&x<100;
 const text=x=>String(x??'').trim();
 
-function cleanMarket(m={},createdAt){
+function cleanMarket(m={},nowMs){
  const key=text(m.key),scope=m.scope||{},map=scope.map??null;
  const two=Array.isArray(m.outcomes)&&m.outcomes.length===2&&m.outcomes.every(o=>text(o.name)&&plausibleDecimal(o.price));
  if(!two||!['h2h','totals','map_winner'].includes(key))return null;
@@ -15,7 +15,11 @@ function cleanMarket(m={},createdAt){
  if(key!=='map_winner'&&map!=null)return null;
  if(key==='totals'&&(m.name!=='Total Maps'||m.line===null||m.line===undefined||!Number.isFinite(Number(m.line))||Number(m.line)<=0||!m.outcomes.some(o=>o.name==='Over')||!m.outcomes.some(o=>o.name==='Under')))return null;
  if(key==='h2h'&&m.line!=null)return null;
- if(!Number.isFinite(Date.parse(m.last_update||''))||Math.abs(Date.parse(m.last_update)-createdAt)>5*60000)return null;
+ // Every quote must carry its upstream outcome changedAt, not collection time.
+ // Its age is measured at SCAN time, never relative to the shadow upload time.
+ const quoteAt=Date.parse(m.last_update||'');
+ if(m.quoteTimestampVerified!==true||m.quoteTimestampSource!=='outcome.changedAt'||
+    !Number.isFinite(quoteAt)||quoteAt>nowMs+60000||nowMs-quoteAt>40*60000)return null;
  return {...m,scope:{map:key==='map_winner'?map:null,round:null},last_update:m.last_update};
 }
 export function bridgeOddsPapiSnapshot({direct={},shadow={},nowMs=Date.now(),maxAgeMs=MAX_AGE_MS}={}){
@@ -31,6 +35,7 @@ export function bridgeOddsPapiSnapshot({direct={},shadow={},nowMs=Date.now(),max
  const generatedAt=Date.parse(shadow.generatedAt||'');
  let blocker=null;
  if(shadow.mode!=='SHADOW_ONLY'||shadow.productionEligible!==false)blocker='INVALID_SHADOW_ORIGIN';
+ else if(shadow.sourceMode!=='AUTHORIZED_FIXTURE_QUOTE_TIMESTAMPS_VERIFIED'||shadow.upstreamTimestampVerified!==true)blocker='UNVERIFIED_UPSTREAM_QUOTE_TIMESTAMPS';
  else if(shadow.state!=='COLLECTED')blocker='NO_COLLECTED_PRICES';
  else if(!Number.isFinite(generatedAt)||generatedAt>nowMs+60000||nowMs-generatedAt>maxAgeMs)blocker='STALE_OR_FUTURE_SHADOW';
  else if(shadow.entitlement?.state!=='ESPORTS_ELIGIBLE')blocker='ENTITLEMENT_NOT_VERIFIED';
@@ -47,7 +52,7 @@ export function bridgeOddsPapiSnapshot({direct={},shadow={},nowMs=Date.now(),max
     for(const bm of e.bookmakers||[]){
      const fam=canonicalBookmakerFamily(bm.sourceFamily||bm.key||bm.title);
      if(!APPROVED_FAMILIES.has(fam)||seen.has(fam)||!text(bm.key).startsWith('oddspapi-'))continue;
-     const markets=(bm.markets||[]).map(m=>cleanMarket(m,generatedAt)).filter(Boolean);
+     const markets=(bm.markets||[]).map(m=>cleanMarket(m,nowMs)).filter(Boolean);
      if(!markets.length)continue;
      seen.add(fam);familySet.add(fam);
      acceptedMarkets+=markets.length;
