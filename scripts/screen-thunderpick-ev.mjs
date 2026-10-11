@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import {canonicalBookmakerFamily} from './third-source-eligibility.mjs';
+import {ESPORTS_WITH_SCOPED_TOTALS,exactEsportsTotalFamily} from './exact-esports-total-family.mjs';
 function independentBookFamily(raw='') {const x=String(raw||'').toLowerCase();return canonicalBookmakerFamily(x)||x.replace(/[^a-z0-9]/g,'');}
 
 const tp=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
@@ -274,7 +275,7 @@ function exactContractKey(sport,event,d){
  const pts=(d.selections||[]).map(x=>x.point==null?'':Number(x.point)).join('/');
  return [sport,teams,d.key,'player='+(d.prop?.player??''),'stat='+(d.prop?.stat??''),'map='+map,'round='+round,'points='+pts,'pregame'].join('|');
 }
-function quoteFor(row,d){
+function quoteFor(row,d,sport){
  const found=[];
  const eventHome=row.event?.home_team,eventAway=row.event?.away_team;
  const tpHome=d.selections.find(x=>x.role==='home')?.name||d.selections[0]?.name;
@@ -286,6 +287,7 @@ function quoteFor(row,d){
  // contract. This is the main fail-closed guard against giant false EV.
  if(!orientationAligned && !['totals','round_totals','player_prop'].includes(d.key)) return found;
  for(const c of outsideMarkets(row.event,d.key)){
+  if(d.key==='totals'&&ESPORTS_WITH_SCOPED_TOTALS.has(sport)&&!exactEsportsTotalFamily(d,c.market))continue;
   let propOutcomes=null;
   if(d.key==='player_prop'){
    const raw=marketIdentityText(c.market); const op=outsidePropIdentity(c.market)||playerPropIdentity(c.market);
@@ -451,7 +453,7 @@ for(const sport of SPORTS){
   for(const d of markets){
    if(d.key==='player_prop') playerPropInventory.push({tier:'INFORMATIONAL',sport,match:e.name||`${e?.teams?.home?.name||e?.market?.home?.name||''} vs ${e?.teams?.away?.name||e?.market?.away?.name||''}`,eventId:e.id,startTime:e.startTime,player:d.prop?.player||null,stat:d.prop?.stat||null,market:d.label,line:d.selections?.[0]?.point??null,scope:d.scope,thunderpick:{over:d.selections?.[0]?.odds??null,under:d.selections?.[1]?.odds??null},independentSources:0,blocker:'Thunderpick player prop captured; no exact outside contract currently available for fair-value verification'});
    eligibleMarkets++;marketTypeCounts[d.key]??={eligible:0,matched:0,candidates:0};marketTypeCounts[d.key].eligible++;
-   const outside=[];for(const row of rows)outside.push(...quoteFor(row,d));
+   const outside=[];for(const row of rows)outside.push(...quoteFor(row,d,sport));
    if(d.key==='player_prop')for(const row of rows)oneWayPlayerPropScreensOut.push(...oneWayPlayerPropScreens(row,d));
    if(!outside.length)continue;
    rawExactQuoteMatchesByType[d.key]=(rawExactQuoteMatchesByType[d.key]||0)+1;
