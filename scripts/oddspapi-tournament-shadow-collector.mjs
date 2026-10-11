@@ -54,12 +54,12 @@ export function fuseTournamentQuote(raw={},identity={}){
     (validDate(raw.startTime)&&Math.abs(Date.parse(raw.startTime)-Date.parse(identity.startTime))>5*60000))return null;
  return {...identity,bookmakerOdds:raw.bookmakerOdds||{}};
 }
-export async function collectOddsPapiTournamentShadow({get,inventory={},previous={},nowIso=new Date().toISOString(),maxBillableCalls=5}={}){
+export async function collectOddsPapiTournamentShadow({get,inventory={},previous={},nowIso=new Date().toISOString(),maxBillableCalls=5,strategy='tournament'}={}){
  const nowMs=Date.parse(nowIso);
  const result={generatedAt:nowIso,mode:'TOURNAMENT_SHADOW_ONLY',productionEligible:false,
   state:'INITIAL',counts:{requests:0,events:0,markets:0,books:0,fixturesExamined:0,batchedEvents:0,quoteAgeRejected:0},
   bookmakerFamilies:[],bookmakerSlugsObserved:[],errors:[],sports:{},cacheUsed:false,batchUnsupported:false,fallbackUsed:false,
-  marketCatalog:null,source:'OddsPapi /v4/odds-by-tournaments'};
+  marketCatalog:null,source:strategy==='fixture'?'OddsPapi /v4/odds (verified exact fixture)':'OddsPapi /v4/odds-by-tournaments'};
  if(typeof get!=='function'||!Number.isFinite(nowMs)){result.state='INVALID_INPUT';return result;}
  let billable=0;
  const limit=Math.max(0,Math.min(5,Number(maxBillableCalls)||0));
@@ -108,6 +108,31 @@ export async function collectOddsPapiTournamentShadow({get,inventory={},previous
     result.sports[sport]={tournamentId:selection?.tournamentId||null,targetedFixtures:selection?.matchCount||0,exactV2:[]};
     if(!selection)continue;
     const known=new Map(selection.fixtures.map(f=>[str(f.fixtureId),f]));
+    if(strategy==='fixture'){
+      // Production mode: the tournament API returned HTTP 400 on this account.
+      // Use the confirmed authorized fixture endpoint only. One precise target
+      // per authorized run, without a deliberate failing/paid batch request.
+      const fixture=selection.fixtures[0];
+      if(billable<allowed){
+        try{
+          const raw=await call('/odds',{fixtureId:str(fixture.fixtureId),oddsFormat:'decimal',language:'en',verbosity:3});
+          if(str(raw?.fixtureId)!==str(fixture.fixtureId)||Number(raw?.sportId)!==Number(fixture.sportId)||
+             Number(raw?.statusId)!==0||
+             (validDate(raw?.startTime)&&Math.abs(Date.parse(raw.startTime)-Date.parse(fixture.startTime))>5*60000)){
+            result.errors.push('fixture:IDENTITY_MISMATCH');
+          }else{
+            const bookmakerOdds={};
+            for(const [slug,book] of Object.entries(raw?.bookmakerOdds||{})){
+              if(!NEW_BOOKMAKER_FAMILIES.includes(canonicalBookmakerFamily(slug)))continue;
+              slugs.add(slug);bookmakerOdds[slug]=book;
+            }
+            if(Object.keys(bookmakerOdds).length)totals.set(str(fixture.fixtureId),{fixture,bookmakerOdds,sport});
+            result.fallbackUsed=true;
+          }
+        }catch(e){result.errors.push('fixture:'+str(e?.name||e?.message).slice(0,45));}
+      }
+      break;
+    }
     const selectedFamilyBatches=groups.slice(0,Math.max(0,allowed-billable));
     for(const batch of selectedFamilyBatches){
       try{
@@ -208,7 +233,7 @@ async function run(){
   return res.json();
  };
  const result=await collectOddsPapiTournamentShadow({get,inventory,previous,
-  maxBillableCalls:Number(process.env.ODDSPAPI_MAX_BILLABLE_REQUESTS||5)});
+  maxBillableCalls:Number(process.env.ODDSPAPI_MAX_BILLABLE_REQUESTS||5),strategy:process.env.ODDSPAPI_COLLECTION_MODE||'tournament'});
  await fs.mkdir('data',{recursive:true});
  await fs.writeFile('data/oddspapi-tournament-shadow-latest.json',JSON.stringify(result));
  console.log('ODDSPAPI_TOURNAMENT_SHADOW',JSON.stringify({
