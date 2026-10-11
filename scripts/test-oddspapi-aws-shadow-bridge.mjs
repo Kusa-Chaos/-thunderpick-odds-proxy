@@ -26,7 +26,9 @@ assert.equal(direct.sports.lol.exactV2.length,2);
 assert.equal(direct.sports.lol.exactV2[1].bookmakers.length,3,'same bookmaker cannot count twice');
 assert.deepEqual(direct.providerHealth.stake,{ok:true});
 const stale=bridgeOddsPapiSnapshot({direct,shadow:{...shadow,generatedAt:'2026-10-11T09:50:00Z'},nowMs:now});
-assert.equal(stale.health.state,'STALE_OR_FUTURE_SHADOW');
+assert.equal(stale.health.state,'IDLE_NO_FRESH_QUOTA_GATED_QUOTES');
+assert.equal(stale.health.ok,true,'expired optional prices must not mark nine-sport scanner unhealthy');
+assert.equal(stale.health.usable,false,'expired data may never enter betting calculations');
 assert.equal(stale.direct.sports.lol.exactV2.length,1,'old snapshot must be removed');
 const wrong=bridgeOddsPapiSnapshot({direct:old,shadow:{...shadow,sports:{lol:{exactV2:[
  {...event,bookmakers:[bookmaker('bet365',[mk('map_winner',{scope:{map:null}})])]}
