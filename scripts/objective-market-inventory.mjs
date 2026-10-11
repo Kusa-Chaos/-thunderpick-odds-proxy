@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import {canonicalBookmakerFamily} from './third-source-eligibility.mjs';
 import {normalizeObjectiveMarket,objectiveContractKey} from './objective-market-normalizer.mjs';
 
 const TP_FILE=process.env.TP_FILE||'data/owls-latest.json';
@@ -15,6 +16,7 @@ const ggbet=await readOptional(GGBET_FILE);
 
 function sourceFamily(raw=''){
   const s=String(raw).toLowerCase();
+  const known=canonicalBookmakerFamily(s);if(known)return known;
   if(s.includes('stake')||s.includes('oddin'))return 'stake-oddin';
   if(s.includes('unibet')||s.includes('kambi'))return 'unibet-kambi';
   if(s.includes('betway'))return 'betway';
