@@ -52,7 +52,7 @@ assert.equal(success.counts.batchedEvents,4);
 assert.equal(success.bookmakerFamilies.length,5);
 assert.equal(success.sports.cs2.exactV2.length,1);
 assert.equal(success.sports.cs2.exactV2[0].bookmakers.length,5);
-assert(success.sports.cs2.exactV2[0].bookmakers.every(b=>b.markets.every(m=>m.last_update===quoteTime&&m.quoteTimestampVerified===true)));
+assert(success.sports.cs2.exactV2[0].bookmakers.every(b=>b.markets.every(m=>Date.parse(m.last_update)===Date.parse(quoteTime)&&m.quoteTimestampVerified===true)));
 assert.equal(marketCalls,1);
 assert(requested.every(x=>!String(x.params.bookmakers||'').includes('pinnacle')),'No unlicensed source requests');
 let hitMarket=false;
