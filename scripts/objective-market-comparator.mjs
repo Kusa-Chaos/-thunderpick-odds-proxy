@@ -1,4 +1,5 @@
 import {normalizeObjectiveMarket} from './objective-market-normalizer.mjs';
+import {canonicalBookmakerFamily} from './third-source-eligibility.mjs';
 
 function num(v){const n=Number(v);return Number.isFinite(n)?n:null;}
 function canon(v=''){
@@ -14,6 +15,7 @@ function eventLabel(event={}){return event.name||event.event||eventTeams(event).
 function stateOf(event={}){return String(event.state||(event.isLive===true||event.live===true?'live':'prematch')).toLowerCase();}
 function sourceFamily(raw=''){
   const s=String(raw).toLowerCase();
+  const known=canonicalBookmakerFamily(s);if(known)return known;
   if(s.includes('stake')||s.includes('oddin'))return 'stake-oddin';
   if(s.includes('unibet')||s.includes('kambi'))return 'unibet-kambi';
   if(s.includes('betway'))return 'betway';
