@@ -76,7 +76,16 @@ async function run(){
    const sport=String(row.sport||'').toLowerCase(),match=String(row.match||row.name||'');
    if(SPORT_ORDER.includes(sport)&&pairKey(match).includes('|'))(targetsBySport[sport]??=[]).push(match);
   }
- } catch { /* no local matching board: use earliest eligible fixture, still shadow-only */ }
+ } catch { /* unavailable comparison board: inventory fallback below */ }
+ try {
+  const inventory=JSON.parse(await fs.readFile('data/owls-latest.json','utf8'));
+  for(const sport of SPORT_ORDER){
+   for(const e of inventory?.sports?.[sport]?.data?.data||[]){
+    const match=String(e.name||[e.teams?.home?.name||e.market?.home?.name,e.teams?.away?.name||e.market?.away?.name].filter(Boolean).join(' vs '));
+    if(pairKey(match).includes('|'))(targetsBySport[sport]??=[]).push(match);
+   }
+  }
+ } catch { /* inventory unavailable: never fail the permitted shadow scan */ }
  const result=await collectOddsPapiShadow({get,targetsBySport});
  await fs.mkdir('data',{recursive:true});
  await fs.writeFile('data/oddspapi-shadow-latest.json',JSON.stringify(result));
