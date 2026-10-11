@@ -18,7 +18,7 @@ function sourceFamily(raw=''){
   if(s.includes('unibet')||s.includes('kambi'))return 'unibet-kambi';
   if(s.includes('betway'))return 'betway';
   if(s.includes('cloudbet'))return 'cloudbet';
-  if(s.includes('pinnacle'))return 'pinnacle';
+  if(s.includes('pinnacle')||s.includes('pinnwire'))return 'pinnacle';
   if(s.includes('bovada'))return 'bovada';
   if(s.includes('fanduel'))return 'fanduel';
   if(s.includes('draftkings'))return 'draftkings';
