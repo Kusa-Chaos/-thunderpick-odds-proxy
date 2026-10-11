@@ -8,12 +8,14 @@ SUPPORTED_MARKETS={
         'league_of_legends.map_xth_dragon',
         'league_of_legends.map_total_kills',
         'league_of_legends.map_team_total_kills',
+        'league_of_legends.map_winner_v2',
     ],
     'dota2':[
         'dota_2.map_race_to_xth_kills',
         'dota_2.map_xth_kill',
         'dota_2.map_total_kills_v2',
         'dota_2.map_team_total_kills',
+        'dota_2.map_winner_v2',
     ],
 }
 
