@@ -18,6 +18,7 @@ assert.equal(result.sports.lol.exactV2[0].bookmakers.length,3);
 assert.deepEqual(result.bookmakerFamilies,['1xbet','bet365','unibet-kambi']);
 assert.equal(result.productionEligible,false,'inventory is not a verified Thunderpick match');
 assert(calls.length<=10,'quota usage must remain bounded');
+assert.equal(result.counts.requests,calls.length,'every request attempt must be counted, including failures');
 assert.equal(calls.filter(x=>x==='/odds').length,1);
 let limitedCalls=0;
 const denied=await collectOddsPapiShadow({get:async()=>{limitedCalls++;return {current_subscription_id:'a',subscriptions:[{subscription_id:'a',is_active:true,sport_ids:[14],request_limit:4,request_count:1,bookmakers:{bet365:{}}}]};},nowIso:'2026-10-10T12:40:00Z'});
