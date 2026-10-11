@@ -79,4 +79,17 @@ assert.equal(stale.state,'NO_FRESH_EXACT_QUOTE_TIMESTAMPS');
 assert.equal(stale.counts.events,0);
 assert(stale.counts.quoteAgeRejected>=1);
 assert(success.productionEligible===false&&success.mode==='TOURNAMENT_SHADOW_ONLY');
+const fallbackGet=async(path,params={})=>{
+ if(path==='/odds-by-tournaments')throw Object.assign(new Error('Unsupported tournament batch'),{name:'HTTP_400',detail:'INVALID_TOURNAMENT_ACCESS'});
+ if(path==='/odds')return response(['bet365','betano','roobet','1xbet','unibet'])[0];
+ return get(path,params);
+};
+const fallback=await collectOddsPapiTournamentShadow({get:fallbackGet,inventory,nowIso:at,maxBillableCalls:5});
+assert.equal(fallback.state,'COLLECTED',JSON.stringify(fallback));
+assert.equal(fallback.batchUnsupported,true);
+assert.equal(fallback.fallbackUsed,true);
+assert.equal(fallback.counts.requests,4,'stop after first batch 400 and consume only one fixture fallback');
+assert.equal(fallback.counts.books,5);
+assert(fallback.errors.some(x=>x.includes('INVALID_TOURNAMENT_ACCESS')));
+
 console.log('ODDSPAPI_TOURNAMENT_BATCH_TEST_VERIFIED',JSON.stringify({billableCalls:success.counts.requests,matched:success.counts.events,books:success.counts.books,quotes:success.counts.markets,catalogCached:cached.cacheUsed,staleRejected:stale.counts.quoteAgeRejected}));
