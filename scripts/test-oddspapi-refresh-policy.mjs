@@ -21,7 +21,7 @@ assert.equal(decideOddsPapiRefresh({previous:justRan,inventory,nowMs:now}).reaso
 const onceUsed={...original,refreshHistory:[{at:'2026-10-11T10:28:56Z',requests:5}]};
 assert.equal(decideOddsPapiRefresh({previous:onceUsed,inventory,nowMs:now}).shouldRefresh,true,'urgent upcoming event permits a second run with high available quota');
 const twiceUsed={...original,refreshHistory:[{at:'2026-10-11T09:00:00Z',requests:5},{at:'2026-10-11T13:00:00Z',requests:5}]};
-assert.equal(decideOddsPapiRefresh({previous:twiceUsed,inventory,nowMs:now}).reason,'DAILY_REQUEST_CAP');
+assert.equal(decideOddsPapiRefresh({previous:twiceUsed,inventory,nowMs:now}).reason,'ONE_PREMATCH_RECOVERY_AFTER_EARLY_TESTS','one extra allowed only for first genuine pre-match window with ample quota');
 const limited={...original,entitlement:{remaining:70}};
 assert.equal(decideOddsPapiRefresh({previous:limited,inventory,nowMs:now}).reason,'DAILY_REQUEST_CAP','one daily refresh only when remaining quota is low');
 assert.equal(decideOddsPapiRefresh({previous:{...original,entitlement:{remaining:28}},inventory,nowMs:now}).reason,'MONTHLY_QUOTA_RESERVED');
@@ -49,4 +49,23 @@ assert.equal(decideOddsPapiRefresh({previous:offCyclePrevious,inventory:consumed
 const nearFloor={...offCyclePrevious,entitlement:{remaining:98}};
 assert.equal(decideOddsPapiRefresh({previous:nearFloor,inventory:newInventory,nowMs:misalignedNow}).shouldRefresh,false,'alignment cannot exhaust scarce monthly quota');
 
+// Real incident: the 4:48 PM Pacific screenshot showed no fresh prices
+// because early manual tests exhausted the ordinary cap many hours before
+// the match. Do not spend more until the same match approaches kickoff.
+const incidentNow=Date.parse('2026-10-11T23:48:00Z');
+const incidentInventory={sports:{lol:{data:{data:[event('KT Rolster vs Team Vitality','2026-10-12T06:00:00Z')]}}}};
+const threeEarly={generatedAt:'2026-10-11T21:11:35Z',entitlement:{remaining:147},counts:{requests:3},
+ refreshHistory:[{at:'2026-10-11T10:28:56Z',requests:4},
+ {at:'2026-10-11T15:59:52Z',requests:4},{at:'2026-10-11T21:11:35Z',requests:3}]};
+const avoidWaste=decideOddsPapiRefresh({previous:threeEarly,inventory:incidentInventory,nowMs:incidentNow});
+assert.equal(avoidWaste.shouldRefresh,false);
+assert.equal(avoidWaste.reason,'WAITING_FOR_NEAR_MATCH_NO_API_SPEND');
+const beforeMatch=decideOddsPapiRefresh({previous:threeEarly,inventory:incidentInventory,nowMs:Date.parse('2026-10-12T04:10:00Z')});
+assert.equal(beforeMatch.shouldRefresh,true,'one pre-match refresh is reserved despite three earlier test samples');
+assert.equal(beforeMatch.reason,'ONE_PREMATCH_RECOVERY_AFTER_EARLY_TESTS');
+assert.equal(beforeMatch.eventWindowPreviousRuns,0);
+const alreadyNear={...threeEarly,refreshHistory:[...threeEarly.refreshHistory,{at:'2026-10-12T04:10:00Z',requests:3}]};
+assert.equal(decideOddsPapiRefresh({previous:alreadyNear,inventory:incidentInventory,nowMs:Date.parse('2026-10-12T05:10:00Z')}).shouldRefresh,false,'never repeat expensive pre-match recovery within same window');
+const insufficientQuota={...threeEarly,entitlement:{remaining:65}};
+assert.equal(decideOddsPapiRefresh({previous:insufficientQuota,inventory:incidentInventory,nowMs:Date.parse('2026-10-12T04:10:00Z')}).shouldRefresh,false,'preserve quota at low balance');
 console.log('ODDSPAPI_REFRESH_POLICY_VERIFIED');
