@@ -11,7 +11,7 @@ function sourceFamily(v='') {
   if (x.includes('caesars')) return 'caesars';
   if (x.includes('betmgm')) return 'betmgm';
   if (x.includes('bovada')) return 'bovada';
-  if (x.includes('pinnacle')) return 'pinnacle';
+  if (x.includes('pinnacle')||x.includes('pinnwire')) return 'pinnacle';
   if (x.includes('betway')) return 'betway';
   if (x.includes('kalshi')) return 'kalshi';
   if (x.includes('polymarket')) return 'polymarket';
