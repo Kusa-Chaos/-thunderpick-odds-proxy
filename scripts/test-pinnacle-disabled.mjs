@@ -10,7 +10,7 @@ try{
   {id:'pinnacle-direct:old-403'},
   {id:'pinnwire-direct:keep-live'},
   {id:'oddspapi-direct:keep-other'},
- ]}},cs2:{exactV2:[{id:'pinnacle-direct:old-2'}]}},
+ ]},cs2:{exactV2:[{id:'pinnacle-direct:old-2'}]}},
   providerHealth:{pinnacle:{ok:false,status:403},pinnwire:{ok:true,markets:400},ggbet:{ok:true}}};
  await fs.writeFile(file,JSON.stringify(data));
  const r=spawnSync(process.execPath,[new URL('./pinnacle-direct.mjs',import.meta.url).pathname],
