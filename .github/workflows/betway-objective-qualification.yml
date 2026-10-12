@@ -1,0 +1,44 @@
+name: Qualify Betway Independent Esports Objectives
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: betway-objective-public-qualification
+  cancel-in-progress: false
+
+jobs:
+  public-objective-shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify no price promotion and objective classifier
+        run: node scripts/test-betway-objective-shadow-probe.mjs
+      - name: Check TWO accessible public Betway pages only
+        run: node scripts/betway-objective-shadow-probe.mjs
+      - name: Enforce zero actionable prices until exact contract checks exist
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const d=JSON.parse(fs.readFileSync('data/betway-objective-shadow-probe-latest.json','utf8'));
+          if(d.mode!=='OBJECTIVE_QUALIFICATION_ONLY'||d.productionEligible!==false)throw Error('PRODUCTION_PROMOTION_NOT_ALLOWED');
+          if(d.requests>2||d.verifiedObjectiveQuoteCount!==0)throw Error('OBJECTIVE_QUALIFICATION_POLICY_VIOLATED');
+          console.log('BETWAY_QUALIFICATION_COMPLETE',JSON.stringify({
+           state:d.state,requests:d.requests,events:d.pages.category?.events?.length||0,
+           categoryObjectiveNames:d.pages.category?.objectiveCategoryHits||[],
+           eventObjectiveNames:d.pages.event?.objectiveCategoryHits||[],
+           errors:d.errors,distinctBook:'betway',verifiedTwoSidedObjectiveQuotes:0
+          }));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: betway-objective-qualification-nonproduction
+          path: data/betway-objective-shadow-probe-latest.json
+          retention-days: 3
